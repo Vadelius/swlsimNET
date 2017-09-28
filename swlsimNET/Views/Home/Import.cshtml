@@ -40,17 +40,17 @@
             </select>
 
             <label>Combat Power</label>
-            <input id="CombatPower" class="form-control" value="@Html.ViewData.Model.CombatPower">
+            @Html.TextBoxFor(m => m.CombatPower);
             <label>Critical Chance</label>
-            <input id="form.criticalChance" class="form-control">
+            @Html.TextBoxFor(m => m.CriticalChance);
             <label>Critical Power</label>
-            <input id="form.criticalPower" class="form-control">
+            @Html.TextBoxFor(m => m.CritPower);
             <label>Basic Signet</label>
-            <input id="form.basicSignet" class="form-control">
+             @Html.TextBoxFor(m => m.BasicSignet);
             <label>Power Signet</label>
-            <input id="form.powerSignet" class="form-control">
+            @Html.TextBoxFor(m => m.PowerSignet);
             <label>Elite Signet</label>
-            <input id="form.eliteSignet" class="form-control">
+            @Html.TextBoxFor(m => m.EliteSignet);
             <div class="col-xs-12" style="height:15px;"/>
             <input type="submit" class="btn btn-default waves-effect waves-light"/>
         </form>
