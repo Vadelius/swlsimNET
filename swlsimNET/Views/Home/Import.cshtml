@@ -13,23 +13,24 @@
 
         <form method="post">
             <h5><b>Primary Weapon</b></h5>
-            @Html.DropDownListFor(m => m.PrimaryWeapon, Settings.WeaponList)
+            @Html.DropDownListFor(m => m.PrimaryWeapon, Settings.WeaponList, new { Class = "form-control select2" })
 
             <h5><b>Secondary Weapon</b></h5>
-            @Html.DropDownListFor(m => m.SecondaryWeapon, Settings.WeaponList)
+            @Html.DropDownListFor(m => m.SecondaryWeapon, Settings.WeaponList, new { Class = "form-control select2" })
 
             <label>Combat Power</label>
-            @Html.TextBoxFor(m => m.CombatPower);
+            @Html.TextBoxFor(m => m.CombatPower, new { Class = "form-control select2" })
             <label>Critical Chance</label>
-            @Html.TextBoxFor(m => m.CriticalChance);
+            @Html.TextBoxFor(m => m.CriticalChance, new { Class = "form-control" })
             <label>Critical Power</label>
-            @Html.TextBoxFor(m => m.CritPower);
+            @Html.TextBoxFor(m => m.CritPower, new { Class = "form-control" })
             <label>Basic Signet</label>
-             @Html.TextBoxFor(m => m.BasicSignet);
+             @Html.TextBoxFor(m => m.BasicSignet, new { Class = "form-control" })
             <label>Power Signet</label>
-            @Html.TextBoxFor(m => m.PowerSignet);
+            @Html.TextBoxFor(m => m.PowerSignet, new { Class = "form-control" })
             <label>Elite Signet</label>
-            @Html.TextBoxFor(m => m.EliteSignet);
+            @Html.TextBoxFor(m => m.EliteSignet, new { Class = "form-control" })
+
             <div class="col-xs-12" style="height:15px;"/>
             <input type="submit" class="btn btn-default waves-effect waves-light"/>
         </form>
