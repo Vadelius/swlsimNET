@@ -5,19 +5,15 @@
 @model Settings
 
 <div class="col-xs-12" style="height:110px;"></div>
+
 <div>
-
     <h1>Import Character Stats</h1>
-
     <form method="post">
         <div class="col-md-3" style="margin: 10px 0px 10px 0px">
-
             <h5><b>Primary Weapon</b></h5>
             @Html.DropDownListFor(m => m.PrimaryWeapon, Settings.WeaponList, new { Class = "form-control select2" })
-
             <h5><b>Secondary Weapon</b></h5>
             @Html.DropDownListFor(m => m.SecondaryWeapon, Settings.WeaponList, new { Class = "form-control select2" })
-
             <label>Combat Power</label>
             @Html.TextBoxFor(m => m.CombatPower, new { Class = "form-control select2" })
             <label>Critical Chance</label>
@@ -30,9 +26,7 @@
             @Html.TextBoxFor(m => m.PowerSignet, new { Class = "form-control" })
             <label>Elite Signet</label>
             @Html.TextBoxFor(m => m.EliteSignet, new { Class = "form-control" })
-
             <div class="col-xs-12" style="height:15px;" />
-            <input type="submit" class="btn btn-default waves-effect waves-light" />
         </div>
 
         <div class="col-md-8">
@@ -44,16 +38,19 @@
 
 
             @Html.CheckBoxFor(m => m.OpeningShot)
-            <label for="checkbox0">Opening Shot every ~ 20 seconds.</label>
+            <label for="OpeningShot">Opening Shot every ~ 20 seconds.</label>
             <br>
 
             @Html.CheckBoxFor(m => m.Exposed)
-            <label for="checkbox0">Exposed with 100% uptime</label>
+            <label for="Exposed">Exposed with 100% uptime</label>
             <br>
 
+
             @Html.CheckBoxFor(m => m.HeadSignetIsCdr)
-            <label for="checkbox0">Head signet is CDR</label>
+            <label for="HeadSignetIsCdr">Head signet is CDR</label>
             <br>
+
+            <input type="submit" class="btn btn-default waves-effect waves-light" />
+        </div>
     </form>
-    </div>
 </div>
