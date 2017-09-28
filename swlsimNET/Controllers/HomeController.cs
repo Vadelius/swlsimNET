@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using swlsimNET.Models;
 
@@ -17,9 +18,21 @@ namespace swlsimNET.Controllers
 
         public IActionResult Import()
         {
-            ViewData["Message"] = "Import";
-
             return View();
+        }
+ 
+        // POST: Import
+        [HttpPost]
+        public ActionResult Import(ServerApp.Models.Player player)
+        {
+             try
+            {
+                return View("Import");
+            }
+            catch
+            {
+                return View();
+            }
         }
         public IActionResult Export()
         {

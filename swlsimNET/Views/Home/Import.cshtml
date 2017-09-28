@@ -9,8 +9,8 @@
     <div class="col-md-3" style="margin: 10px 0px 10px 0px">
 
         <h5><b>Primary Weapon</b></h5>
-        <form>
-            <select v-model="form.primaryWeapon" id="primaryWeapon">
+        <form method="post">
+            <select v-model="form.primaryWeapon" class="form-control select2">
                 <option>Blade</option>
                 <option>Hammer</option>
                 <option>Fist</option>
@@ -24,7 +24,7 @@
 
             <h5><b>Secondary Weapon</b></h5>
 
-            <select v-model="form.secondaryWeapon" class="form-control select2">
+            <select id="form.secondaryWeapon" class="form-control select2">
                 <option>Blade</option>
                 <option>Hammer</option>
                 <option>Fist</option>
@@ -37,19 +37,19 @@
             </select>
 
             <label>Combat Power</label>
-            <input v-model="form.combatPower" class="form-control">
+            <input id="form.combatPower" class="form-control">
             <label>Critical Chance</label>
-            <input v-model="form.criticalChance" class="form-control">
+            <input id="form.criticalChance" class="form-control">
             <label>Critical Power</label>
-            <input v-model="form.criticalPower" class="form-control">
+            <input id="form.criticalPower" class="form-control">
             <label>Basic Signet</label>
-            <input v-model="form.basicSignet" class="form-control">
+            <input id="form.basicSignet" class="form-control">
             <label>Power Signet</label>
-            <input v-model="form.powerSignet" class="form-control">
+            <input id="form.powerSignet" class="form-control">
             <label>Elite Signet</label>
-            <input v-model="form.eliteSignet" class="form-control">
+            <input id="form.eliteSignet" class="form-control">
             <div class="col-xs-12" style="height:15px;"></div>
-            <button class="btn btn-default waves-effect waves-light">Start Simulation</button>
+            <input type="submit" class="btn btn-default waves-effect waves-light"></input>
         </form>
     </div>
     <div class="col-md-8">
