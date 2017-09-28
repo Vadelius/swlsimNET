@@ -1,11 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Import";
 }
+
+@model Settings
+
 <div class="col-xs-12" style="height:110px;"></div>
 <div>
 
     <h1>Import Character Stats</h1>
-
+    
     <div class="col-md-3" style="margin: 10px 0px 10px 0px">
 
         <h5><b>Primary Weapon</b></h5>
@@ -37,7 +40,7 @@
             </select>
 
             <label>Combat Power</label>
-            <input id="form.combatPower" class="form-control">
+            <input id="CombatPower" class="form-control" value="@Html.ViewData.Model.CombatPower">
             <label>Critical Chance</label>
             <input id="form.criticalChance" class="form-control">
             <label>Critical Power</label>
@@ -48,15 +51,16 @@
             <input id="form.powerSignet" class="form-control">
             <label>Elite Signet</label>
             <input id="form.eliteSignet" class="form-control">
-            <div class="col-xs-12" style="height:15px;"></div>
-            <input type="submit" class="btn btn-default waves-effect waves-light"></input>
+            <div class="col-xs-12" style="height:15px;"/>
+            <input type="submit" class="btn btn-default waves-effect waves-light"/>
         </form>
     </div>
+
     <div class="col-md-8">
         <div class="col-xs-12" style="height:21px;"></div>
         <label>Action Priority List</label>
-<textarea v-model="form.apl" class="form-control" rows="10">
-</textarea>
+        <textarea v-model="form.apl" class="form-control" rows="10">
+        </textarea>
         <div class="col-xs-12" style="height:8px;"></div>
         <input id="checkbox0" type="checkbox" checked>
         <label for="checkbox0">Opening Shot every ~ 20 seconds.</label>
