@@ -2,4 +2,124 @@
     ViewData["Title"] = "Results";
 }
 <div class="col-xs-12" style="height:85px;"></div>
-<p>Results</p>
+<div>
+    <h1>Enjoy your Results</h1>
+    <p>Here is some data:</p>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card-box">
+                <h4 class="m-t-0 header-title"><b>DPS Timeline</b></h4>
+                <canvas id="lineChart" height="200"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card-box">
+                <h4 class="m-t-0 header-title"><b>% DMG Breakdown</b></h4>
+                <canvas id="pie" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <h4 class="m-t-0 header-title"><b>Spell Breakdown</b></h4>
+        <div class="p-20">
+            <table class="table table table-hover m-0">
+                <thead>
+                <tr>
+                    <th>Spell</th>
+                    <th>DPS</th>
+                    <th>DPS%</th>
+                    <th>Executes</th>
+                    <th>DPE</th>
+                    <th>Type</th>
+                    <th>Count</th>
+                    <th>Avarage</th>
+                    <th>Crit%</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Smash</th>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>100%</td>
+                </tr>
+                <tr>
+                    <th scope="row">Demolish</th>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>100%</td>
+                </tr>
+                <tr>
+                    <th scope="row">Total</th>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>100%</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <h4 class="m-t-0 header-title"><b>Buff Breakdown</b></h4>
+        <div class="p-20">
+            <table class="table table table-hover m-0">
+                <thead>
+                <tr>
+                    <th>Buff</th>
+                    <th>Start</th>
+                    <th>Refresh</th>
+                    <th>Interval</th>
+                    <th>Executes</th>
+                    <th>Count</th>
+                    <th>Uptime%</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Smash</th>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>6</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <th scope="row">Demolish</th>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>6</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <th scope="row">Total</th>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>6</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>6</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
