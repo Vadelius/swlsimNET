@@ -16,7 +16,13 @@ namespace swlsimNET.Models
         public double BasicSignet { get; set; }
         public double PowerSignet { get; set; }
         public double EliteSignet { get; set; }
-        
+
+        public String Apl { get; set; }
+
+        public Boolean OpeningShot { get; set; }
+        public Boolean Exposed { get; set; }
+        public Boolean HeadSignetIsCdr { get; set; }
+
         public static IEnumerable<SelectListItem> WeaponList
         {
             get

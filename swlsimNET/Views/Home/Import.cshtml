@@ -39,16 +39,23 @@
     <div class="col-md-8">
         <div class="col-xs-12" style="height:21px;"></div>
         <label>Action Priority List</label>
-        <textarea v-model="form.apl" class="form-control" rows="10">
-        </textarea>
+        Apl
+        @Html.TextAreaFor(m => m.Apl, new { Class = "form-control" })
         <div class="col-xs-12" style="height:8px;"></div>
-        <input id="checkbox0" type="checkbox" checked>
+
+
+
+        @Html.CheckBoxFor(m => m.OpeningShot)
         <label for="checkbox0">Opening Shot every ~ 20 seconds.</label>
         <br>
-        <input id="checkbox0" type="checkbox" checked>
+
+        @Html.CheckBoxFor(m => m.Exposed)
         <label for="checkbox0">Exposed with 100% uptime</label>
         <br>
-        <input id="checkbox0" type="checkbox">
+
+        @Html.CheckBoxFor(m => m.HeadSignetIsCdr)
         <label for="checkbox0">Head signet is CDR</label>
+        <br>
+
     </div>
 </div>
