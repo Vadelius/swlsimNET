@@ -22,19 +22,24 @@ namespace swlsimNET.Controllers
             return View();
         }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
         public IActionResult Import()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Import";
 
             return View();
         }
+        public IActionResult Export()
+        {
+            ViewData["Message"] = "Export";
 
+            return View();
+        }
+        public IActionResult Results()
+        {
+            ViewData["Message"] = "Results";
+
+            return View();
+        }
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

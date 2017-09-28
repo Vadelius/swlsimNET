@@ -66,14 +66,14 @@
                         </li>
 
                         <li class="has-submenu">
-                            <a asp-area="" asp-controller="Home" asp-action="About" class="navigation-menu">Import</a> <!-- <i class="md md-color-lens"></i> -->
+                            <a asp-area=""  asp-controller="Home" asp-action="Import" class="navigation-menu">Import</a> <!-- <i class="md md-color-lens"></i> -->
 
 
                         <li class="has-submenu">
-                            <a href="#"><i class="md md-layers"></i>Export</a>
+                        <a asp-area=""  asp-controller="Home" asp-action="Export" class="navigation-menu">Export</a>
 
                         <li class="has-submenu">
-                            <a href="#"><i class="md md-class"></i>Results</a>
+                        <a asp-area=""  asp-controller="Home" asp-action="Results" class="navigation-menu">Results</a>
                     </ul>
                     <!-- End navigation menu        -->
                 </div>
@@ -92,23 +92,22 @@
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
+<environment exclude="Development">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+            crossorigin="anonymous"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+    </script>
 
-    </environment>
+</environment>
 
     @RenderSection("Scripts", required: false)
 </body>
