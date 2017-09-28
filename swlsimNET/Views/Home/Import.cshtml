@@ -8,10 +8,10 @@
 <div>
 
     <h1>Import Character Stats</h1>
-    
-    <div class="col-md-3" style="margin: 10px 0px 10px 0px">
 
-        <form method="post">
+    <form method="post">
+        <div class="col-md-3" style="margin: 10px 0px 10px 0px">
+
             <h5><b>Primary Weapon</b></h5>
             @Html.DropDownListFor(m => m.PrimaryWeapon, Settings.WeaponList, new { Class = "form-control select2" })
 
@@ -25,37 +25,35 @@
             <label>Critical Power</label>
             @Html.TextBoxFor(m => m.CritPower, new { Class = "form-control" })
             <label>Basic Signet</label>
-             @Html.TextBoxFor(m => m.BasicSignet, new { Class = "form-control" })
+            @Html.TextBoxFor(m => m.BasicSignet, new { Class = "form-control" })
             <label>Power Signet</label>
             @Html.TextBoxFor(m => m.PowerSignet, new { Class = "form-control" })
             <label>Elite Signet</label>
             @Html.TextBoxFor(m => m.EliteSignet, new { Class = "form-control" })
 
-            <div class="col-xs-12" style="height:15px;"/>
-            <input type="submit" class="btn btn-default waves-effect waves-light"/>
-        </form>
-    </div>
+            <div class="col-xs-12" style="height:15px;" />
+            <input type="submit" class="btn btn-default waves-effect waves-light" />
+        </div>
 
-    <div class="col-md-8">
-        <div class="col-xs-12" style="height:21px;"></div>
-        <label>Action Priority List</label>
-        Apl
-        @Html.TextAreaFor(m => m.Apl, new { Class = "form-control" })
-        <div class="col-xs-12" style="height:8px;"></div>
+        <div class="col-md-8">
+            <div class="col-xs-12" style="height:21px;"></div>
+            <label>Action Priority List</label>
+            @Html.TextAreaFor(m => m.Apl, new { Class = "form-control" })
+            <div class="col-xs-12" style="height:8px;"></div>
 
 
 
-        @Html.CheckBoxFor(m => m.OpeningShot)
-        <label for="checkbox0">Opening Shot every ~ 20 seconds.</label>
-        <br>
+            @Html.CheckBoxFor(m => m.OpeningShot)
+            <label for="checkbox0">Opening Shot every ~ 20 seconds.</label>
+            <br>
 
-        @Html.CheckBoxFor(m => m.Exposed)
-        <label for="checkbox0">Exposed with 100% uptime</label>
-        <br>
+            @Html.CheckBoxFor(m => m.Exposed)
+            <label for="checkbox0">Exposed with 100% uptime</label>
+            <br>
 
-        @Html.CheckBoxFor(m => m.HeadSignetIsCdr)
-        <label for="checkbox0">Head signet is CDR</label>
-        <br>
-
+            @Html.CheckBoxFor(m => m.HeadSignetIsCdr)
+            <label for="checkbox0">Head signet is CDR</label>
+            <br>
+    </form>
     </div>
 </div>
