@@ -1,9 +1,17 @@
 ﻿@{
     ViewData["Title"] = "Results";
 }
+@model Results
+
+@{
+    var Results = new Results();
+}
+
 <div class="col-xs-12" style="height:110px;"></div>
 <div>
-    <h1>Enjoy your Results</h1>
+    <h1>
+    DPS = @Results.TheDps
+    </h1>
     <p>Here is some data:</p>
 
     <div class="row">
@@ -39,6 +47,8 @@
                 </thead>
                 <tbody>
                 <tr>
+                    
+                    
                     <th scope="row">Smash</th>
                     <td>3</td>
                     <td>4</td>
