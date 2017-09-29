@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using swlsimNET.ServerApp.Models;
-using swlsimNET.ServerApp.Spells;
-using swlsimNET.ServerApp.Spells.Pistol;
 using swlsimNET.ServerApp.Weapons;
 
-
-namespace swlsim.Spells.Pistol
+namespace swlsimNET.ServerApp.Spells.Pistol
 {
     public class HighRoller : Spell
     {

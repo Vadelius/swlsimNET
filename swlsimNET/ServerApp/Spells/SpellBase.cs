@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using swlsim.Spells;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Utilities;
@@ -90,8 +89,7 @@ namespace swlsimNET.ServerApp.Spells
             set
             {
                 _baseDamage = value;
-                if (BaseDamageCrit == 0)
-                    BaseDamageCrit = value;
+                if (BaseDamageCrit == 0) BaseDamageCrit = value;
             }
         }
 
@@ -465,13 +463,7 @@ namespace swlsimNET.ServerApp.Spells
             if (WeaponType != WeaponType.None)
             {
                 var spellWeapon = player.GetWeaponFromSpell(this);
-                var otherWepon = player.GetOtherWeaponFromSpell(this);
-
-                //spellWeapon.Energy += PrimaryGain;
-                //otherWepon.Energy += SecondaryGain;
-
-                //spellWeapon.GimmickResource += PrimaryGimmickGain;
-                //otherWepon.GimmickResource += SecondaryGimmickGain;
+                //var otherWepon = player.GetOtherWeaponFromSpell(this);
 
                 spellWeapon.GimmickResource += PrimaryGimmickGainOnCrit;
             }           
@@ -515,7 +507,7 @@ namespace swlsimNET.ServerApp.Spells
 
         private bool IsHit(IPlayer player)
         {
-            var target = (int) 0.2; //TODO: FIX
+            var target = (int)player.Settings.TargetType / (double)100;
             return Helper.IsHit(target, player.GlanceReduction);
         }
 

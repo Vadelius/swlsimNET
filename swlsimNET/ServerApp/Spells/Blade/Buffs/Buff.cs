@@ -1,7 +1,6 @@
-﻿using swlsimNET.ServerApp.Spells;
-using swlsimNET.ServerApp.Weapons;
+﻿using swlsimNET.ServerApp.Weapons;
 
-namespace swlsim.Spells.Blade.Buffs
+namespace swlsimNET.ServerApp.Spells.Blade.Buffs
 {
     public class SupremeHarmony : AbilityBuff
     {

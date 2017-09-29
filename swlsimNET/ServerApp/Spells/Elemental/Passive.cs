@@ -1,5 +1,4 @@
-﻿using swlsim.Spells;
-using swlsimNET.ServerApp.Models;
+﻿using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.ServerApp.Spells.Elemental

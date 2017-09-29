@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using swlsimNET.Models;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
@@ -12,17 +14,24 @@ namespace swlsimNET.ServerApp
     public class Engine
     {
         private const int Interval = 100;
+        private Settings _settings;
 
-        public List<FightResult> StartIterations(string aplStr, ObservableCollection<Passive> passives, IProgress<int> progress)
+        public Engine(Settings settings)
+        {
+            _settings = settings;
+        }
+
+        // TODO: @Grem fix progress
+        public List<FightResult> StartIterations(IProgress<int> progress = null)
         {
             var iterationResults = new List<FightResult>();
 
             // Run iterations
-            for (var i = 1; i <= 100; i++) //TODO: Fix
+            for (var i = 1; i <= _settings.Iterations; i++)
             {
-                var player = NewPlayer(aplStr, passives);
+                var player = NewPlayer(_settings);
                 var fightResult = StartFight(player);
-                fightResult.Iteration = i;            
+                fightResult.Iteration = i;
 
                 iterationResults.Add(fightResult);
 
@@ -34,15 +43,15 @@ namespace swlsimNET.ServerApp
 
         public FightResult StartFight(Player player)
         {
-            var fightResult = new FightResult();
+            var fightResult = new FightResult(player);
 
             // Run a complete fight
             // Check if we can do something 10 times a second (to account for lag)
-            for (var ms = 0; ms < 240 * 1000; ms += Interval) //TODO: Fix.
+            for (var ms = 0; ms < _settings.FightLength * 1000; ms += Interval)
             {
                 var roundResult = player.NewRound(ms, Interval);
 
-                // Only save roundes with any actions
+                // Only save rounds with any actions
                 if (roundResult.Attacks.Any())
                 {
                     fightResult.RoundResults.Add(roundResult);
@@ -55,20 +64,18 @@ namespace swlsimNET.ServerApp
             return fightResult;
         }
 
-        private Player NewPlayer(string aplStr, ObservableCollection<Passive> passives)
+        private Player NewPlayer(Settings s)
         {
-            //TODO: FIX
-            //var mainWeapon = GetWeaponFromType(S.Default.PrimaryWeapon, S.Default.MainAffix);
-            //var offWeapon = GetWeaponFromType(S.Default.SecondaryWeapon, S.Default.OffAffix);
-            var mainWeapon = GetWeaponFromType(WeaponType.Hammer, WeaponAffix.Destruction);
-            var offWeapon = GetWeaponFromType(WeaponType.Fist, WeaponAffix.Destruction);
-            var selectedPassives = GetSelectedPassives(passives);
-            var player = new Player(mainWeapon, offWeapon, selectedPassives);
+            // s.PrimaryWeapon and s.SecondaryWeapon can not be null since validation in front end catches this
+            var mainWeapon = GetWeaponFromType((WeaponType) s.PrimaryWeapon, s.PrimaryWeaponAffix);
+            var offWeapon = GetWeaponFromType((WeaponType) s.SecondaryWeapon, s.SecondaryWeaponAffix);
+            var selectedPassives = GetSelectedPassives(s.Passives);
+            var player = new Player(mainWeapon, offWeapon, selectedPassives, s);
 
-            //var apl = new AplReader(player, aplStr);
-            //var aplList = apl.GetApl();
+            var apl = new AplReader(player, _settings.Apl);
+            var aplList = apl.GetApl();
 
-            //player.Spells = aplList;
+            player.Spells = aplList;
 
             return player;
         }
@@ -100,13 +107,14 @@ namespace swlsimNET.ServerApp
             return null;
         }
 
-        private List<Passive> GetSelectedPassives(ObservableCollection<Passive> passives)
+        private List<Passive> GetSelectedPassives(IEnumerable<SelectListItem> passives)
         {
+            passives = passives.ToList();
             var selectedPassives = new List<Passive>();
 
-            //TODO: Fix.
+            // TODO: Fix this, just check current weapon type passives since some passives have same name?
 
-            //var passive1 = passives.FirstOrDefault(p => p.Name == S.Default.Passive1?.Split('.').Last());
+            //var passive1 = passives.FirstOrDefault(p => p.Value == S.Default.Passive1?.Split('.').Last());
             //if (passive1 != null) selectedPassives.Add(passive1);
 
             //var passive2 = passives.FirstOrDefault(p => p.Name == S.Default.Passive2?.Split('.').Last());

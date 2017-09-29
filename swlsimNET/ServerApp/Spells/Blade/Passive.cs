@@ -1,9 +1,7 @@
-﻿using swlsimNET.ServerApp.Weapons;
-using swlsimNET.ServerApp.Models;
-using swlsimNET.ServerApp.Spells;
-using swlsimNET.ServerApp.Spells.Blade;
+﻿using swlsimNET.ServerApp.Models;
+using swlsimNET.ServerApp.Weapons;
 
-namespace swlsim.Spells.Blade
+namespace swlsimNET.ServerApp.Spells.Blade
 {
     public class BladePassive : Spell
     {

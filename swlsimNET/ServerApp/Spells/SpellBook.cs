@@ -1,17 +1,13 @@
 ﻿using swlsimNET.ServerApp.Models;
-using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Weapons;
 
-namespace swlsimNET.ServerApp.Spells.Buffs
+namespace swlsimNET.ServerApp.Spells
 {
     #region General
 
 
     #endregion
-}
 
-namespace swlsimNET.ServerApp.Spells.Buffs
-{
     #region Buffs & Debuffs
 
     public class OpeningShot : Buff
@@ -44,13 +40,10 @@ namespace swlsimNET.ServerApp.Spells.Buffs
         }
     }
 
-    // TODO: Add Glaciate 
+// TODO: Add Glaciate 
 
     #endregion
-}
 
-namespace swlsimNET.ServerApp.Spells.Items
-{
     #region Items
 
     public class Ashes : Spell

@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Expressions;
+using swlsimNET.Models;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Spells;
-using swlsimNET.ServerApp.Spells.Buffs;
-using swlsimNET.ServerApp.Spells.Items;
 using swlsimNET.ServerApp.Utilities;
 using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.ServerApp.Models
 {
-
     public interface IPlayer
     {
+        Settings Settings { get; }
         double CombatPower { get; }
         double GlanceReduction { get; } // hit
         double CriticalChance { get; }
@@ -43,7 +43,6 @@ namespace swlsimNET.ServerApp.Models
         void AddBonusAttack(RoundResult rr, ISpell spell);
     }
 
-
     public interface ICombat
     {
         int CastTime { get; set; }
@@ -55,39 +54,37 @@ namespace swlsimNET.ServerApp.Models
         RoundResult NewRound(int currentMs, int pingMs);
     }
 
-
     public class Player : IPlayer, ICombat
     {
         private bool _passivesInitiated;
+        public ExpressionContext Context;
 
-        public Player(Weapon primaryWeapon, Weapon secondaryWeapon, List<Passive> passives)
+        public Player(Weapon primaryWeapon, Weapon secondaryWeapon, List<Passive> passives, Settings settings)
         {
             PrimaryWeapon = primaryWeapon;
             SecondaryWeapon = secondaryWeapon;
             Passives = passives;
+            Settings = settings;
 
             Buffs = new List<IBuff>();
             {
-                //TODO: Fix.
-                //if (S.Default.Exposed) Buffs.Add(new Exposed());
-                //if (S.Default.OpeningShot) Buffs.Add(new OpeningShot());
-                //if (S.Default.Savagery) Buffs.Add(new Savagery());
+                if (settings.Exposed) Buffs.Add(new Exposed());
+                if (settings.OpeningShot) Buffs.Add(new OpeningShot());
+                if (settings.Savagery) Buffs.Add(new Savagery());
             }
 
             AbilityBuffs = new List<IBuff>();
             InitAbilityBuffs();
-            var settings = new swlsimNET.Models.Settings();
-            settings.CombatPower = CombatPower;
-            settings.CriticalChance = CriticalChance;
-            settings.CritPower = CritPower;
-            settings.BasicSignet = BasicSignetBoost;
-            settings.EliteSignet = EliteSignetBoost;
-            settings.PowerSignet = PowerSignetBoost;
-            settings.PrimaryWeapon = PrimaryWeapon;
-            settings.SecondaryWeapon = SecondaryWeapon;
-            settings.Exposed = ExposedEnabled;
-            settings.OpeningShot = OpeningShotEnabled;
-            settings.HeadSignetIsCdr = false; //TODO: Implement % Elite boost Cooldown reduction instead of Elite Damage.
+
+            CombatPower = settings.CombatPower;
+            GlanceReduction = settings.GlanceReduction;
+            CriticalChance = settings.CombatPower;
+            CritPower = settings.CritPower;
+            BasicSignetBoost = settings.BasicSignet;
+            PowerSignetBoost = settings.PowerSignet;
+            EliteSignetBoost = settings.EliteSignet;
+
+            //TODO: Implement % Elite boost Cooldown reduction instead of Elite Damage.
             this.Buff = new BuffWrapper(this);
         }
 
@@ -95,7 +92,7 @@ namespace swlsimNET.ServerApp.Models
         {
             #region Blade
 
-            //AbilityBuffs.Add(new Spells.Blade.Buffs.SupremeHarmony()); TODO: Fix
+            AbilityBuffs.Add(new Spells.Blade.Buffs.SupremeHarmony());
 
             #endregion
 
@@ -125,7 +122,7 @@ namespace swlsimNET.ServerApp.Models
 
             #region Hammer
 
-            //AbilityBuffs.Add(new Spells.Hammer.Buffs.UnstoppableForce());  //TODO: Fix
+            AbilityBuffs.Add(new Spells.Hammer.Buffs.UnstoppableForce());
 
             #endregion
 
@@ -517,6 +514,8 @@ namespace swlsimNET.ServerApp.Models
         #region IPlayer implementation
 
         // Implements IPlayer TODO: Get from Frontend.
+        public Settings Settings { get; set; }
+
         public double CombatPower { get; protected set; } = 1200;
 
         public double GlanceReduction { get; protected set; } = 0.3;
@@ -582,7 +581,7 @@ namespace swlsimNET.ServerApp.Models
 
         #endregion
 
-        // TODO: Fix this...
+        // TODO: Can this be made better somehow and still work with APL?
         // Only done since buffs and spells can have same
         // Expressions engine does not like this
         public class BuffWrapper

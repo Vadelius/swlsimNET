@@ -1,7 +1,7 @@
-﻿using swlsim.Spells.Pistol;
-using swlsimNET.ServerApp.Combat;
+﻿using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
+using swlsimNET.ServerApp.Spells.Pistol;
 
 namespace swlsimNET.ServerApp.Weapons
 {

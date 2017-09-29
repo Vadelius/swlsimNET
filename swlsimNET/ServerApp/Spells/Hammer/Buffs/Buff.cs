@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using swlsimNET.ServerApp.Spells;
-using swlsimNET.ServerApp.Weapons;
+﻿using swlsimNET.ServerApp.Weapons;
 
-namespace swlsim.Spells.Hammer.Buffs
+namespace swlsimNET.ServerApp.Spells.Hammer.Buffs
 {
     public class UnstoppableForce : AbilityBuff
     {

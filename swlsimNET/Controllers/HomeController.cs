@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using swlsimNET.Models;
+using swlsimNET.ServerApp;
+using swlsimNET.ServerApp.Combat;
+using swlsimNET.ServerApp.Models;
+using swlsimNET.ServerApp.Utilities;
 
 namespace swlsimNET.Controllers
 {
     public class HomeController : Controller
     {
         private Settings _settings = new Settings();
+        private List<FightResult> _iterationFightResults;
 
         public IActionResult Index()
         {
@@ -25,16 +30,29 @@ namespace swlsimNET.Controllers
  
         // POST: Import
         [HttpPost]
-        public ActionResult Import(Settings setting)
+        public async Task<ActionResult> Import(Settings settings)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return View("Import");
+                _settings = settings;
+
+                // Simulation Async
+                var result = await Task.Run(() => StartSimulation());
+
+                if (!result)
+                {
+                    // Simulation failed
+                    return View(settings);
+                }                
+
+                var report = new Report();
+                var reportData = await Task.Run(() => report.GenerateReportData(_iterationFightResults));
+
+                return View("Results");
             }
-            catch
-            {
-                return View();
-            }
+
+            // If we got this far, something failed. So, redisplay form
+            return View(settings);
         }
 
         public IActionResult Export()
@@ -54,6 +72,27 @@ namespace swlsimNET.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private bool StartSimulation()
+        {
+            var res = false;
+
+            try
+            {
+                var engine = new Engine(_settings);
+                _iterationFightResults = engine.StartIterations();
+
+                res = true;
+            }
+            catch (Exception e) when (!Helper.Env.Debugging)
+            {
+                // TODO: Log exception and show to user
+                //MessageBox.Show(e.ToString());
+                //Application.Current.Shutdown();
+            }
+
+            return res;
         }
     }
 }

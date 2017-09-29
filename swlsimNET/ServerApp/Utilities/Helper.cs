@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
+using Expressions;
 using swlsimNET.ServerApp.Models;
 
 namespace swlsimNET.ServerApp.Utilities
@@ -29,6 +29,26 @@ namespace swlsimNET.ServerApp.Utilities
         {
             var rng = RNG();
             return rng > 1 - critchance;
+        }
+
+        public static bool EvaluateArgs(string args, Player player,
+            ExpressionLanguage language = ExpressionLanguage.Csharp)
+        {
+            var expression = new DynamicExpression(args, language);
+
+            // Only create context once
+            if (player.Context == null)
+            {
+                player.Context = new ExpressionContext(null, player, true);
+                player.Context.Variables.Add("Player", player);
+
+                foreach (var spell in player.Spells.DistinctBy(s => s.Name))
+                    player.Context.Variables.Add(spell.Name, spell);
+            }
+
+            var res = expression.Invoke(player.Context);
+
+            return (bool)res;
         }
 
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>

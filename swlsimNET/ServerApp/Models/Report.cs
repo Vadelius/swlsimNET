@@ -35,10 +35,17 @@ namespace swlsimNET.ServerApp.Models
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Formatting = Formatting.Indented // Formatting.Indented for testing
+                Formatting = Formatting.None // Formatting.Indented for testing
             };
 
-            using (var sw = new StreamWriter(@"c:\Development\json.txt"))
+            // Write to local appdata folder since we always can access this
+            var path = Environment.GetEnvironmentVariable("LocalAppData")
+                       + $"\\{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}";
+
+            Directory.CreateDirectory(path);
+            var file = Path.Combine(path, "result.json");
+
+            using (var sw = new StreamWriter(file))
             using (var writer = new JsonTextWriter(sw))
             {
                 serializer.Serialize(writer, iterationFightResults);

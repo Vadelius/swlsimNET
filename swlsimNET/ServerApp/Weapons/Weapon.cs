@@ -164,7 +164,7 @@ namespace swlsimNET.ServerApp.Weapons
 
         private void DestructionAffix(IPlayer player, RoundResult rr)
         {
-            var fightLengthMs = 240 * 1000; //TODO: Fix
+            var fightLengthMs = player.Settings.FightLength * 1000;
 
             // Get percentage of fight done
             var percentageChange = (player.CurrentTimeMs - fightLengthMs) /
