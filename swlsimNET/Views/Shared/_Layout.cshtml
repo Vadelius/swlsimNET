@@ -17,29 +17,15 @@
 
 </head>
 <body>
-
-
     <!-- Navigation Bar-->
     <header id="topnav">
         <div class="topbar-main">
             <div class="container">
-
                 <!-- Logo container-->
-                <div class="logo">
-                        <span>
-
-                        </span>
-                </div>
+                <div class="logo"><span></span></div>
                 <!-- End Logo container-->
-
-
                 <div class="menu-extras">
-
-                    <ul class="nav navbar-nav navbar-right pull-right">
-
-                       
-                       
-                    </ul>
+                    <ul class="nav navbar-nav navbar-right pull-right"></ul>
                     <div class="menu-item">
                         <!-- Mobile menu toggle-->
                         <a class="navbar-toggle">
@@ -64,14 +50,10 @@
                         <li class="has-submenu">
                             <a asp-area="" asp-controller="Home" asp-action="Index" class="navigation-menu"><i class="md md-dashboard"></i>Dashboard</a>
                         </li>
-
                         <li class="has-submenu">
                             <a asp-area=""  asp-controller="Home" asp-action="Import" class="navigation-menu"><i class="md md-layers"></i>Import</a> <!-- </i> -->
-
-
                         <li class="has-submenu">
                         <a asp-area=""  asp-controller="Home" asp-action="Export" class="navigation-menu"><i class="md md-class"></i>Export</a>
-
                         <li class="has-submenu">
                         <a asp-area=""  asp-controller="Home" asp-action="Results" class="navigation-menu"><i class="md md-pages"></i>Results</a>
                     </ul>
@@ -83,10 +65,6 @@
     <!-- End Navigation Bar-->
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2017 - swlsimNET</p>
-        </footer>
     </div>
 
     <environment include="Development">

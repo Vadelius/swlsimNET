@@ -8,8 +8,8 @@ namespace swlsimNET.Models
 {
     public class Settings
     {
-        public string PrimaryWeapon { get; set; }
-        public string SecondaryWeapon { get; set; }
+        public Weapon PrimaryWeapon { get; set; }
+        public Weapon SecondaryWeapon { get; set; }
         public double CombatPower { get; set; }
         public double CriticalChance { get; set; }
         public double CritPower { get; set; }

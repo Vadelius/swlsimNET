@@ -9,10 +9,10 @@
 <div>
     <h1>Import Character Stats</h1>
     <form method="post">
-        <div class="col-md-3" style="margin: 10px 0px 10px 0px">
-            <h5><b>Primary Weapon</b></h5>
+        <div class="col-md-3">
+            <label>Primary Weapon</label>
             @Html.DropDownListFor(m => m.PrimaryWeapon, Settings.WeaponList, new { Class = "form-control select2" })
-            <h5><b>Secondary Weapon</b></h5>
+            <label>Secondary Weapon</label>
             @Html.DropDownListFor(m => m.SecondaryWeapon, Settings.WeaponList, new { Class = "form-control select2" })
             <label>Combat Power</label>
             @Html.TextBoxFor(m => m.CombatPower, new { Class = "form-control select2" })
@@ -26,16 +26,12 @@
             @Html.TextBoxFor(m => m.PowerSignet, new { Class = "form-control" })
             <label>Elite Signet</label>
             @Html.TextBoxFor(m => m.EliteSignet, new { Class = "form-control" })
-            <div class="col-xs-12" style="height:15px;" />
         </div>
-
-        <div class="col-md-8">
-            <div class="col-xs-12" style="height:21px;"></div>
-            <label>Action Priority List</label>
-            @Html.TextAreaFor(m => m.Apl, new { Class = "form-control" })
-            <div class="col-xs-12" style="height:8px;"></div>
-
-
+            <div class="col-md-9" style="margin-bottom: 10px">
+                <label>Action Priority List</label>
+                @Html.TextAreaFor(m => m.Apl, new { Class = "form-control" })
+            </div>
+            <div class="col-xs-12" style="height:40px;"></div>
 
             @Html.CheckBoxFor(m => m.OpeningShot)
             <label for="OpeningShot">Opening Shot every ~ 20 seconds.</label>
@@ -50,7 +46,7 @@
             <label for="HeadSignetIsCdr">Head signet is CDR</label>
             <br>
 
-            <input type="submit" class="btn btn-default waves-effect waves-light" />
-        </div>
+            <input type="submit" value="Start Simulation" class="btn btn-default waves-effect waves-light" />
+            
     </form>
 </div>

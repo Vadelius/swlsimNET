@@ -76,7 +76,18 @@ namespace swlsimNET.ServerApp.Models
 
             AbilityBuffs = new List<IBuff>();
             InitAbilityBuffs();
-
+            var settings = new swlsimNET.Models.Settings();
+            settings.CombatPower = CombatPower;
+            settings.CriticalChance = CriticalChance;
+            settings.CritPower = CritPower;
+            settings.BasicSignet = BasicSignetBoost;
+            settings.EliteSignet = EliteSignetBoost;
+            settings.PowerSignet = PowerSignetBoost;
+            settings.PrimaryWeapon = PrimaryWeapon;
+            settings.SecondaryWeapon = SecondaryWeapon;
+            settings.Exposed = ExposedEnabled;
+            settings.OpeningShot = OpeningShotEnabled;
+            settings.HeadSignetIsCdr = false; //TODO: Implement % Elite boost Cooldown reduction instead of Elite Damage.
             this.Buff = new BuffWrapper(this);
         }
 
@@ -521,6 +532,8 @@ namespace swlsimNET.ServerApp.Models
         public List<Passive> Passives { get; set; }
         public Weapon PrimaryWeapon { get; set; }
         public Weapon SecondaryWeapon { get; set; }
+        public bool ExposedEnabled { get; set; }
+        public bool OpeningShotEnabled { get; set; }
 
         #endregion
 
