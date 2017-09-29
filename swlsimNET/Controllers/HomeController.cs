@@ -27,7 +27,13 @@ namespace swlsimNET.Controllers
         {
             return View(_settings);
         }
- 
+        public IActionResult Spellquery()
+        {
+            ViewData["Message"] = "Spellquery";
+
+            return View();
+        }
+
         // POST: Import
         [HttpPost]
         public async Task<ActionResult> Import(Settings settings)
