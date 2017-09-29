@@ -22,6 +22,7 @@ namespace swlsimNET.Models
         public Boolean OpeningShot { get; set; }
         public Boolean Exposed { get; set; }
         public Boolean HeadSignetIsCdr { get; set; }
+        public Boolean Savagery { get; set; }
 
         public static IEnumerable<SelectListItem> WeaponList
         {

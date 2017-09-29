@@ -32,21 +32,29 @@
                 @Html.TextAreaFor(m => m.Apl, new { Class = "form-control" })
             </div>
             <div class="col-xs-12" style="height:40px;"></div>
-
+            
+        <div>
             @Html.CheckBoxFor(m => m.OpeningShot)
             <label for="OpeningShot">Opening Shot every ~ 20 seconds.</label>
-            <br>
+        </div>
 
+        <div>
             @Html.CheckBoxFor(m => m.Exposed)
             <label for="Exposed">Exposed with 100% uptime</label>
-            <br>
+       </div>
 
-
+        <div>
             @Html.CheckBoxFor(m => m.HeadSignetIsCdr)
             <label for="HeadSignetIsCdr">Head signet is CDR</label>
-            <br>
+        </div>
+        <div>
+            @Html.CheckBoxFor(m => m.Savagery)
+            <label for="Savagery">Enable Savagery</label>
+        </div>
+        
 
-            <input type="submit" value="Start Simulation" class="btn btn-default waves-effect waves-light" />
+
+        <input type="submit" value="Start Simulation" class="btn btn-default waves-effect waves-light" />
             
     </form>
 </div>
