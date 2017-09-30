@@ -23,11 +23,10 @@ namespace swlsimNET.Models
         private double highestDps;
         private double _theDps;
 
-        public Tuple<string, string> GenerateReportData(List<FightResult> iterationFightResults)
+        public void GenerateReportData(List<FightResult> iterationFightResults)
         {
             InitReportData(iterationFightResults);
-            GenerateSpellReportData();
-            return new Tuple<string, string>("Hej", "Hejdå");        
+            GenerateSpellReportData();    
         }
 
 
@@ -46,9 +45,10 @@ namespace swlsimNET.Models
 
     private void InitReportData(List<FightResult> iterationFightResults)
     {
-        nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+        var settings = new Settings();
+            nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = " ";
-        _theDps = TotalDamage / 240 / 10;
+        _theDps = TotalDamage /settings.FightLength / settings.Iterations;
         foreach (var iteration in iterationFightResults)
         {
 
