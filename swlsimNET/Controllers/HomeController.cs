@@ -54,7 +54,7 @@ namespace swlsimNET.Controllers
                 var report = new Report();
                 var reportData = await Task.Run(() => report.GenerateReportData(_iterationFightResults));
 
-                return View("Results");
+                return View("Results", report);
             }
 
             // If we got this far, something failed. So, redisplay form

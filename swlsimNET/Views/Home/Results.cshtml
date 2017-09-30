@@ -3,14 +3,10 @@
 }
 @model Results
 
-@{
-    var Results = new Results();
-}
-
 <div class="col-xs-12" style="height:110px;"></div>
 <div>
     <h1>
-    DPS = @Results.TheDps
+    DPS = @Model.TheDps
     </h1>
     <p>Here is some data:</p>
 
