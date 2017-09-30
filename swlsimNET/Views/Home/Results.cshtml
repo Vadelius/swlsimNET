@@ -2,11 +2,14 @@
     ViewData["Title"] = "Results";
 }
 @model swlsimNET.ServerApp.Models.Report
-
 <div class="col-xs-12" style="height:110px;"></div>
 <div>
+    @{
+        var DPS = Model.TotalDamage;
+        player.
+    }
     <h1>
-    DPS = @Model.TotalDamage @*Change to dps*@
+    @DPS
     </h1>
     <p>Here is some data:</p>
 
@@ -43,8 +46,8 @@
                 </thead>
                 <tbody>
                 <tr>
-                    
-                    
+
+
                     <th scope="row">Smash</th>
                     <td>3</td>
                     <td>4</td>

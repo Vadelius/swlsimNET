@@ -36,7 +36,7 @@ namespace swlsimNET.Controllers
 
         // POST: Import
         [HttpPost]
-        public async Task<ActionResult> Import(Settings settings)
+        public async Task<ActionResult> Import(Settings settings, Player player)
         {
             if (ModelState.IsValid)
             {
