@@ -23,9 +23,9 @@ namespace swlsimNET.Models
         private double highestDps;
         private double _theDps;
 
-        public void GenerateReportData(List<FightResult> iterationFightResults)
+        public void GenerateReportData(List<FightResult> iterationFightResults, Settings settings)
         {
-            InitReportData(iterationFightResults);
+            InitReportData(iterationFightResults, settings);
             GenerateSpellReportData();    
         }
 
@@ -43,9 +43,8 @@ namespace swlsimNET.Models
         SpellTypeReport(SpellType.Passive);
     }
 
-    private void InitReportData(List<FightResult> iterationFightResults)
+    private void InitReportData(List<FightResult> iterationFightResults, Settings settings)
     {
-        var settings = new Settings();
             nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = " ";
         _theDps = TotalDamage /settings.FightLength / settings.Iterations;
