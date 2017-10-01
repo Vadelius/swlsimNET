@@ -34,6 +34,7 @@ namespace swlsimNET.Models
         public bool GenerateReportData(List<FightResult> iterationFightResults, Settings settings)
         {
             _settings = settings;
+            SpellBreakdownList = new List<SpellResult>();
             InitReportData(iterationFightResults);
 
             GenerateSpellReportData();
@@ -131,8 +132,6 @@ namespace swlsimNET.Models
             var dSpells = _distinctSpellCast.Where(s => s.SpellType == spellType).ToList();
 
             if (!dSpells.Any()) return;
-
-            SpellBreakdownList = new List<SpellResult>();
 
             _twoBuilder.AppendLine(string.IsNullOrEmpty(nameOverride)
                 ? $"\r\n----- {spellType} summary normalized per fight -----"
