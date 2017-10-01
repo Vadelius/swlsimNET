@@ -43,41 +43,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    
-                    
-                    <th scope="row">Smash</th>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>100%</td>
-                </tr>
-                <tr>
-                    <th scope="row">Demolish</th>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>100%</td>
-                </tr>
-                <tr>
-                    <th scope="row">Total</th>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>100%</td>
-                </tr>
+
+                
+                @foreach (var spell in Model.SpellBreakdownList)
+                {
+                    <tr>
+                        <th scope="row">@spell.Name</th>
+                        <td>@spell.DamagePerSecond</td>
+                        <td>@spell.DpsPercentage</td>
+                        <td>@spell.Executes</td>
+                        <td>@spell.DamagePerExecution</td>
+                        <td>@spell.SpellType</td>
+                        <td>@spell.Amount</td>
+                        <td>@spell.Average</td>
+                        <td>@spell.CritChance</td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
