@@ -66,14 +66,14 @@ namespace swlsimNET.ServerApp.Models
         private void GenerateSpellReportData(Settings settings)
         {
             // Set order here for spell reports
-            SpellTypeReport(SpellType.Cast, settings);
-            SpellTypeReport(SpellType.Channel, settings);
-            SpellTypeReport(SpellType.Dot, settings);
-            SpellTypeReport(SpellType.Instant, settings);
-            SpellTypeReport(SpellType.Buff, settings);
-            SpellTypeReport(SpellType.Procc, settings);
-            SpellTypeReport(SpellType.Gimmick, settings);
-            SpellTypeReport(SpellType.Passive, settings);
+            SpellTypeReport(SpellType.Cast, settings, new List<TablePopulator>());
+            SpellTypeReport(SpellType.Channel, settings, new List<TablePopulator>());
+            SpellTypeReport(SpellType.Dot, settings, new List<TablePopulator>());
+            SpellTypeReport(SpellType.Instant, settings, new List<TablePopulator>());
+            SpellTypeReport(SpellType.Buff, settings, new List<TablePopulator>());
+            SpellTypeReport(SpellType.Procc, settings, new List<TablePopulator>());
+            SpellTypeReport(SpellType.Gimmick, settings, new List<TablePopulator>());
+            SpellTypeReport(SpellType.Passive, settings, new List<TablePopulator>());
         }
 
         private void InitReportData(List<FightResult> iterationFightResults)
@@ -148,6 +148,10 @@ namespace swlsimNET.ServerApp.Models
         public IList<TablePopulator> SpellTypeReport(SpellType spellType, Settings settings, List<TablePopulator> list,
             string nameOverride = "")
         {
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (nameOverride == null) throw new ArgumentNullException(nameof(nameOverride));
+
             var dSpells = _distinctSpellCast.Where(s => s.SpellType == spellType).ToList();
             list = new List<TablePopulator>();
 
