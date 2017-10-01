@@ -55,6 +55,46 @@ namespace swlsimNET.Models
             SpellTypeReport(SpellType.Gimmick);
             SpellTypeReport(SpellType.Passive);
         }
+        private List<TablePopulator> SpellTypeReport(SpellType spellType, Settings settings)
+        {
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
+            var dSpells = _distinctSpellCast.Where(s => s.SpellType == spellType).ToList();
+            var list = new List<TablePopulator>();
+
+            foreach (var dSpell in dSpells)
+            {
+                var allOfSameSpellDatas = _allSpellCast.Where(s => s.Spell.Name == dSpell.Name).ToList();
+                var alldmg = allOfSameSpellDatas.Sum(s => s.Damage);
+                var avgDmg = allOfSameSpellDatas.Average(s => s.Damage);
+                var crits = allOfSameSpellDatas.Count(s => s.IsCrit);
+                var hits = allOfSameSpellDatas.Count(s => s.IsHit);
+                // Can't divide int with int, 4.9 will result in 4 etc, either print with decimal or do a correct rounding
+                var avghits = hits / (double)settings.Iterations;
+                var avgcrits = crits / (double)settings.Iterations;
+                var cc = decimal.Divide(crits, hits) * 100;
+                var hdmg = allOfSameSpellDatas.Max(s => s.Damage);
+                var ldmg = allOfSameSpellDatas.Where(s => s.IsHit).Min(s => s.Damage);
+                var ofTotal = alldmg / TotalDamage * 100;
+                var dmgPerSecond = alldmg / settings.FightLength / settings.Iterations;
+                var avgdmgAvarage = avgDmg / settings.FightLength / settings.Iterations;
+                var executes = avghits + avgcrits;
+                // [spellName, DPS, DPS%, Executes, DPE, SpellType, Count, Avarage, Crit%]
+
+                list.Add(new TablePopulator
+                {
+                    Name = dSpell.Name,
+                    DamagePerSecond = (int)dmgPerSecond,
+                    DpsPercentage = ofTotal,
+                    Executes = (int)executes,
+                    DamagePerExecution = (int)avgdmgAvarage,
+                    SpellType = dSpell.SpellType.ToString(),
+                    Amount = (int)executes,
+                    Avarage = (int)avgdmgAvarage,
+                    CritChance = cc
+                });
+            }
+            return list;
+        }
 
         private void InitReportData(List<FightResult> iterationFightResults)
         {
@@ -163,5 +203,23 @@ namespace swlsimNET.Models
                 }
             }
         }
+
+        private class TablePopulator
+
+        {
+            // [spellName, DPS, DPS%, Executes, DPE, SpellType, Count, Avarage, Crit%]
+
+            public string Name { get; set; }
+            public int DamagePerSecond { get; set; }
+            public double DpsPercentage { get; set; }
+            public int Executes { get; set; }
+            public int DamagePerExecution { get; set; }
+            public string SpellType { get; set; }
+            public int Amount { get; set; }
+            public int Avarage { get; set; }
+            public decimal CritChance { get; set; }
+
+        }
     }
 }
+    
