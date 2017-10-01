@@ -77,12 +77,12 @@ namespace swlsimNET.ServerApp.Models
             InitAbilityBuffs();
 
             CombatPower = settings.CombatPower;
-            GlanceReduction = settings.GlanceReduction;
-            CriticalChance = settings.CombatPower;
-            CritPower = settings.CritPower;
-            BasicSignetBoost = settings.BasicSignet;
-            PowerSignetBoost = settings.PowerSignet;
-            EliteSignetBoost = settings.EliteSignet;
+            GlanceReduction = settings.GlanceReduction / 100;
+            CriticalChance = settings.CriticalChance / 100 + 0.075;
+            CritPower = settings.CritPower / 100 + 1.3;
+            BasicSignetBoost = settings.BasicSignet / 100 + 1;
+            PowerSignetBoost = settings.PowerSignet / 100 + 1;
+            EliteSignetBoost = settings.EliteSignet / 100 + 1;
 
             //TODO: Implement % Elite boost Cooldown reduction instead of Elite Damage.
             this.Buff = new BuffWrapper(this);
