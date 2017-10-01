@@ -13,7 +13,7 @@ namespace swlsimNET.Models
     public class Report
     {
         private List<Attack> _allSpellCast = new List<Attack>();
-        private List<ISpell> _distinctSpellCast = new List<ISpell>();
+        public List<ISpell> _distinctSpellCast = new List<ISpell>();
         private StringBuilder _oneBuilder = new StringBuilder();
         private StringBuilder _twoBuilder = new StringBuilder();
         private NumberFormatInfo nfi;
@@ -21,6 +21,8 @@ namespace swlsimNET.Models
 
         public int TotalCrits { get; private set; }
         public int TotalHits { get; private set; }
+        public double AvarageHits { get; private set; }
+        public double AvarageCrits { get; private set; }
         public double TotalDamage { get; private set; }
         public double TotalDps { get; private set; }
         public string FightDebug { get; private set; }
@@ -46,6 +48,8 @@ namespace swlsimNET.Models
 
             return true;
         }
+
+        
 
         private void GenerateSpellReportData()
         {
@@ -152,8 +156,7 @@ namespace swlsimNET.Models
                 var hdmg = allOfSameSpellDatas.Max(s => s.Damage);
                 var ldmg = allOfSameSpellDatas.Where(s => s.IsHit).Min(s => s.Damage);
                 var dmgPerSecond = alldmg / _settings.FightLength / _settings.Iterations;
-                var executes = avghits + avgcrits;
-                var avgdmgAverage = avgDmg / _settings.FightLength / _settings.Iterations;
+                var executes = (avghits + avgcrits);
 
                 var ofTotal = alldmg / TotalDamage * 100;
 
@@ -172,13 +175,13 @@ namespace swlsimNET.Models
                 SpellBreakdownList.Add(new SpellResult
                 {
                     Name = dSpell.Name,
-                    DamagePerSecond = dmgPerSecond,
+                    DamagePerSecond = Math.Round(dmgPerSecond),
                     DpsPercentage = ofTotal,
                     Executes = executes,
-                    DamagePerExecution = avgdmgAverage,
+                    DamagePerExecution = Math.Round(avgDmg),
                     SpellType = string.IsNullOrWhiteSpace(nameOverride) ? dSpell.SpellType.ToString() : nameOverride,
                     Amount = executes,
-                    Average = avgdmgAverage,
+                    Average = Math.Round(avgDmg),
                     CritChance = cc
                 });
             }

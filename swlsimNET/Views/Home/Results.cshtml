@@ -1,13 +1,41 @@
 ﻿@{
     ViewData["Title"] = "Results";
+
+    var totalCount = Model.SpellBreakdownList.Select(spell => spell.Executes).ToList();
+    var spellNameList = Model.SpellBreakdownList.Select(spell => spell.Name).ToList();
+    var spellDpsPercentage = Model.SpellBreakdownList.Select(spell => spell.DpsPercentage).ToList();
+    var totalCritChance = Model.SpellBreakdownList
+        .Where(spell => spell.DamagePerExecution >= 1)
+        .Select(spell => spell.CritChance)
+        .ToList();
+    var avarageCritChance = totalCritChance.Sum() / totalCritChance.Count;
 }
 
 @model Report
 
+@functions {
+    public int TotalCount { get; set; }
+}
+<script type="text/javascript">
+    
+    var spellNames = @spellNameList;
+    var dpsPercentage= @spellDpsPercentage;
+
+    var myPieChart = new PieChart(ctx,{
+        type: 'pie',
+        datasets: [{
+            data: dpsPercentage
+        }],
+        labels: spellNames,
+        options: options
+    });
+
+</script>
+
 <div class="col-xs-12" style="height:110px;"></div>
 <div>
     <h1>
-    DPS = @Model.TotalDps
+    DPS = @Model.TotalDps.ToString("F0")
     </h1>
     <p>Here is some data:</p>
 
@@ -15,7 +43,7 @@
         <div class="col-lg-6">
             <div class="card-box">
                 <h4 class="m-t-0 header-title"><b>DPS Timeline</b></h4>
-                <canvas id="lineChart" height="200"></canvas>
+                <canvas id="PieChart" height="200"></canvas>
             </div>
         </div>
         <div class="col-lg-6">
@@ -49,16 +77,29 @@
                 {
                     <tr>
                         <th scope="row">@spell.Name</th>
-                        <td>@spell.DamagePerSecond</td>
-                        <td>@spell.DpsPercentage</td>
+                        <td>@spell.DamagePerSecond.ToString("F0")</td>
+                        <td>@spell.DpsPercentage.ToString("F2")</td>
                         <td>@spell.Executes</td>
-                        <td>@spell.DamagePerExecution</td>
+                        <td>@spell.DamagePerExecution.ToString("F0")</td>
                         <td>@spell.SpellType</td>
                         <td>@spell.Amount</td>
-                        <td>@spell.Average</td>
-                        <td>@spell.CritChance</td>
+                        <td>@spell.Average.ToString("F0")</td>
+                        <td>@spell.CritChance.ToString("F1")</td>
                     </tr>
+
                 }
+                <tr>
+                    <th scope="row">Total</th>
+                    <td>@Model.TotalDps.ToString("F0")</td>
+                    <td>100%</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>@totalCount.Sum()</td>
+                    <td>N/A</td>
+                    <td>@avarageCritChance.ToString("F")</td>
+                </tr>
+
                 </tbody>
             </table>
         </div>
