@@ -44,7 +44,6 @@ namespace swlsimNET.Controllers
 
                 // Simulation Async
                 var result = await Task.Run(() => StartSimulation());
-
                 if (!result)
                 {
                     // Simulation failed
@@ -52,9 +51,13 @@ namespace swlsimNET.Controllers
                 }                
 
                 var report = new Report();
-                var reportData = await Task.Run(() => report.GenerateReportData(_iterationFightResults));
 
-                // TODO: The view should have report data but now it wants a results.cs
+                result = await Task.Run(() => report.GenerateReportData(_iterationFightResults, settings));
+                if (!result)
+                {
+                    // Report generation failed
+                    return View(settings);
+                }
 
                 return View("Results", report);
             }
