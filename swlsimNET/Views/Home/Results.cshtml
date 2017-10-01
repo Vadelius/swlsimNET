@@ -1,10 +1,22 @@
-﻿@{
+﻿
+
+@using System.Reflection
+@using swlsimNET.ServerApp.Models
+@*@model List<swlsimNET.ServerApp.Models.TablePopulator>*@
+@{
     ViewData["Title"] = "Results";
 }
-@model List<swlsimNET.ServerApp.Models.TablePopulator>
+
+
 <div class="col-xs-12" style="height:110px;"></div>
 <div>
     @{
+        var table = new TablePopulator();
+
+        //    foreach (var name in table)
+        //{
+        //    name = table.Name;
+        //}
 
     }
     <h1>
@@ -46,16 +58,15 @@
                 <tbody>
                 <tr>
 
-
-                    <th scope="row">Smash</th>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>100%</td>
+                    <th scope="row">@table.Name</th>
+                    <td>@table.DamagePerSecond</td>
+                    <td>@table.DpsPercentage</td>
+                    <td>@table.Executes</td>
+                    <td>@table.DamagePerExecution</td>
+                    <td>@table.SpellType</td>
+                    <td>@table.Count</td>
+                    <td>@table.Avarage</td>
+                    <td>@table.CritChance>
                 </tr>
                 <tr>
                     <th scope="row">Demolish</th>

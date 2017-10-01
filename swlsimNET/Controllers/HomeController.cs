@@ -73,9 +73,10 @@ namespace swlsimNET.Controllers
         public IActionResult Results()
         {
             ViewData["Message"] = "Results";
-
-            return View();
+            var list = new List<TablePopulator>();
+            return View(list);
         }
+
 
         public IActionResult Error()
         {
