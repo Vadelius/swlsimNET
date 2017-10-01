@@ -16,7 +16,7 @@ namespace swlsimNET.ServerApp.Models
         public int Executes { get; set; }
         public int DamagePerExecution { get; set; }
         public string SpellType { get; set; }
-        public int Count { get; set; }
+        public int Amount {get; set; }
         public int Avarage { get; set; }
         public decimal CritChance { get; set; }
 

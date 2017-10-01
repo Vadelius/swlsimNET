@@ -1,5 +1,5 @@
 ﻿@using swlsimNET.ServerApp.Spells
-@model PopulatorModel
+@model swlsimNET.ServerApp.Models.Report
 
 @{
     ViewData["Title"] = "Results";
@@ -48,18 +48,18 @@
 
                 <tbody>
 
-                    @foreach (var pop in Model.SpellData(SpellType.Cast, null, null))
+                    @foreach (var spell in Model.list())
                     {
                         <tr>
-                            <th scope ="row">@pop.Name</th>
-                            <td>@pop.DamagePerSecond</td>
-                            <td>@pop.DpsPercentage</td>
-                            <td>@pop.Executes</td>
-                            <td>@pop.DamagePerExecution</td>
-                            <td>@pop.SpellType</td>
-                            <td>@pop.Count</td>
-                            <td>@pop.Avarage</td>
-                            <td>@pop.CritChance</td>
+                            <th scope ="row">@spell.Name</th>
+                            <td>@spell.DamagePerSecond</td>
+                            <td>@spell.DpsPercentage</td>
+                            <td>@spell.Executes</td>
+                            <td>@spell.DamagePerExecution</td>
+                            <td>@spell.SpellType</td>
+                            <td>@spell.Amount</td>
+                            <td>@spell.Avarage</td>
+                            <td>@spell.CritChance</td>
                         </tr>       
                     }
                 

@@ -19,11 +19,12 @@ namespace swlsimNET.ServerApp.Models
         public int TotalCrits { get; private set; }
         public int TotalHits { get; private set; }
         public double TotalDamage { get; private set; }
+        public List<TablePopulator> list { get; private set; }
 
         private double lowestDps = double.MaxValue;
         private double highestDps;
 
-        public void GenerateReportData(List<FightResult> iterationFightResults, Settings settings, List<TablePopulator> list)
+        public void GenerateReportData(List<FightResult> iterationFightResults, Settings settings)
         {
             InitReportData(iterationFightResults);
 
@@ -31,20 +32,20 @@ namespace swlsimNET.ServerApp.Models
             var dps = TotalDamage / settings.FightLength / settings.Iterations;
             var avgDamage = TotalDamage / settings.Iterations;
 
-            GenerateSpellReportData(settings, list);
+            GenerateSpellReportData(settings);
         }
 
-        private void GenerateSpellReportData(Settings settings, List<TablePopulator> list)
+        private void GenerateSpellReportData(Settings settings)
         {
             // Set order here for spell reports
-            SpellTypeReport(SpellType.Cast, settings, list);
-            SpellTypeReport(SpellType.Channel, settings, list);
-            SpellTypeReport(SpellType.Dot, settings, list);
-            SpellTypeReport(SpellType.Instant, settings, list);
-            SpellTypeReport(SpellType.Buff, settings, list);
-            SpellTypeReport(SpellType.Procc, settings, list);
-            SpellTypeReport(SpellType.Gimmick, settings, list);
-            SpellTypeReport(SpellType.Passive, settings, list);
+            SpellTypeReport(SpellType.Cast, settings);
+            SpellTypeReport(SpellType.Channel, settings);
+            SpellTypeReport(SpellType.Dot, settings);
+            SpellTypeReport(SpellType.Instant, settings);
+            SpellTypeReport(SpellType.Buff, settings);
+            SpellTypeReport(SpellType.Procc, settings);
+            SpellTypeReport(SpellType.Gimmick, settings);
+            SpellTypeReport(SpellType.Passive, settings);
         }
 
         private void InitReportData(List<FightResult> iterationFightResults)
@@ -114,11 +115,9 @@ namespace swlsimNET.ServerApp.Models
             //                       "\r\n#3 Primary/Secondary Energy/Resource(Weapon)");
         }
 
-        public IList<TablePopulator> SpellTypeReport(SpellType spellType, Settings settings, List<TablePopulator> list )
+        private List<TablePopulator> SpellTypeReport(SpellType spellType, Settings settings)
         {
             if (settings == null) throw new ArgumentNullException(nameof(settings));
-            if (list == null) throw new ArgumentNullException(nameof(list));
-
             var dSpells = _distinctSpellCast.Where(s => s.SpellType == spellType).ToList();
             list = new List<TablePopulator>();
 
@@ -149,7 +148,7 @@ namespace swlsimNET.ServerApp.Models
                     Executes = (int)executes,
                     DamagePerExecution = (int)avgdmgAvarage,
                     SpellType = dSpell.SpellType.ToString(),
-                    Count = (int)executes,
+                    Amount = (int)executes,
                     Avarage = (int)avgdmgAvarage,
                     CritChance = cc});   
                 }

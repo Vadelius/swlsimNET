@@ -49,14 +49,14 @@ namespace swlsimNET.Controllers
                 {
                     // Simulation failed
                     return View(settings);
-                }                
+                }
 
-                var report = new TablePopulator();
+                var report = new Report();
                 //var reportData = await Task.Run(() => report.GenerateReportData(_iterationFightResults));
 
-                // TODO: The view should have report data but now it wants a results.cs
+               // TODO: The view should have report data but now it wants a results.cs
 
-                return View("Results");
+                return View("Results", report);
             }
 
             // If we got this far, something failed. So, redisplay form
