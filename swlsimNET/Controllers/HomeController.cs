@@ -36,7 +36,7 @@ namespace swlsimNET.Controllers
 
         // POST: Import
         [HttpPost]
-        public async Task<ActionResult> Import(Settings settings, Player player)
+        public async Task<ActionResult> Import(Settings settings)
         {
             if (ModelState.IsValid)
             {
@@ -52,7 +52,7 @@ namespace swlsimNET.Controllers
                 }                
 
                 var report = new Report();
-                var reportData = await Task.Run(() => report.GenerateReportData(_iterationFightResults));
+                //var reportData = await Task.Run(() => report.GenerateReportData(_iterationFightResults));
 
                 // TODO: The view should have report data but now it wants a results.cs
 
