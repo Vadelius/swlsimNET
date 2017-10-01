@@ -1,8 +1,6 @@
-﻿
+﻿@using swlsimNET.ServerApp.Models
+@model PopulatorModel
 
-@using System.Reflection
-@using swlsimNET.ServerApp.Models
-@*@model List<swlsimNET.ServerApp.Models.TablePopulator>*@
 @{
     ViewData["Title"] = "Results";
 }
@@ -10,15 +8,6 @@
 
 <div class="col-xs-12" style="height:110px;"></div>
 <div>
-    @{
-        var table = new TablePopulator();
-
-        //    foreach (var name in table)
-        //{
-        //    name = table.Name;
-        //}
-
-    }
     <h1>
       DPS:
     </h1>
@@ -55,41 +44,25 @@
                     <th>Crit%</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
 
-                    <th scope="row">@table.Name</th>
-                    <td>@table.DamagePerSecond</td>
-                    <td>@table.DpsPercentage</td>
-                    <td>@table.Executes</td>
-                    <td>@table.DamagePerExecution</td>
-                    <td>@table.SpellType</td>
-                    <td>@table.Count</td>
-                    <td>@table.Avarage</td>
-                    <td>@table.CritChance>
-                </tr>
-                <tr>
-                    <th scope="row">Demolish</th>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>100%</td>
-                </tr>
-                <tr>
-                    <th scope="row">Total</th>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>100%</td>
-                </tr>
+
+                <tbody>
+
+                    @foreach (var pop in Model.TablePopulator)
+                    {
+                        <tr>
+                            <th scope ="row">@pop.Name</th>
+                            <td>@pop.DamagePerSecond</td>
+                            <td>@pop.DpsPercentage</td>
+                            <td>@pop.Executes</td>
+                            <td>@pop.DamagePerExecution</td>
+                            <td>@pop.SpellType</td>
+                            <td>@pop.Count</td>
+                            <td>@pop.Avarage</td>
+                            <td>@pop.CritChance</td>
+                        </tr>       
+                    }
+                
                 </tbody>
             </table>
         </div>
