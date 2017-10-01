@@ -22,6 +22,7 @@ namespace swlsimNET.Models
         public int TotalCrits { get; private set; }
         public int TotalHits { get; private set; }
         public double TotalDamage { get; private set; }
+        public double TotalDps { get; private set; }
         public string FightDebug { get; private set; }
         public string SpellBreakdown { get; private set; }
         
@@ -39,7 +40,7 @@ namespace swlsimNET.Models
 
             FightDebug = _oneBuilder.ToString();
             SpellBreakdown = _twoBuilder.ToString();
-
+            TotalDps = TotalDamage / _settings.FightLength / _settings.Iterations;
             // TODO: set any variables that are needed here, e.g. TotalDPS
 
             return true;
