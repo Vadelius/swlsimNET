@@ -1,4 +1,4 @@
-﻿@using swlsimNET.ServerApp.Models
+﻿@using swlsimNET.ServerApp.Spells
 @model PopulatorModel
 
 @{
@@ -48,7 +48,7 @@
 
                 <tbody>
 
-                    @foreach (var pop in Model.TablePopulator)
+                    @foreach (var pop in Model.SpellData(SpellType.Cast, null, null))
                     {
                         <tr>
                             <th scope ="row">@pop.Name</th>

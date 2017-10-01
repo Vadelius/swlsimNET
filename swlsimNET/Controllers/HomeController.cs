@@ -51,12 +51,12 @@ namespace swlsimNET.Controllers
                     return View(settings);
                 }                
 
-                var report = new Report();
+                var report = new TablePopulator();
                 //var reportData = await Task.Run(() => report.GenerateReportData(_iterationFightResults));
 
                 // TODO: The view should have report data but now it wants a results.cs
 
-                return View("Results", report);
+                return View("Results");
             }
 
             // If we got this far, something failed. So, redisplay form

@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
 using swlsimNET.Models;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
@@ -16,9 +14,6 @@ namespace swlsimNET.ServerApp.Models
     {
         private List<Attack> _allSpellCast = new List<Attack>();
         private List<ISpell> _distinctSpellCast = new List<ISpell>();
-        private StringBuilder _oneBuilder = new StringBuilder();
-
-        private StringBuilder _twoBuilder = new StringBuilder();
         private NumberFormatInfo nfi;
 
         public int TotalCrits { get; private set; }
@@ -28,39 +23,15 @@ namespace swlsimNET.ServerApp.Models
         private double lowestDps = double.MaxValue;
         private double highestDps;
 
-        public Tuple<string, string> GenerateReportData(List<FightResult> iterationFightResults, Settings settings, List<TablePopulator> list)
+        public void GenerateReportData(List<FightResult> iterationFightResults, Settings settings, List<TablePopulator> list)
         {
             InitReportData(iterationFightResults);
 
-            // Export everything to JSON
-            var serializer = new JsonSerializer
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Formatting = Formatting.None // Formatting.Indented for testing
-            };
-
-            // Write to local appdata folder since we always can access this
-            var path = Environment.GetEnvironmentVariable("LocalAppData")
-                       + $"\\{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}";
-
-            Directory.CreateDirectory(path);
-            var file = Path.Combine(path, "result.json");
-
-            using (var sw = new StreamWriter(file))
-            using (var writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, iterationFightResults);
-            }
-
             var critPercent = decimal.Divide(TotalCrits, TotalHits) * 100;
             var dps = TotalDamage / settings.FightLength / settings.Iterations;
-
             var avgDamage = TotalDamage / settings.Iterations;
 
             GenerateSpellReportData(settings, list);
-            //JsonExport(spellType: SpellType.Procc);
-            return new Tuple<string, string>(_oneBuilder.ToString(), _twoBuilder.ToString());
         }
 
         private void GenerateSpellReportData(Settings settings, List<TablePopulator> list)
@@ -143,12 +114,10 @@ namespace swlsimNET.ServerApp.Models
             //                       "\r\n#3 Primary/Secondary Energy/Resource(Weapon)");
         }
 
-        public IList<TablePopulator> SpellTypeReport(SpellType spellType, Settings settings, List<TablePopulator> list,
-            string nameOverride = "")
+        public IList<TablePopulator> SpellTypeReport(SpellType spellType, Settings settings, List<TablePopulator> list )
         {
             if (settings == null) throw new ArgumentNullException(nameof(settings));
             if (list == null) throw new ArgumentNullException(nameof(list));
-            if (nameOverride == null) throw new ArgumentNullException(nameof(nameOverride));
 
             var dSpells = _distinctSpellCast.Where(s => s.SpellType == spellType).ToList();
             list = new List<TablePopulator>();
@@ -172,9 +141,18 @@ namespace swlsimNET.ServerApp.Models
                 var executes = avghits + avgcrits;
                 // [spellName, DPS, DPS%, Executes, DPE, SpellType, Count, Avarage, Crit%]
 
-                list.Add(new TablePopulator() { Name = dSpell.Name, DamagePerSecond = (int)dmgPerSecond, DpsPercentage = ofTotal, Executes = (int)executes, DamagePerExecution = (int)avgdmgAvarage, SpellType = dSpell.SpellType.ToString(), Count = (int)executes, Avarage = (int)avgdmgAvarage, CritChance = cc});   
-
-            }
+                list.Add(new TablePopulator
+                {
+                    Name = dSpell.Name,
+                    DamagePerSecond = (int)dmgPerSecond,
+                    DpsPercentage = ofTotal,
+                    Executes = (int)executes,
+                    DamagePerExecution = (int)avgdmgAvarage,
+                    SpellType = dSpell.SpellType.ToString(),
+                    Count = (int)executes,
+                    Avarage = (int)avgdmgAvarage,
+                    CritChance = cc});   
+                }
             return list;
         }
 
