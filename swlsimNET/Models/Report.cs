@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Spells;
 
@@ -45,6 +46,12 @@ namespace swlsimNET.Models
             SpellBreakdown = _twoBuilder.ToString();
             TotalDps = TotalDamage / _settings.FightLength / _settings.Iterations;
             // TODO: set any variables that are needed here, e.g. TotalDPS
+
+            var spellNameList = SpellBreakdownList.Select(spell => spell.Name).ToList();
+            var spellDpsPercentage = SpellBreakdownList.Select(spell => spell.DpsPercentage).ToList();
+
+            string jsonNames = JsonConvert.SerializeObject(spellNameList, new StringEnumConverter());
+            string jsonPercentages = JsonConvert.SerializeObject(spellDpsPercentage, new StringEnumConverter());
 
             return true;
         }

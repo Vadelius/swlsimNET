@@ -2,8 +2,6 @@
     ViewData["Title"] = "Results";
 
     var totalCount = Model.SpellBreakdownList.Select(spell => spell.Executes).ToList();
-    var spellNameList = Model.SpellBreakdownList.Select(spell => spell.Name).ToList();
-    var spellDpsPercentage = Model.SpellBreakdownList.Select(spell => spell.DpsPercentage).ToList();
     var totalCritChance = Model.SpellBreakdownList
         .Where(spell => spell.DamagePerExecution >= 1)
         .Select(spell => spell.CritChance)
@@ -18,8 +16,6 @@
 }
 <script type="text/javascript">
     
-    var spellNames = @spellNameList;
-    var dpsPercentage= @spellDpsPercentage;
 
     var myPieChart = new PieChart(ctx,{
         type: 'pie',

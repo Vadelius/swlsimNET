@@ -99,6 +99,7 @@ namespace swlsimNET.Controllers
             catch (Exception e) when (!Helper.Env.Debugging)
             {
                 // TODO: Log exception and show to user
+                var exception = e;
                 //MessageBox.Show(e.ToString());
                 //Application.Current.Shutdown();
             }
