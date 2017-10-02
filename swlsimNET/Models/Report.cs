@@ -41,6 +41,14 @@ namespace swlsimNET.Models
             _settings = settings;
             SpellBreakdownList = new List<SpellResult>();
             EnergyList = new List<EnergySnap>();
+
+            //var energyListCount = EnergyList.Count;
+            //while (energyListCount >= EnergyList.Count/10)
+            //{
+            //    var listTheft = EnergyList.Take(10);
+            //}
+
+
             InitReportData(iterationFightResults);
             GenerateSpellReportData();
             FightDebug = _oneBuilder.ToString();

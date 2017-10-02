@@ -117,24 +117,6 @@
                     <td>4</td>
                     <td>6</td>
                 </tr>
-                <tr>
-                    <th scope="row">Demolish</th>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                </tr>
-                <tr>
-                    <th scope="row">Total</th>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                </tr>
                 </tbody>
             </table>
         </div>
@@ -170,6 +152,7 @@ function parseData() {
     name = arrNames[i];
     arrFilteredNames[++j] = name;
     arrFilteredPercentages[j] = percentage;
+
   }
   var arrSeparatedValues = [arrFilteredNames, arrFilteredPercentages, null, null, null];
   fillArrayWithAt(arrSeparatedValues, timeLine.map(makePropertyGetter("time")), 2);
