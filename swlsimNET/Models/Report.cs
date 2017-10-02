@@ -28,9 +28,8 @@ namespace swlsimNET.Models
         public double TotalDps { get; private set; }
         public string FightDebug { get; private set; }
         public string SpellBreakdown { get; private set; }
-        
         public List<SpellResult> SpellBreakdownList { get; private set; }
-        public List<SpellResult> EnergyBreakdownList { get; private set; }
+        public List<EnergySnap> EnergyList { get; private set; }
         public string PieStuff { get; set; }
 
         private double lowestDps = double.MaxValue;
@@ -41,8 +40,8 @@ namespace swlsimNET.Models
         {
             _settings = settings;
             SpellBreakdownList = new List<SpellResult>();
+            EnergyList = new List<EnergySnap>();
             InitReportData(iterationFightResults);
-
             GenerateSpellReportData();
             FightDebug = _oneBuilder.ToString();
             SpellBreakdown = _twoBuilder.ToString();
@@ -82,7 +81,7 @@ namespace swlsimNET.Models
             // Displays 1B
             // value.ToString("#,##0,,,B", CultureInfo.InvariantCulture));
 
-            List<int> energyList = new List<int>();
+
 
 
             foreach (var iteration in iterationFightResults)
@@ -97,14 +96,17 @@ namespace swlsimNET.Models
 
                 foreach (var rr in iteration.RoundResults)
                 {
-                        energyList.Add(rr.PrimaryEnergyEnd);
-                        energyList.Add(rr.SecondaryEnergyEnd);
-                        energyList.Add(rr.TimeMs);
-
-
 
                     foreach (var a in rr.Attacks)
                     {
+                        EnergyList.Add(new EnergySnap()
+                        {
+                            Time = rr.TimeMs,
+                            Primary = rr.PrimaryEnergyEnd,
+                            Secondary = rr.SecondaryEnergyEnd
+                        });
+
+
                         if (a.IsHit && a.IsCrit)
                         {
                             _oneBuilder.AppendLine($"[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " +
@@ -197,6 +199,13 @@ namespace swlsimNET.Models
             }
         }
 
+        public class EnergySnap
+        {
+            public int Time { get; set; }
+            public int Primary { get; set; }
+            public int Secondary { get; set; }
+        }
+
         public class SpellResult
         {
             // [spellName, DPS, DPS%, Executes, DPE, SpellType, Count, Average, Crit%]
@@ -213,4 +222,5 @@ namespace swlsimNET.Models
         }
     }
 }
+
     

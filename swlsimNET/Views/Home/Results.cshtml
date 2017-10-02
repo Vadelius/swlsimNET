@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Results";
 
+    
     var totalCount = Model.SpellBreakdownList.Select(spell => spell.Executes).ToList();
     var totalCritChance = Model.SpellBreakdownList
         .Where(spell => spell.DamagePerExecution >= 1)
@@ -9,6 +10,7 @@
     var avarageCritChance = totalCritChance.Sum() / totalCritChance.Count;
     var spellNameList = Model.SpellBreakdownList.Select(spell => spell.Name).ToList();
     var spellDpsPercentage = Model.SpellBreakdownList.Select(spell => spell.DpsPercentage).ToList();
+
 }
 
 @model Report
@@ -139,67 +141,86 @@
     </div>
 </div>
 <script type="text/javascript">
-    
-    var arrNames = JSON.parse('@Html.Raw(Json.Serialize(spellNameList))');
-    var arrPercentages = JSON.parse('@Html.Raw(Json.Serialize(spellDpsPercentage))');
 
-    arrPercentages.filter((n, i)=> {
-        if (n > 0) return true;
-        else {
-            arrNames.splice(i, i);
-            return false;
+var arrNames = JSON.parse('@Html.Raw(Json.Serialize(spellNameList))');
+var arrPercentages = JSON.parse('@Html.Raw(Json.Serialize(spellDpsPercentage))');
+var timeLine = JSON.parse('@Html.Raw(Json.Serialize(Model.EnergyList))');
+
+function fillArrayWithAt(target, source, at) {
+  var array = [];
+  for (var i = 0, len = source.length; i < len; ++i)
+    array[i] = source[i];
+  target[at] = array;
+}
+
+function makePropertyGetter(property) {
+  return function(obj) {
+    return obj[property];
+  }
+}
+
+function parseData() {
+  var arrFilteredNames = [];
+  var arrFilteredPercentages = [];
+  var name;
+  var percentage;
+  for (var i = 0, j = -1, len = Math.min(arrPercentages.length, arrNames.length); i < len; ++i) {
+    percentage = arrPercentages[i];
+    if (percentage === 0) continue;
+    name = arrNames[i];
+    arrFilteredNames[++j] = name;
+    arrFilteredPercentages[j] = percentage;
+  }
+  var arrSeparatedValues = [arrFilteredNames, arrFilteredPercentages, null, null, null];
+  fillArrayWithAt(arrSeparatedValues, timeLine.map(makePropertyGetter("time")), 2);
+  fillArrayWithAt(arrSeparatedValues, timeLine.map(makePropertyGetter("primary")), 3);
+  fillArrayWithAt(arrSeparatedValues, timeLine.map(makePropertyGetter("secondary")), 4);
+  return arrSeparatedValues;
+}
+
+
+function drawChart() {
+  var ctx = document.getElementById("PieChart").getContext("2d");
+  var arrSeparatedValues = parseData();
+  new Chart(ctx,
+    {
+      type: 'pie',
+      data: {
+        labels: arrSeparatedValues[0],
+        datasets: [
+          {
+            backgroundColor: ["#37474F", "#455A64", "#546E7A", "#607D8B", "#78909C", "#90A4AE", "#B0BEC5", "#CFD8DC", "#ECEFF1" ],
+            data: arrSeparatedValues[1]
+          }
+        ]
+      }
+    });
+
+  new Chart(document.getElementById("LineChart"), {
+    type: 'line',
+    data: {
+      labels: arrSeparatedValues[2],
+      datasets: [{
+          data: arrSeparatedValues[4],
+          label: "Secondary Energy",
+          borderColor: "#3e95cd",
+          fill: false
+        },{
+          data: arrSeparatedValues[3],
+          label: "Primary Energy",
+          borderColor: "#c45850",
+          fill: false
         }
-    });
-
-    function drawChart() {
-
-
-
-        var ctx = document.getElementById("PieChart").getContext("2d");
-
-        new Chart(ctx,
-            {
-                type: 'pie',
-                data: {
-                    labels: arrNames,
-                    datasets: [
-                        {
-                            backgroundColor: ["#37474F", "#455A64", "#546E7A", "#607D8B", "#78909C", "#90A4AE", "#B0BEC5", "#CFD8DC", "#ECEFF1" ],
-                            data: arrPercentages
-                        }
-                    ]
-                }
-            });
-
-        new Chart(document.getElementById("LineChart"), {
-            type: 'line',
-            data: {
-                labels: [0,240],
-                datasets: [{ 
-                        data: [86,114,106,106,107,111,133,221,783,2478],
-                        label: "Secondary Energy",
-                        borderColor: "#3e95cd",
-                        fill: false
-                    },{ 
-                        data: [6,3,2,2,7,26,82,172,312,433],
-                        label: "Primary Energy",
-                        borderColor: "#c45850",
-                        fill: false
-                    }
-                ]
-            },
-            options: {
-                title: {
-                    display: false,
-                    text: 'Primary/Secondary Energy'
-                }
-            }
-        });
+      ]
+    },
+    options: {
+      title: {
+        display: false,
+        text: 'Primary/Secondary Energy'
+      }
     }
+  });
+}
 
-    $(document).ready(function() {
-        drawChart();
-    });
-
-
+$(document).ready(drawChart);
 </script>
