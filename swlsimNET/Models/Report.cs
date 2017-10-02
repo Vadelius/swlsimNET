@@ -125,9 +125,11 @@ namespace swlsimNET.Models
                     {
                         EnergyList.Add(new EnergySnap
                         {
-                            Time = rr.TimeMs,
+                            Time = rr.TimeMs/1000,
                             Primary = rr.PrimaryEnergyEnd,
-                            Secondary = rr.SecondaryEnergyEnd
+                            Secondary = rr.SecondaryEnergyEnd,
+                            Pgimmick = rr.PrimaryGimmickEnd,
+                            Sgimmick = rr.SecondaryGimmickEnd
                         });
 
                         lastChangeTimeStamp = rr.TimeMs;
@@ -232,6 +234,8 @@ namespace swlsimNET.Models
             public int Time { get; set; }
             public int Primary { get; set; }
             public int Secondary { get; set; }
+            public double Pgimmick { get; set; }
+            public double Sgimmick { get; set; }
         }
 
         public class SpellResult

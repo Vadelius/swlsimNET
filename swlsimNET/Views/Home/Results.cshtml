@@ -28,16 +28,22 @@
     <p>Minimum: @Model.LowestDps.ToString("F0") & Maximum: @Model.HighestDps.ToString("F0")</p>
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="card-box">
                 <h4 class="m-t-0 header-title"><b>Spell Breakdown</b></h4>
                 <canvas id="PieChart"></canvas>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="card-box">
                 <h4 class="m-t-0 header-title"><b>Energy Timeline</b></h4>
                 <canvas id="LineChart"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card-box">
+                <h4 class="m-t-0 header-title"><b>Gimmick Timeline</b></h4>
+                <canvas id="LineChartTwo"></canvas>
             </div>
         </div>
     </div>
@@ -154,10 +160,12 @@ function parseData() {
     arrFilteredPercentages[j] = percentage;
 
   }
-  var arrSeparatedValues = [arrFilteredNames, arrFilteredPercentages, null, null, null];
+  var arrSeparatedValues = [arrFilteredNames, arrFilteredPercentages, null, null, null, null, null];
   fillArrayWithAt(arrSeparatedValues, timeLine.map(makePropertyGetter("time")), 2);
   fillArrayWithAt(arrSeparatedValues, timeLine.map(makePropertyGetter("primary")), 3);
   fillArrayWithAt(arrSeparatedValues, timeLine.map(makePropertyGetter("secondary")), 4);
+  fillArrayWithAt(arrSeparatedValues, timeLine.map(makePropertyGetter("pgimmick")), 5);
+  fillArrayWithAt(arrSeparatedValues, timeLine.map(makePropertyGetter("sgimmick")), 6);
   return arrSeparatedValues;
 }
 
@@ -172,7 +180,7 @@ function drawChart() {
         labels: arrSeparatedValues[0],
         datasets: [
           {
-            backgroundColor: ["#37474F", "#455A64", "#546E7A", "#607D8B", "#78909C", "#90A4AE", "#B0BEC5", "#CFD8DC", "#ECEFF1" ],
+                backgroundColor: ["#c45850", "#3e95cd", "#c45850", "#3e95cd", "#c45850", "#90A4AE", "#B0BEC5", "#CFD8DC", "#ECEFF1" ],
             data: arrSeparatedValues[1]
           }
         ]
@@ -184,16 +192,16 @@ function drawChart() {
     data: {
       labels: arrSeparatedValues[2],
       datasets: [{
-          data: arrSeparatedValues[4],
-          label: "Secondary Energy",
+          data: arrSeparatedValues[3],
+          label: "Primary Energy",
           borderColor: "#3e95cd",
           fill: false
         },{
-          data: arrSeparatedValues[3],
-          label: "Primary Energy",
+          data: arrSeparatedValues[4],
+          label: "Secondary Energy",
           borderColor: "#c45850",
           fill: false
-        }
+          }
       ]
     },
     options: {
@@ -202,7 +210,31 @@ function drawChart() {
         text: 'Primary/Secondary Energy'
       }
     }
-  });
+    });
+    new Chart(document.getElementById("LineChartTwo"), {
+        type: 'line',
+        data: {
+            labels: arrSeparatedValues[2],
+            datasets: [{
+                    data: arrSeparatedValues[5],
+                    label: "Primary Gimmick",
+                    borderColor: "#3e95cd",
+                    fill: false
+                },{
+                    data: arrSeparatedValues[6],
+                    label: "Secondary Gimmick",
+                    borderColor: "#c45850",
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            title: {
+                display: false,
+                text: 'Primary/Secondary Weapongimmick'
+            }
+        }
+    });
 }
 
 $(document).ready(drawChart);
