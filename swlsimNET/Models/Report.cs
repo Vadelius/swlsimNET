@@ -43,7 +43,6 @@ namespace swlsimNET.Models
             InitReportData(iterationFightResults);
 
             GenerateSpellReportData();
-            JsonMaker(iterationFightResults);
             FightDebug = _oneBuilder.ToString();
             SpellBreakdown = _twoBuilder.ToString();
             TotalDps = TotalDamage / _settings.FightLength / _settings.Iterations;
@@ -51,14 +50,6 @@ namespace swlsimNET.Models
 
             return true;
         }
-
-        public string JsonMaker(List<FightResult> iterationFightResults)
-        {
-            var spellNameList = SpellBreakdownList.Select(spell => spell.Name).ToList();
-            var spellDpsPercentage = SpellBreakdownList.Select(spell => spell.DpsPercentage).ToList();
-            return PieStuff = JsonConvert.SerializeObject(spellNameList, new StringEnumConverter()) + JsonConvert.SerializeObject(spellDpsPercentage, new StringEnumConverter());
-        }
-        
 
         private void GenerateSpellReportData()
         {

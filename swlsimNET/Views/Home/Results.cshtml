@@ -7,6 +7,8 @@
         .Select(spell => spell.CritChance)
         .ToList();
     var avarageCritChance = totalCritChance.Sum() / totalCritChance.Count;
+    var spellNameList = Model.SpellBreakdownList.Select(spell => spell.Name).ToList();
+    var spellDpsPercentage = Model.SpellBreakdownList.Select(spell => spell.DpsPercentage).ToList();
 }
 
 @model Report
@@ -14,20 +16,7 @@
 @functions {
     public int TotalCount { get; set; }
 }
-<script type="text/javascript">
-    var piestuff = @Model.PieStuff;
 
-    alert(piestuff);
-    var myPieChart = new PieChart(ctx,{
-        type: 'pie',
-        datasets: [{
-            data: dpsPercentage
-        }],
-        labels: spellNames,
-        options: options
-    });
-
-</script>
 
 <div class="col-xs-12" style="height:110px;"></div>
 <div>
@@ -39,8 +28,8 @@
     <div class="row">
         <div class="col-lg-6">
             <div class="card-box">
-                <h4 class="m-t-0 header-title"><b>DPS Timeline</b></h4>
-                <canvas id="PieChart" height="200"></canvas>
+                <h4 class="m-t-0 header-title"><b>DPS Breakdown</b></h4>
+                <canvas id="PieChart"></canvas>
             </div>
         </div>
         <div class="col-lg-6">
@@ -149,3 +138,35 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    
+    var arrNames = JSON.parse('@Html.Raw(Json.Serialize(spellNameList))');
+    var arrPercentages = JSON.parse('@Html.Raw(Json.Serialize(spellDpsPercentage))');
+
+    function drawChart() {
+
+
+
+        var ctx = document.getElementById("PieChart").getContext("2d");
+
+        new Chart(ctx,
+            {
+                type: 'pie',
+                data: {
+                    labels: arrNames,
+                    datasets: [
+                        {
+                            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                            data: arrPercentages
+                        }
+                    ]
+                }
+            });
+    }
+
+    $(document).ready(function() {
+        drawChart();
+    });
+
+
+</script>
