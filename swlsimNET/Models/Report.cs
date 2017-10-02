@@ -30,6 +30,7 @@ namespace swlsimNET.Models
         public string SpellBreakdown { get; private set; }
         
         public List<SpellResult> SpellBreakdownList { get; private set; }
+        public List<SpellResult> EnergyBreakdownList { get; private set; }
         public string PieStuff { get; set; }
 
         private double lowestDps = double.MaxValue;
@@ -81,6 +82,9 @@ namespace swlsimNET.Models
             // Displays 1B
             // value.ToString("#,##0,,,B", CultureInfo.InvariantCulture));
 
+            List<int> energyList = new List<int>();
+
+
             foreach (var iteration in iterationFightResults)
             {
 
@@ -93,6 +97,12 @@ namespace swlsimNET.Models
 
                 foreach (var rr in iteration.RoundResults)
                 {
+                        energyList.Add(rr.PrimaryEnergyEnd);
+                        energyList.Add(rr.SecondaryEnergyEnd);
+                        energyList.Add(rr.TimeMs);
+
+
+
                     foreach (var a in rr.Attacks)
                     {
                         if (a.IsHit && a.IsCrit)

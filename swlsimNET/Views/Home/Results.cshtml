@@ -28,14 +28,14 @@
     <div class="row">
         <div class="col-lg-6">
             <div class="card-box">
-                <h4 class="m-t-0 header-title"><b>DPS Breakdown</b></h4>
+                <h4 class="m-t-0 header-title"><b>Spell Breakdown</b></h4>
                 <canvas id="PieChart"></canvas>
             </div>
         </div>
         <div class="col-lg-6">
             <div class="card-box">
-                <h4 class="m-t-0 header-title"><b>% DMG Breakdown</b></h4>
-                <canvas id="pie" height="200"></canvas>
+                <h4 class="m-t-0 header-title"><b>Energy Timeline</b></h4>
+                <canvas id="LineChart"></canvas>
             </div>
         </div>
     </div>
@@ -143,6 +143,14 @@
     var arrNames = JSON.parse('@Html.Raw(Json.Serialize(spellNameList))');
     var arrPercentages = JSON.parse('@Html.Raw(Json.Serialize(spellDpsPercentage))');
 
+    arrPercentages.filter((n, i)=> {
+        if (n > 0) return true;
+        else {
+            arrNames.splice(i, i);
+            return false;
+        }
+    });
+
     function drawChart() {
 
 
@@ -156,12 +164,37 @@
                     labels: arrNames,
                     datasets: [
                         {
-                            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                            backgroundColor: ["#37474F", "#455A64", "#546E7A", "#607D8B", "#78909C", "#90A4AE", "#B0BEC5", "#CFD8DC", "#ECEFF1" ],
                             data: arrPercentages
                         }
                     ]
                 }
             });
+
+        new Chart(document.getElementById("LineChart"), {
+            type: 'line',
+            data: {
+                labels: [0,240],
+                datasets: [{ 
+                        data: [86,114,106,106,107,111,133,221,783,2478],
+                        label: "Secondary Energy",
+                        borderColor: "#3e95cd",
+                        fill: false
+                    },{ 
+                        data: [6,3,2,2,7,26,82,172,312,433],
+                        label: "Primary Energy",
+                        borderColor: "#c45850",
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: false,
+                    text: 'Primary/Secondary Energy'
+                }
+            }
+        });
     }
 
     $(document).ready(function() {
