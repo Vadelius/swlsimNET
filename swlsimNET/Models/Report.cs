@@ -27,13 +27,27 @@ namespace swlsimNET.Models
         public double TotalDamage { get; private set; }
         public double TotalDps { get; private set; }
         public string FightDebug { get; private set; }
+
+        public double LowestDps
+        {
+            get { return lowestDps; }
+            set { lowestDps = value; }
+        }
+
+        public double HighestDps
+        {
+            get { return highestDps; }
+            set { highestDps = value; }
+        }
+
         public string SpellBreakdown { get; private set; }
         public List<SpellResult> SpellBreakdownList { get; private set; }
         public List<EnergySnap> EnergyList { get; private set; }
         public string PieStuff { get; set; }
 
-        private double lowestDps = double.MaxValue;
-        private double highestDps;
+        public double lowestDps = double.MaxValue;
+        public double highestDps;
+        private double _lowestDps;
 
 
         public bool GenerateReportData(List<FightResult> iterationFightResults, Settings settings)
