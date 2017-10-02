@@ -90,7 +90,9 @@ namespace swlsimNET.Models
             // value.ToString("#,##0,,,B", CultureInfo.InvariantCulture));
 
 
-
+            // TODO: Change interval to a greater number for less energy points
+            int lastChangeTimeStamp = 0;
+            const int interval = 2000;
 
             foreach (var iteration in iterationFightResults)
             {
@@ -101,20 +103,24 @@ namespace swlsimNET.Models
                 if (iteration.Dps > highestDps) highestDps = iteration.Dps;
                 if (iteration.Dps < lowestDps) lowestDps = iteration.Dps;
 
-
                 foreach (var rr in iteration.RoundResults)
                 {
-
-                    foreach (var a in rr.Attacks)
+                    // Only get first attack every round since all others are proccs
+                    
+                    if (lastChangeTimeStamp == 0 || lastChangeTimeStamp + interval < rr.TimeMs)
                     {
-                        EnergyList.Add(new EnergySnap()
+                        EnergyList.Add(new EnergySnap
                         {
                             Time = rr.TimeMs,
                             Primary = rr.PrimaryEnergyEnd,
                             Secondary = rr.SecondaryEnergyEnd
                         });
 
+                        lastChangeTimeStamp = rr.TimeMs;
+                    }
 
+                    foreach (var a in rr.Attacks)
+                    {
                         if (a.IsHit && a.IsCrit)
                         {
                             _oneBuilder.AppendLine($"[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " +
