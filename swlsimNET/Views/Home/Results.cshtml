@@ -15,8 +15,9 @@
     public int TotalCount { get; set; }
 }
 <script type="text/javascript">
-    
+    var piestuff = @Model.PieStuff;
 
+    alert(piestuff);
     var myPieChart = new PieChart(ctx,{
         type: 'pie',
         datasets: [{

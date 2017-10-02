@@ -30,9 +30,11 @@ namespace swlsimNET.Models
         public string SpellBreakdown { get; private set; }
         
         public List<SpellResult> SpellBreakdownList { get; private set; }
+        public string PieStuff { get; set; }
 
         private double lowestDps = double.MaxValue;
         private double highestDps;
+
 
         public bool GenerateReportData(List<FightResult> iterationFightResults, Settings settings)
         {
@@ -41,21 +43,21 @@ namespace swlsimNET.Models
             InitReportData(iterationFightResults);
 
             GenerateSpellReportData();
-
+            JsonMaker(iterationFightResults);
             FightDebug = _oneBuilder.ToString();
             SpellBreakdown = _twoBuilder.ToString();
             TotalDps = TotalDamage / _settings.FightLength / _settings.Iterations;
             // TODO: set any variables that are needed here, e.g. TotalDPS
 
-            var spellNameList = SpellBreakdownList.Select(spell => spell.Name).ToList();
-            var spellDpsPercentage = SpellBreakdownList.Select(spell => spell.DpsPercentage).ToList();
-
-            string jsonNames = JsonConvert.SerializeObject(spellNameList, new StringEnumConverter());
-            string jsonPercentages = JsonConvert.SerializeObject(spellDpsPercentage, new StringEnumConverter());
-
             return true;
         }
 
+        public string JsonMaker(List<FightResult> iterationFightResults)
+        {
+            var spellNameList = SpellBreakdownList.Select(spell => spell.Name).ToList();
+            var spellDpsPercentage = SpellBreakdownList.Select(spell => spell.DpsPercentage).ToList();
+            return PieStuff = JsonConvert.SerializeObject(spellNameList, new StringEnumConverter()) + JsonConvert.SerializeObject(spellDpsPercentage, new StringEnumConverter());
+        }
         
 
         private void GenerateSpellReportData()
