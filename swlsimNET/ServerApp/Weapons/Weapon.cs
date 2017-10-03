@@ -121,6 +121,10 @@ namespace swlsimNET.ServerApp.Weapons
             }
         }
 
+        public double GetRandomNumber(double minimum, double maximum)
+        {
+            return Rnd.NextDouble() * (maximum - minimum) + minimum;
+        }
 
         #region Weapon affixes
 

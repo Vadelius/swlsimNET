@@ -573,7 +573,7 @@ namespace swlsimNET.ServerApp.Models
         public Weapon Elemental => GetWeaponFromType(WeaponType.Elemental);
         public Weapon Fist => GetWeaponFromType(WeaponType.Fist);
         public Weapon Hammer => GetWeaponFromType(WeaponType.Hammer);
-        public Weapon Pistol => GetWeaponFromType(WeaponType.Pistol);
+        public Pistol Pistol => GetWeaponFromType(WeaponType.Pistol) as Pistol;
         public Weapon Rifle => GetWeaponFromType(WeaponType.AssaultRifle);
         public Weapon Shotgun => GetWeaponFromType(WeaponType.Shotgun);
 
@@ -597,6 +597,10 @@ namespace swlsimNET.ServerApp.Models
             public IBuff OpeningShot => _player.GetBuffFromName("OpeningShot");
             public IBuff Savagery => _player.GetBuffFromName("Savagery");
             public IBuff UnstoppableForce => _player.GetBuffFromName("UnstoppableForce");
+
+            public bool RedChambers => _player.Pistol.LeftChamber == Chamber.Red && _player.Pistol.LeftChamber == _player.Pistol.RightChamber;
+            public bool BlueChambers => _player.Pistol.LeftChamber == Chamber.Blue && _player.Pistol.LeftChamber == _player.Pistol.RightChamber;
+            public bool WhiteChambers => _player.Pistol.LeftChamber == Chamber.White && _player.Pistol.LeftChamber == _player.Pistol.RightChamber;
 
             // TODO: Need to add all buffs here if we cant solve it in another way..
         }

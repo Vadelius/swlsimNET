@@ -144,12 +144,14 @@ namespace swlsimNET.ServerApp.Spells.Pistol
         }
     }
 
-    public class FlechetteRounds : Spell
+    public class FlechetteRounds : Passive
     {
-        public FlechetteRounds(IPlayer player, string args = null)
+        public FlechetteRounds()
         {
+            // TODO: Test
             WeaponType = WeaponType.Pistol;
-            SpellType = SpellType.Passive;
+            BaseDamage = 0.09;
+            ModelledInWeapon = true;
             // If matching set of chambers Pistol attacks TAoE 0,09CP BaseDamage
         }
     }
@@ -201,12 +203,14 @@ namespace swlsimNET.ServerApp.Spells.Pistol
         }
     }
 
-    public class WinStreak : Spell
+    public class WinStreak : Passive
     {
-        public WinStreak(IPlayer player, string args = null)
+        public WinStreak(double basedmg = 0)
         {
+            // TODO: Test
             WeaponType = WeaponType.Pistol;
-            SpellType = SpellType.Passive;
+            ModelledInWeapon = true;
+            BaseDamage = basedmg;
             // 0.06CP-0.335CP on matching chamber hit
         }
     }
