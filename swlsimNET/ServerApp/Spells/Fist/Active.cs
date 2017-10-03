@@ -144,7 +144,7 @@ namespace swlsimNET.ServerApp.Spells.Fist
 
     public class Savagery : Spell
     {
-        public Savagery(Player player, string args = null)
+        public Savagery(IPlayer player, string args = null)
         {
             WeaponType = WeaponType.Fist;
             SpellType = SpellType.Instant; // TODO: Instant no gcd?

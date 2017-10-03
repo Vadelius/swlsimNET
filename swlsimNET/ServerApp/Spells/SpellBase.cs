@@ -337,7 +337,7 @@ namespace swlsimNET.ServerApp.Spells
             // Evaluate args if any
             if (!string.IsNullOrEmpty(this.Args))
             {
-                //args = Helper.EvaluateArgs(this.Args, player);
+                args = Helper.EvaluateArgs(this.Args, player);
             }
 
             // Find instance of same spell with highest cooldown...

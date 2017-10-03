@@ -2,9 +2,8 @@
     ViewData["Title"] = "Import";
 }
 
-@using swlsimNET.ServerApp.Weapons
 @model Settings
-
+    
 <div class="col-xs-12" style="height:110px;"></div>
 
 <div>
@@ -78,6 +77,13 @@
             @Html.ValidationMessageFor(m => m.Apl, "", new { @class = "text-danger" })
             @Html.TextAreaFor(m => m.Apl, new { Class = "form-control" })
         </div>
+        
+        <div class="col-md-9" style="margin-bottom: 10px">
+            <input type="submit" value="Blood/Fist" formaction=@Url.Action("SetPresetBloodFist") formmethod="post" class="btn btn-primary" />
+            <input type="submit" value="Hammer/Fist" formaction=@Url.Action("SetPresetHammerFist") formmethod="post" class="btn btn-primary" />
+            <input type="submit" value="Hammer/Pistol" formaction=@Url.Action("SetPresetHammerPistol") formmethod="post" class="btn btn-primary" />
+            <input type="submit" value="Hammer/Shotgun" formaction=@Url.Action("SetPresetHammerShotgun") formmethod="post" class="btn btn-primary" />
+        </div>
             
         <div>
             @Html.CheckBoxFor(m => m.OpeningShot)
@@ -97,10 +103,8 @@
             @Html.CheckBoxFor(m => m.Savagery)
             <label for="Savagery">Enable Savagery</label>
         </div>
-        
 
-
-        <input type="submit" value="Start Simulation" class="btn btn-default waves-effect waves-light" />
+        <input type="submit" value="Import" class="btn btn-default waves-effect waves-light" />
             
     </form>
 </div>
