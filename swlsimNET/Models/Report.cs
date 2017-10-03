@@ -15,7 +15,7 @@ namespace swlsimNET.Models
     {
         private List<Attack> _allSpellCast = new List<Attack>();
         public List<ISpell> _distinctSpellCast = new List<ISpell>();
-        private StringBuilder _oneBuilder = new StringBuilder();
+        public StringBuilder _oneBuilder = new StringBuilder();
         private StringBuilder _twoBuilder = new StringBuilder();
         private NumberFormatInfo nfi;
         private Settings _settings;
@@ -139,22 +139,23 @@ namespace swlsimNET.Models
                     {
                         if (a.IsHit && a.IsCrit)
                         {
-                            _oneBuilder.AppendLine($"[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " +
+
+                            _oneBuilder.AppendLine($"<div>[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " + 
                                                    $"{a.Spell.Name} *{a.Damage.ToString("#,##0,.0K", nfi)}* " +
-                                                   $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " +
-                                                   $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})");
+                                                   $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " + 
+                                                   $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})</div>");
                         }
                         else if (a.IsHit && a.Spell.SpellType != SpellType.Procc)
                         {
-                            _oneBuilder.AppendLine($"[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " +
+                            _oneBuilder.AppendLine($"<div>[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " +
                                                    $"{a.Spell.Name} {a.Damage.ToString("#,##0,.0K", nfi)} " +
                                                    $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " +
-                                                   $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})");
+                                                   $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})</div>");
                         }
                         else if (a.IsHit && a.Spell.SpellType == SpellType.Procc)
                         {
-                            _oneBuilder.AppendLine($"[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " +
-                                                   $"[{a.Spell.Name}] proc!");
+                            _oneBuilder.AppendLine($"<div>[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " +
+                                                   $"[{a.Spell.Name}] proc!</div>");
                         }
 
                         _allSpellCast.Add(a);
