@@ -110,7 +110,7 @@ namespace swlsimNET.Models
 
             foreach (var iteration in iterationFightResults)
             {
-
+                _oneBuilder.Clear();
                 TotalDamage += iteration.TotalDamage;
                 TotalHits += iteration.TotalHits;
                 TotalCrits += iteration.TotalCrits;
@@ -137,7 +137,7 @@ namespace swlsimNET.Models
 
                     foreach (var a in rr.Attacks)
                     {
-                        if (a.IsHit && a.IsCrit)
+                        if (a.IsHit && a.IsCrit) 
                         {
 
                             _oneBuilder.AppendLine($"<div>[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " + 
