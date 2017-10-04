@@ -513,7 +513,8 @@ namespace swlsimNET.ServerApp.Spells
 
         private bool IsCrit(IPlayer player)
         {
-            // Non damage spells can't crit
+            // Non damage spells can't crit //TODO: *0.8 represents the penalty for channel spells (compensated via more critpower)
+            if (SpellType == SpellType.Channel) return BaseDamage > 0 && Helper.IsCrit((player.CriticalChance + BonusCritChance + _bonusCritChance) * 0.8);
             return BaseDamage > 0 && Helper.IsCrit(player.CriticalChance + BonusCritChance + _bonusCritChance);
         }
 
@@ -541,8 +542,14 @@ namespace swlsimNET.ServerApp.Spells
                 damage = isHit
                     ? basedamage * player.CombatPower * boost
                     : 0;
-
-                damage = isCrit
+                if (SpellType == SpellType.Channel)
+                {
+                    damage = isCrit
+                        ? basedamage * (1 + _bonusBaseDamageMultiplier)
+                          * player.CombatPower * boost * ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * 1.25)
+                        : damage;
+                }
+                else    damage = isCrit
                     ? basedamage * (1 + _bonusBaseDamageMultiplier)
                       * player.CombatPower * boost * (player.CritPower + BonusCritPower + _bonusCritMultiplier)
                     : damage;
