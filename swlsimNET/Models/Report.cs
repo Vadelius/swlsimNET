@@ -22,53 +22,26 @@ namespace swlsimNET.Models
 
         public int TotalCrits { get; private set; }
         public int TotalHits { get; private set; }
-        public double AvarageHits { get; private set; }
-        public double AvarageCrits { get; private set; }
         public double TotalDamage { get; private set; }
         public double TotalDps { get; private set; }
         public string FightDebug { get; private set; }
-
-        public double LowestDps
-        {
-            get { return lowestDps; }
-            set { lowestDps = value; }
-        }
-
-        public double HighestDps
-        {
-            get { return highestDps; }
-            set { highestDps = value; }
-        }
-
+        public double LowestDps { get; set; } = double.MaxValue;
+        public double HighestDps { get; set; }
         public string SpellBreakdown { get; private set; }
         public List<SpellResult> SpellBreakdownList { get; private set; }
         public List<EnergySnap> EnergyList { get; private set; }
         public string PieStuff { get; set; }
-
-        public double lowestDps = double.MaxValue;
-        public double highestDps;
-        private double _lowestDps;
-
 
         public bool GenerateReportData(List<FightResult> iterationFightResults, Settings settings)
         {
             _settings = settings;
             SpellBreakdownList = new List<SpellResult>();
             EnergyList = new List<EnergySnap>();
-
-            //var energyListCount = EnergyList.Count;
-            //while (energyListCount >= EnergyList.Count/10)
-            //{
-            //    var listTheft = EnergyList.Take(10);
-            //}
-
-
             InitReportData(iterationFightResults);
             GenerateSpellReportData();
             FightDebug = _oneBuilder.ToString();
             SpellBreakdown = _twoBuilder.ToString();
             TotalDps = TotalDamage / _settings.FightLength / _settings.Iterations;
-            // TODO: set any variables that are needed here, e.g. TotalDPS
 
             return true;
         }
@@ -91,22 +64,8 @@ namespace swlsimNET.Models
             nfi = (NumberFormatInfo) CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
-            // Displays 1,234,567,890   
-            // value.ToString("#,#", CultureInfo.InvariantCulture));
-
-            // Displays 1,234,568K
-            // value.ToString("#,##0,K", CultureInfo.InvariantCulture));
-
-            // Displays 1,235M
-            // value.ToString("#,##0,,M", CultureInfo.InvariantCulture));
-
-            // Displays 1B
-            // value.ToString("#,##0,,,B", CultureInfo.InvariantCulture));
-
-
-            // TODO: Change interval to a greater number for less energy points
             int lastChangeTimeStamp = 0;
-            const int interval = 2000;
+            const int interval = 2000; // Can't go higher due to inconsistent line-values.
 
             foreach (var iteration in iterationFightResults)
             {
@@ -114,8 +73,8 @@ namespace swlsimNET.Models
                 TotalDamage += iteration.TotalDamage;
                 TotalHits += iteration.TotalHits;
                 TotalCrits += iteration.TotalCrits;
-                if (iteration.Dps > highestDps) highestDps = iteration.Dps;
-                if (iteration.Dps < lowestDps) lowestDps = iteration.Dps;
+                if (iteration.Dps > HighestDps) HighestDps = iteration.Dps;
+                if (iteration.Dps < LowestDps) LowestDps = iteration.Dps;
 
                 foreach (var rr in iteration.RoundResults)
                 {
