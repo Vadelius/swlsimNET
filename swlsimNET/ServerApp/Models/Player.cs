@@ -82,7 +82,15 @@ namespace swlsimNET.ServerApp.Models
             CritPower = settings.CritPower / 100 + 1.3;
             BasicSignetBoost = settings.BasicSignet / 100 + 1;
             PowerSignetBoost = settings.PowerSignet / 100 + 1;
-            EliteSignetBoost = settings.EliteSignet / 100 + 1;
+            if (settings.HeadSignetIsCdr)
+            {
+                EliteSignetBoost = 1;
+            }
+            else
+            {
+                EliteSignetBoost = settings.EliteSignet / 100 + 1;
+            }
+            
 
             //TODO: Implement % Elite boost Cooldown reduction instead of Elite Damage.
             this.Buff = new BuffWrapper(this);
