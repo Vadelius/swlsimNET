@@ -3,7 +3,6 @@
 }
 
 @model Settings
-    
 <div class="col-xs-12" style="height:110px;"></div>
 
 <div>
@@ -12,63 +11,63 @@
         <div class="col-md-3">
             
             
-                @Html.LabelFor(m => m.PrimaryWeapon)
-                @Html.ValidationMessageFor(m => m.PrimaryWeapon, "", new { @class = "text-danger" })
-                @Html.DropDownListFor(m => m.PrimaryWeapon,
-                    Model.WeaponTypeList,
-                    "Select primary weapon", new {Class = "form-control select2" })            
+            @Html.LabelFor(m => m.PrimaryWeapon)
+            @Html.ValidationMessageFor(m => m.PrimaryWeapon, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.PrimaryWeapon,
+                Model.WeaponTypeList,
+                "Select primary weapon", new {Class = "form-control select2" })            
 
-                @Html.LabelFor(m => m.SecondaryWeapon)
-                @Html.ValidationMessageFor(m => m.SecondaryWeapon, "", new { @class = "text-danger" })
-                @Html.DropDownListFor(m => m.SecondaryWeapon,
-                    Model.WeaponTypeList,
-                    "Select secondary weapon", new { Class = "form-control select2" })
+            @Html.LabelFor(m => m.SecondaryWeapon)
+            @Html.ValidationMessageFor(m => m.SecondaryWeapon, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.SecondaryWeapon,
+                Model.WeaponTypeList,
+                "Select secondary weapon", new { Class = "form-control select2" })
 
-                @Html.LabelFor(m => m.PrimaryWeaponAffix)
-                @Html.ValidationMessageFor(m => m.PrimaryWeaponAffix, "", new { @class = "text-danger" })
-                @Html.DropDownListFor(m => m.PrimaryWeaponAffix,
-                    Model.WeaponAffixesList,
-                    new { Class = "form-control select2" })
+            @Html.LabelFor(m => m.PrimaryWeaponAffix)
+            @Html.ValidationMessageFor(m => m.PrimaryWeaponAffix, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.PrimaryWeaponAffix,
+                Model.WeaponAffixesList,
+                new { Class = "form-control select2" })
 
-                @Html.LabelFor(m => m.SecondaryWeaponAffix)
-                @Html.ValidationMessageFor(m => m.SecondaryWeaponAffix, "", new { @class = "text-danger" })
-                @Html.DropDownListFor(m => m.SecondaryWeaponAffix,
-                    Model.WeaponAffixesList,
-                    new { Class = "form-control select2" })
+            @Html.LabelFor(m => m.SecondaryWeaponAffix)
+            @Html.ValidationMessageFor(m => m.SecondaryWeaponAffix, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.SecondaryWeaponAffix,
+                Model.WeaponAffixesList,
+                new { Class = "form-control select2" })
 
-                @Html.LabelFor(m => m.TargetType)
-                @Html.ValidationMessageFor(m => m.TargetType, "", new { @class = "text-danger" })
-                @Html.DropDownListFor(m => m.TargetType,
-                    Model.TargetTypeList,
-                    new { Class = "form-control select2" })
+            @Html.LabelFor(m => m.TargetType)
+            @Html.ValidationMessageFor(m => m.TargetType, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.TargetType,
+                Model.TargetTypeList,
+                new { Class = "form-control select2" })
 
-                @Html.LabelFor(m => m.CombatPower)
-                @Html.ValidationMessageFor(m => m.CombatPower, "", new { @class = "text-danger" })
-                @Html.TextBoxFor(m => m.CombatPower, new { Class = "form-control select2" })
+            @Html.LabelFor(m => m.CombatPower)
+            @Html.ValidationMessageFor(m => m.CombatPower, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(m => m.CombatPower, new { Class = "form-control select2" })
 
-                @Html.LabelFor(m => m.GlanceReduction)
-                @Html.ValidationMessageFor(m => m.GlanceReduction, "", new { @class = "text-danger" })
-                @Html.TextBoxFor(m => m.GlanceReduction, new { Class = "form-control" })
+            @Html.LabelFor(m => m.GlanceReduction)
+            @Html.ValidationMessageFor(m => m.GlanceReduction, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(m => m.GlanceReduction, new { Class = "form-control" })
 
-                @Html.LabelFor(m => m.CriticalChance)
-                @Html.ValidationMessageFor(m => m.CriticalChance, "", new { @class = "text-danger" })
-                @Html.TextBoxFor(m => m.CriticalChance, new { Class = "form-control" })
+            @Html.LabelFor(m => m.CriticalChance)
+            @Html.ValidationMessageFor(m => m.CriticalChance, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(m => m.CriticalChance, new { Class = "form-control" })
                 
-                @Html.LabelFor(m => m.CritPower)
-                @Html.ValidationMessageFor(m => m.CritPower, "", new { @class = "text-danger" })
-                @Html.TextBoxFor(m => m.CritPower, new { Class = "form-control" })
+            @Html.LabelFor(m => m.CritPower)
+            @Html.ValidationMessageFor(m => m.CritPower, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(m => m.CritPower, new { Class = "form-control" })
 
-                @Html.LabelFor(m => m.BasicSignet)
-                @Html.ValidationMessageFor(m => m.BasicSignet, "", new { @class = "text-danger" })
-                @Html.TextBoxFor(m => m.BasicSignet, new { Class = "form-control" }) 
+            @Html.LabelFor(m => m.BasicSignet)
+            @Html.ValidationMessageFor(m => m.BasicSignet, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(m => m.BasicSignet, new { Class = "form-control" }) 
                 
-                @Html.LabelFor(m => m.PowerSignet)
-                @Html.ValidationMessageFor(m => m.PowerSignet, "", new { @class = "text-danger" })
-                @Html.TextBoxFor(m => m.PowerSignet, new { Class = "form-control" })
+            @Html.LabelFor(m => m.PowerSignet)
+            @Html.ValidationMessageFor(m => m.PowerSignet, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(m => m.PowerSignet, new { Class = "form-control" })
             
-                @Html.LabelFor(m => m.EliteSignet)
-                @Html.ValidationMessageFor(m => m.EliteSignet, "", new { @class = "text-danger" })
-                @Html.TextBoxFor(m => m.EliteSignet, new { Class = "form-control" })
+            @Html.LabelFor(m => m.EliteSignet)
+            @Html.ValidationMessageFor(m => m.EliteSignet, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(m => m.EliteSignet, new { Class = "form-control" })
                 
         </div>
 
@@ -93,7 +92,7 @@
         <div>
             @Html.CheckBoxFor(m => m.Exposed)
             <label for="Exposed">Exposed with 100% uptime</label>
-       </div>
+        </div>
 
         <div>
             @Html.CheckBoxFor(m => m.HeadSignetIsCdr)
@@ -104,7 +103,36 @@
             <label for="Savagery">Enable Savagery</label>
         </div>
 
-        <input type="submit" value="Import" formaction=@Url.Action("Import") formmethod="post" class="btn btn-default waves-effect waves-light" />
-            
+        <input type="submit" value="Start Simulation" formaction=@Url.Action("Import") formmethod="post" class="btn btn-default waves-effect waves-light" />
+  
     </form>
+
+    <div id="full-width-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="full-width-modalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-full">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="full-width-modalLabel">Save & Load</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>Here you can save & load your settings. (WIP)</h4>
+                    <button class="loginBtn loginBtn--facebook">
+                        Login with Facebook
+                    </button>
+
+                    <button class="loginBtn loginBtn--google">
+                        Login with Google
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Save & Close</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light">Load</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="col-md-12" style="margin-bottom: 10px"></div>
+    <button style="margin-top: 10px"class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#full-width-modal">Save & Load</button>
+
+
 </div>
