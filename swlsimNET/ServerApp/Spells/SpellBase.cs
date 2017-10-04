@@ -120,6 +120,7 @@ namespace swlsimNET.ServerApp.Spells
         public int CastTimeMs => (int)(CastTime * 1000);
         public int DotDurationMs => (int)(DotDuration * 1000);
         private int TickIntervalMs => CastTimeMs / ChannelTicks;
+        private double CritPowerMultiplier => this.SpellType == SpellType.Channel ? 1.25 : 1;
 
         private double _primaryGimmickBeforeCast;
         private readonly List<ISpell> _spellsOfSameType = new List<ISpell>();
@@ -513,8 +514,13 @@ namespace swlsimNET.ServerApp.Spells
 
         private bool IsCrit(IPlayer player)
         {
-            // Non damage spells can't crit //TODO: *0.8 represents the penalty for channel spells (compensated via more critpower)
-            if (SpellType == SpellType.Channel) return BaseDamage > 0 && Helper.IsCrit((player.CriticalChance + BonusCritChance + _bonusCritChance) * 0.8);
+            // Non damage spells can't crit 
+            if (SpellType == SpellType.Channel)
+            {
+                // 0.8 represents the penalty for channel spells (compensated via more critpower)
+                return BaseDamage > 0 && Helper.IsCrit((player.CriticalChance + BonusCritChance + _bonusCritChance) * 0.8);
+            }
+
             return BaseDamage > 0 && Helper.IsCrit(player.CriticalChance + BonusCritChance + _bonusCritChance);
         }
 
@@ -542,16 +548,10 @@ namespace swlsimNET.ServerApp.Spells
                 damage = isHit
                     ? basedamage * player.CombatPower * boost
                     : 0;
-                if (SpellType == SpellType.Channel)
-                {
-                    damage = isCrit
-                        ? basedamage * (1 + _bonusBaseDamageMultiplier)
-                          * player.CombatPower * boost * ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * 1.25)
-                        : damage;
-                }
-                else    damage = isCrit
+
+                damage = isCrit
                     ? basedamage * (1 + _bonusBaseDamageMultiplier)
-                      * player.CombatPower * boost * (player.CritPower + BonusCritPower + _bonusCritMultiplier)
+                      * player.CombatPower * boost * ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * CritPowerMultiplier)
                     : damage;
 
                 // Add bonus damage
@@ -567,7 +567,7 @@ namespace swlsimNET.ServerApp.Spells
 
             damage = isCrit 
                 ? (Math.Max(BaseDamage, BaseDamageCrit) + _bonusBaseDamage) * (1 + _bonusBaseDamageMultiplier)
-                * player.CombatPower * boost * (player.CritPower + BonusCritPower + _bonusCritMultiplier)
+                * player.CombatPower * boost * ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * CritPowerMultiplier)
                 : damage;
 
             // Add bonus damage
