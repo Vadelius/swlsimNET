@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Weapons;
+using swlsimNET.ServerApp.Spells.Pistol;
+
 
 namespace swlsimNET.ServerApp.Spells.Pistol
 {
@@ -25,13 +27,13 @@ namespace swlsimNET.ServerApp.Spells.Pistol
         }
     }
 
-    public class Holdout : Spell
+    public class Holdout : Passive
     {
-        public Holdout(IPlayer player, string args = null)
+        public Holdout()
         {
             WeaponType = WeaponType.Pistol;
-            SpellType = SpellType.Passive;
-            //  Unload: 33% Chance to not spin chambers if matching set
+            ModelledInWeapon = true;
+            // Unload: 33% Chance to not spin chambers if matching set
         }
     }
 
@@ -41,7 +43,8 @@ namespace swlsimNET.ServerApp.Spells.Pistol
         {
             WeaponType = WeaponType.Pistol;
             SpellType = SpellType.Passive;
-            // All In: Additional effects if matching chamber, Double White: TAoE additional 0,34CP BaseDamage Exposed Debilitated, Double Blue: TAoE additional 0,43CP BaseDamage, Double Red: TAoE additional 0,87CP BaseDamage
+            // All In: Additional effects if matching chamber, Double White: TAoE additional 0,34CP BaseDamage Exposed Debilitated, 
+            // Double Blue: TAoE additional 0,43CP BaseDamage, Double Red: TAoE additional 0,87CP BaseDamage
         }
     }
 
@@ -81,7 +84,8 @@ namespace swlsimNET.ServerApp.Spells.Pistol
         {
             WeaponType = WeaponType.Pistol;
             SpellType = SpellType.Passive;
-            // Trick Shot:  Stun Root or Snare, Stunned enemies additional 0,34CP damage from you or your allies, Rooted Enemies take 2,61CP BaseDamage when root ends, Snared enemies and other enemies near take 0,32CP every second
+            // Trick Shot:  Stun Root or Snare, Stunned enemies additional 0,34CP damage from you or your allies, 
+            // Rooted Enemies take 2,61CP BaseDamage when root ends, Snared enemies and other enemies near take 0,32CP every second
         }
     }
 
@@ -109,13 +113,15 @@ namespace swlsimNET.ServerApp.Spells.Pistol
         }
     }
 
-    public class BulletEcho : Spell
+    public class BulletEcho : Passive
     {
-        public BulletEcho(IPlayer player, string args = null)
+        // TODO: Test
+        public BulletEcho()
         {
             WeaponType = WeaponType.Pistol;
-            SpellType = SpellType.Passive;
-            BaseDamage = 0;
+            SpellTypes.Add(typeof(Ricochet));
+            BaseDamage = 0.32;
+            PassiveBonusSpell = this;
             // When Ricochet expires Pistol attacks chain to nearby enemies 0,32CP damage 4s duration
         }
     }
@@ -124,10 +130,11 @@ namespace swlsimNET.ServerApp.Spells.Pistol
     {
         public DeadlyDance()
         {
+            // TODO: Test
             WeaponType = WeaponType.Pistol;
             SpellTypes.Add(typeof(BulletBallet));
             BaseDamage = 0.32;
-            PassiveBonusSpell = this; //TODO: Check this.
+            PassiveBonusSpell = this;
             // Bullet Ballet: Additional 0,32 BaseDamage
         }
     }
@@ -138,7 +145,8 @@ namespace swlsimNET.ServerApp.Spells.Pistol
         {
             WeaponType = WeaponType.Pistol;
             SpecificWeaponTypeBonus = true;
-            BaseDamageModifier = 0.14; // TODO: Check this value
+            BaseDamage = 0.14; // assume 50% bonus all the time
+            // TODO: Fix this if we have target health
             // Pistol abilites deal additional 0,04-0,24CP BaseDamage, 
             // BaseDamage dealt max out when the target is at maximum health
         }
@@ -158,23 +166,25 @@ namespace swlsimNET.ServerApp.Spells.Pistol
 
     public class HeavyCaliberRounds : Passive
     {
+        // TODO: Test
         public HeavyCaliberRounds()
         {
             WeaponType = WeaponType.Pistol;
             SpecificSpellTypes.Add(new Passive
             {
-                SpellTypes = new List<Type> { typeof(swlsimNET.ServerApp.Weapons.Pistol.WhiteChambers) },
+                SpellTypes = new List<Type> { typeof(Weapons.Pistol.WhiteChambers) },
                 BaseDamageModifier = 0.28
             });
 
             SpecificSpellTypes.Add(new Passive
             {
-                SpellTypes = new List<Type> { typeof(swlsimNET.ServerApp.Weapons.Pistol.BlueChambers) },
+                SpellTypes = new List<Type> { typeof(Weapons.Pistol.BlueChambers) },
                 BaseDamageModifier = 0.1415
             });
+
             SpecificSpellTypes.Add(new Passive
             {
-                SpellTypes = new List<Type> { typeof(swlsimNET.ServerApp.Weapons.Pistol.RedChambers) },
+                SpellTypes = new List<Type> { typeof(Weapons.Pistol.RedChambers) },
                 BaseDamageModifier = 0.09
             });
             // Increased bonus damage from matching set, Double White: 28%, Double Blue: 14.15%, Double Red: 9%
@@ -215,12 +225,13 @@ namespace swlsimNET.ServerApp.Spells.Pistol
         }
     }
 
-    public class FullyLoaded : Spell
+    public class FullyLoaded : Passive
     {
-        public FullyLoaded(IPlayer player, string args = null)
+        public FullyLoaded()
         {
+            // TODO: Test
             WeaponType = WeaponType.Pistol;
-            SpellType = SpellType.Passive;
+            ModelledInWeapon = true;
             // Whenever your Pistol Energy reaches 15 you automatically gain Double White set if you do not already have a set
         }
     }
