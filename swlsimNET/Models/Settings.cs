@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using swlsimNET.ServerApp.Weapons;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using swlsimNET.ServerApp.Combat;
+using swlsimNET.ServerApp.Spells;
+using swlsimNET.ServerApp.Spells.Blood;
+using swlsimNET.ServerApp.Spells.Hammer;
+using swlsimNET.ServerApp.Spells.Pistol;
+using swlsimNET.ServerApp.Spells.Shotgun;
 
 namespace swlsimNET.Models
 {
@@ -55,6 +60,12 @@ namespace swlsimNET.Models
                                           "Hammer.Demolish, Rage > 60 || Hammer.Energy > 13\r\n" +
                                           "Hammer.Smash";
 
+        public string Passive1 { get; set; }
+        public string Passive2 { get; set; }
+        public string Passive3 { get; set; }
+        public string Passive4 { get; set; }
+        public string Passive5 { get; set; }
+
         public bool OpeningShot { get; set; }
         public bool Exposed { get; set; }
         public bool HeadSignetIsCdr { get; set; }
@@ -69,19 +80,52 @@ namespace swlsimNET.Models
         public IEnumerable<SelectListItem> WeaponAffixesList => new SelectList(Enum.GetValues(typeof(WeaponAffix)));
         public IEnumerable<SelectListItem> TargetTypeList => new SelectList(Enum.GetValues(typeof(TargetType)));
 
-        public IEnumerable<SelectListItem> Passives
+        public IEnumerable<SelectListItem> Passives = _allPassives.ConvertAll(
+            a => new SelectListItem
         {
-            get
-            {
-                return new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "Passive1", Value = "Passive1"},
-                    new SelectListItem { Text = "Passive2", Value = "Passive2"},
-                    new SelectListItem { Text = "Passive3", Value = "Passive3"},
-                    new SelectListItem { Text = "Passive4", Value = "Passive4"},
-                    new SelectListItem { Text = "Passive5", Value = "Passive5"},
-                };
-            }
-        }
+            Text = a.ToString().Substring(a.ToString().LastIndexOf('.') + 1),
+            Value = a.ToString().Substring(a.ToString().LastIndexOf('.') + 1),
+            Selected = false
+        });
+
+        public List<Passive> AllPassives => _allPassives;
+
+        private static List<Passive> _allPassives = new List<Passive>
+        {
+            // TODO: Add ALL passives here
+
+            // Hammer
+            new Outrage(),
+            new Obliterate(),
+            new Berserker(),
+            new Annihilate(),
+            new UnbridledWrath(),
+            new LetLoose(),
+            new FastAndFurious(),
+
+            // Pistol
+            new FatalShot(),
+            new DeadlyDance(),
+            new Jackpot(),
+            new FixedGame(),
+            new HeavyCaliberRounds(),
+            //new FullyLoaded(), GREM BROKE HE FIX
+            new WinStreak(),
+            new FlechetteRounds(),
+            new BeginnersLuck(),
+            //new BulletEcho(), GREM BROKE HE FIX
+            //new Holdout(), GREM BROKE HE FIX
+
+            // Blood
+            new CrimsonPulse(),
+            new Desolate(),
+            new Contaminate(),
+            new Flay(),
+            new Defilement(),
+
+            // Shotgun
+            new SalvageExpert(),
+            new PointBlankShot(),
+        };
     }
 }

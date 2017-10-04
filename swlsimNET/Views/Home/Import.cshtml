@@ -17,7 +17,7 @@
                 @Html.DropDownListFor(m => m.PrimaryWeapon,
                     Model.WeaponTypeList,
                     "Select primary weapon", new {Class = "form-control select2" })            
-
+            
                 @Html.LabelFor(m => m.SecondaryWeapon)
                 @Html.ValidationMessageFor(m => m.SecondaryWeapon, "", new { @class = "text-danger" })
                 @Html.DropDownListFor(m => m.SecondaryWeapon,
@@ -83,6 +83,16 @@
             <input type="submit" value="Hammer/Fist" formaction=@Url.Action("SetPresetHammerFist") formmethod="post" class="btn btn-primary" />
             <input type="submit" value="Hammer/Pistol" formaction=@Url.Action("SetPresetHammerPistol") formmethod="post" class="btn btn-primary" />
             <input type="submit" value="Hammer/Shotgun" formaction=@Url.Action("SetPresetHammerShotgun") formmethod="post" class="btn btn-primary" />
+        </div>
+        
+        <div class="col-md-9" style="margin-bottom: 10px">
+            @Html.LabelFor(m => m.Passives)
+            @*@Html.ValidationMessageFor(m => m.Passives, "", new { @class = "text-danger" })*@
+            @Html.DropDownListFor(m => m.Passive1, Model.Passives, new { Class = "form-control select2" })
+            @Html.DropDownListFor(m => m.Passive2, Model.Passives, new { Class = "form-control select2" })
+            @Html.DropDownListFor(m => m.Passive3, Model.Passives, new { Class = "form-control select2" })
+            @Html.DropDownListFor(m => m.Passive4, Model.Passives, new { Class = "form-control select2" })
+            @Html.DropDownListFor(m => m.Passive5, Model.Passives, new { Class = "form-control select2" })
         </div>
             
         <div>

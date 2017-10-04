@@ -100,6 +100,12 @@ namespace swlsimNET.Controllers
                     "Hammer.Demolish, Rage > 60 || Hammer.Energy > 13\r\n" +
                     "Hammer.Smash";
 
+            s.Passive1 = "Outrage";
+            s.Passive2 = "Obliterate";
+            s.Passive3 = "Berserker";
+            s.Passive4 = "FastAndFurious";
+            s.Passive5 = "UnbridledWrath";
+
             return View("Import", s);
         }
 
@@ -114,6 +120,12 @@ namespace swlsimNET.Controllers
                     "Blood.Desecrate, Buff.Savagery.Active\r\n" +
                     "Blood.Maleficium, Blood.Energy > 10\r\n" +
                     "Blood.Torment";
+
+            s.Passive1 = "CrimsonPulse";
+            s.Passive2 = "Desolate";
+            s.Passive3 = "Defilement";
+            s.Passive4 = "Flay";
+            s.Passive5 = "Contaminate"; // not used
 
             return View("Import", s);
         }
@@ -130,6 +142,12 @@ namespace swlsimNET.Controllers
                     "Pistol.DualShot\r\n" +
                     "Hammer.Smash";
 
+            s.Passive1 = "Outrage";
+            s.Passive2 = "Obliterate";
+            s.Passive3 = "Berserker";
+            s.Passive4 = "FastAndFurious";
+            s.Passive5 = "UnbridledWrath";
+
             return View("Import", s);
         }
 
@@ -145,6 +163,12 @@ namespace swlsimNET.Controllers
                     "Shotgun.RagingShot\r\n" +
                     "Shotgun.Reload, Shells == 0\r\n" +
                     "Hammer.Smash";
+
+            s.Passive1 = "Outrage";
+            s.Passive2 = "Obliterate";
+            s.Passive3 = "UnbridledWrath";
+            s.Passive4 = "FastAndFurious";
+            s.Passive5 = "SalvageExpert";
 
             return View("Import", s);
         }
