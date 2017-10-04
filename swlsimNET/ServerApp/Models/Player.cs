@@ -250,7 +250,7 @@ namespace swlsimNET.ServerApp.Models
                 if (spell == null) return;
 
                 // Specific Hammer stuff, if enraged get rage spell
-                if (Enraged)
+                if (Buff.Enraged)
                 {
                     var rageSpell = Spells.Find(s => s.Name == spell.Name + "Rage");
                     if (rageSpell != null)
@@ -557,11 +557,6 @@ namespace swlsimNET.ServerApp.Models
 
         #region APL defines
 
-        // Hammer APL specifics
-        public bool Enraged => Rage >= 50;
-        public bool FastAndFurious => GetWeaponFromType(WeaponType.Hammer) is Hammer
-            hammer && hammer.FastAndFuriousBonus;
-
         // Buffs
         public BuffWrapper Buff { get; }
 
@@ -581,7 +576,7 @@ namespace swlsimNET.ServerApp.Models
         public Weapon Elemental => GetWeaponFromType(WeaponType.Elemental);
         public Weapon Fist => GetWeaponFromType(WeaponType.Fist);
         public Weapon Hammer => GetWeaponFromType(WeaponType.Hammer);
-        public Pistol Pistol => GetWeaponFromType(WeaponType.Pistol) as Pistol;
+        public Weapon Pistol => GetWeaponFromType(WeaponType.Pistol);
         public Weapon Rifle => GetWeaponFromType(WeaponType.AssaultRifle);
         public Weapon Shotgun => GetWeaponFromType(WeaponType.Shotgun);
 
@@ -606,9 +601,18 @@ namespace swlsimNET.ServerApp.Models
             public IBuff Savagery => _player.GetBuffFromName("Savagery");
             public IBuff UnstoppableForce => _player.GetBuffFromName("UnstoppableForce");
 
-            public bool RedChambers => _player.Pistol.LeftChamber == Chamber.Red && _player.Pistol.LeftChamber == _player.Pistol.RightChamber;
-            public bool BlueChambers => _player.Pistol.LeftChamber == Chamber.Blue && _player.Pistol.LeftChamber == _player.Pistol.RightChamber;
-            public bool WhiteChambers => _player.Pistol.LeftChamber == Chamber.White && _player.Pistol.LeftChamber == _player.Pistol.RightChamber;
+            // Hammer APL specifics
+            public bool Enraged => _player.Rage >= 50;
+            public bool FastAndFurious => _player.GetWeaponFromType(WeaponType.Hammer) is Hammer
+                                              hammer && hammer.FastAndFuriousBonus;
+
+            // Pistol APL specifics
+            public bool RedChambers => _player.GetWeaponFromType(WeaponType.Pistol) is Pistol pistol && 
+                                       pistol.LeftChamber == Chamber.Red && pistol.LeftChamber == pistol.RightChamber;
+            public bool BlueChambers => _player.GetWeaponFromType(WeaponType.Pistol) is Pistol pistol &&
+                                        pistol.LeftChamber == Chamber.Blue && pistol.LeftChamber == pistol.RightChamber;
+            public bool WhiteChambers => _player.GetWeaponFromType(WeaponType.Pistol) is Pistol pistol &&
+                                         pistol.LeftChamber == Chamber.White && pistol.LeftChamber == pistol.RightChamber;
 
             // TODO: Need to add all buffs here if we cant solve it in another way..
         }

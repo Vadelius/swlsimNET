@@ -5,12 +5,12 @@ namespace swlsimNET.ServerApp.Spells
     public interface IBuff
     {
         string Name { get; }
-        int MaxDuration { get; set; }
+        double MaxDuration { get; set; }
         int MaxDurationMs { get; }
-        int Duration { get; set; }
-        int MaxCooldown { get; }
+        double Duration { get; set; }
+        double MaxCooldown { get; }
         int MaxCooldownMs { get; }
-        int Cooldown { get; set; }
+        double Cooldown { get; set; }
         bool Active { get; }
 
         WeaponType WeaponType { get; }
@@ -37,12 +37,12 @@ namespace swlsimNET.ServerApp.Spells
     public class Buff : IBuff
     {
         public string Name => GetType().Name;
-        public int MaxDuration { get; set; }
-        public int MaxDurationMs => MaxDuration * 1000;
-        public int Duration { get; set; } = -1;
-        public int MaxCooldown { get; set; }
-        public int MaxCooldownMs => MaxCooldown * 1000;
-        public int Cooldown { get; set; }
+        public double MaxDuration { get; set; }
+        public int MaxDurationMs => (int) (MaxDuration * 1000);
+        public double Duration { get; set; } = -1;
+        public double MaxCooldown { get; set; }
+        public int MaxCooldownMs => (int) (MaxCooldown * 1000);
+        public double Cooldown { get; set; }
         public virtual bool Active => Duration > 0;
 
         public double MaxBonusCritChance { get; set; }
