@@ -28,27 +28,13 @@ namespace swlsimNET.Models
         public double TotalDps { get; private set; }
         public string FightDebug { get; private set; }
 
-        public double LowestDps
-        {
-            get { return lowestDps; }
-            set { lowestDps = value; }
-        }
-
-        public double HighestDps
-        {
-            get { return highestDps; }
-            set { highestDps = value; }
-        }
+        public double LowestDps { get; set; } = double.MaxValue;
+        public double HighestDps { get; set; }
 
         public string SpellBreakdown { get; private set; }
         public List<SpellResult> SpellBreakdownList { get; private set; }
         public List<EnergySnap> EnergyList { get; private set; }
         public string PieStuff { get; set; }
-
-        public double lowestDps = double.MaxValue;
-        public double highestDps;
-        private double _lowestDps;
-
 
         public bool GenerateReportData(List<FightResult> iterationFightResults, Settings settings)
         {
@@ -61,7 +47,6 @@ namespace swlsimNET.Models
             //{
             //    var listTheft = EnergyList.Take(10);
             //}
-
 
             InitReportData(iterationFightResults);
             GenerateSpellReportData();
@@ -114,8 +99,8 @@ namespace swlsimNET.Models
                 TotalDamage += iteration.TotalDamage;
                 TotalHits += iteration.TotalHits;
                 TotalCrits += iteration.TotalCrits;
-                if (iteration.Dps > highestDps) highestDps = iteration.Dps;
-                if (iteration.Dps < lowestDps) lowestDps = iteration.Dps;
+                if (iteration.Dps > HighestDps) HighestDps = iteration.Dps;
+                if (iteration.Dps < LowestDps) LowestDps = iteration.Dps;
 
                 foreach (var rr in iteration.RoundResults)
                 {
