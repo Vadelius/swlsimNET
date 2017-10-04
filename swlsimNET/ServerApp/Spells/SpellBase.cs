@@ -130,6 +130,8 @@ namespace swlsimNET.ServerApp.Spells
         private double _bonusBaseDamageMultiplier;
         private double _bonusBaseDamage;
 
+        private double ChannelCritPowerBonus { get; set ; }
+
         private double _baseDamage;
 
         public Attack Continue(Player player)
@@ -167,6 +169,7 @@ namespace swlsimNET.ServerApp.Spells
 
         private Attack StartChannel(Player player)
         {
+            ChannelCritPowerBonus = 1.25;
             // Set player to channeling spell
             if (SpellType == SpellType.Channel)
             {
@@ -185,6 +188,7 @@ namespace swlsimNET.ServerApp.Spells
 
         private Attack ContinueCast(Player player)
         {
+            ChannelCritPowerBonus = 1;
             if (player.CastTime == 0)
             {
                 return CastFinished(player);
@@ -542,16 +546,10 @@ namespace swlsimNET.ServerApp.Spells
                 damage = isHit
                     ? basedamage * player.CombatPower * boost
                     : 0;
-                if (SpellType == SpellType.Channel)
-                {
-                    damage = isCrit
-                        ? basedamage * (1 + _bonusBaseDamageMultiplier)
-                          * player.CombatPower * boost * ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * 1.25)
-                        : damage;
-                }
-                else    damage = isCrit
+               
+               damage = isCrit
                     ? basedamage * (1 + _bonusBaseDamageMultiplier)
-                      * player.CombatPower * boost * (player.CritPower + BonusCritPower + _bonusCritMultiplier)
+                      * player.CombatPower * boost * ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * ChannelCritPowerBonus)
                     : damage;
 
                 // Add bonus damage
@@ -567,7 +565,7 @@ namespace swlsimNET.ServerApp.Spells
 
             damage = isCrit 
                 ? (Math.Max(BaseDamage, BaseDamageCrit) + _bonusBaseDamage) * (1 + _bonusBaseDamageMultiplier)
-                * player.CombatPower * boost * (player.CritPower + BonusCritPower + _bonusCritMultiplier)
+                * player.CombatPower * boost * ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * ChannelCritPowerBonus)
                 : damage;
 
             // Add bonus damage
