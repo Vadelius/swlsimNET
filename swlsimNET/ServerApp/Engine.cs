@@ -69,7 +69,7 @@ namespace swlsimNET.ServerApp
             // s.PrimaryWeapon and s.SecondaryWeapon can not be null since validation in front end catches this
             var mainWeapon = GetWeaponFromType((WeaponType) s.PrimaryWeapon, s.PrimaryWeaponAffix);
             var offWeapon = GetWeaponFromType((WeaponType) s.SecondaryWeapon, s.SecondaryWeaponAffix);
-            var selectedPassives = GetSelectedPassives(s.Passives);
+            var selectedPassives = GetSelectedPassives();
             var player = new Player(mainWeapon, offWeapon, selectedPassives, s);
 
             var apl = new AplReader(player, _settings.Apl);
@@ -107,27 +107,24 @@ namespace swlsimNET.ServerApp
             return null;
         }
 
-        private List<Passive> GetSelectedPassives(IEnumerable<SelectListItem> passives)
+        private List<Passive> GetSelectedPassives()
         {
-            passives = passives.ToList();
             var selectedPassives = new List<Passive>();
 
-            // TODO: Fix this, just check current weapon type passives since some passives have same name?
+            var passive = _settings.AllPassives.Find(p => p.Name == _settings.Passive1);
+            if (passive != null) selectedPassives.Add(passive);
 
-            //var passive1 = passives.FirstOrDefault(p => p.Value == S.Default.Passive1?.Split('.').Last());
-            //if (passive1 != null) selectedPassives.Add(passive1);
+            passive = _settings.AllPassives.Find(p => p.Name == _settings.Passive2);
+            if (passive != null) selectedPassives.Add(passive);
 
-            //var passive2 = passives.FirstOrDefault(p => p.Name == S.Default.Passive2?.Split('.').Last());
-            //if (passive2 != null) selectedPassives.Add(passive2);
+            passive = _settings.AllPassives.Find(p => p.Name == _settings.Passive3);
+            if (passive != null) selectedPassives.Add(passive);
 
-            //var passive3 = passives.FirstOrDefault(p => p.Name == S.Default.Passive3?.Split('.').Last());
-            //if (passive3 != null) selectedPassives.Add(passive3);
+            passive = _settings.AllPassives.Find(p => p.Name == _settings.Passive4);
+            if (passive != null) selectedPassives.Add(passive);
 
-            //var passive4 = passives.FirstOrDefault(p => p.Name == S.Default.Passive4?.Split('.').Last());
-            //if (passive4 != null) selectedPassives.Add(passive4);
-
-            //var passive5 = passives.FirstOrDefault(p => p.Name == S.Default.Passive5?.Split('.').Last());
-            //if (passive5 != null) selectedPassives.Add(passive5);
+            passive = _settings.AllPassives.Find(p => p.Name == _settings.Passive5);
+            if (passive != null) selectedPassives.Add(passive);
 
             return selectedPassives;
         }
