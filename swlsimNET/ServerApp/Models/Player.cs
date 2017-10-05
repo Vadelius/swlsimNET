@@ -84,6 +84,7 @@ namespace swlsimNET.ServerApp.Models
             PowerSignetBoost = settings.PowerSignet / 100 + 1;
             EliteSignetBoost = settings.HeadSignetIsCdr ? 1 : settings.EliteSignet / 100 + 1;
             EliteSignetCooldownReduction = settings.HeadSignetIsCdr ? settings.EliteSignet / 100 : 0;
+            WaistSignetBoost = settings.WaistSignet / 100;
 
             this.Buff = new BuffWrapper(this);
         }
@@ -525,6 +526,7 @@ namespace swlsimNET.ServerApp.Models
         public double PowerSignetBoost { get; protected set; } = 1.18;
         public double EliteSignetBoost { get; protected set; } = 1.43;
         public double EliteSignetCooldownReduction { get; protected set; } = 0;
+        public double WaistSignetBoost { get; protected set; } = 1.30; 
         public int Interval { get; set; }
         public List<ISpell> Spells { get; set; }
         public List<IBuff> Buffs { get; }
