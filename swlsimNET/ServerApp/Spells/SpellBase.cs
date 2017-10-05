@@ -59,7 +59,8 @@ namespace swlsimNET.ServerApp.Spells
         Procc,
         Gimmick,
         Dot,
-        Buff
+        Buff,
+
     }
 
     public enum AbilityType
@@ -68,7 +69,8 @@ namespace swlsimNET.ServerApp.Spells
         Basic,
         Special,
         Power,
-        Elite
+        Elite,
+        Gadget
     }
 
     public class Spell : ISpell
