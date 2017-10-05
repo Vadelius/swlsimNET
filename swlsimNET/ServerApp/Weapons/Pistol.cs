@@ -12,8 +12,8 @@ namespace swlsimNET.ServerApp.Weapons
 
     internal class Pistol : Weapon
     {
-        private Chamber LeftChamber { get; set; }
-        private Chamber RightChamber { get; set; }
+        public Chamber LeftChamber { get; set; }
+        public Chamber RightChamber { get; set; }
         private int ChamberLockTimeStamp { get; set; }
         private int LastPistolSpellTimeStamp { get; set; }
 
