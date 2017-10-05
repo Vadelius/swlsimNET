@@ -85,7 +85,6 @@ namespace swlsimNET.ServerApp.Models
             EliteSignetBoost = settings.HeadSignetIsCdr ? 1 : settings.EliteSignet / 100 + 1;
             EliteSignetCooldownReduction = settings.HeadSignetIsCdr ? settings.EliteSignet / 100 : 0;
 
-            //TODO: Implement % Elite boost Cooldown reduction instead of Elite Damage.
             this.Buff = new BuffWrapper(this);
         }
 
@@ -374,7 +373,7 @@ namespace swlsimNET.ServerApp.Models
 
             foreach (var a in rr.Attacks)
             {
-                // TODO: Check if this is correct GREM, (non damage shit never added to report totals)
+                // non damage attacks never added to report totals for hit/crits
                 if (a.IsHit && a.Damage > 0) rr.TotalHits++;
                 if (a.IsCrit && a.Damage > 0) rr.TotalCrits++;
                 rr.TotalDamage += a.Damage;
@@ -514,7 +513,7 @@ namespace swlsimNET.ServerApp.Models
 
         #region IPlayer implementation
 
-        // Implements IPlayer TODO: Get from Frontend.
+        // Implements IPlayer
         public Settings Settings { get; set; }
 
         public double CombatPower { get; protected set; } = 1200;
