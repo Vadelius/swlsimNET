@@ -50,6 +50,8 @@ namespace swlsimNET.Models
 
         [Display(Name = "Elite signet")]
         public double EliteSignet { get; set; } = 56;
+        [Display(Name = "Waist signet")]
+        public double WaistSignet { get; set; } = 90;
 
         [Display(Name = "Action priority list *")]
         [Required(ErrorMessage = "required.")]
