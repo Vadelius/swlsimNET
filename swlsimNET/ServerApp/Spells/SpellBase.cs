@@ -277,7 +277,9 @@ namespace swlsimNET.ServerApp.Spells
                 // Set Cooldown of all spells of same type
                 foreach (var spell in _spellsOfSameType)
                 {
-                    spell.Cooldown = MaxCooldownMs;
+                    spell.Cooldown = AbilityType == AbilityType.Elite
+                        ? MaxCooldownMs * (1 - player.EliteSignetCooldownReduction)
+                        : MaxCooldownMs;
                 }
             }
 
