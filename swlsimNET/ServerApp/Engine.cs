@@ -9,7 +9,7 @@ namespace swlsimNET.ServerApp
 {
     public class Engine
     {
-        private const int Interval = 100;
+        private const decimal Interval = 0.1m;
         private Settings _settings;
 
         public Engine(Settings settings)
@@ -43,9 +43,10 @@ namespace swlsimNET.ServerApp
 
             // Run a complete fight
             // Check if we can do something 10 times a second (to account for lag)
-            for (var ms = 0; ms < _settings.FightLength * 1000; ms += Interval)
+            for (decimal sec = 0; sec < _settings.FightLength; sec += Interval)
             {
-                var roundResult = player.NewRound(ms, Interval);
+                // Decimal needed since double is to inaccurate, castint do double afterwards seems fine
+                var roundResult = player.NewRound((double)sec, (double)Interval);
 
                 // Only save rounds with any actions
                 if (roundResult.Attacks.Any())

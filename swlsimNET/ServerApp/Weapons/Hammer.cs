@@ -16,8 +16,8 @@ namespace swlsimNET.ServerApp.Weapons
 
         private bool _init;
 
-        private int _enragedLockTimeStamp;
-        private int _timeSinceEnraged;        
+        private double _enragedLockTimeStamp;
+        private double _timeSinceEnraged;        
 
         public bool FastAndFuriousBonus { get; private set; }
         public bool LetLooseBonus { get; private set; }
@@ -46,12 +46,12 @@ namespace swlsimNET.ServerApp.Weapons
             if (!_enraged50 && enraged50)
             {
                 // Passed 50 treshold
-                _enragedLockTimeStamp = player.CurrentTimeMs;
+                _enragedLockTimeStamp = player.CurrentTimeSec;
             }
             else if(!_enraged100 && _enraged50 && enraged100)
             {
                 // Reached 100 treshold
-                _enragedLockTimeStamp = player.CurrentTimeMs;
+                _enragedLockTimeStamp = player.CurrentTimeSec;
             }
 
             _enraged50 = enraged50;
@@ -59,8 +59,8 @@ namespace swlsimNET.ServerApp.Weapons
 
             if(_fastAndFurious == null) return;
 
-            _timeSinceEnraged = player.CurrentTimeMs - _enragedLockTimeStamp;
-            FastAndFuriousBonus = _timeSinceEnraged < 3500;
+            _timeSinceEnraged = player.CurrentTimeSec - _enragedLockTimeStamp;
+            FastAndFuriousBonus = _timeSinceEnraged < 3.5;
         }
 
         public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double rageBeforeCast)

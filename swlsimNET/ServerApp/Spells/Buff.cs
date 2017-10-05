@@ -6,10 +6,8 @@ namespace swlsimNET.ServerApp.Spells
     {
         string Name { get; }
         double MaxDuration { get; set; }
-        int MaxDurationMs { get; }
         double Duration { get; set; }
         double MaxCooldown { get; }
-        int MaxCooldownMs { get; }
         double Cooldown { get; set; }
         bool Active { get; }
 
@@ -38,10 +36,8 @@ namespace swlsimNET.ServerApp.Spells
     {
         public string Name => GetType().Name;
         public double MaxDuration { get; set; }
-        public int MaxDurationMs => (int) (MaxDuration * 1000);
         public double Duration { get; set; } = -1;
         public double MaxCooldown { get; set; }
-        public int MaxCooldownMs => (int) (MaxCooldown * 1000);
         public double Cooldown { get; set; }
         public virtual bool Active => Duration > 0;
 
@@ -63,10 +59,10 @@ namespace swlsimNET.ServerApp.Spells
 
         public virtual void Activate()
         {
-            Cooldown = MaxCooldownMs;
+            Cooldown = MaxCooldown;
 
             // Make it infinite if max duration is 0
-            Duration = MaxDurationMs == 0 ? int.MaxValue : MaxDurationMs;
+            Duration = MaxDuration == 0 ? double.MaxValue : MaxDuration;
 
             BonusCritChance = MaxBonusCritChance;
             BonusCritMultiplier = MaxBonusCritMultiplier;

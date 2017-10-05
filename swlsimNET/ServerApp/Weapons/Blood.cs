@@ -12,14 +12,14 @@ namespace swlsimNET.ServerApp.Weapons
         private Passive _flay;
         private Passive _defilement;
 
-        private int _defilementBonusToTimeMs;
-        private int _flayBonusToTimeMs;
+        private double _defilementBonusToTimeSec;
+        private double _flayBonusToTimeSec;
 
         private bool _defilementBonus;
         private bool _flayBonus;
 
-        private int LastBloodSpellTimeStamp { get; set; }
-        private int LastDecayTimeStamp { get; set; }  
+        private double LastBloodSpellTimeStamp { get; set; }
+        private double LastDecayTimeStamp { get; set; }  
 
         public override double GimmickResource
         {
@@ -53,10 +53,10 @@ namespace swlsimNET.ServerApp.Weapons
             }
 
             // Set Defilment bonus corruption gain
-            _defilementBonus = _defilementBonusToTimeMs >= player.CurrentTimeMs;
+            _defilementBonus = _defilementBonusToTimeSec >= player.CurrentTimeSec;
 
             // Set Flay bonus damage
-            _flayBonus = _flayBonusToTimeMs >= player.CurrentTimeMs;
+            _flayBonus = _flayBonusToTimeSec >= player.CurrentTimeSec;
 
             Decay(player);
         }
@@ -103,28 +103,28 @@ namespace swlsimNET.ServerApp.Weapons
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
             // Set new time stamp for new cast
-            LastBloodSpellTimeStamp = player.CurrentTimeMs + spell.CastTimeMs;
+            LastBloodSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
 
             if (_defilement != null && spell.GetType() == typeof(Desecrate))
             {
-                _defilementBonusToTimeMs = player.CurrentTimeMs + spell.DotDurationMs;
+                _defilementBonusToTimeSec = player.CurrentTimeSec + spell.DotDuration;
             }
 
-            if (_flay != null && spell.DotDurationMs > 0)
+            if (_flay != null && spell.DotDuration > 0)
             {
-                _flayBonusToTimeMs = player.CurrentTimeMs + spell.DotDurationMs;
+                _flayBonusToTimeSec = player.CurrentTimeSec + spell.DotDuration;
             }
         }   
 
         private void Decay(IPlayer player)
         {
-            var timeSinceLastBloodSpell = player.CurrentTimeMs - LastBloodSpellTimeStamp;
-            var timeSinceLastDecay = player.CurrentTimeMs - LastDecayTimeStamp;
+            var timeSinceLastBloodSpell = player.CurrentTimeSec - LastBloodSpellTimeStamp;
+            var timeSinceLastDecay = player.CurrentTimeSec - LastDecayTimeStamp;
 
-            if (GimmickResource > 0 && timeSinceLastBloodSpell > 3000 && timeSinceLastDecay >= 1000)
+            if (GimmickResource > 0 && timeSinceLastBloodSpell > 3 && timeSinceLastDecay >= 1)
             {
                 // Corruption = -4 for each second.
-                var time = timeSinceLastBloodSpell - 3000;
+                var time = timeSinceLastBloodSpell - 3;
 
                 // Remove previous decay from this decay
                 if (LastDecayTimeStamp != 0 && timeSinceLastBloodSpell > timeSinceLastDecay)
@@ -133,14 +133,14 @@ namespace swlsimNET.ServerApp.Weapons
                 }
 
                 // Only reduce per second, so for example 1.5s = 1s
-                var reduce = (time / 1000) * 4;
+                var reduce = (int)(time * 4);
 
                 if (reduce <= 0) return;
 
                 GimmickResource -= reduce;
                 if (GimmickResource < 0) GimmickResource = 0;
 
-                LastDecayTimeStamp = player.CurrentTimeMs;
+                LastDecayTimeStamp = player.CurrentTimeSec;
             }
         }
     }

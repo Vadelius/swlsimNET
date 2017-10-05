@@ -15,7 +15,6 @@ namespace swlsimNET.ServerApp.Spells
         string Name { get; }
         double BaseDamage { get; set; }
         double DotDuration { get; set; }
-        int DotDurationMs { get; }
         double DotExpirationBaseDamage { get; set; }
         double BaseDamageCrit { get; set; }
         WeaponType WeaponType { get; }
@@ -36,7 +35,6 @@ namespace swlsimNET.ServerApp.Spells
         double MaxCooldown { get; set; }
         double Cooldown { get; set; }
         double CastTime { get; set; }
-        int CastTimeMs { get; }
         int ChannelTicks { get; set; }
         int DotTicks { get; set; }
         double BonusCritChance { get; set; }
@@ -119,11 +117,7 @@ namespace swlsimNET.ServerApp.Spells
         public Passive PassiveBonusSpell { get; set; }
         public AbilityBuff AbilityBuff { get; set; }
 
-        // TODO: Remove theese or those above after we have decided how to do
-        private int MaxCooldownMs => (int) (MaxCooldown* 1000);
-        public int CastTimeMs => (int)(CastTime * 1000);
-        public int DotDurationMs => (int)(DotDuration * 1000);
-        private int TickIntervalMs => CastTimeMs / ChannelTicks;
+        private double TickInterval => CastTime / ChannelTicks;
         private double CritPowerMultiplier => this.SpellType == SpellType.Channel ? 1.25 : 1;
 
         private double _primaryGimmickBeforeCast;
@@ -152,13 +146,13 @@ namespace swlsimNET.ServerApp.Spells
             if (SpellType == SpellType.Cast || SpellType == SpellType.Buff)
             {
                 player.CurrentSpell = this;
-                player.CastTime = this.CastTimeMs;
+                player.CastTime = this.CastTime;
             }
 
             // Set player GCD
-            if (player.GCD < 1000 && SpellType != SpellType.Instant)
+            if (player.GCD < 1 && SpellType != SpellType.Instant)
             {
-                player.GCD = 1000;
+                player.GCD = 1;
             }
 
             // Instant finish directly
@@ -176,13 +170,13 @@ namespace swlsimNET.ServerApp.Spells
             if (SpellType == SpellType.Channel)
             {
                 player.CurrentSpell = this;
-                player.CastTime = this.CastTimeMs;
+                player.CastTime = this.CastTime;
             }
 
             // Set player GCD
-            if (player.GCD < 1000 && SpellType != SpellType.Instant)
+            if (player.GCD < 1 && SpellType != SpellType.Instant)
             {
-                player.GCD = 1000;
+                player.GCD = 1;
             }
 
             return null;
@@ -207,7 +201,7 @@ namespace swlsimNET.ServerApp.Spells
                 return ChannelTick(player);
             }
 
-            if (player.CastTime % TickIntervalMs == 0)
+            if (player.CastTime % TickInterval == 0)
             {
                 // Ticks
                 return ChannelTick(player);
@@ -220,8 +214,8 @@ namespace swlsimNET.ServerApp.Spells
         {
             var spell = this; // debug
 
-            var initialTick = CastTimeMs == player.CastTime + TickIntervalMs;
-            var lastTick = CastTimeMs == player.CastTime;
+            var initialTick = CastTime == player.CastTime + TickInterval;
+            var lastTick = CastTime == player.CastTime;
 
             // All bonuses applied only on first tick
             if (initialTick)
@@ -276,14 +270,14 @@ namespace swlsimNET.ServerApp.Spells
                 otherWepon.GimmickResource -= SecondaryGimmickReduce;
             }
 
-            if (MaxCooldownMs > 0)
+            if (MaxCooldown > 0)
             {
                 // Set Cooldown of all spells of same type
                 foreach (var spell in _spellsOfSameType)
                 {
                     spell.Cooldown = AbilityType == AbilityType.Elite
-                        ? MaxCooldownMs * (1 - player.EliteSignetCooldownReduction)
-                        : MaxCooldownMs;
+                        ? MaxCooldown * (1 - player.EliteSignetCooldownReduction)
+                        : MaxCooldown;
                 }
             }
 

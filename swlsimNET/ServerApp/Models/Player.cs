@@ -19,8 +19,8 @@ namespace swlsimNET.ServerApp.Models
         double BasicSignetBoost { get; }
         double PowerSignetBoost { get; }
         double EliteSignetBoost { get; }
-        int Interval { get; }
-        int CurrentTimeMs { get; }
+        double Interval { get; }
+        double CurrentTimeSec { get; }
 
         List<ISpell> Spells { get; }
         List<IBuff> Buffs { get; }
@@ -45,12 +45,12 @@ namespace swlsimNET.ServerApp.Models
 
     public interface ICombat
     {
-        int CastTime { get; set; }
-        int CurrentTimeMs { get; }
-        int GCD { get; set; }
+        double CastTime { get; set; }
+        double CurrentTimeSec { get; }
+        double GCD { get; set; }
         int RepeatHits { get; }
         Spell CurrentSpell { get; }
-        RoundResult NewRound(int currentMs, int pingMs);
+        RoundResult NewRound(double currentSec, double intervalSec);
     }
 
     public class Player : IPlayer, ICombat
@@ -230,16 +230,16 @@ namespace swlsimNET.ServerApp.Models
             _passivesInitiated = true;
         }
 
-        public RoundResult NewRound(int currentMs, int interval)
+        public RoundResult NewRound(double currentSec, double interval)
         {
             if (!_passivesInitiated) InitPassives();
 
             Interval = interval;
-            CurrentTimeMs = currentMs;
+            CurrentTimeSec = currentSec;
 
             var rr = new RoundResult
             {
-                TimeMs = currentMs,
+                TimeSec = currentSec,
                 Interval = interval
             };
 
@@ -454,7 +454,7 @@ namespace swlsimNET.ServerApp.Models
                     var weapon = GetWeaponFromType(ab.WeaponType);
                     if (weapon == null) continue;
 
-                    if (ab.Active && ab.Duration % 1000 == 0)
+                    if (ab.Active && ab.Duration % 1 == 0)
                     {
                         weapon.GimmickResource += ab.GimmickGainPerSec;
                         weapon.Energy += ab.EnergyGainPerSec;
@@ -466,13 +466,13 @@ namespace swlsimNET.ServerApp.Models
         private void PostRound(RoundResult rr)
         {
             // +1 resource per sec primary weapon
-            if (rr.TimeMs != 0 && rr.TimeMs % 1000 == 0)
+            if (rr.TimeSec != 0 && rr.TimeSec % 1 == 0)
             {
                 PrimaryWeapon.Energy++;
             }
 
             // +1 resource every other second secondary weapon
-            if (rr.TimeMs != 0 && rr.TimeMs % 2000 == 0)
+            if (rr.TimeSec != 0 && rr.TimeSec % 2 == 0)
             {
                 SecondaryWeapon.Energy++;
             }
@@ -581,7 +581,7 @@ namespace swlsimNET.ServerApp.Models
         public double EliteSignetBoost { get; protected set; } = 1.43;
         public double EliteSignetCooldownReduction { get; protected set; } = 0;
         public double WaistSignetBoost { get; protected set; } = 1.30; 
-        public int Interval { get; set; }
+        public double Interval { get; set; }
         public List<ISpell> Spells { get; set; }
         public List<IBuff> Buffs { get; }
         public List<IBuff> AbilityBuffs { get; }
@@ -596,9 +596,9 @@ namespace swlsimNET.ServerApp.Models
         #region ICombat implementation
 
         // Implements ICombat
-        public int CastTime { get; set; }
-        public int CurrentTimeMs { get; private set; }
-        public int GCD { get; set; }
+        public double CastTime { get; set; }
+        public double CurrentTimeSec { get; private set; }
+        public double GCD { get; set; }
         public int RepeatHits { get; private set; }
         public Spell CurrentSpell { get; set; }
 

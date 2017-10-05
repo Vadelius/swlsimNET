@@ -5,9 +5,9 @@ namespace swlsimNET.ServerApp.Weapons
 {
     public class Elemental : Weapon
     {
-        private int LastElementalSpellTimeStamp { get; set; }
+        private double LastElementalSpellTimeStamp { get; set; }
         private ISpell LastElementalSpell { get; set; }
-        private int TimeSinceLastElementalSpell { get; set; }
+        private double TimeSinceLastElementalSpell { get; set; }
 
         public Elemental(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
@@ -18,10 +18,10 @@ namespace swlsimNET.ServerApp.Weapons
         {
             LastElementalSpell = spell;
 
-            TimeSinceLastElementalSpell = player.CurrentTimeMs - LastElementalSpellTimeStamp;
+            TimeSinceLastElementalSpell = player.CurrentTimeSec - LastElementalSpellTimeStamp;
 
             // Set new time stamp for new cast
-            LastElementalSpellTimeStamp = player.CurrentTimeMs + spell.CastTimeMs;
+            LastElementalSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
 
             Decay(heatBeforeCast);
             //HeatStop();
@@ -52,27 +52,27 @@ namespace swlsimNET.ServerApp.Weapons
             // Corruption = -4 for each second.
             // Only reduce per second, so for example 1.5s = 1s
             var time = TimeSinceLastElementalSpell;
-            var reduce = time / 1000;
+            int reduce = 0;
 
             if (heatBeforeCast <= 25)
             {
                 // Heat = -1 per second.
-                reduce = reduce * 1;
+                reduce = (int) (time * 1);
             }
             if (heatBeforeCast >= 26 && heatBeforeCast <= 50)
             {
                 // Heat = -2 per second.
-                reduce = reduce * 2;
+                reduce = (int) (time * 2);
             }
             if (heatBeforeCast >= 51 && heatBeforeCast <= 75)
             {
                 // Heat = -3 per second.
-                reduce = reduce * 3;
+                reduce = (int) (time * 3);
             }
             if (heatBeforeCast >= 76)
             {
                 // Heat = -4 per second.
-                reduce = reduce * 4;
+                reduce = (int) (time * 4);
             }
 
             GimmickResource -= reduce;
