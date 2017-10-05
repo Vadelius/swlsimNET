@@ -53,12 +53,7 @@ namespace swlsimNET.Models
 
         [Display(Name = "Action priority list *")]
         [Required(ErrorMessage = "required.")]
-        public string Apl { get; set; } = "Fist.Savagery, Buff.UnstoppableForce.Active\r\n" +
-                                          "Hammer.Seethe, Buff.UnstoppableForce.Active\r\n" +
-                                          "Hammer.UnstoppableForce, Rage > 50 || Hammer.Energy > 8\r\n" +
-                                          "Hammer.Demolish, Buff.UnstoppableForce.Active\r\n" +
-                                          "Hammer.Demolish, Rage > 60 || Hammer.Energy > 13\r\n" +
-                                          "Hammer.Smash";
+        public string Apl { get; set; }
 
         public string Passive1 { get; set; }
         public string Passive2 { get; set; }
@@ -109,12 +104,12 @@ namespace swlsimNET.Models
             new Jackpot(),
             new FixedGame(),
             new HeavyCaliberRounds(),
-            //new FullyLoaded(), GREM BROKE HE FIX
+            new FullyLoaded(),
             new WinStreak(),
             new FlechetteRounds(),
             new BeginnersLuck(),
-            //new BulletEcho(), GREM BROKE HE FIX
-            //new Holdout(), GREM BROKE HE FIX
+            new BulletEcho(),
+            new Holdout(),
 
             // Blood
             new CrimsonPulse(),

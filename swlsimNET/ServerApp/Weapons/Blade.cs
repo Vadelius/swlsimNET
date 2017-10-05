@@ -5,7 +5,7 @@ using swlsimNET.ServerApp.Spells;
 
 namespace swlsimNET.ServerApp.Weapons
 {
-    internal class Blade : Weapon
+    public class Blade : Weapon
     {
         private int SpiritBladeCharges;
         private bool SpiritBladeActive => SpiritBladeCharges > 0;

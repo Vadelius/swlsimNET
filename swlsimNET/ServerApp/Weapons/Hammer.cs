@@ -5,7 +5,7 @@ using swlsimNET.ServerApp.Spells.Hammer;
 
 namespace swlsimNET.ServerApp.Weapons
 {
-    internal class Hammer : Weapon
+    public class Hammer : Weapon
     {
         private Passive _fastAndFurious;
 

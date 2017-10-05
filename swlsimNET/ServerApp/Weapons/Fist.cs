@@ -4,7 +4,7 @@ using swlsimNET.ServerApp.Spells;
 
 namespace swlsimNET.ServerApp.Weapons
 {
-    internal class Fist : Weapon
+    public class Fist : Weapon
     {
         public bool AllowFrenziedWrathAbilities { get; private set; }
 

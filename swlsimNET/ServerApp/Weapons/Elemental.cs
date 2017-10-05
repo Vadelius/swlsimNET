@@ -3,7 +3,7 @@ using swlsimNET.ServerApp.Spells;
 
 namespace swlsimNET.ServerApp.Weapons
 {
-    internal class Elemental : Weapon
+    public class Elemental : Weapon
     {
         private int LastElementalSpellTimeStamp { get; set; }
         private ISpell LastElementalSpell { get; set; }

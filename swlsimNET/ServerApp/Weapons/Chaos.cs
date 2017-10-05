@@ -5,7 +5,7 @@ using swlsimNET.ServerApp.Spells;
 
 namespace swlsimNET.ServerApp.Weapons
 {
-    internal class Chaos : Weapon
+    public class Chaos : Weapon
     {
         public Chaos(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {

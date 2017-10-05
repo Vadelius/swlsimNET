@@ -46,7 +46,6 @@ namespace swlsimNET.ServerApp.Models
     public interface ICombat
     {
         int CastTime { get; set; }
-        //int ChannelTime { get; set; }
         int CurrentTimeMs { get; }
         int GCD { get; set; }
         int RepeatHits { get; }
@@ -59,12 +58,12 @@ namespace swlsimNET.ServerApp.Models
         private bool _passivesInitiated;
         public ExpressionContext Context;
 
-        public Player(Weapon primaryWeapon, Weapon secondaryWeapon, List<Passive> passives, Settings settings)
+        public Player(Settings settings)
         {
-            PrimaryWeapon = primaryWeapon;
-            SecondaryWeapon = secondaryWeapon;
-            Passives = passives;
             Settings = settings;
+            PrimaryWeapon = GetWeaponFromType(settings.PrimaryWeapon, settings.PrimaryWeaponAffix);
+            SecondaryWeapon = GetWeaponFromType(settings.SecondaryWeapon, settings.SecondaryWeaponAffix);
+            Passives = GetSelectedPassives();      
 
             Buffs = new List<IBuff>();
             {
@@ -85,7 +84,39 @@ namespace swlsimNET.ServerApp.Models
             EliteSignetBoost = settings.HeadSignetIsCdr ? 1 : settings.EliteSignet / 100 + 1;
             EliteSignetCooldownReduction = settings.HeadSignetIsCdr ? settings.EliteSignet / 100 : 0;
 
+            var apl = new AplReader(this, settings.Apl);
+            Spells = apl.GetApl();
+
             this.Buff = new BuffWrapper(this);
+        }
+
+        private Weapon GetWeaponFromType(WeaponType? wtypenullable, WeaponAffix waffix)
+        {
+            var wtype = (WeaponType) wtypenullable;
+
+            switch (wtype)
+            {
+                case WeaponType.Blade:
+                    return new Blade(wtype, waffix);
+                case WeaponType.Blood:
+                    return new Blood(wtype, waffix);
+                case WeaponType.Chaos:
+                    return new Chaos(wtype, waffix);
+                case WeaponType.Elemental:
+                    return new Elemental(wtype, waffix);
+                case WeaponType.Fist:
+                    return new Fist(wtype, waffix);
+                case WeaponType.Hammer:
+                    return new Hammer(wtype, waffix);
+                case WeaponType.Pistol:
+                    return new Pistol(wtype, waffix);
+                case WeaponType.AssaultRifle:
+                    return new AssaultRifle(wtype, waffix);
+                case WeaponType.Shotgun:
+                    return new Shotgun(wtype, waffix);
+            }
+
+            return null;
         }
 
         private void InitAbilityBuffs()
@@ -143,6 +174,29 @@ namespace swlsimNET.ServerApp.Models
 
 
             #endregion
+        }
+
+        // TODO: Simplify
+        private List<Passive> GetSelectedPassives()
+        {
+            var selectedPassives = new List<Passive>();
+
+            var passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive1);
+            if (passive != null) selectedPassives.Add(passive);
+
+            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive2);
+            if (passive != null) selectedPassives.Add(passive);
+
+            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive3);
+            if (passive != null) selectedPassives.Add(passive);
+
+            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive4);
+            if (passive != null) selectedPassives.Add(passive);
+
+            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive5);
+            if (passive != null) selectedPassives.Add(passive);
+
+            return selectedPassives;
         }
 
         private void InitPassives()

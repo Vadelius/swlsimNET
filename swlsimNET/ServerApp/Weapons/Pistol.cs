@@ -10,7 +10,7 @@ namespace swlsimNET.ServerApp.Weapons
         White, Blue, Red
     }
 
-    internal class Pistol : Weapon
+    public class Pistol : Weapon
     {
         public Chamber LeftChamber { get; set; }
         public Chamber RightChamber { get; set; }

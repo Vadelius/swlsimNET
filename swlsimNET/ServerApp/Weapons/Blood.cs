@@ -5,7 +5,7 @@ using swlsimNET.ServerApp.Spells.Blood;
 
 namespace swlsimNET.ServerApp.Weapons
 {
-    internal class Blood : Weapon
+    public class Blood : Weapon
     {
         private bool _init;
 
