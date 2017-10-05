@@ -15,9 +15,25 @@ namespace swlsimNET.Tests
     public class PlayerTest
     {
         [TestMethod]
+        public void AplReaderTest()
+        {
+            var setting = TestSettingsHammerFist();
+            setting.Apl = "Hammer.Smash, Rage < 50";
+
+            var player = new Player(setting);
+            var spell = player.Spells.Find(s => s.GetType() == typeof(Smash));
+
+            var spellArgs = spell.Args == "Rage < 50";
+
+            Assert.IsTrue(spell != null && spellArgs);
+        }
+
+        [TestMethod]
         public void GlobalBuffs()
         {
             var setting = TestSettingsHammerFist();
+            setting.Apl = "Hammer.Smash";
+
             setting.Exposed = true;
             setting.OpeningShot = true;
             setting.Savagery = true;
@@ -28,15 +44,25 @@ namespace swlsimNET.Tests
             var openingShot = player.Buffs.Any(b => b.GetType() == typeof(OpeningShot));
             var savagery = player.Buffs.Any(b => b.GetType() == typeof(Savagery));
 
+            Assert.IsTrue(exposed && openingShot && savagery);
+        }
+
+        [TestMethod]
+        public void WeaponTypes()
+        {
+            var setting = TestSettingsHammerFist();
+            setting.Apl = "Hammer.Smash";
+            var player = new Player(setting);
+
             Assert.IsInstanceOfType(player.PrimaryWeapon, typeof(Hammer));
             Assert.IsInstanceOfType(player.SecondaryWeapon, typeof(Fist));
-            Assert.IsTrue(exposed && openingShot && savagery);
         }
 
         [TestMethod]
         public void TestIterationGcd()
         {
             var setting = TestSettingsHammerFist();
+            setting.Apl = "Hammer.Smash";
             setting.Iterations = 2;
             setting.FightLength = 10;
             setting.TargetType = TargetType.Champion;
@@ -67,31 +93,146 @@ namespace swlsimNET.Tests
         }
 
         [TestMethod]
-        public void TestIterationChannel()
+        public void TestCastSpell()
         {
-            var setting = TestSettingsBloodFist();
-            setting.Iterations = 1;
-            setting.FightLength = 5;
-            setting.TargetType = TargetType.Champion;
+            var setting = new Settings
+            {
+                PrimaryWeapon = WeaponType.Elemental,
+                SecondaryWeapon = WeaponType.Fist,
+                FightLength = 10,
+                TargetType = TargetType.Champion,
+                Apl = "Elemental.TestCastSpell"
+            };
 
+            var spell = new CastSpell();
+            var player = new Player(setting);
+            player.Spells.Add(spell);
             var engine = new Engine(setting);
-            var iterations = engine.StartIterations();
-            var fight = iterations.FirstOrDefault();
-            var iterationCount = iterations.Count;
+            var fight = engine.StartFight(player);
+
+            var endTimeMs = fight.RoundResults.Last().TimeMs;
+            var rounds = fight.RoundResults.Count;
+
+            var castCount = fight.RoundResults
+                .SelectMany(r => r.Attacks.Where(a => a.Spell.GetType() == typeof(CastSpell))).Count();
+
+            // TODO: Is this correct assumptions? or can we finish a cast and start a new one the same ms
+            // 0ms, start cast
+            // 2500ms, finish cast
+            // 2600ms, start next cast
+            // 5100ms, finish cast
+            // 5200, start next cast
+            // 7700ms, finish cast
+
+            Assert.AreEqual(rounds, 4);
+            Assert.AreEqual(endTimeMs, 9000);
+            Assert.IsTrue(castCount == 4);
+        }
+
+        [TestMethod]
+        public void TestChannelSpell()
+        {
+            var setting = new Settings
+            {
+                PrimaryWeapon = WeaponType.Blood,
+                SecondaryWeapon = WeaponType.Fist,
+                FightLength = 10,
+                TargetType = TargetType.Champion,
+                Apl = "Blood.ChannelSpell"
+            };          
+
+            var spell = new ChannelSpell();
+            var player = new Player(setting);
+            player.Spells.Add(spell);
+            var engine = new Engine(setting);
+            var fight = engine.StartFight(player);
 
             var endTimeMs = fight.RoundResults.Last().TimeMs;
             var rounds = fight.RoundResults.Count;
 
             var channelTickCount = fight.RoundResults
-                .SelectMany(r => r.Attacks.Where(a => a.Spell.GetType() == typeof(Maleficium))).Count();
+                .SelectMany(r => r.Attacks.Where(a => a.Spell.GetType() == typeof(ChannelSpell))).Count();
 
-            // TODO: Is this correct assumptions?
-            Assert.AreEqual(iterationCount, 1);
-            Assert.AreEqual(endTimeMs, 5000);
-            Assert.AreEqual(rounds, 5);
-            Assert.AreEqual(endTimeMs, 7000);
-            Assert.AreEqual(rounds, 10);
-            Assert.IsTrue(channelTickCount == 10);
+            // TODO: Is this correct assumptions? or can we finish a channel and start a new one the same ms
+            // 0ms, start channel
+            // 500ms, channel tick
+            // 1000ms, channel tick
+            // 1500ms, channel tick
+            // 2000ms, channel tick
+            // 2500ms, channel tick
+            // 2500ms, finish channel
+            // 2600ms, start next channel
+            // 3100ms, channel tick
+            // 3600ms, channel tick
+            // 4100ms, channel tick
+            // 4600ms, channel tick
+            // 5100ms, channel tick
+            // 5100ms, finish channel
+            // 5200, start next channel
+            // 5700ms, channel tick
+            // 6200ms, channel tick
+            // 6700ms, channel tick
+            // 7200ms, channel tick
+            // 7700ms, channel tick
+            // 7700ms, finish channel
+
+            Assert.AreEqual(rounds, 20);
+            Assert.AreEqual(endTimeMs, 9000);
+            Assert.IsTrue(channelTickCount == 20);
+        }
+
+        [TestMethod]
+        public void TestDotSpell()
+        {
+            var setting = new Settings
+            {
+                PrimaryWeapon = WeaponType.Blood,
+                SecondaryWeapon = WeaponType.Fist,
+                FightLength = 10,
+                TargetType = TargetType.Champion,
+                Apl = "Blood.DotSpell"
+            };
+
+            var spell = new DotSpell();
+            var player = new Player(setting);
+            player.Spells.Add(spell);
+            var engine = new Engine(setting);
+            var fight = engine.StartFight(player);
+
+            var endTimeMs = fight.RoundResults.Last().TimeMs;
+            var rounds = fight.RoundResults.Count;
+
+            var dotTickCount = fight.RoundResults
+                .SelectMany(r => r.Attacks.Where(a => a.Spell.GetType() == typeof(DotSpell))).Count();
+
+            // TODO: Dot ticks should NOT add any kind of bonus attacks?
+
+            // TODO: Is this correct assumptions? or can we finish a channel and start a new one the same ms
+            // 0ms, start dot
+            // 500ms, dot tick
+            // 1000ms, dot tick
+            // 1500ms, dot tick
+            // 2000ms, dot tick
+            // 2500ms, dot tick
+            // 2500ms, finish dot
+            // 2600ms, start next dot
+            // 3100ms, dot tick
+            // 3600ms, dot tick
+            // 4100ms, dot tick
+            // 4600ms, dot tick
+            // 5100ms, dot tick
+            // 5100ms, finish dot
+            // 5200, start next dot
+            // 5700ms, dot tick
+            // 6200ms, dot tick
+            // 6700ms, dot tick
+            // 7200ms, dot tick
+            // 7700ms, dot tick
+            // 7700ms, finish dot
+
+            Assert.AreEqual(rounds, 20);
+            Assert.AreEqual(endTimeMs, 9000);
+            Assert.IsTrue(dotTickCount == 20);
         }
 
         private Settings TestSettingsHammerFist()
@@ -100,18 +241,48 @@ namespace swlsimNET.Tests
             {
                 PrimaryWeapon = WeaponType.Hammer,
                 SecondaryWeapon = WeaponType.Fist,
-                Apl = "Hammer.Smash"
             };
         }
 
-        private Settings TestSettingsBloodFist()
+        private class CastSpell : Spell
         {
-            return new Settings
+            public CastSpell()
             {
-                PrimaryWeapon = WeaponType.Blood,
-                SecondaryWeapon = WeaponType.Fist,
-                Apl = "Blood.Maleficium"
-            };
+                WeaponType = WeaponType.Elemental;
+                AbilityType = AbilityType.None;
+                SpellType = SpellType.Cast;
+                CastTime = 2.5;
+                BaseDamage = 1;
+            }
+        }
+
+        private class ChannelSpell : Spell
+        {
+            public ChannelSpell()
+            {
+                WeaponType = WeaponType.Elemental;
+                AbilityType = AbilityType.None;
+                SpellType = SpellType.Channel;
+                CastTime = 2.5;
+                ChannelTicks = 5;
+                BaseDamage = 1;
+            }
+        }
+
+        private class DotSpell : Spell
+        {
+            public DotSpell()
+            {
+                WeaponType = WeaponType.Blood;
+                AbilityType = AbilityType.None;
+                SpellType = SpellType.Dot;
+                CastTime = 0;
+                DotDuration = 2.5;
+                DotTicks = 5;
+                BaseDamage = 1;
+
+                // TODO: Add ability debuff
+            }
         }
     }
 }

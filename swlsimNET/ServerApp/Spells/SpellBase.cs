@@ -38,6 +38,7 @@ namespace swlsimNET.ServerApp.Spells
         double CastTime { get; set; }
         int CastTimeMs { get; }
         int ChannelTicks { get; set; }
+        int DotTicks { get; set; }
         double BonusCritChance { get; set; }
         double BonusCritPower { get; set; }
         string Args { get; }
@@ -109,6 +110,7 @@ namespace swlsimNET.ServerApp.Spells
         public double Cooldown { get; set; }
         public double CastTime { get; set; }
         public int ChannelTicks { get; set; }
+        public int DotTicks { get; set; } // TODO: implement in spellbase
         public double BonusCritChance { get; set; }
         public double BonusCritPower { get; set; }
         public string Args { get; set; }
