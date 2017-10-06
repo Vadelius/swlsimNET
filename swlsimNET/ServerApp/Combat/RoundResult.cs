@@ -12,8 +12,8 @@ namespace swlsimNET.ServerApp.Combat
             Attacks = new List<Attack>();
         }
 
-        public int TimeMs { get; set; }
-        public int Interval { get; set; }
+        public double TimeSec { get; set; }
+        public double Interval { get; set; }
 
         public List<Attack> Attacks { get; set; }
 

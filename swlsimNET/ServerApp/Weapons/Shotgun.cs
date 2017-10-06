@@ -5,7 +5,7 @@ using swlsimNET.ServerApp.Spells.Shotgun;
 
 namespace swlsimNET.ServerApp.Weapons
 {
-    internal class Shotgun : Weapon
+    public class Shotgun : Weapon
     {
         public Shotgun(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {

@@ -72,7 +72,7 @@ namespace swlsimNET.ServerApp.Weapons
             }
         }
 
-        private int LastEnergyOnCritTimeStamp { get; set; }
+        private double LastEnergyOnCritTimeStamp { get; set; }
 
         #endregion
 
@@ -112,12 +112,12 @@ namespace swlsimNET.ServerApp.Weapons
 
         public void EnergyOnCrit(IPlayer player)
         {
-            var timeSinceLastEnergyOnCrit = player.CurrentTimeMs - LastEnergyOnCritTimeStamp;
+            var timeSinceLastEnergyOnCrit = player.CurrentTimeSec - LastEnergyOnCritTimeStamp;
 
-            if (timeSinceLastEnergyOnCrit >= 1000 || LastEnergyOnCritTimeStamp == 0)
+            if (timeSinceLastEnergyOnCrit >= 1 || LastEnergyOnCritTimeStamp == 0)
             {
                 Energy++;
-                LastEnergyOnCritTimeStamp = player.CurrentTimeMs;
+                LastEnergyOnCritTimeStamp = player.CurrentTimeSec;
             }
         }
 
@@ -168,11 +168,8 @@ namespace swlsimNET.ServerApp.Weapons
 
         private void DestructionAffix(IPlayer player, RoundResult rr)
         {
-            var fightLengthMs = player.Settings.FightLength * 1000;
-
             // Get percentage of fight done
-            var percentageChange = (player.CurrentTimeMs - fightLengthMs) /
-                                   (double)fightLengthMs * -100;
+            var percentageChange = (player.CurrentTimeSec - player.Settings.FightLength) / player.Settings.FightLength * -100;
 
             // TODO: < 35% Target HP
             if (percentageChange < 35)

@@ -1,14 +1,9 @@
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using swlsimNET;
-using swlsimNET.Models;
-using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
-using swlsimNET.ServerApp.Spells.Blood;
 using swlsimNET.ServerApp.Weapons;
 
-namespace UnitTests
+namespace swlsimNET.Tests
 {
     [TestClass]
     public class PlayerTest

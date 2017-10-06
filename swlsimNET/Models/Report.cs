@@ -64,8 +64,8 @@ namespace swlsimNET.Models
             nfi = (NumberFormatInfo) CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
-            int lastChangeTimeStamp = 0;
-            const int interval = 2000; // Can't go higher due to inconsistent line-values.
+            double lastChangeTimeStamp = 0;
+            const int interval = 2; // Can't go higher due to inconsistent line-values.
 
             foreach (var iteration in iterationFightResults)
             {
@@ -80,18 +80,18 @@ namespace swlsimNET.Models
                 {
                     // Only get first attack every round since all others are proccs
                     
-                    if (lastChangeTimeStamp == 0 || lastChangeTimeStamp + interval < rr.TimeMs)
+                    if (lastChangeTimeStamp == 0 || lastChangeTimeStamp + interval < rr.TimeSec)
                     {
                         EnergyList.Add(new EnergySnap
                         {
-                            Time = rr.TimeMs/1000,
+                            Time = rr.TimeSec,
                             Primary = rr.PrimaryEnergyEnd,
                             Secondary = rr.SecondaryEnergyEnd,
                             Pgimmick = rr.PrimaryGimmickEnd,
                             Sgimmick = rr.SecondaryGimmickEnd
                         });
 
-                        lastChangeTimeStamp = rr.TimeMs;
+                        lastChangeTimeStamp = rr.TimeSec;
                     }
 
                     foreach (var a in rr.Attacks)
@@ -99,21 +99,21 @@ namespace swlsimNET.Models
                         if (a.IsHit && a.IsCrit) 
                         {
 
-                            _oneBuilder.AppendLine($"<div>[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " + 
+                            _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " + 
                                                    $"{a.Spell.Name} *{a.Damage.ToString("#,##0,.0K", nfi)}* " +
                                                    $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " + 
                                                    $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})</div>");
                         }
                         else if (a.IsHit && a.Spell.SpellType != SpellType.Procc)
                         {
-                            _oneBuilder.AppendLine($"<div>[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " +
+                            _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
                                                    $"{a.Spell.Name} {a.Damage.ToString("#,##0,.0K", nfi)} " +
                                                    $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " +
                                                    $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})</div>");
                         }
                         else if (a.IsHit && a.Spell.SpellType == SpellType.Procc)
                         {
-                            _oneBuilder.AppendLine($"<div>[{rr.TimeMs.ToString("#,##0,.0s", nfi)}] " +
+                            _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
                                                    $"[{a.Spell.Name}] proc!</div>");
                         }
 
@@ -191,7 +191,7 @@ namespace swlsimNET.Models
 
         public class EnergySnap
         {
-            public int Time { get; set; }
+            public double Time { get; set; }
             public int Primary { get; set; }
             public int Secondary { get; set; }
             public double Pgimmick { get; set; }

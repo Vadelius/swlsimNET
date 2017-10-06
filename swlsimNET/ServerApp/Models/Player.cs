@@ -19,8 +19,8 @@ namespace swlsimNET.ServerApp.Models
         double BasicSignetBoost { get; }
         double PowerSignetBoost { get; }
         double EliteSignetBoost { get; }
-        int Interval { get; }
-        int CurrentTimeMs { get; }
+        double Interval { get; }
+        double CurrentTimeSec { get; }
 
         List<ISpell> Spells { get; }
         List<IBuff> Buffs { get; }
@@ -45,13 +45,12 @@ namespace swlsimNET.ServerApp.Models
 
     public interface ICombat
     {
-        int CastTime { get; set; }
-        //int ChannelTime { get; set; }
-        int CurrentTimeMs { get; }
-        int GCD { get; set; }
+        double CastTime { get; set; }
+        double CurrentTimeSec { get; }
+        double GCD { get; set; }
         int RepeatHits { get; }
         Spell CurrentSpell { get; }
-        RoundResult NewRound(int currentMs, int pingMs);
+        RoundResult NewRound(double currentSec, double intervalSec);
     }
 
     public class Player : IPlayer, ICombat
@@ -59,12 +58,12 @@ namespace swlsimNET.ServerApp.Models
         private bool _passivesInitiated;
         public ExpressionContext Context;
 
-        public Player(Weapon primaryWeapon, Weapon secondaryWeapon, List<Passive> passives, Settings settings)
+        public Player(Settings settings)
         {
-            PrimaryWeapon = primaryWeapon;
-            SecondaryWeapon = secondaryWeapon;
-            Passives = passives;
             Settings = settings;
+            PrimaryWeapon = GetWeaponFromType(settings.PrimaryWeapon, settings.PrimaryWeaponAffix);
+            SecondaryWeapon = GetWeaponFromType(settings.SecondaryWeapon, settings.SecondaryWeaponAffix);
+            Passives = GetSelectedPassives();      
 
             Buffs = new List<IBuff>();
             {
@@ -86,7 +85,39 @@ namespace swlsimNET.ServerApp.Models
             EliteSignetCooldownReduction = settings.HeadSignetIsCdr ? settings.EliteSignet / 100 : 0;
             WaistSignetBoost = settings.WaistSignet / 100;
 
+            var apl = new AplReader(this, settings.Apl);
+            Spells = apl.GetApl();
+
             this.Buff = new BuffWrapper(this);
+        }
+
+        private Weapon GetWeaponFromType(WeaponType? wtypenullable, WeaponAffix waffix)
+        {
+            var wtype = (WeaponType) wtypenullable;
+
+            switch (wtype)
+            {
+                case WeaponType.Blade:
+                    return new Blade(wtype, waffix);
+                case WeaponType.Blood:
+                    return new Blood(wtype, waffix);
+                case WeaponType.Chaos:
+                    return new Chaos(wtype, waffix);
+                case WeaponType.Elemental:
+                    return new Elemental(wtype, waffix);
+                case WeaponType.Fist:
+                    return new Fist(wtype, waffix);
+                case WeaponType.Hammer:
+                    return new Hammer(wtype, waffix);
+                case WeaponType.Pistol:
+                    return new Pistol(wtype, waffix);
+                case WeaponType.AssaultRifle:
+                    return new AssaultRifle(wtype, waffix);
+                case WeaponType.Shotgun:
+                    return new Shotgun(wtype, waffix);
+            }
+
+            return null;
         }
 
         private void InitAbilityBuffs()
@@ -146,6 +177,29 @@ namespace swlsimNET.ServerApp.Models
             #endregion
         }
 
+        // TODO: Simplify
+        private List<Passive> GetSelectedPassives()
+        {
+            var selectedPassives = new List<Passive>();
+
+            var passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive1);
+            if (passive != null) selectedPassives.Add(passive);
+
+            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive2);
+            if (passive != null) selectedPassives.Add(passive);
+
+            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive3);
+            if (passive != null) selectedPassives.Add(passive);
+
+            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive4);
+            if (passive != null) selectedPassives.Add(passive);
+
+            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive5);
+            if (passive != null) selectedPassives.Add(passive);
+
+            return selectedPassives;
+        }
+
         private void InitPassives()
         {
             // Go through all passives
@@ -176,16 +230,16 @@ namespace swlsimNET.ServerApp.Models
             _passivesInitiated = true;
         }
 
-        public RoundResult NewRound(int currentMs, int interval)
+        public RoundResult NewRound(double currentSec, double interval)
         {
             if (!_passivesInitiated) InitPassives();
 
             Interval = interval;
-            CurrentTimeMs = currentMs;
+            CurrentTimeSec = currentSec;
 
             var rr = new RoundResult
             {
-                TimeMs = currentMs,
+                TimeSec = currentSec,
                 Interval = interval
             };
 
@@ -400,7 +454,7 @@ namespace swlsimNET.ServerApp.Models
                     var weapon = GetWeaponFromType(ab.WeaponType);
                     if (weapon == null) continue;
 
-                    if (ab.Active && ab.Duration % 1000 == 0)
+                    if (ab.Active && ab.Duration % 1 == 0)
                     {
                         weapon.GimmickResource += ab.GimmickGainPerSec;
                         weapon.Energy += ab.EnergyGainPerSec;
@@ -412,13 +466,13 @@ namespace swlsimNET.ServerApp.Models
         private void PostRound(RoundResult rr)
         {
             // +1 resource per sec primary weapon
-            if (rr.TimeMs != 0 && rr.TimeMs % 1000 == 0)
+            if (rr.TimeSec != 0 && rr.TimeSec % 1 == 0)
             {
                 PrimaryWeapon.Energy++;
             }
 
             // +1 resource every other second secondary weapon
-            if (rr.TimeMs != 0 && rr.TimeMs % 2000 == 0)
+            if (rr.TimeSec != 0 && rr.TimeSec % 2 == 0)
             {
                 SecondaryWeapon.Energy++;
             }
@@ -527,7 +581,7 @@ namespace swlsimNET.ServerApp.Models
         public double EliteSignetBoost { get; protected set; } = 1.43;
         public double EliteSignetCooldownReduction { get; protected set; } = 0;
         public double WaistSignetBoost { get; protected set; } = 1.30; 
-        public int Interval { get; set; }
+        public double Interval { get; set; }
         public List<ISpell> Spells { get; set; }
         public List<IBuff> Buffs { get; }
         public List<IBuff> AbilityBuffs { get; }
@@ -542,9 +596,9 @@ namespace swlsimNET.ServerApp.Models
         #region ICombat implementation
 
         // Implements ICombat
-        public int CastTime { get; set; }
-        public int CurrentTimeMs { get; private set; }
-        public int GCD { get; set; }
+        public double CastTime { get; set; }
+        public double CurrentTimeSec { get; private set; }
+        public double GCD { get; set; }
         public int RepeatHits { get; private set; }
         public Spell CurrentSpell { get; set; }
 

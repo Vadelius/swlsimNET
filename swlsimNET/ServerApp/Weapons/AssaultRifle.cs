@@ -7,7 +7,7 @@ using swlsimNET.ServerApp.Spells;
 
 namespace swlsimNET.ServerApp.Weapons
 {
-    internal class AssaultRifle : Weapon
+    public class AssaultRifle : Weapon
     {
         private readonly List<string> _grenadeGenerators = new List<string>
         {
