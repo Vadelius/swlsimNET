@@ -79,59 +79,10 @@ namespace swlsimNET.ServerApp.Models
 
         private void InitAbilityBuffs()
         {
-            #region Blade
 
             AbilityBuffs.Add(new Spells.Blade.Buffs.SupremeHarmony());
-
-            #endregion
-
-            #region Blood
-
-
-
-            #endregion
-
-            #region Chaos
-
-
-
-            #endregion
-
-            #region Elemental
-
-
-
-            #endregion
-
-            #region Fist
-
             AbilityBuffs.Add(new Spells.Fist.Buffs.Savagery());
-
-            #endregion
-
-            #region Hammer
-
             AbilityBuffs.Add(new Spells.Hammer.Buffs.UnstoppableForce());
-
-            #endregion
-
-            #region Pistol
-
-
-
-            #endregion
-
-            #region AssaultRifle
-
-
-
-            #endregion
-
-            #region Shotgun
-
-
-
-            #endregion
         }
 
         // TODO: Simplify
