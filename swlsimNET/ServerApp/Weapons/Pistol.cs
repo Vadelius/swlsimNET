@@ -1,4 +1,5 @@
-﻿using swlsimNET.ServerApp.Combat;
+﻿using System;
+using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Spells.Pistol;
@@ -10,15 +11,22 @@ namespace swlsimNET.ServerApp.Weapons
         White, Blue, Red
     }
 
-    internal class Pistol : Weapon
+    public class Pistol : Weapon
     {
         public Chamber LeftChamber { get; set; }
         public Chamber RightChamber { get; set; }
         private int ChamberLockTimeStamp { get; set; }
         private int LastPistolSpellTimeStamp { get; set; }
+        private int MiseryAndMaliceTimeStamp { get; set; }
 
         private bool _init;
         private bool _jackpotBonus;
+        private double _miseryAndMaliceBonus;
+        private bool _harmonisers = false;
+        private bool _sixShooters = false;
+        private bool _miseryAndMalice = false;
+        private bool _annihilators = false;
+        private bool _heavyCaliberPistols = false;
 
         private Passive _jackpot;
         private Passive _fixedGame;
@@ -78,6 +86,7 @@ namespace swlsimNET.ServerApp.Weapons
             }
         }
 
+
         public override double GetBonusBaseDamage(IPlayer player, ISpell spell, double gimmickBeforeCast)
         {
             double bonusBaseDamage = 0;
@@ -86,6 +95,12 @@ namespace swlsimNET.ServerApp.Weapons
             if (_jackpot != null && _jackpotBonus)
             {
                 bonusBaseDamage += _jackpot.BaseDamage;
+            }
+
+            // Misery & Malice Weapon
+            if (_miseryAndMalice)
+            {
+                bonusBaseDamage += _miseryAndMaliceBonus;
             }
 
             return bonusBaseDamage;
@@ -135,15 +150,45 @@ namespace swlsimNET.ServerApp.Weapons
                     player.AddBonusAttack(rr, new FlechetteRounds());
                 }
 
+                // Misery & Malice Weapon
+                if (_miseryAndMalice)
+                {
+                    _miseryAndMaliceBonus = 0.06; // TODO: 6% with all pistol abilities
+                }
+
                 switch (LeftChamber)
                 {
+
                     case Chamber.White:
-                        player.AddBonusAttack(rr, new WhiteChambers(player));
+                        if (_annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
+                        if (_harmonisers)
+                        {
+                            var roll = Rnd.Next(1, 5);
+                            if (roll == 4)
+                            {
+                                LeftChamber = Chamber.Blue; RightChamber = Chamber.Blue;
+                                player.AddBonusAttack(rr, new BlueChambers(player));
+                            }
+                            else player.AddBonusAttack(rr, new WhiteChambers(player));
+                        }
+                        else player.AddBonusAttack(rr, new WhiteChambers(player));
                         break;
                     case Chamber.Blue:
-                        player.AddBonusAttack(rr, new BlueChambers(player));
+                        if (_annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
+                        if (_harmonisers)
+                        {
+                            var roll = Rnd.Next(1, 101);
+                            if (roll <= 15)
+                            {
+                                LeftChamber = Chamber.Red; RightChamber = Chamber.Red;
+                                player.AddBonusAttack(rr, new RedChambers(player));
+                            }
+                            else player.AddBonusAttack(rr, new BlueChambers(player));
+                        }
+                        else player.AddBonusAttack(rr, new BlueChambers(player));
                         break;
                     case Chamber.Red:
+                        if (_annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
                         player.AddBonusAttack(rr, new RedChambers(player));
                         break;
                 }
@@ -158,7 +203,9 @@ namespace swlsimNET.ServerApp.Weapons
         {
             LeftChamber = Dice();
             RightChamber = Dice();
-            ChamberLockTimeStamp = player.CurrentTimeMs;
+            if (_sixShooters)
+            { ChamberLockTimeStamp = player.CurrentTimeMs - 500; }
+            else ChamberLockTimeStamp = player.CurrentTimeMs;
         }
 
         private Chamber Dice()
@@ -166,6 +213,20 @@ namespace swlsimNET.ServerApp.Weapons
             // 6 chambers. 3 white, 2 blue, 1 red.
 
             // TODO: var maxroll = 7 + PASSIVEBONUSES;
+
+            if (_heavyCaliberPistols)
+            {
+                var caliberRoll = Rnd.Next(1, 7);
+                // "You are more likely to roll a Double Red set of chambers, but less likely to roll a Double White or Double Blue set of chambers." Thanks Funcom.
+                // Purely speculation below.
+                if (caliberRoll >= 2 && caliberRoll <= 3)
+                    return Chamber.White;
+                if (caliberRoll == 4)
+                    return Chamber.Blue;
+                if (caliberRoll >= 5)
+                    return Chamber.Red;
+            }
+
             var roll = Rnd.Next(1, 7);
 
             if (roll >= 1 && roll <= 3)
@@ -205,6 +266,16 @@ namespace swlsimNET.ServerApp.Weapons
                 WeaponType = WeaponType.Pistol;
                 SpellType = SpellType.Gimmick;
                 BaseDamage = 2;
+            }
+        }
+
+        public class Cb3Annihilators : Spell
+        {
+            public Cb3Annihilators(IPlayer player)
+            {
+                WeaponType = WeaponType.Pistol;
+                SpellType = SpellType.Gimmick;
+                BaseDamage = 0.86;
             }
         }
 
