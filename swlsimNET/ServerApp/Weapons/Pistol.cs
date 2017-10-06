@@ -15,9 +15,9 @@ namespace swlsimNET.ServerApp.Weapons
     {
         public Chamber LeftChamber { get; set; }
         public Chamber RightChamber { get; set; }
-        private int ChamberLockTimeStamp { get; set; }
-        private int LastPistolSpellTimeStamp { get; set; }
         private int MiseryAndMaliceTimeStamp { get; set; }
+        private double ChamberLockTimeStamp { get; set; }
+        private double LastPistolSpellTimeStamp { get; set; }
 
         private bool _init;
         private bool _jackpotBonus;
@@ -68,21 +68,21 @@ namespace swlsimNET.ServerApp.Weapons
                 _holdout = player.GetPassive(nameof(Holdout));
             }
 
-            var timeSinceLastPistolSpell = player.CurrentTimeMs - LastPistolSpellTimeStamp;
+            var timeSinceLastPistolSpell = player.CurrentTimeSec - LastPistolSpellTimeStamp;
 
             // Fully loaded passive
             if (_fullyLoaded != null && Energy == 15 && LeftChamber != RightChamber)
             {
                 RightChamber = Chamber.White;
                 LeftChamber = Chamber.White;
-                ChamberLockTimeStamp = player.CurrentTimeMs;
+                ChamberLockTimeStamp = player.CurrentTimeSec;
             }
 
             // Fixed Game passive
-            if (_fixedGame != null && timeSinceLastPistolSpell >= 4000 && LeftChamber != RightChamber)
+            if (_fixedGame != null && timeSinceLastPistolSpell >= 4 && LeftChamber != RightChamber)
             {
                 RightChamber = LeftChamber;
-                ChamberLockTimeStamp = player.CurrentTimeMs;
+                ChamberLockTimeStamp = player.CurrentTimeSec;
             }
         }
 
@@ -110,11 +110,11 @@ namespace swlsimNET.ServerApp.Weapons
         // Matching Chambers lasts for 3 seconds
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
-            var timeSinceLocked = player.CurrentTimeMs - ChamberLockTimeStamp;
-            LastPistolSpellTimeStamp = player.CurrentTimeMs + spell.CastTimeMs;
+            var timeSinceLocked = player.CurrentTimeSec - ChamberLockTimeStamp;
+            LastPistolSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
 
             // Chambers locked as White during combat start
-            if (timeSinceLocked > 3000)
+            if (timeSinceLocked > 3)
             {
                 if (_holdout != null && LeftChamber == RightChamber)
                 {
@@ -135,7 +135,7 @@ namespace swlsimNET.ServerApp.Weapons
                 // Jackpot passive
                 if (_jackpot != null)
                 {
-                    _jackpotBonus = timeSinceLocked <= 3000;
+                    _jackpotBonus = timeSinceLocked <= 3;
                 }
 
                 // Winstreak passives
@@ -204,8 +204,8 @@ namespace swlsimNET.ServerApp.Weapons
             LeftChamber = Dice();
             RightChamber = Dice();
             if (_sixShooters)
-            { ChamberLockTimeStamp = player.CurrentTimeMs - 500; }
-            else ChamberLockTimeStamp = player.CurrentTimeMs;
+            { ChamberLockTimeStamp = player.CurrentTimeSec - 0.5; }
+            else ChamberLockTimeStamp = player.CurrentTimeSec;
         }
 
         private Chamber Dice()
