@@ -1,7 +1,10 @@
-﻿using swlsimNET.ServerApp.Combat;
+﻿using System;
+using System.Collections.Generic;
+using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Spells.Hammer;
+using System.Linq;
 
 namespace swlsimNET.ServerApp.Weapons
 {
@@ -17,7 +20,12 @@ namespace swlsimNET.ServerApp.Weapons
         private bool _init;
 
         private double _enragedLockTimeStamp;
-        private double _timeSinceEnraged;        
+        private double _timeSinceEnraged;
+
+        private bool _pneumaticMaul = false;
+        private bool _fumingDespoiler = false;
+        private bool _theTenderiser = false;
+        private double _pneumaticStamp = 0;
 
         public bool FastAndFuriousBonus { get; private set; }
         public bool LetLooseBonus { get; private set; }
@@ -26,6 +34,10 @@ namespace swlsimNET.ServerApp.Weapons
         {
             _maxGimickResource = 100;
         }
+        private readonly List<string> _hammerConsumers = new List<string>
+        {
+            "Demolish", "DemolishRage", "Eruption"
+        };
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
@@ -61,6 +73,19 @@ namespace swlsimNET.ServerApp.Weapons
 
             _timeSinceEnraged = player.CurrentTimeSec - _enragedLockTimeStamp;
             FastAndFuriousBonus = _timeSinceEnraged < 3.5;
+
+            if (_pneumaticMaul) // TODO: & last spell was crit.
+            {
+                _pneumaticStamp = player.CurrentTimeSec;
+
+                //Whenever you critically hit with a Hammer ability, you gain a benefical effect which allows you to gain the benefits of the Enrage bonus effects
+                //on your abilities without spending any Rage and without being Enraged.This effect can only occur once every 9 seconds.
+            }
+            var spellName = spell.Name;
+            if (_fumingDespoiler && spellName != null && !_hammerConsumers.Contains(spellName, StringComparer.CurrentCultureIgnoreCase))
+            {
+                player.AddBonusAttack(rr, new FumingDespoiler(player));
+            }
         }
 
         public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double rageBeforeCast)
@@ -128,6 +153,15 @@ namespace swlsimNET.ServerApp.Weapons
                     // Consumable buff to Hammer that are used on next Demolish or Eruption
                     LetLooseBonus = true;
                 }
+            }
+        }
+        public class FumingDespoiler : Spell
+        {
+            public FumingDespoiler(IPlayer player)
+            {
+                WeaponType = WeaponType.Hammer;
+                SpellType = SpellType.Gimmick;
+                BaseDamage = 0.825;
             }
         }
     }

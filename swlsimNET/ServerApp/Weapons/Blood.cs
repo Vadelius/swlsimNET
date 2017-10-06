@@ -21,7 +21,7 @@ namespace swlsimNET.ServerApp.Weapons
         private bool _defilementBonus;
         private bool _flayBonus;
 
-        private bool _eldritchTome;
+        private bool _eldritchTome = false;
 
         private double LastBloodSpellTimeStamp { get; set; }
         private double LastDecayTimeStamp { get; set; }  
