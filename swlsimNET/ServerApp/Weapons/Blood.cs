@@ -1,7 +1,10 @@
-﻿using swlsimNET.ServerApp.Combat;
+﻿using System;
+using System.Collections.Generic;
+using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Spells.Blood;
+using System.Linq;
 
 namespace swlsimNET.ServerApp.Weapons
 {
@@ -17,6 +20,8 @@ namespace swlsimNET.ServerApp.Weapons
 
         private bool _defilementBonus;
         private bool _flayBonus;
+
+        private bool _eldritchTome;
 
         private double LastBloodSpellTimeStamp { get; set; }
         private double LastDecayTimeStamp { get; set; }  
@@ -51,9 +56,9 @@ namespace swlsimNET.ServerApp.Weapons
                 // If at max corruption we gain 16.5% blood ability damage.
                 _defilement = player.GetPassive(nameof(Defilement));
             }
-
-            // Set Defilment bonus corruption gain
-            _defilementBonus = _defilementBonusToTimeSec >= player.CurrentTimeSec;
+        
+        // Set Defilment bonus corruption gain
+        _defilementBonus = _defilementBonusToTimeSec >= player.CurrentTimeSec;
 
             // Set Flay bonus damage
             _flayBonus = _flayBonusToTimeSec >= player.CurrentTimeSec;
@@ -90,7 +95,12 @@ namespace swlsimNET.ServerApp.Weapons
             {
                 bonusBaseDamageMultiplier += 0.534; // 53.4%
             }
+            if (_eldritchTome && spell.SpellType == SpellType.Dot && spell.WeaponType == WeaponType.Blood)
+            {
+                //Your Blood Magic damage over time effects deal 75 % more damage.
+                bonusBaseDamageMultiplier += 0.75; // 75%
 
+            }
             // Defilement passive
             if (_defilement != null && corruptionBeforeCast >= 100)
             {
@@ -100,10 +110,15 @@ namespace swlsimNET.ServerApp.Weapons
             return bonusBaseDamageMultiplier;
         }
 
+        private readonly List<string> _eldritchTomesBonuses = new List<string>
+        {
+            "Reap", "Desecrate", "RunicHex", "EldritchScourge"
+        };
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
             // Set new time stamp for new cast
             LastBloodSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
+            var spellName = spell.Name;
 
             if (_defilement != null && spell.GetType() == typeof(Desecrate))
             {
@@ -113,6 +128,11 @@ namespace swlsimNET.ServerApp.Weapons
             if (_flay != null && spell.DotDuration > 0)
             {
                 _flayBonusToTimeSec = player.CurrentTimeSec + spell.DotDuration;
+            }
+
+            if (_eldritchTome && spellName != null && !_eldritchTomesBonuses.Contains(spellName, StringComparer.CurrentCultureIgnoreCase)) return;
+            {
+                GimmickResource = +4;
             }
         }   
 
