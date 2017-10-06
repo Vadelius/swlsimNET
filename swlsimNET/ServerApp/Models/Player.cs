@@ -74,7 +74,7 @@ namespace swlsimNET.ServerApp.Models
 
             AbilityBuffs = new List<IBuff>();
             InitAbilityBuffs();
-
+            InitItems();
             CombatPower = settings.CombatPower;
             GlanceReduction = settings.GlanceReduction / 100;
             CriticalChance = settings.CriticalChance / 100 + 0.075;
@@ -89,6 +89,16 @@ namespace swlsimNET.ServerApp.Models
             Spells = apl.GetApl();
 
             this.Buff = new BuffWrapper(this);
+        }
+
+        private bool EgonPendant = false;
+        private bool ChokerOfShedBlood = false;
+        private bool GamblersSoul = false;
+
+        private void InitItems()
+        {
+          //TODO: Add bools for our old Default choices (ColdSilver/SeedOfAgression)
+          //Cross-reference with import.
         }
 
         private Weapon GetWeaponFromType(WeaponType? wtypenullable, WeaponAffix waffix)
@@ -346,6 +356,21 @@ namespace swlsimNET.ServerApp.Models
 
             if (attack.IsCrit)
             {
+                if (EgonPendant)
+                {
+                    var bonusAttack = ExecuteNoGCD(new EgonPendant(this));
+                    rr.Attacks.Add(bonusAttack);
+                }
+                if (ChokerOfShedBlood)
+                {
+                    var bonusAttack = ExecuteNoGCD(new ChokerOfShedBlood(this));
+                    rr.Attacks.Add(bonusAttack);
+                }
+                if (GamblersSoul)
+                {
+                    var bonusAttack = ExecuteNoGCD(new GamblersSoul(this));
+                    rr.Attacks.Add(bonusAttack);
+                }
                 // Cold Silver Dice 22% on Crit +1 Energy.
                 if (Helper.RNG() >= 0.78)
                 {

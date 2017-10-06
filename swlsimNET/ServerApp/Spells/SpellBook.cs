@@ -74,5 +74,35 @@ namespace swlsimNET.ServerApp.Spells
         }
     }
 
+    public class GamblersSoul : Spell
+    {
+        public GamblersSoul(IPlayer player, string args = null)
+        {
+            WeaponType = WeaponType.None;
+            SpellType = SpellType.Procc;
+            BaseDamage = 0.10;
+        }
+    }
+    public class ChokerOfShedBlood : Spell
+    {
+        public ChokerOfShedBlood(IPlayer player, string args = null)
+        {
+            WeaponType = WeaponType.None;
+            SpellType = SpellType.Procc;
+            BaseDamage = 0.20;
+        }
+    }
+    public class EgonPendant : Spell
+    {
+        public EgonPendant(IPlayer player, string args = null)
+        {
+            WeaponType = WeaponType.None;
+            SpellType = SpellType.Dot;
+            BaseDamage = 0.06;
+            DotDuration = 5;
+            //TODO: "Your damage is increased by 1.75% for each enemy affected by this effect." <- For Dot Duration.
+        }
+    }
+
     #endregion
 }
