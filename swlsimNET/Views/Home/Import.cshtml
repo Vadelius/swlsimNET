@@ -34,6 +34,18 @@
             @Html.DropDownListFor(m => m.SecondaryWeaponAffix,
                 Model.WeaponAffixesList,
                 new { Class = "form-control select2" })
+            
+            @Html.LabelFor(m => m.PrimaryWeaponProc)
+            @Html.ValidationMessageFor(m => m.PrimaryWeaponProc, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.PrimaryWeaponProc,
+                Model.WeaponProcList,
+                new { Class = "form-control select2" })
+            
+            @Html.LabelFor(m => m.SecondaryWeaponProc)
+            @Html.ValidationMessageFor(m => m.SecondaryWeaponProc, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.SecondaryWeaponProc,
+                Model.WeaponProcList,
+                new { Class = "form-control select2" })
 
             @Html.LabelFor(m => m.TargetType)
             @Html.ValidationMessageFor(m => m.TargetType, "", new { @class = "text-danger" })

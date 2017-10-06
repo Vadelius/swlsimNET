@@ -16,6 +16,10 @@ namespace swlsimNET.ServerApp.Weapons
     {
         None, Efficiency, Destruction, Energy, Havoc
     }
+    public enum WeaponProc
+    {
+        None, AnimaTouched, FlameWreathed, PlasmaForged, Shadowbound
+    }
 
     public class Weapon
     {

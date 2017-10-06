@@ -9,50 +9,6 @@ using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.ServerApp.Models
 {
-    public interface IPlayer
-    {
-        Settings Settings { get; }
-        double CombatPower { get; }
-        double GlanceReduction { get; } // hit
-        double CriticalChance { get; }
-        double CritPower { get; }
-        double BasicSignetBoost { get; }
-        double PowerSignetBoost { get; }
-        double EliteSignetBoost { get; }
-        double Interval { get; }
-        double CurrentTimeSec { get; }
-
-        List<ISpell> Spells { get; }
-        List<IBuff> Buffs { get; }
-        List<IBuff> AbilityBuffs { get; }
-
-        IBuff GetBuffFromName(string name);
-        IBuff GetAbilityBuffFromName(string name);
-        bool HasPassive(string name);
-        Passive GetPassive(string name);
-
-        Weapon PrimaryWeapon { get; }
-        Weapon SecondaryWeapon { get; }
-
-        Weapon GetWeaponFromSpell(ISpell spell);
-        Weapon GetOtherWeaponFromSpell(ISpell spell);
-        Weapon GetWeaponFromType(WeaponType wtype);
-
-        double GetWeaponResourceFromType(WeaponType wtype);
-
-        void AddBonusAttack(RoundResult rr, ISpell spell);
-    }
-
-    public interface ICombat
-    {
-        double CastTime { get; set; }
-        double CurrentTimeSec { get; }
-        double GCD { get; set; }
-        int RepeatHits { get; }
-        Spell CurrentSpell { get; }
-        RoundResult NewRound(double currentSec, double intervalSec);
-    }
-
     public class Player : IPlayer, ICombat
     {
         private bool _passivesInitiated;
@@ -74,7 +30,7 @@ namespace swlsimNET.ServerApp.Models
 
             AbilityBuffs = new List<IBuff>();
             InitAbilityBuffs();
-            InitItems();
+
             CombatPower = settings.CombatPower;
             GlanceReduction = settings.GlanceReduction / 100;
             CriticalChance = settings.CriticalChance / 100 + 0.075;
@@ -89,16 +45,7 @@ namespace swlsimNET.ServerApp.Models
             Spells = apl.GetApl();
 
             this.Buff = new BuffWrapper(this);
-        }
-
-        private bool EgonPendant = false;
-        private bool ChokerOfShedBlood = false;
-        private bool GamblersSoul = false;
-
-        private void InitItems()
-        {
-          //TODO: Add bools for our old Default choices (ColdSilver/SeedOfAgression)
-          //Cross-reference with import.
+            this.Item = new Items(this);
         }
 
         private Weapon GetWeaponFromType(WeaponType? wtypenullable, WeaponAffix waffix)
@@ -260,7 +207,7 @@ namespace swlsimNET.ServerApp.Models
             WeaponPreAttack(rr);
             ExecuteAction(rr);
             ExecuteBuff(rr);
-            ItemProccs(rr);
+            Item.Execution(rr);
             WeaponAfterAttack(rr);
             PassiveBonusSpells(rr);
             EndRound(rr);
@@ -344,62 +291,6 @@ namespace swlsimNET.ServerApp.Models
 
             var buff = Buffs.Find(b => b == attack.Spell.AbilityBuff);
             buff.Activate();
-        }
-
-        private void ItemProccs(RoundResult rr)
-        {
-            var attack = rr.Attacks.FirstOrDefault();
-            if (attack == null || !attack.IsHit || attack.Damage <= 0) return;
-
-            var weapon = GetWeaponFromSpell(attack.Spell);
-            if (weapon == null) return;
-
-            if (attack.IsCrit)
-            {
-                if (EgonPendant)
-                {
-                    var bonusAttack = ExecuteNoGCD(new EgonPendant(this));
-                    rr.Attacks.Add(bonusAttack);
-                }
-                if (ChokerOfShedBlood)
-                {
-                    var bonusAttack = ExecuteNoGCD(new ChokerOfShedBlood(this));
-                    rr.Attacks.Add(bonusAttack);
-                }
-                if (GamblersSoul)
-                {
-                    var bonusAttack = ExecuteNoGCD(new GamblersSoul(this));
-                    rr.Attacks.Add(bonusAttack);
-                }
-                // Cold Silver Dice 22% on Crit +1 Energy.
-                if (Helper.RNG() >= 0.78)
-                {
-                    weapon.Energy++;
-                    var bonusAttack = ExecuteNoGCD(new ColdSilver(this));
-                    rr.Attacks.Add(bonusAttack);
-                }
-            }
-
-            // Hit 11% (<50% BossHP) +1 Energy.
-            if (Helper.RNG() >= 0.945)
-            {
-                weapon.Energy++;
-                var bonusAttack = ExecuteNoGCD(new SeedOfAggression(this));
-                rr.Attacks.Add(bonusAttack);
-            }
-
-            // Ashes Proc from Spells dealing X*CombatPower (NOT ON GCD)
-            if (RepeatHits == 3)
-            {
-                var bonusAttack = ExecuteNoGCD(new Ashes(this));
-                rr.Attacks.Add(bonusAttack);
-
-                RepeatHits = 0;
-            }
-            else if (RepeatHits < 3)
-            {
-                RepeatHits++;
-            }
         }
 
         private void WeaponAfterAttack(RoundResult rr)
@@ -523,14 +414,14 @@ namespace swlsimNET.ServerApp.Models
             rr.SecondaryGimmickEnd = SecondaryWeapon.GimmickResource;
         }
 
-        private Attack ExecuteNoGCD(ISpell spell)
+        public Attack ExecuteNoGcd(ISpell spell)
         {
             return spell.Execute(this);
         }
 
         public void AddBonusAttack(RoundResult rr, ISpell spell)
         {
-            rr.Attacks.Add(ExecuteNoGCD(spell));
+            rr.Attacks.Add(ExecuteNoGcd(spell));
         }
 
         public Weapon GetWeaponFromSpell(ISpell spell)
@@ -589,9 +480,8 @@ namespace swlsimNET.ServerApp.Models
             return Passives.Find(p => p.Name == name);
         }
 
-        #region Properties
-
-        #region IPlayer implementation
+        // Items
+        public Items Item { get; }
 
         // Implements IPlayer
         public Settings Settings { get; set; }
@@ -616,20 +506,12 @@ namespace swlsimNET.ServerApp.Models
         public bool ExposedEnabled { get; set; }
         public bool OpeningShotEnabled { get; set; }
 
-        #endregion
-
-        #region ICombat implementation
-
         // Implements ICombat
         public double CastTime { get; set; }
         public double CurrentTimeSec { get; private set; }
         public double GCD { get; set; }
-        public int RepeatHits { get; private set; }
+        public int RepeatHits { get; set; }
         public Spell CurrentSpell { get; set; }
-
-        #endregion
-
-        #region APL defines
 
         // Buffs
         public BuffWrapper Buff { get; }
@@ -654,9 +536,6 @@ namespace swlsimNET.ServerApp.Models
         public Weapon Rifle => GetWeaponFromType(WeaponType.AssaultRifle);
         public Weapon Shotgun => GetWeaponFromType(WeaponType.Shotgun);
 
-        #endregion
-
-        #endregion
 
         // TODO: Can this be made better somehow and still work with APL?
         // Only done since buffs and spells can have same

@@ -24,7 +24,7 @@ namespace swlsimNET.Tests.Controllers
         {
             // At least have to set both weapons and apl (3 validation errors)
             var set = new Settings();
-            Assert.IsTrue(ValidateModel(set).Count >= 3);
+            Assert.IsTrue(this.ValidateModel(set).Count >= 3);
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace swlsimNET.Tests.Controllers
                 Apl = "Hammer.Smash"
             };
 
-            Assert.IsTrue(ValidateModel(set).Count <= 0);
+            Assert.IsTrue(this.ValidateModel(set).Count <= 0);
         }
 
         private IList<ValidationResult> ValidateModel(object model)

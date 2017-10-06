@@ -1,80 +1,113 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using swlsimNET.Models;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Spells;
+using swlsimNET.ServerApp.Utilities;
 
 namespace swlsimNET.ServerApp.Spells
 {
-    public class Items : Spell
+    public class Items
     {
-        public override SpellType SpellType { get; set; } = SpellType.Passive;
-        public double BaseDamageModifier { get; set; }
-        public double BaseDamageCritModifier { get; set; }
-        public bool BonusSpellOnlyOnCrit { get; set; }
-
-
-        public virtual void Init(IPlayer player)
-        {
-        }
-
-        private bool _valiMetabollic = false;
-        private bool _mnemonicGuardianWerewolf = false;
-        private bool _shardOfSesshoSeki = false;
-        private bool _electrograviticAttractor = false;
-
-        private bool _animaTouched = false;
-        private bool _flameWreathed = false;
-        private bool _plasmaForged = false;
-        private bool _shadowbound = false;
+        private Player _player;
+        private readonly Random _rnd = new Random();
         private int _lastPlasma;
 
-        private readonly Random _rnd = new Random();
-
-        public void PreAttack(IPlayer player, RoundResult rr) //TODO: Override? Not void.
+        public Items(Player player)
         {
+            _player = player;
+        }
 
-            if (_valiMetabollic)
+        public void Execution(RoundResult rr)
+        {
+            var attack = rr.Attacks.FirstOrDefault();
+            if (attack == null || !attack.IsHit || attack.Damage <= 0) return;
+
+            var weapon = _player.GetWeaponFromSpell(attack.Spell);
+            if (weapon == null) return;
+
+            if (attack.IsCrit)
             {
-                player.AddBonusAttack(rr, new ValiMetabolicAccelerator(player));
-            }
-            if (_mnemonicGuardianWerewolf)
-            {
-                player.AddBonusAttack(rr, new MnemonicGuardianWerewolf(player));
-            }
-            if (_shardOfSesshoSeki)
-            {
-                player.AddBonusAttack(rr, new ShardOfSesshoSeki(player));
-            } // And current spell isnt a DOT.
-            if (_electrograviticAttractor)
-            {
-                player.AddBonusAttack(rr, new ElectrograviticAttractor(player));
+                if (_player.Settings.EgonPendant)
+                {
+                    _player.AddBonusAttack(rr, new EgonPendant(_player));
+                }
+                if (_player.Settings.ChokerOfShedBlood)
+                {
+                    _player.AddBonusAttack(rr, new ChokerOfShedBlood(_player));
+                }
+                if (_player.Settings.GamblersSoul)
+                {
+                    _player.AddBonusAttack(rr, new GamblersSoul(_player));
+                }
+                // Cold Silver Dice 22% on Crit +1 Energy.
+                if (_player.Settings.ColdSilverDice && Helper.RNG() >= 0.78)
+                {
+                    weapon.Energy++;
+                    _player.AddBonusAttack(rr, new ColdSilver(_player));
+                }
             }
 
-            if (_animaTouched)
+            // Hit 11% (<50% BossHP) +1 Energy.
+            if (_player.Settings.SeedOfAgression && Helper.RNG() >= 0.945)
+            {
+                weapon.Energy++;
+                _player.AddBonusAttack(rr, new SeedOfAggression(_player));
+            }
+
+            // Ashes Proc from Spells dealing X*CombatPower (NOT ON GCD)
+            if (_player.Settings.Ashes && _player.RepeatHits == 3)
+            {
+                _player.AddBonusAttack(rr, new Ashes(_player));
+
+                _player.RepeatHits = 0;
+            }
+            else if (_player.RepeatHits < 3)
+            {
+                _player.RepeatHits++;
+            }
+
+            if (_player.Settings.ValiMetabolic)
+            {
+                _player.AddBonusAttack(rr, new ValiMetabolicAccelerator(_player));
+            }
+
+            if (_player.Settings.MnemonicGuardianWerewolf)
+            {
+                _player.AddBonusAttack(rr, new MnemonicGuardianWerewolf(_player));
+            }
+
+            if (_player.Settings.ShardOfSesshoSeki && _player.CurrentSpell.SpellType != SpellType.Dot)
+            {
+                _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
+            }
+
+            if (_player.Settings.ElectrograviticAttractor)
+            {
+                _player.AddBonusAttack(rr, new ElectrograviticAttractor(_player));
+            }
+
+            if (_player.Settings.AnimaTouched)
             {
                 var roll = _rnd.Next(1, 4);
                 if (roll == 3)
                 {
-                    player.AddBonusAttack(rr, new AnimaTouched(player));
+                    _player.AddBonusAttack(rr, new AnimaTouched(_player));
                 }
             }
-            if (_flameWreathed)
+
+            if (_player.Settings.FlameWreathed)
             {
                 var roll = _rnd.Next(1, 101);
                 if (roll <= 15)
                 {
-                    player.AddBonusAttack(rr, new FlameWreathed(player));
+                    _player.AddBonusAttack(rr, new FlameWreathed(_player));
                 }
             }
 
-            //Plasma-Forged TODO: Whenever you hit you have a 25 % chance to deal an additional(0.565 * Combat Power) physical damage to the target.
-            //The amount of damage dealt increases to(1.125 * Combat Power) physical damage the second time this effect triggers on the same target.
-            //The third time this effect triggers on the same target, the damage dealt is increased to
-            //(2.81 * Combat Power) physical damage and the count of the number of times this effect has triggered is reset.
-
-            if (_plasmaForged)
+            if (_player.Settings.PlasmaForged)
             {
                 var roll = _rnd.Next(1, 5);
                 if (roll == 4)
@@ -82,33 +115,35 @@ namespace swlsimNET.ServerApp.Spells
                     switch (_lastPlasma)
                     {
                         case 0:
-                            player.AddBonusAttack(rr, new PlasmaForgedOne(player));
+                            _player.AddBonusAttack(rr, new PlasmaForgedOne(_player));
                             _lastPlasma = 1;
                             break;
                         case 1:
-                            player.AddBonusAttack(rr, new PlasmaForgedTwo(player));
+                            _player.AddBonusAttack(rr, new PlasmaForgedTwo(_player));
                             _lastPlasma = 2;
                             break;
                         case 2:
-                            player.AddBonusAttack(rr, new PlasmaForgedThree(player));
+                            _player.AddBonusAttack(rr, new PlasmaForgedThree(_player));
                             _lastPlasma = 0;
                             break;
                     }
                 }
             }
 
-            if (_shadowbound)
+            if (_player.Settings.Shadowbound)
             {
                 var roll = _rnd.Next(1, 6);
                 if (roll == 5)
                 {
-                    player.AddBonusAttack(rr, new Shadowbound(player));
+                    _player.AddBonusAttack(rr, new Shadowbound(_player));
                 }
             }
         }
     }
 
-    public sealed class ValiMetabolicAccelerator : Items
+    // Gadgets
+
+    public sealed class ValiMetabolicAccelerator : Spell
     {
         public ValiMetabolicAccelerator(IPlayer player, string args = null)
         {
@@ -116,12 +151,12 @@ namespace swlsimNET.ServerApp.Spells
             SpellType = SpellType.Instant;
             PrimaryGain = 3;
             SecondaryGain = 2;
-            MaxCooldown = 30;
+            MaxCooldown = 30; //TODO: Actually check for gadget/weapon proc cooldowns when running _player.AddBonusAttack!
             Args = args;
         }
     }
 
-    public sealed class MnemonicGuardianWerewolf : Items
+    public sealed class MnemonicGuardianWerewolf : Spell
     {
         public MnemonicGuardianWerewolf(IPlayer player, string args = null)
         {
@@ -135,7 +170,7 @@ namespace swlsimNET.ServerApp.Spells
         }
     }
 
-    public sealed class ShardOfSesshoSeki : Items
+    public sealed class ShardOfSesshoSeki : Spell
     {
         public ShardOfSesshoSeki(IPlayer player, string args = null)
         {
@@ -146,7 +181,7 @@ namespace swlsimNET.ServerApp.Spells
         }
     }
 
-    public sealed class ElectrograviticAttractor : Items
+    public sealed class ElectrograviticAttractor : Spell
     {
         public ElectrograviticAttractor(IPlayer player, string args = null)
         {
@@ -160,7 +195,7 @@ namespace swlsimNET.ServerApp.Spells
 
     // Global procs that can be of all weapon types.
 
-    public sealed class AnimaTouched : Items
+    public sealed class AnimaTouched : Spell
     {
         public AnimaTouched(IPlayer player, string args = null)
         {
@@ -171,7 +206,7 @@ namespace swlsimNET.ServerApp.Spells
         }
     }
 
-    public sealed class FlameWreathed : Items
+    public sealed class FlameWreathed : Spell
     {
         public FlameWreathed(IPlayer player, string args = null)
         {
@@ -183,7 +218,7 @@ namespace swlsimNET.ServerApp.Spells
         }
     }
 
-    public sealed class PlasmaForgedOne : Items
+    public sealed class PlasmaForgedOne : Spell
     {
         public PlasmaForgedOne(IPlayer player, string args = null)
         {
@@ -194,7 +229,7 @@ namespace swlsimNET.ServerApp.Spells
         }
     }
 
-    public sealed class PlasmaForgedTwo : Items
+    public sealed class PlasmaForgedTwo : Spell
     {
         public PlasmaForgedTwo(IPlayer player, string args = null)
         {
@@ -205,7 +240,7 @@ namespace swlsimNET.ServerApp.Spells
         }
     }
 
-    public sealed class PlasmaForgedThree : Items
+    public sealed class PlasmaForgedThree : Spell
     {
         public PlasmaForgedThree(IPlayer player, string args = null)
         {
@@ -216,7 +251,7 @@ namespace swlsimNET.ServerApp.Spells
         }
     }
 
-    public sealed class Shadowbound : Items
+    public sealed class Shadowbound : Spell
     {
         public Shadowbound(IPlayer player, string args = null)
         {
@@ -228,4 +263,7 @@ namespace swlsimNET.ServerApp.Spells
             //TODO: 20% chance per hit to cast "Raven Blade"
         }
     }
+
+
 }
+

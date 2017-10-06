@@ -24,7 +24,7 @@ namespace swlsimNET.ServerApp.Weapons
 
         private bool _pneumaticMaul = false;
         private bool _fumingDespoiler = false;
-        private bool _theTenderiser = false;
+        //private bool _theTenderiser = false;
         private double _pneumaticStamp = 0;
 
         public bool FastAndFuriousBonus { get; private set; }

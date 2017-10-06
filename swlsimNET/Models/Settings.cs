@@ -29,6 +29,10 @@ namespace swlsimNET.Models
 
         [Display(Name = "Secondary weapon affix")]
         public WeaponAffix SecondaryWeaponAffix { get; set; }
+        [Display(Name = "Primary weapon proc")]
+        public WeaponProc PrimaryWeaponProc { get; set; }
+        [Display(Name = "Secondary weapon proc")]
+        public WeaponProc SecondaryWeaponProc { get; set; }
 
         [Display(Name = "Combat power")]
         public double CombatPower { get; set; } = 1200;
@@ -57,6 +61,24 @@ namespace swlsimNET.Models
         [Required(ErrorMessage = "required.")]
         public string Apl { get; set; }
 
+        // Item Bools.
+        public bool ColdSilverDice { get; set; } = true;
+        public bool GamblersSoul { get; set; } 
+        public bool EgonPendant { get; set; }
+        public bool SeedOfAgression { get; set; } = true;
+        public bool ChokerOfShedBlood { get; set; }
+        public bool Ashes { get; set; } = true;
+        public bool MnemonicGuardianWerewolf { get; set; }
+        public bool ValiMetabolic { get; set; }
+        public bool ShardOfSesshoSeki { get; set; } 
+        public bool ElectrograviticAttractor { get; set; }
+
+        // Weapon Bools.
+        public bool AnimaTouched { get; set; } = true;
+        public bool FlameWreathed { get; set; } = false;
+        public bool PlasmaForged { get; set; } = false;
+        public bool Shadowbound { get; set; } = false;
+
         public string Passive1 { get; set; }
         public string Passive2 { get; set; }
         public string Passive3 { get; set; }
@@ -75,7 +97,9 @@ namespace swlsimNET.Models
 
         public IEnumerable<SelectListItem> WeaponTypeList => new SelectList(Enum.GetValues(typeof(WeaponType)));
         public IEnumerable<SelectListItem> WeaponAffixesList => new SelectList(Enum.GetValues(typeof(WeaponAffix)));
+        public IEnumerable<SelectListItem> WeaponProcList => new SelectList(Enum.GetValues(typeof(WeaponProc)));
         public IEnumerable<SelectListItem> TargetTypeList => new SelectList(Enum.GetValues(typeof(TargetType)));
+
 
         public IEnumerable<SelectListItem> Passives = _allPassives.ConvertAll(
             a => new SelectListItem
