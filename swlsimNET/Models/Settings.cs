@@ -33,7 +33,14 @@ namespace swlsimNET.Models
         public WeaponProc PrimaryWeaponProc { get; set; }
         [Display(Name = "Secondary weapon proc")]
         public WeaponProc SecondaryWeaponProc { get; set; }
-
+        [Display(Name = "Neck Talisman")]
+        public Items.NeckTalisman Neck { get; set; }
+        [Display(Name = "Luck Talisman")]
+        public Items.LuckTalisman Luck { get; set; }
+        [Display(Name = "Head Talisman")]
+        public Items.HeadTalisman Head { get; set; }
+        [Display(Name = "Gadget")]
+        public Items.Gadget Gadget { get; set; }
         [Display(Name = "Combat power")]
         public double CombatPower { get; set; } = 1200;
 
@@ -60,25 +67,6 @@ namespace swlsimNET.Models
         [Display(Name = "Action priority list *")]
         [Required(ErrorMessage = "required.")]
         public string Apl { get; set; }
-
-        // Item Bools.
-        public bool ColdSilverDice { get; set; } = true;
-        public bool GamblersSoul { get; set; } 
-        public bool EgonPendant { get; set; }
-        public bool SeedOfAgression { get; set; } = true;
-        public bool ChokerOfShedBlood { get; set; }
-        public bool Ashes { get; set; } = true;
-        public bool MnemonicGuardianWerewolf { get; set; }
-        public bool ValiMetabolic { get; set; }
-        public bool ShardOfSesshoSeki { get; set; } 
-        public bool ElectrograviticAttractor { get; set; }
-
-        // Weapon Bools.
-        public bool AnimaTouched { get; set; } = true;
-        public bool FlameWreathed { get; set; } = false;
-        public bool PlasmaForged { get; set; } = false;
-        public bool Shadowbound { get; set; } = false;
-
         public string Passive1 { get; set; }
         public string Passive2 { get; set; }
         public string Passive3 { get; set; }
@@ -99,7 +87,10 @@ namespace swlsimNET.Models
         public IEnumerable<SelectListItem> WeaponAffixesList => new SelectList(Enum.GetValues(typeof(WeaponAffix)));
         public IEnumerable<SelectListItem> WeaponProcList => new SelectList(Enum.GetValues(typeof(WeaponProc)));
         public IEnumerable<SelectListItem> TargetTypeList => new SelectList(Enum.GetValues(typeof(TargetType)));
-
+        public IEnumerable<SelectListItem> NeckTalismanList => new SelectList(Enum.GetValues(typeof(Items.NeckTalisman)));
+        public IEnumerable<SelectListItem> LuckTalismanList => new SelectList(Enum.GetValues(typeof(Items.LuckTalisman)));
+        public IEnumerable<SelectListItem> HeadTalismanList => new SelectList(Enum.GetValues(typeof(Items.HeadTalisman)));
+        public IEnumerable<SelectListItem> GadgetList => new SelectList(Enum.GetValues(typeof(Items.Gadget)));
 
         public IEnumerable<SelectListItem> Passives = _allPassives.ConvertAll(
             a => new SelectListItem

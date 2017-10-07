@@ -11,17 +11,17 @@
         <div class="col-md-3">
             
             
-                @Html.LabelFor(m => m.PrimaryWeapon)
-                @Html.ValidationMessageFor(m => m.PrimaryWeapon, "", new { @class = "text-danger" })
-                @Html.DropDownListFor(m => m.PrimaryWeapon,
-                    Model.WeaponTypeList,
-                    "Select primary weapon", new {Class = "form-control select2" })            
+            @Html.LabelFor(m => m.PrimaryWeapon)
+            @Html.ValidationMessageFor(m => m.PrimaryWeapon, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.PrimaryWeapon,
+                Model.WeaponTypeList,
+                "Select primary weapon", new {Class = "form-control select2" })            
             
-                @Html.LabelFor(m => m.SecondaryWeapon)
-                @Html.ValidationMessageFor(m => m.SecondaryWeapon, "", new { @class = "text-danger" })
-                @Html.DropDownListFor(m => m.SecondaryWeapon,
-                    Model.WeaponTypeList,
-                    "Select secondary weapon", new { Class = "form-control select2" })
+            @Html.LabelFor(m => m.SecondaryWeapon)
+            @Html.ValidationMessageFor(m => m.SecondaryWeapon, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.SecondaryWeapon,
+                Model.WeaponTypeList,
+                "Select secondary weapon", new { Class = "form-control select2" })
 
             @Html.LabelFor(m => m.PrimaryWeaponAffix)
             @Html.ValidationMessageFor(m => m.PrimaryWeaponAffix, "", new { @class = "text-danger" })
@@ -46,11 +46,29 @@
             @Html.DropDownListFor(m => m.SecondaryWeaponProc,
                 Model.WeaponProcList,
                 new { Class = "form-control select2" })
-
-            @Html.LabelFor(m => m.TargetType)
-            @Html.ValidationMessageFor(m => m.TargetType, "", new { @class = "text-danger" })
-            @Html.DropDownListFor(m => m.TargetType,
-                Model.TargetTypeList,
+            
+            @Html.LabelFor(m => m.Neck)
+            @Html.ValidationMessageFor(m => m.Neck, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.Neck,
+                Model.NeckTalismanList,
+                new { Class = "form-control select2" })
+            
+            @Html.LabelFor(m => m.Luck)
+            @Html.ValidationMessageFor(m => m.Luck, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.Luck,
+                Model.LuckTalismanList,
+                new { Class = "form-control select2" })
+            
+            @Html.LabelFor(m => m.Head)
+            @Html.ValidationMessageFor(m => m.Head, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.Head,
+                Model.HeadTalismanList,
+                new { Class = "form-control select2" })
+            
+            @Html.LabelFor(m => m.Gadget)
+            @Html.ValidationMessageFor(m => m.Gadget, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.Gadget,
+                Model.GadgetList,
                 new { Class = "form-control select2" })
 
             @Html.LabelFor(m => m.CombatPower)

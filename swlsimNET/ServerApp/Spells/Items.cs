@@ -6,11 +6,29 @@ using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Utilities;
+using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.ServerApp.Spells
 {
     public class Items
     {
+        public enum NeckTalisman
+        {
+            SeedOfAgression, ChokerOfSheedBlood, EgonPendant
+        }
+        public enum LuckTalisman
+        {
+            ColdSilver, GamblersSoul
+        }
+        public enum HeadTalisman
+        {
+            Ashes
+        }
+        public enum Gadget
+        {
+            ElectrograviticAttractor, ShardOfSesshoSeki, ValiMetabolic, MnemonicGuardianWerewolf
+        }
+
         private Player _player;
         private readonly Random _rnd = new Random();
         private int _lastPlasma;
@@ -30,20 +48,20 @@ namespace swlsimNET.ServerApp.Spells
 
             if (attack.IsCrit)
             {
-                if (_player.Settings.EgonPendant)
+                if (_player.Settings.Neck == NeckTalisman.EgonPendant)
                 {
                     _player.AddBonusAttack(rr, new EgonPendant(_player));
                 }
-                if (_player.Settings.ChokerOfShedBlood)
+                if (_player.Settings.Neck == NeckTalisman.ChokerOfSheedBlood)
                 {
                     _player.AddBonusAttack(rr, new ChokerOfShedBlood(_player));
                 }
-                if (_player.Settings.GamblersSoul)
+                if (_player.Settings.Luck == LuckTalisman.GamblersSoul)
                 {
                     _player.AddBonusAttack(rr, new GamblersSoul(_player));
                 }
                 // Cold Silver Dice 22% on Crit +1 Energy.
-                if (_player.Settings.ColdSilverDice && Helper.RNG() >= 0.78)
+                if (_player.Settings.Luck == LuckTalisman.ColdSilver && Helper.RNG() >= 0.78)
                 {
                     weapon.Energy++;
                     _player.AddBonusAttack(rr, new ColdSilver(_player));
@@ -51,45 +69,47 @@ namespace swlsimNET.ServerApp.Spells
             }
 
             // Hit 11% (<50% BossHP) +1 Energy.
-            if (_player.Settings.SeedOfAgression && Helper.RNG() >= 0.945)
+            if (_player.Settings.Neck == NeckTalisman.SeedOfAgression && Helper.RNG() >= 0.945)
             {
                 weapon.Energy++;
                 _player.AddBonusAttack(rr, new SeedOfAggression(_player));
             }
 
             // Ashes Proc from Spells dealing X*CombatPower (NOT ON GCD)
-            if (_player.Settings.Ashes && _player.RepeatHits == 3)
+            if (_player.Settings.Head == HeadTalisman.Ashes && _player.RepeatHits == 3)
             {
                 _player.AddBonusAttack(rr, new Ashes(_player));
 
                 _player.RepeatHits = 0;
             }
-            else if (_player.RepeatHits < 3)
+            else if (_player.RepeatHits < 3 && _player.Settings.Head == HeadTalisman.Ashes)
             {
                 _player.RepeatHits++;
             }
 
-            if (_player.Settings.ValiMetabolic)
+            //Gadgets below
+            
+            if (_player.Settings.Gadget == Gadget.ValiMetabolic)
             {
                 _player.AddBonusAttack(rr, new ValiMetabolicAccelerator(_player));
             }
 
-            if (_player.Settings.MnemonicGuardianWerewolf)
+            if (_player.Settings.Gadget == Gadget.MnemonicGuardianWerewolf)
             {
                 _player.AddBonusAttack(rr, new MnemonicGuardianWerewolf(_player));
             }
 
-            if (_player.Settings.ShardOfSesshoSeki && _player.CurrentSpell.SpellType != SpellType.Dot)
+            if (_player.Settings.Gadget == Gadget.ShardOfSesshoSeki && _player.CurrentSpell.SpellType != SpellType.Dot)
             {
                 _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
             }
 
-            if (_player.Settings.ElectrograviticAttractor)
+            if (_player.Settings.Gadget == Gadget.ElectrograviticAttractor)
             {
                 _player.AddBonusAttack(rr, new ElectrograviticAttractor(_player));
             }
 
-            if (_player.Settings.AnimaTouched)
+            if (_player.Settings.PrimaryWeaponProc == WeaponProc.AnimaTouched)
             {
                 var roll = _rnd.Next(1, 4);
                 if (roll == 3)
@@ -98,7 +118,7 @@ namespace swlsimNET.ServerApp.Spells
                 }
             }
 
-            if (_player.Settings.FlameWreathed)
+            if (_player.Settings.PrimaryWeaponProc == WeaponProc.FlameWreathed)
             {
                 var roll = _rnd.Next(1, 101);
                 if (roll <= 15)
@@ -107,7 +127,7 @@ namespace swlsimNET.ServerApp.Spells
                 }
             }
 
-            if (_player.Settings.PlasmaForged)
+            if (_player.Settings.PrimaryWeaponProc == WeaponProc.PlasmaForged)
             {
                 var roll = _rnd.Next(1, 5);
                 if (roll == 4)
@@ -130,7 +150,7 @@ namespace swlsimNET.ServerApp.Spells
                 }
             }
 
-            if (_player.Settings.Shadowbound)
+            if (_player.Settings.PrimaryWeaponProc == WeaponProc.Shadowbound)
             {
                 var roll = _rnd.Next(1, 6);
                 if (roll == 5)

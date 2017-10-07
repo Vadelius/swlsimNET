@@ -372,7 +372,11 @@ namespace swlsimNET.ServerApp.Models
 
         public void AddBonusAttack(RoundResult rr, ISpell spell)
         {
-            rr.Attacks.Add(ExecuteNoGcd(spell));
+            if (spell.Cooldown == 0)
+            {
+                rr.Attacks.Add(ExecuteNoGcd(spell));
+            }
+            
         }
 
         public Weapon GetWeaponFromSpell(ISpell spell)
