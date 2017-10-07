@@ -244,7 +244,7 @@ namespace swlsimNET.ServerApp.Spells
         {
             WeaponType = WeaponType;
             SpellType = SpellType.Instant;
-            BaseDamage = 0.5;
+            BaseDamage = 0.565;
             Args = args;
         }
     }
@@ -255,7 +255,7 @@ namespace swlsimNET.ServerApp.Spells
         {
             WeaponType = WeaponType;
             SpellType = SpellType.Instant;
-            BaseDamage = 0.5;
+            BaseDamage = 1.125;
             Args = args;
         }
     }
@@ -266,7 +266,7 @@ namespace swlsimNET.ServerApp.Spells
         {
             WeaponType = WeaponType;
             SpellType = SpellType.Instant;
-            BaseDamage = 0.5;
+            BaseDamage = 2.81;
             Args = args;
         }
     }
