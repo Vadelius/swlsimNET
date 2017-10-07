@@ -88,26 +88,26 @@ namespace swlsimNET.ServerApp.Spells
             }
 
             //Gadgets below
-            
-            if (_player.Settings.Gadget == Gadget.ValiMetabolic)
-            {
-                _player.AddBonusAttack(rr, new ValiMetabolicAccelerator(_player));
-            }
+            //TODO: Fix the cooldowns.
+            //if (_player.Settings.Gadget == Gadget.ValiMetabolic)
+            //{
+            //    _player.AddBonusAttack(rr, new ValiMetabolicAccelerator(_player));
+            //}
 
-            if (_player.Settings.Gadget == Gadget.MnemonicGuardianWerewolf)
-            {
-                _player.AddBonusAttack(rr, new MnemonicGuardianWerewolf(_player));
-            }
+            //if (_player.Settings.Gadget == Gadget.MnemonicGuardianWerewolf)
+            //{
+            //    _player.AddBonusAttack(rr, new MnemonicGuardianWerewolf(_player));
+            //}
 
-            if (_player.Settings.Gadget == Gadget.ShardOfSesshoSeki && _player.CurrentSpell.SpellType != SpellType.Dot)
-            {
-                _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
-            }
+            //if (_player.Settings.Gadget == Gadget.ShardOfSesshoSeki && _player.CurrentSpell.SpellType != SpellType.Dot)
+            //{
+            //    _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
+            //}
 
-            if (_player.Settings.Gadget == Gadget.ElectrograviticAttractor)
-            {
-                _player.AddBonusAttack(rr, new ElectrograviticAttractor(_player));
-            }
+            //if (_player.Settings.Gadget == Gadget.ElectrograviticAttractor)
+            //{
+            //    _player.AddBonusAttack(rr, new ElectrograviticAttractor(_player));
+            //}
 
             if (_player.Settings.PrimaryWeaponProc == WeaponProc.AnimaTouched)
             {
