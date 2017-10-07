@@ -22,10 +22,11 @@ namespace swlsimNET.ServerApp.Weapons
         private double _enragedLockTimeStamp;
         private double _timeSinceEnraged;
 
-        private bool _pneumaticMaul = false;
+        private bool _pneumaticMaul = true;
+        private bool _pneumaticAvailable = false;
         private bool _fumingDespoiler = false;
         //private bool _theTenderiser = false;
-        private double _pneumaticStamp = 0;
+        private double _pneumaticStamp = -1;
 
         public bool FastAndFuriousBonus { get; private set; }
         public bool LetLooseBonus { get; private set; }
@@ -38,6 +39,39 @@ namespace swlsimNET.ServerApp.Weapons
         {
             "Demolish", "DemolishRage", "Eruption"
         };
+
+        public override void PreAttack(IPlayer player, RoundResult rr)
+        {
+            if (_pneumaticStamp >= player.CurrentTimeSec)
+            {
+                var demolish = player.Spells.Where(s => s.GetType() == typeof(DemolishRage));
+                var eruption = player.Spells.Where(s => s.GetType() == typeof(EruptionRage));
+
+                foreach (var d in demolish)
+                {
+                    d.PrimaryGimmickCost = 0;
+                }
+                foreach (var e in eruption)
+                {
+                    e.PrimaryGimmickCost = 0;
+                }
+
+            }
+            else
+            {
+                var demolish = player.Spells.Where(s => s.GetType() == typeof(DemolishRage));
+                var eruption = player.Spells.Where(s => s.GetType() == typeof(EruptionRage));
+
+                foreach (var d in demolish)
+                {
+                    d.PrimaryGimmickCost = 50;
+                }
+                foreach (var e in eruption)
+                {
+                    e.PrimaryGimmickCost = 50;
+                }
+            }
+        }
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
@@ -69,17 +103,39 @@ namespace swlsimNET.ServerApp.Weapons
             _enraged50 = enraged50;
             _enraged100 = enraged100;
 
-            if(_fastAndFurious == null) return;
-
-            _timeSinceEnraged = player.CurrentTimeSec - _enragedLockTimeStamp;
-            FastAndFuriousBonus = _timeSinceEnraged < 3.5;
-
-            if (_pneumaticMaul) // TODO: & last spell was crit.
+            if (_fastAndFurious == null)
             {
-                _pneumaticStamp = player.CurrentTimeSec;
+                _timeSinceEnraged = player.CurrentTimeSec - _enragedLockTimeStamp;
+                FastAndFuriousBonus = _timeSinceEnraged < 3.5;
+            }
+            //Whenever you critically hit with a Hammer ability, you gain a benefical effect which allows you to gain the benefits of the Enrage bonus effects on your abilities without spending 
+            //any Rage and without being Enraged.This effect can only occur once every 9 seconds.
+            // _pneumaticStamp == player.CurrentTime =+ 9;
+            if (_pneumaticMaul)
+            {
+                var attack = rr.Attacks.FirstOrDefault();
+                if (attack != null && attack.IsCrit && !_pneumaticAvailable)
+                {
+                    _pneumaticAvailable = true;
+                    _pneumaticStamp = player.CurrentTimeSec + 9; 
+                }
 
-                //Whenever you critically hit with a Hammer ability, you gain a benefical effect which allows you to gain the benefits of the Enrage bonus effects
-                //on your abilities without spending any Rage and without being Enraged.This effect can only occur once every 9 seconds.
+                if (_pneumaticStamp < player.CurrentTimeSec + 9 &&_pneumaticAvailable && spell.GetType() == typeof(DemolishRage) || spell.GetType() == typeof(EruptionRage))
+                {
+                    var demolish = player.Spells.Where(s => s.GetType() == typeof(DemolishRage));
+                    var eruption = player.Spells.Where(s => s.GetType() == typeof(EruptionRage));
+
+                    foreach (var d in demolish)
+                    {
+                        d.PrimaryGimmickCost = 50;
+                    }
+                    foreach (var e in eruption)
+                    {
+                        e.PrimaryGimmickCost = 50;
+                    }
+
+                    _pneumaticAvailable = false;
+                }
             }
             var spellName = spell.Name;
             if (_fumingDespoiler && spellName != null && !_hammerConsumers.Contains(spellName, StringComparer.CurrentCultureIgnoreCase))

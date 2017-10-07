@@ -3,8 +3,7 @@ using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.ServerApp.Models
 {
-    public partial class Player
-    {
+
         public class BuffWrapper
         {
             private readonly Player _player;
@@ -35,4 +34,3 @@ namespace swlsimNET.ServerApp.Models
             // TODO: Need to add all buffs here if we cant solve it in another way..
         }
     }
-}
