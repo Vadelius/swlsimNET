@@ -62,7 +62,7 @@ namespace swlsimNET.ServerApp.Spells.Hammer
             Args = args;
             PrimaryCost = 5;
             PrimaryGimmickGain = 25;
-            BaseDamage = 4;
+            BaseDamage = 3.43;
         }
     }
 
@@ -75,7 +75,7 @@ namespace swlsimNET.ServerApp.Spells.Hammer
             Args = args;
             PrimaryCost = 5;
             PrimaryGimmickCost = 50;
-            BaseDamage = 9.8;
+            BaseDamage = 8.38;
         }
     }
 
