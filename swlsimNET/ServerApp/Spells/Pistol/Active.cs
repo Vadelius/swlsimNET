@@ -188,4 +188,43 @@ namespace swlsimNET.ServerApp.Spells.Pistol
             Args = args;
         } // PBAoE 6E 10M, Rooted during channel, Slow.
     }
+    public class WhiteChambers : Spell
+    {
+        public WhiteChambers(IPlayer player)
+        {
+            WeaponType = WeaponType.Pistol;
+            SpellType = SpellType.Gimmick;
+            BaseDamage = 0.65;
+        }
+    }
+
+    public class BlueChambers : Spell
+    {
+        public BlueChambers(IPlayer player)
+        {
+            WeaponType = WeaponType.Pistol;
+            SpellType = SpellType.Gimmick;
+            BaseDamage = 1.25;
+        }
+    }
+
+    public class RedChambers : Spell
+    {
+        public RedChambers(IPlayer player)
+        {
+            WeaponType = WeaponType.Pistol;
+            SpellType = SpellType.Gimmick;
+            BaseDamage = 2;
+        }
+    }
+
+    public class Cb3Annihilators : Spell
+    {
+        public Cb3Annihilators(IPlayer player)
+        {
+            WeaponType = WeaponType.Pistol;
+            SpellType = SpellType.Gimmick;
+            BaseDamage = 0.86;
+        }
+    }
 }
