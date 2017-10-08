@@ -22,8 +22,6 @@ namespace swlsimNET.ServerApp.Weapons
         private double _enragedLockTimeStamp;
         private double _timeSinceEnraged;
 
-        private bool _fumingDespoiler = false;
-
         private double _pneumaticStamp = -1;
 
         private int _demolishOriginalCost;
@@ -40,7 +38,7 @@ namespace swlsimNET.ServerApp.Weapons
 
         private readonly List<string> _hammerConsumers = new List<string>
         {
-            "Demolish", "DemolishRage", "Eruption"
+            "DemolishRage", "Eruption"
         };
 
         public override void PreAttack(IPlayer player, RoundResult rr)
@@ -105,7 +103,7 @@ namespace swlsimNET.ServerApp.Weapons
             }
 
             var spellName = spell.Name;
-            if (_fumingDespoiler && spellName != null && !_hammerConsumers.Contains(spellName, StringComparer.CurrentCultureIgnoreCase))
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.FumingDespoiler && spellName != null && _hammerConsumers.Contains(spellName, StringComparer.CurrentCultureIgnoreCase))
             {
                 player.AddBonusAttack(rr, new FumingDespoiler(player));
             }
