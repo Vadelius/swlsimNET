@@ -9,6 +9,9 @@ namespace swlsimNET.ServerApp.Spells
 {
     public class Items
     {
+        private AnimaTouched _animaTouched;
+        private ValiMetabolicAccelerator _valiMetabolicAccelerator;
+
         public enum NeckTalisman
         {
             SeedOfAgression, ChokerOfSheedBlood, EgonPendant
@@ -36,6 +39,9 @@ namespace swlsimNET.ServerApp.Spells
         public Items(Player player)
         {
             _player = player;
+
+            _animaTouched = new AnimaTouched(_player);
+            _valiMetabolicAccelerator = new ValiMetabolicAccelerator(_player);
         }
 
         public void Execution(RoundResult rr)
@@ -88,33 +94,28 @@ namespace swlsimNET.ServerApp.Spells
             }
 
             //Gadgets below
-            //TODO: Fix the cooldowns.
-            //if (_player.Settings.Gadget == Gadget.ValiMetabolic)
-            //{
-            //    _player.AddBonusAttack(rr, new ValiMetabolicAccelerator(_player));
-            //}
-
-            //if (_player.Settings.Gadget == Gadget.MnemonicGuardianWerewolf)
-            //{
-            //    _player.AddBonusAttack(rr, new MnemonicGuardianWerewolf(_player));
-            //}
-
-            //if (_player.Settings.Gadget == Gadget.ShardOfSesshoSeki && _player.CurrentSpell.SpellType != SpellType.Dot)
-            //{
-            //    _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
-            //}
-
-            //if (_player.Settings.Gadget == Gadget.ElectrograviticAttractor)
-            //{
-            //    _player.AddBonusAttack(rr, new ElectrograviticAttractor(_player));
-            //}
+            switch (_player.Settings.Gadget)
+            {
+                case Gadget.ValiMetabolic:
+                    _player.AddBonusAttack(rr, _valiMetabolicAccelerator);
+                    break;
+                case Gadget.MnemonicGuardianWerewolf:
+                    _player.AddBonusAttack(rr, new MnemonicGuardianWerewolf(_player));
+                    break;
+                case Gadget.ShardOfSesshoSeki when _player.CurrentSpell.SpellType != SpellType.Dot:
+                    _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
+                    break;
+                case Gadget.ElectrograviticAttractor:
+                    _player.AddBonusAttack(rr, new ElectrograviticAttractor(_player));
+                    break;
+            }
 
             if (_player.Settings.PrimaryWeaponProc == WeaponProc.AnimaTouched)
             {
                 var roll = _rnd.Next(1, 4);
                 if (roll == 3)
                 {
-                    _player.AddBonusAttack(rr, new AnimaTouched(_player));
+                    _player.AddBonusAttack(rr, _animaTouched);
                 }
             }
 
