@@ -16,6 +16,7 @@ namespace swlsimNET.ServerApp.Weapons
         private bool _hasAnnihilate;
         private bool _enraged50;
         private bool _enraged100;
+        private bool _hasPneumaticMaul;
 
         private bool _init;
 
@@ -51,9 +52,9 @@ namespace swlsimNET.ServerApp.Weapons
                 _fastAndFurious = player.GetPassive(nameof(FastAndFurious));
                 _hasLetLoose = player.HasPassive(nameof(LetLoose));
                 _hasAnnihilate = player.HasPassive(nameof(Annihilate));
-                //_pneumaticMaul = 
+                _hasPneumaticMaul = player.Settings.PrimaryWeaponProc == WeaponProc.PneumaticMaul;
 
-                if (player.Settings.PrimaryWeaponProc == WeaponProc.PneumaticMaul)
+                if (_hasPneumaticMaul)
                 {
                     var demolishRage = player.Spells.Find(s => s.GetType() == typeof(DemolishRage));
                     var eruptionRage = player.Spells.Find(s => s.GetType() == typeof(EruptionRage));
@@ -63,12 +64,10 @@ namespace swlsimNET.ServerApp.Weapons
                 }
             }
 
-            var pneumaticBuffUp = _pneumaticStamp >= player.CurrentTimeSec && PneumaticAvailable;
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.PneumaticMaul)
+            if (_hasPneumaticMaul)
             {
-                PneumaticMaulActive(player, pneumaticBuffUp);
-            }
-                
+                PneumaticMaulActive(player, _pneumaticStamp >= player.CurrentTimeSec && PneumaticAvailable);
+            }     
         }
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
