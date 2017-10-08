@@ -19,7 +19,6 @@ namespace swlsimNET.ServerApp.Weapons
 
         private bool _init;
         private bool _jackpotBonus;
-        private double _miseryAndMaliceBonus;
         private bool _harmonisers = false;
         private bool _sixShooters = false;
         private bool _miseryAndMalice = false;
