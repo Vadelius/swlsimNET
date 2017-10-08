@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using swlsimNET.Models;
 using swlsimNET.ServerApp;
 using swlsimNET.ServerApp.Combat;
+using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Utilities;
 using swlsimNET.ServerApp.Weapons;
 
@@ -89,7 +90,18 @@ namespace swlsimNET.Controllers
         {
             ModelState.Clear();
             s.PrimaryWeapon = WeaponType.Hammer;
+            s.PrimaryWeaponProc = WeaponProc.AnimaTouched;
+            s.PrimaryWeaponAffix = WeaponAffix.Destruction;
             s.SecondaryWeapon = WeaponType.Fist;
+            s.SecondaryWeaponProc = WeaponProc.Shadowbound;
+            s.SecondaryWeaponAffix = WeaponAffix.Havoc;
+            s.Gadget = Items.Gadget.ValiMetabolic;
+            s.Exposed = true;
+            s.Savagery = true;
+            s.OpeningShot = true;
+            s.Head = Items.HeadTalisman.Ashes;
+            s.Neck = Items.NeckTalisman.SeedOfAgression;
+            s.Luck = Items.LuckTalisman.ColdSilver;
             s.Apl = "Fist.Savagery, Buff.UnstoppableForce.Active\r\n" +
                     "Hammer.Seethe, Buff.UnstoppableForce.Active\r\n" +
                     "Hammer.UnstoppableForce, Rage > 50 || Hammer.Energy > 8\r\n" +
