@@ -22,6 +22,7 @@ namespace swlsimNET.ServerApp.Models
         List<ISpell> Spells { get; }
         List<IBuff> Buffs { get; }
         List<IBuff> AbilityBuffs { get; }
+        Spell CurrentSpell { get; }
 
         IBuff GetBuffFromName(string name);
         IBuff GetAbilityBuffFromName(string name);

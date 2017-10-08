@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using swlsimNET.ServerApp.Combat;
+﻿using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Spells.Pistol;
@@ -15,7 +14,6 @@ namespace swlsimNET.ServerApp.Weapons
     {
         public Chamber LeftChamber { get; set; }
         public Chamber RightChamber { get; set; }
-        private int MiseryAndMaliceTimeStamp { get; set; }
         private double ChamberLockTimeStamp { get; set; }
         private double LastPistolSpellTimeStamp { get; set; }
 
@@ -74,7 +72,6 @@ namespace swlsimNET.ServerApp.Weapons
 
             var timeSinceLastPistolSpell = player.CurrentTimeSec - LastPistolSpellTimeStamp;
 
-            // Fully loaded passive
             if (_fullyLoaded != null && Energy == 15 && LeftChamber != RightChamber)
             {
                 RightChamber = Chamber.White;
@@ -82,14 +79,6 @@ namespace swlsimNET.ServerApp.Weapons
                 ChamberLockTimeStamp = player.CurrentTimeSec;
             }
 
-            // KillBlind Active + FocusedFire Passive.
-            if (_focusedFire != null && LeftChamber != RightChamber) // AND CURRENT SPELL IS KILL BLIND 
-            {
-                LeftChamber = Chamber.White;
-                RightChamber = Chamber.White;
-            } 
-
-            // Fixed Game passive
             if (_fixedGame != null && timeSinceLastPistolSpell >= 4 && LeftChamber != RightChamber)
             {
                 RightChamber = LeftChamber;
@@ -124,13 +113,17 @@ namespace swlsimNET.ServerApp.Weapons
             var timeSinceLocked = player.CurrentTimeSec - ChamberLockTimeStamp;
             LastPistolSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
 
-           
-            // Chambers locked as White during combat start
-            if ((timeSinceLocked > 3 && spell.Name != "KillBlind") || (timeSinceLocked > 4.5 && spell.Name == "KillBlind"))
+            if (_focusedFire != null && LeftChamber != RightChamber && spell.Name == "Kill Blind")
+            {
+                LeftChamber = Chamber.White;
+                RightChamber = Chamber.White;
+            }
+
+            if ((timeSinceLocked > 3 && player.CurrentSpell.Name == "KillBlind") || (timeSinceLocked > 4.5 && player.CurrentSpell.Name == "KillBlind"))
             {
                 if (_holdout != null && LeftChamber == RightChamber)
                 {
-                    // 33% chance not to reroll chambers
+
                     if (Rnd.Next(1, 4) < 3 && spell.GetType() == typeof(Unload))
                     {
                         ChamberRoulette(player);
@@ -144,25 +137,22 @@ namespace swlsimNET.ServerApp.Weapons
 
             if (LeftChamber == RightChamber)
             {
-                // Jackpot passive
+
                 if (_jackpot != null)
                 {
                     _jackpotBonus = timeSinceLocked <= 3;
                 }
 
-                // Winstreak passives
                 if (_winStreak != null)
                 {
                     player.AddBonusAttack(rr, new WinStreak(GetRandomNumber(0.06, 0.335)));
                 }
 
-                // Flechette Rounds passives
                 if (_flechetteRounds != null)
                 {
                     player.AddBonusAttack(rr, new FlechetteRounds());
                 }
 
-                // Misery & Malice Weapon
                 if (_miseryAndMalice)
                 {
                     _miseryAndMaliceBonus = 0.06; // TODO: 6% with all pistol abilities
@@ -222,15 +212,12 @@ namespace swlsimNET.ServerApp.Weapons
 
         private Chamber Dice()
         {
-            // 6 chambers. 3 white, 2 blue, 1 red.
-
-            // TODO: var maxroll = 7 + PASSIVEBONUSES;
 
             if (_heavyCaliberPistols)
             {
                 var caliberRoll = Rnd.Next(1, 7);
                 // "You are more likely to roll a Double Red set of chambers, but less likely to roll a Double White or Double Blue set of chambers." Thanks Funcom.
-                // Purely speculation below.
+                // Purely speculation below. TODO: Confirm..
                 if (caliberRoll >= 2 && caliberRoll <= 3)
                     return Chamber.White;
                 if (caliberRoll == 4)
@@ -248,49 +235,5 @@ namespace swlsimNET.ServerApp.Weapons
 
             return Chamber.Red;
         }
-
-        #region ChamberProcs
-
-        public class WhiteChambers : Spell
-        {
-            public WhiteChambers(IPlayer player)
-            {
-                WeaponType = WeaponType.Pistol;
-                SpellType = SpellType.Gimmick;
-                BaseDamage = 0.65;
-            }
-        }
-
-        public class BlueChambers : Spell
-        {
-            public BlueChambers(IPlayer player)
-            {
-                WeaponType = WeaponType.Pistol;
-                SpellType = SpellType.Gimmick;
-                BaseDamage = 1.25;
-            }
-        }
-
-        public class RedChambers : Spell
-        {
-            public RedChambers(IPlayer player)
-            {
-                WeaponType = WeaponType.Pistol;
-                SpellType = SpellType.Gimmick;
-                BaseDamage = 2;
-            }
-        }
-
-        public class Cb3Annihilators : Spell
-        {
-            public Cb3Annihilators(IPlayer player)
-            {
-                WeaponType = WeaponType.Pistol;
-                SpellType = SpellType.Gimmick;
-                BaseDamage = 0.86;
-            }
-        }
-
-        #endregion
     }
 }
