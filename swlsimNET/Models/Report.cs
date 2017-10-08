@@ -161,6 +161,19 @@ namespace swlsimNET.Models
 
                 var ofTotal = alldmg / TotalDamage * 100;
 
+                if (dSpell.SpellType == SpellType.Buff)
+                {
+                    BuffBreakdownList.Add(new BuffResult
+                    {
+                        Executes = executes,
+                        Interval = 20,
+                        Name = dSpell.Name,
+                        Refresh = 20,
+                        Uptime = 20
+                    });
+                }
+
+
                 if (dSpell.BaseDamage == 0)
                 {
                     _twoBuilder.AppendLine($"{ofTotal:0.0}% | {dSpell.Name}, hits: {avghits.ToString("#,0.0", nfi)}");

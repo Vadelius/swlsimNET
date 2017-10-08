@@ -109,20 +109,21 @@
                     <th>Refresh</th>
                     <th>Interval</th>
                     <th>Executes</th>
-                    <th>Count</th>
                     <th>Uptime%</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">Smash</th>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>6</td>
-                </tr>
+                @foreach (var buff in Model.BuffBreakdownList)
+                {
+                    <tr>
+                        <th scope="row">@buff.Name</th>
+                        <td>@buff.Executes</td>
+                        <td>@buff.Refresh</td>
+                        <td>@buff.Interval</td>
+                        <td>@buff.Uptime</td>
+                    </tr>
+
+                }
                 </tbody>
             </table>
         </div>
