@@ -90,7 +90,7 @@ namespace swlsimNET.ServerApp.Weapons
             _enraged50 = enraged50;
             _enraged100 = enraged100;
 
-            if (_fastAndFurious == null)
+            if (_fastAndFurious != null)
             {
                 _timeSinceEnraged = player.CurrentTimeSec - _enragedLockTimeStamp;
                 FastAndFuriousBonus = _timeSinceEnraged < 3.5;
