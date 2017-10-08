@@ -388,11 +388,15 @@ namespace swlsimNET.ServerApp.Models
 
         public void AddBonusAttack(RoundResult rr, ISpell spell)
         {
-            if (spell.Cooldown == 0)
+                rr.Attacks.Add(ExecuteNoGcd(spell));
+        }
+
+        public void AddGadgetAttack(RoundResult rr, ISpell spell)
+        {
+            if (spell.CanExecuteGadget(this))
             {
                 rr.Attacks.Add(ExecuteNoGcd(spell));
             }
-            
         }
 
         public Weapon GetWeaponFromSpell(ISpell spell)

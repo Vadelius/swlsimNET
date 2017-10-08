@@ -259,6 +259,18 @@ namespace swlsimNET.ServerApp.Spells
             }
         }
 
+        public virtual bool CanExecuteGadget(Player player)
+        {
+            var args = true;
+
+            // Evaluate args if any
+            if (!string.IsNullOrEmpty(this.Args))
+            {
+                args = Helper.EvaluateArgs(this.Args, player);
+            }
+
+            return Cooldown <= 0 && args;
+        }
         public virtual bool CanExecute(Player player)
         {
             var spell = this; // debug        

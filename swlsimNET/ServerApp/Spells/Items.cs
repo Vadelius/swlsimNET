@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using swlsimNET.Models;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Utilities;
@@ -9,7 +10,8 @@ namespace swlsimNET.ServerApp.Spells
 {
     public class Items
     {
-        private AnimaTouched _animaTouched;
+        private ElectrograviticAttractor _electrograviticAttractor;
+        private MnemonicGuardianWerewolf _werewolf;
         private ValiMetabolicAccelerator _valiMetabolicAccelerator;
 
         public enum NeckTalisman
@@ -41,7 +43,11 @@ namespace swlsimNET.ServerApp.Spells
             _player = player;
 
             _animaTouched = new AnimaTouched(_player);
+            _electrograviticAttractor = new ElectrograviticAttractor(player);
+            _werewolf = new MnemonicGuardianWerewolf(_player);
             _valiMetabolicAccelerator = new ValiMetabolicAccelerator(_player);
+            
+
         }
 
         public void Execution(RoundResult rr)
@@ -94,28 +100,28 @@ namespace swlsimNET.ServerApp.Spells
             }
 
             //Gadgets below
-            switch (_player.Settings.Gadget)
-            {
-                case Gadget.ValiMetabolic:
-                    _player.AddBonusAttack(rr, _valiMetabolicAccelerator);
-                    break;
-                case Gadget.MnemonicGuardianWerewolf:
-                    _player.AddBonusAttack(rr, new MnemonicGuardianWerewolf(_player));
-                    break;
-                case Gadget.ShardOfSesshoSeki when _player.CurrentSpell.SpellType != SpellType.Dot:
-                    _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
-                    break;
-                case Gadget.ElectrograviticAttractor:
-                    _player.AddBonusAttack(rr, new ElectrograviticAttractor(_player));
-                    break;
-            }
+            //switch (_player.Settings.Gadget)
+            //{
+            //    case Gadget.ValiMetabolic:
+            //        _player.AddBonusAttack(rr, _valiMetabolicAccelerator);
+            //        break;
+            //    case Gadget.MnemonicGuardianWerewolf:
+            //        _player.AddBonusAttack(rr, _werewolf);
+            //        break;
+            //    case Gadget.ShardOfSesshoSeki when _player.CurrentSpell.SpellType != SpellType.Dot:
+            //        _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
+            //        break;
+            //    case Gadget.ElectrograviticAttractor:
+            //        _player.AddBonusAttack(rr, _electrograviticAttractor);
+            //        break;
+            //}
 
             if (_player.Settings.PrimaryWeaponProc == WeaponProc.AnimaTouched)
             {
                 var roll = _rnd.Next(1, 4);
                 if (roll == 3)
                 {
-                    _player.AddBonusAttack(rr, _animaTouched);
+                    _player.AddBonusAttack(rr, new AnimaTouched(_player));
                 }
             }
 
@@ -172,7 +178,7 @@ namespace swlsimNET.ServerApp.Spells
             SpellType = SpellType.Instant;
             PrimaryGain = 3;
             SecondaryGain = 2;
-            MaxCooldown = 30; //TODO: Actually check for gadget/weapon proc cooldowns when running _player.AddBonusAttack!
+            MaxCooldown = 30;
             Args = args;
         }
     }
@@ -280,7 +286,6 @@ namespace swlsimNET.ServerApp.Spells
             BaseDamage = 2.25;
             MaxCooldown = 15; //ICD
             Args = args;
-            //TODO: 20% chance per hit to cast "Raven Blade"
         }
     }
 }

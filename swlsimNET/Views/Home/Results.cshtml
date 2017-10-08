@@ -71,7 +71,7 @@
                 @foreach (var spell in Model.SpellBreakdownList)
                 {
                     <tr>
-                        <th scope="row">@spell.Name.Humanize()</th>
+                        <th scope="row">@spell.Name.Humanize(LetterCasing.Title)</th>
                         <td>@spell.DamagePerSecond.ToString("F0")</td>
                         <td>@spell.DpsPercentage.ToString("F2")</td>
                         <td>@spell.Executes</td>
