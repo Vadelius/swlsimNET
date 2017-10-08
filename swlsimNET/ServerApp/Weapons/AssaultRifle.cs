@@ -7,7 +7,6 @@ using swlsimNET.ServerApp.Spells;
 
 namespace swlsimNET.ServerApp.Weapons
 {
-
     public class AssaultRifle : Weapon
     {
         private bool _infernalLoader = false;

@@ -102,6 +102,7 @@ namespace swlsimNET.ServerApp.Spells.Hammer
             PrimaryCost = 4;
             PrimaryGimmickGain = 7;
             MaxCooldown = 20;
+            PrimaryGimmickCost = 50;
             BaseDamage = 5.6;
             // TODO: Stun, Purge, Exposed, +7 Rage per target, Column 6 Enemies
         }

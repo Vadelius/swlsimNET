@@ -23,57 +23,28 @@ namespace swlsimNET.ServerApp.Weapons
         private double _timeSinceEnraged;
 
         private bool _pneumaticMaul = true;
-        private bool _pneumaticAvailable = false;
         private bool _fumingDespoiler = false;
-        //private bool _theTenderiser = false;
+
         private double _pneumaticStamp = -1;
+
+        private int _demolishOriginalCost;
+        private int _eruptionOriginalCost;
 
         public bool FastAndFuriousBonus { get; private set; }
         public bool LetLooseBonus { get; private set; }
+        public bool PneumaticAvailable { get; private set; }
 
         public Hammer(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
             _maxGimickResource = 100;
         }
+
         private readonly List<string> _hammerConsumers = new List<string>
         {
             "Demolish", "DemolishRage", "Eruption"
         };
 
         public override void PreAttack(IPlayer player, RoundResult rr)
-        {
-            if (_pneumaticStamp >= player.CurrentTimeSec)
-            {
-                var demolish = player.Spells.Where(s => s.GetType() == typeof(DemolishRage));
-                var eruption = player.Spells.Where(s => s.GetType() == typeof(EruptionRage));
-
-                foreach (var d in demolish)
-                {
-                    d.PrimaryGimmickCost = 0;
-                }
-                foreach (var e in eruption)
-                {
-                    e.PrimaryGimmickCost = 0;
-                }
-
-            }
-            else
-            {
-                var demolish = player.Spells.Where(s => s.GetType() == typeof(DemolishRage));
-                var eruption = player.Spells.Where(s => s.GetType() == typeof(EruptionRage));
-
-                foreach (var d in demolish)
-                {
-                    d.PrimaryGimmickCost = 50;
-                }
-                foreach (var e in eruption)
-                {
-                    e.PrimaryGimmickCost = 50;
-                }
-            }
-        }
-
-        public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
             // Only on first activation
             if (!_init)
@@ -83,8 +54,24 @@ namespace swlsimNET.ServerApp.Weapons
                 _fastAndFurious = player.GetPassive(nameof(FastAndFurious));
                 _hasLetLoose = player.HasPassive(nameof(LetLoose));
                 _hasAnnihilate = player.HasPassive(nameof(Annihilate));
+                //_pneumaticMaul = 
+
+                if (_pneumaticMaul)
+                {
+                    var demolishRage = player.Spells.Find(s => s.GetType() == typeof(DemolishRage));
+                    var eruptionRage = player.Spells.Find(s => s.GetType() == typeof(EruptionRage));
+
+                    _demolishOriginalCost = demolishRage?.PrimaryGimmickCost ?? 50;
+                    _eruptionOriginalCost = eruptionRage?.PrimaryGimmickCost ?? 50;
+                }
             }
 
+            var pneumaticBuffUp = _pneumaticStamp >= player.CurrentTimeSec && PneumaticAvailable;
+            PneumaticMaulActive(player, pneumaticBuffUp);
+        }
+
+        public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
+        {
             var enraged50 = GimmickResource >= 50 && GimmickResource < 100;
             var enraged100 = GimmickResource >= 100;
 
@@ -108,35 +95,13 @@ namespace swlsimNET.ServerApp.Weapons
                 _timeSinceEnraged = player.CurrentTimeSec - _enragedLockTimeStamp;
                 FastAndFuriousBonus = _timeSinceEnraged < 3.5;
             }
-            //Whenever you critically hit with a Hammer ability, you gain a benefical effect which allows you to gain the benefits of the Enrage bonus effects on your abilities without spending 
-            //any Rage and without being Enraged.This effect can only occur once every 9 seconds.
-            // _pneumaticStamp == player.CurrentTime =+ 9;
+
+            // We have PneumaticMaul weapon
             if (_pneumaticMaul)
             {
-                var attack = rr.Attacks.FirstOrDefault();
-                if (attack != null && attack.IsCrit && !_pneumaticAvailable)
-                {
-                    _pneumaticAvailable = true;
-                    _pneumaticStamp = player.CurrentTimeSec + 9; 
-                }
-
-                if (_pneumaticStamp < player.CurrentTimeSec + 9 &&_pneumaticAvailable && spell.GetType() == typeof(DemolishRage) || spell.GetType() == typeof(EruptionRage))
-                {
-                    var demolish = player.Spells.Where(s => s.GetType() == typeof(DemolishRage));
-                    var eruption = player.Spells.Where(s => s.GetType() == typeof(EruptionRage));
-
-                    foreach (var d in demolish)
-                    {
-                        d.PrimaryGimmickCost = 50;
-                    }
-                    foreach (var e in eruption)
-                    {
-                        e.PrimaryGimmickCost = 50;
-                    }
-
-                    _pneumaticAvailable = false;
-                }
+                PneumaticMaul(player, rr, spell);
             }
+
             var spellName = spell.Name;
             if (_fumingDespoiler && spellName != null && !_hammerConsumers.Contains(spellName, StringComparer.CurrentCultureIgnoreCase))
             {
@@ -218,6 +183,60 @@ namespace swlsimNET.ServerApp.Weapons
                 WeaponType = WeaponType.Hammer;
                 SpellType = SpellType.Gimmick;
                 BaseDamage = 0.825;
+            }
+        }
+
+        private void PneumaticMaul(IPlayer player, RoundResult rr, ISpell spell)
+        {
+            // On critical hit with a Hammer ability 
+            // gain the benefits of the Enrage bonus effects on your abilities without spending any Rage and without being Enraged.
+            // This effect can only occur once every 9 seconds.
+
+            var pneumaticBuffActive = _pneumaticStamp >= player.CurrentTimeSec;
+
+            // Buff is up but used
+            if (pneumaticBuffActive && !PneumaticAvailable)
+            {
+                return;
+            }
+
+            // Buff is up and not used
+            if (pneumaticBuffActive && PneumaticAvailable)
+            {
+                if (spell.GetType() == typeof(DemolishRage) || spell.GetType() == typeof(EruptionRage))
+                {
+                    // Buff consumed
+                    PneumaticAvailable = false;
+                    return;
+                } 
+            }
+
+            // Buff is not up and not on cooldown
+            var attack = rr.Attacks.FirstOrDefault();
+            if (attack != null && attack.IsCrit)
+            {
+                // Activate buff and set to available
+                PneumaticAvailable = true;
+                _pneumaticStamp = player.CurrentTimeSec + 9;
+            }
+        }
+
+        private void PneumaticMaulActive(IPlayer player, bool active)
+        {
+            var demolish = player.Spells.Where(s => s.GetType() == typeof(DemolishRage));
+            var eruption = player.Spells.Where(s => s.GetType() == typeof(EruptionRage));
+
+            if (active)
+            {
+                foreach (var d in demolish) d.PrimaryGimmickCost = 0;
+                foreach (var e in eruption) e.PrimaryGimmickCost = 0;
+                PneumaticAvailable = true;
+            }
+            else
+            {
+                foreach (var d in demolish) d.PrimaryGimmickCost = _demolishOriginalCost;
+                foreach (var e in eruption) e.PrimaryGimmickCost = _eruptionOriginalCost;
+                PneumaticAvailable = false;
             }
         }
     }

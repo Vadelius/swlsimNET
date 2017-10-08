@@ -19,7 +19,8 @@ namespace swlsimNET.ServerApp.Models
             public IBuff UnstoppableForce => _player.GetBuffFromName("UnstoppableForce");
 
             // Hammer APL specifics
-            public bool Enraged => _player.Rage >= 50;
+            public bool Enraged => _player.Rage >= 50 || _player.GetWeaponFromType(WeaponType.Hammer) is Hammer hammer &&
+                                    hammer.PneumaticAvailable;
             public bool FastAndFurious => _player.GetWeaponFromType(WeaponType.Hammer) is Hammer
                                               hammer && hammer.FastAndFuriousBonus;
 
