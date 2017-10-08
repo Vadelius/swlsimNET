@@ -48,6 +48,10 @@ namespace swlsimNET.ServerApp.Spells.Pistol
             SpellType = SpellType.Instant;
             MaxCooldown = 20;
             PrimaryGain = 4;
+            if (player.HasPassive(nameof(LethalAim)))
+            { 
+                AbilityBuff = player.GetAbilityBuffFromName(Name) as AbilityBuff;
+            }
             Args = args;
         } // Cleanse 1 effect.
     }

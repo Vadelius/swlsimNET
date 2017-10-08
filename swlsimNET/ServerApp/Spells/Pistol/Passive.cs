@@ -16,13 +16,12 @@ namespace swlsimNET.ServerApp.Spells.Pistol
         }
     }
 
-    public class LethalAim : Spell
+    public class LethalAim : Passive
     {
-        public LethalAim(IPlayer player, string args = null)
+        public LethalAim()
         {
             WeaponType = WeaponType.Pistol;
             SpellType = SpellType.Passive;
-            // Flourish: 6s 15% damage and cannot be evaded or glance
         }
     }
 

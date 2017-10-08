@@ -82,6 +82,7 @@ namespace swlsimNET.ServerApp.Models
             AbilityBuffs.Add(new Spells.Blade.Buffs.SupremeHarmony());
             AbilityBuffs.Add(new Spells.Fist.Buffs.Savagery());
             AbilityBuffs.Add(new Spells.Hammer.Buffs.UnstoppableForce());
+            AbilityBuffs.Add(new Spells.Pistol.Buffs.Flourish());
         }
 
         // TODO: Simplify

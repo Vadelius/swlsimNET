@@ -125,6 +125,7 @@ namespace swlsimNET.Models
             new BeginnersLuck(),
             new BulletEcho(),
             new Holdout(),
+            new LethalAim(),
 
             // Blood
             new CrimsonPulse(),
