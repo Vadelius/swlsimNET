@@ -119,7 +119,7 @@ namespace swlsimNET.ServerApp.Weapons
                 RightChamber = Chamber.White;
             }
 
-            if ((timeSinceLocked > 3 && spell.Name != "KillBlind") || (timeSinceLocked > 4.5 && spell.Name == "KillBlind"))
+            if ((timeSinceLocked > 3 && player.CurrentSpell.Name == "KillBlind") || (timeSinceLocked > 4.5 && player.CurrentSpell.Name == "KillBlind"))
             {
                 if (_holdout != null && LeftChamber == RightChamber)
                 {
