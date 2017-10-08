@@ -95,6 +95,21 @@ namespace swlsimNET.Models
 
                     foreach (var a in rr.Attacks)
                     {
+                        var buffspells = _distinctSpellCast.Where(s => s.SpellType == SpellType.Buff).ToList();
+
+                        foreach (var buffspell in buffspells)
+                        {
+                            BuffBreakdownList.Add(new BuffResult
+                            {
+                                Executes = buffspells.Count,
+                                Interval = 20,
+                                Name = buffspell.Name,
+                                Refresh = 20,
+                                Uptime = 20
+                            });
+                        }
+
+
                         if (a.IsHit && a.IsCrit) 
                         {
 
@@ -160,19 +175,6 @@ namespace swlsimNET.Models
                 var executes = (avghits + avgcrits);
 
                 var ofTotal = alldmg / TotalDamage * 100;
-
-                if (dSpell.SpellType == SpellType.Buff)
-                {
-                    BuffBreakdownList.Add(new BuffResult
-                    {
-                        Executes = executes,
-                        Interval = 20,
-                        Name = dSpell.Name,
-                        Refresh = 20,
-                        Uptime = 20
-                    });
-                }
-
 
                 if (dSpell.BaseDamage == 0)
                 {

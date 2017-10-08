@@ -22,7 +22,6 @@ namespace swlsimNET.ServerApp.Weapons
         private double _enragedLockTimeStamp;
         private double _timeSinceEnraged;
 
-        private bool _pneumaticMaul = true;
         private bool _fumingDespoiler = false;
 
         private double _pneumaticStamp = -1;
@@ -56,7 +55,7 @@ namespace swlsimNET.ServerApp.Weapons
                 _hasAnnihilate = player.HasPassive(nameof(Annihilate));
                 //_pneumaticMaul = 
 
-                if (_pneumaticMaul)
+                if (player.Settings.PrimaryWeaponProc == WeaponProc.PneumaticMaul)
                 {
                     var demolishRage = player.Spells.Find(s => s.GetType() == typeof(DemolishRage));
                     var eruptionRage = player.Spells.Find(s => s.GetType() == typeof(EruptionRage));
@@ -90,14 +89,13 @@ namespace swlsimNET.ServerApp.Weapons
             _enraged50 = enraged50;
             _enraged100 = enraged100;
 
-            if (_fastAndFurious == null)
+            if (_fastAndFurious != null)
             {
                 _timeSinceEnraged = player.CurrentTimeSec - _enragedLockTimeStamp;
                 FastAndFuriousBonus = _timeSinceEnraged < 3.5;
             }
 
-            // We have PneumaticMaul weapon
-            if (_pneumaticMaul)
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.PneumaticMaul)
             {
                 PneumaticMaul(player, rr, spell);
             }
