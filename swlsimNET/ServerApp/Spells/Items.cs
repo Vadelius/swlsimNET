@@ -42,11 +42,9 @@ namespace swlsimNET.ServerApp.Spells
         {
             _player = player;
 
-            _animaTouched = new AnimaTouched(_player);
             _electrograviticAttractor = new ElectrograviticAttractor(player);
             _werewolf = new MnemonicGuardianWerewolf(_player);
             _valiMetabolicAccelerator = new ValiMetabolicAccelerator(_player);
-            
 
         }
 
