@@ -26,6 +26,7 @@ namespace swlsimNET.Models
         public double HighestDps { get; set; }
         public string SpellBreakdown { get; private set; }
         public List<SpellResult> SpellBreakdownList { get; private set; }
+        public List<BuffResult> BuffBreakdownList { get; private set; }
         public List<EnergySnap> EnergyList { get; private set; }
         public string PieStuff { get; set; }
 
@@ -33,6 +34,7 @@ namespace swlsimNET.Models
         {
             _settings = settings;
             SpellBreakdownList = new List<SpellResult>();
+            BuffBreakdownList = new List<BuffResult>();
             EnergyList = new List<EnergySnap>();
             InitReportData(iterationFightResults);
             GenerateSpellReportData();
@@ -195,6 +197,14 @@ namespace swlsimNET.Models
             public double Sgimmick { get; set; }
         }
 
+        public class BuffResult
+        {
+            public string Name { get; set; }
+            public double Executes { get; set; }
+            public double Refresh { get; set; }
+            public double Interval { get; set; }
+            public double Uptime { get; set; }
+        }
         public class SpellResult
         {
             // [spellName, DPS, DPS%, Executes, DPE, SpellType, Count, Average, Crit%]
