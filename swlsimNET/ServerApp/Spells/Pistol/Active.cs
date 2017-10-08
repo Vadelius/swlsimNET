@@ -33,7 +33,7 @@ namespace swlsimNET.ServerApp.Spells.Pistol
             WeaponType = WeaponType.Pistol;
             AbilityType = AbilityType.Power;
             SpellType = SpellType.Cast;
-            CastTime = 0.5;
+            CastTime = 0.5m;
             PrimaryCost = 3;
             BaseDamage = 1.26;
             Args = args;
@@ -63,7 +63,7 @@ namespace swlsimNET.ServerApp.Spells.Pistol
             WeaponType = WeaponType.Pistol;
             AbilityType = AbilityType.Power;
             SpellType = SpellType.Channel;
-            CastTime = 2.5;
+            CastTime = 2.5m;
             ChannelTicks = 5;
             PrimaryCost = 5;
             BaseDamage = 1.03;
@@ -78,7 +78,7 @@ namespace swlsimNET.ServerApp.Spells.Pistol
             WeaponType = WeaponType.Pistol;
             AbilityType = AbilityType.Elite;
             SpellType = SpellType.Channel;
-            CastTime = 3.0;
+            CastTime = 3.0m;
             ChannelTicks = 10;
             MaxCooldown = 20;
             PrimaryCost = 4;
@@ -143,7 +143,7 @@ namespace swlsimNET.ServerApp.Spells.Pistol
             WeaponType = WeaponType.Pistol;
             AbilityType = AbilityType.Basic;
             SpellType = SpellType.Cast;
-            CastTime = 0.5;
+            CastTime = 0.5m;
             BaseDamage = 0.58;
             Args = args;
         } // Chain: Jumps 8m 5 times hitting 6E
@@ -180,7 +180,7 @@ namespace swlsimNET.ServerApp.Spells.Pistol
             WeaponType = WeaponType.Pistol;
             AbilityType = AbilityType.Elite;
             SpellType = SpellType.Channel;
-            CastTime = 2.0;
+            CastTime = 2.0m;
             ChannelTicks = 10;
             MaxCooldown = 20;
             PrimaryCost = 4;

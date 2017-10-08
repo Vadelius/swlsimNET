@@ -5,9 +5,9 @@ namespace swlsimNET.ServerApp.Weapons
 {
     public class Elemental : Weapon
     {
-        private double LastElementalSpellTimeStamp { get; set; }
+        private decimal LastElementalSpellTimeStamp { get; set; }
         private ISpell LastElementalSpell { get; set; }
-        private double TimeSinceLastElementalSpell { get; set; }
+        private decimal TimeSinceLastElementalSpell { get; set; }
 
         public Elemental(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {

@@ -8,7 +8,7 @@ using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.ServerApp.Models
 {
-    public partial class Player : IPlayer, ICombat
+    public class Player : IPlayer, ICombat
     {
         private bool _passivesInitiated;
         public ExpressionContext Context;
@@ -37,7 +37,7 @@ namespace swlsimNET.ServerApp.Models
             BasicSignetBoost = settings.BasicSignet / 100 + 1;
             PowerSignetBoost = settings.PowerSignet / 100 + 1;
             EliteSignetBoost = settings.HeadSignetIsCdr ? 1 : settings.EliteSignet / 100 + 1;
-            EliteSignetCooldownReduction = settings.HeadSignetIsCdr ? settings.EliteSignet / 100 : 0;
+            EliteSignetCooldownReduction = (decimal) (settings.HeadSignetIsCdr ? settings.EliteSignet / 100 : 0);
             WaistSignetBoost = settings.WaistSignet / 100;
 
             var apl = new AplReader(this, settings.Apl);
@@ -138,7 +138,7 @@ namespace swlsimNET.ServerApp.Models
             _passivesInitiated = true;
         }
 
-        public RoundResult NewRound(double currentSec, double interval)
+        public RoundResult NewRound(decimal currentSec, decimal interval)
         {
             if (!_passivesInitiated) InitPassives();
 
@@ -198,23 +198,8 @@ namespace swlsimNET.ServerApp.Models
 
             if (CurrentSpell == null)
             {
-                // Get first spell from top of priority list we can execute
-                var spell = Spells.FirstOrDefault(s => s.CanExecute(this));
-
-                // If spell is null we cant cast anything
-                if (spell == null) return;
-
-                // Specific Hammer stuff, if enraged get rage spell
-                if (Buff.Enraged)
-                {
-                    var rageSpell = Spells.Find(s => s.Name == spell.Name + "Rage");
-                    if (rageSpell != null)
-                    {
-                        spell = rageSpell;
-                    }
-                }
-
-                attack = spell.Execute(this);
+                var spell = GetSpellFromApl();
+                attack = spell?.Execute(this);
 
                 // If attack is null we have started a cast
                 if (attack != null)
@@ -231,8 +216,39 @@ namespace swlsimNET.ServerApp.Models
                 if (attack != null)
                 {
                     rr.Attacks.Add(attack);
+
+                    // Cast complete, we can start casting same round
+                    var spell = GetSpellFromApl();
+                    attack = spell?.Execute(this);
+
+                    // If attack is null we have started a cast
+                    if (attack != null)
+                    {
+                        rr.Attacks.Add(attack);
+                    }
                 }
             }
+        }
+
+        private ISpell GetSpellFromApl()
+        {
+            // Get first spell from top of priority list we can execute
+            var spell = Spells.FirstOrDefault(s => s.CanExecute(this));
+
+            // If spell is null we cant cast anything
+            if (spell == null) return null;
+
+            // Specific Hammer stuff, if enraged get rage spell
+            if (Buff.Enraged)
+            {
+                var rageSpell = Spells.Find(s => s.Name == spell.Name + "Rage");
+                if (rageSpell != null)
+                {
+                    return rageSpell;
+                }
+            }
+
+            return spell;
         }
 
         private void ExecuteBuff(RoundResult rr)
@@ -449,9 +465,9 @@ namespace swlsimNET.ServerApp.Models
         public double BasicSignetBoost { get; protected set; } = 1.74;
         public double PowerSignetBoost { get; protected set; } = 1.18;
         public double EliteSignetBoost { get; protected set; } = 1.43;
-        public double EliteSignetCooldownReduction { get; protected set; } = 0;
+        public decimal EliteSignetCooldownReduction { get; protected set; } = 0;
         public double WaistSignetBoost { get; protected set; } = 1.30; 
-        public double Interval { get; set; }
+        public decimal Interval { get; set; }
         public List<ISpell> Spells { get; set; }
         public List<IBuff> Buffs { get; }
         public List<IBuff> AbilityBuffs { get; }
@@ -462,9 +478,9 @@ namespace swlsimNET.ServerApp.Models
         public bool OpeningShotEnabled { get; set; }
 
         // Implements ICombat
-        public double CastTime { get; set; }
-        public double CurrentTimeSec { get; private set; }
-        public double GCD { get; set; }
+        public decimal CastTime { get; set; }
+        public decimal CurrentTimeSec { get; private set; }
+        public decimal GCD { get; set; }
         public int RepeatHits { get; set; }
         public Spell CurrentSpell { get; set; }
 

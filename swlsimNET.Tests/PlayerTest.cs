@@ -84,11 +84,11 @@ namespace swlsimNET.Tests
                 .SelectMany(r => r.Attacks.Where(a => a.Spell.GetType() == typeof(Smash))).Count();
 
             Assert.AreEqual(iterationCount, 2);
-            Assert.AreEqual(endTime1, 9.9);          
-            Assert.AreEqual(rounds1, 10);
-            Assert.AreEqual(endTime2, 9.9);
-            Assert.AreEqual(rounds2, 10);
-            Assert.IsTrue(spellCount == 20);
+            Assert.AreEqual(endTime1, 10.0m);          
+            Assert.AreEqual(rounds1, 11);
+            Assert.AreEqual(endTime2, 10.0m);
+            Assert.AreEqual(rounds2, 11);
+            Assert.IsTrue(spellCount == 22);
         }
 
         [TestMethod]
@@ -115,16 +115,17 @@ namespace swlsimNET.Tests
             var castCount = fight.RoundResults
                 .SelectMany(r => r.Attacks.Where(a => a.Spell.GetType() == typeof(CastSpell))).Count();
 
-            // TODO: Is this correct assumptions? or can we finish a cast and start a new one the same ms
-            // 0ms, start cast
-            // 2500ms, finish cast
-            // 2600ms, start next cast
-            // 5100ms, finish cast
-            // 5200, start next cast
-            // 7700ms, finish cast
+            // 0.0, start cast
+            // 2.5, finish cast
+            // 2.5, start next cast
+            // 5.0, finish cast
+            // 5.0, start next cast
+            // 7.5, finish cast
+            // 7.5, start next cast
+            // 10.0, finish cast
 
             Assert.AreEqual(rounds, 4);
-            Assert.AreEqual(endTime, 9.9);
+            Assert.AreEqual(endTime, 10.0m);
             Assert.IsTrue(castCount == 4);
         }
 
@@ -152,31 +153,37 @@ namespace swlsimNET.Tests
             var channelTickCount = fight.RoundResults
                 .SelectMany(r => r.Attacks.Where(a => a.Spell.GetType() == typeof(ChannelSpell))).Count();
 
-            // TODO: Is this correct assumptions? or can we finish a channel and start a new one the same ms
-            // 0ms, start channel
-            // 500ms, channel tick
-            // 1000ms, channel tick
-            // 1500ms, channel tick
-            // 2000ms, channel tick
-            // 2500ms, channel tick
-            // 2500ms, finish channel
-            // 2600ms, start next channel
-            // 3100ms, channel tick
-            // 3600ms, channel tick
-            // 4100ms, channel tick
-            // 4600ms, channel tick
-            // 5100ms, channel tick
-            // 5100ms, finish channel
-            // 5200, start next channel
-            // 5700ms, channel tick
-            // 6200ms, channel tick
-            // 6700ms, channel tick
-            // 7200ms, channel tick
-            // 7700ms, channel tick
-            // 7700ms, finish channel
+            // 0.0, start channel
+            // 0.5, channel tick
+            // 1.0, channel tick
+            // 1.5, channel tick
+            // 2.0, channel tick
+            // 2.5, channel tick
+            // 2.5, finish channel
+            // 2.5, start next channel
+            // 3.0, channel tick
+            // 3.5, channel tick
+            // 4.0, channel tick
+            // 4.5, channel tick
+            // 5.0, channel tick
+            // 5.0, finish channel
+            // 5.0, start next channel
+            // 5.5, channel tick
+            // 6.0, channel tick
+            // 6.5, channel tick
+            // 7.0, channel tick
+            // 7.5, channel tick
+            // 7.5, finish channel
+            // 7.5, start next channel
+            // 8.0, channel tick
+            // 8.5, channel tick
+            // 9.0, channel tick
+            // 9.5, channel tick
+            // 10.0, channel tick
+            // 10.0, finish channel
 
             Assert.AreEqual(rounds, 20);
-            Assert.AreEqual(endTime, 9.9);
+            Assert.AreEqual(endTime, 10.0m);
             Assert.IsTrue(channelTickCount == 20);
         }
 
@@ -206,31 +213,37 @@ namespace swlsimNET.Tests
 
             // TODO: Dot ticks should NOT add any kind of bonus attacks?
 
-            // TODO: Is this correct assumptions? or can we finish a channel and start a new one the same ms
-            // 0ms, start dot
-            // 500ms, dot tick
-            // 1000ms, dot tick
-            // 1500ms, dot tick
-            // 2000ms, dot tick
-            // 2500ms, dot tick
-            // 2500ms, finish dot
-            // 2600ms, start next dot
-            // 3100ms, dot tick
-            // 3600ms, dot tick
-            // 4100ms, dot tick
-            // 4600ms, dot tick
-            // 5100ms, dot tick
-            // 5100ms, finish dot
-            // 5200, start next dot
-            // 5700ms, dot tick
-            // 6200ms, dot tick
-            // 6700ms, dot tick
-            // 7200ms, dot tick
-            // 7700ms, dot tick
-            // 7700ms, finish dot
+            // 0.0, start dot
+            // 0.5, dot tick
+            // 1.0, dot tick
+            // 1.5, dot tick
+            // 2.0, dot tick
+            // 2.5, dot tick
+            // 2.5, finish dot
+            // 2.5, start next dot
+            // 3.0, dot tick
+            // 3.5, dot tick
+            // 4.0, dot tick
+            // 4.5, dot tick
+            // 5.0, dot tick
+            // 5.0, finish dot
+            // 5.0, start next dot
+            // 5.5, dot tick
+            // 6.0, dot tick
+            // 6.5, dot tick
+            // 7.0, dot tick
+            // 7.5, dot tick
+            // 7.5, finish dot
+            // 7.5, start next dot
+            // 8.0, dot tick
+            // 8.5, dot tick
+            // 9.0, dot tick
+            // 9.5, dot tick
+            // 10.0, dot tick
+            // 10.0, finish dot
 
             Assert.AreEqual(rounds, 20);
-            Assert.AreEqual(endTime, 9.9);
+            Assert.AreEqual(endTime, 10.0m);
             Assert.IsTrue(dotTickCount == 20);
         }
 
@@ -358,7 +371,7 @@ namespace swlsimNET.Tests
                 WeaponType = WeaponType.Elemental;
                 AbilityType = AbilityType.None;
                 SpellType = SpellType.Cast;
-                CastTime = 2.5;
+                CastTime = 2.5m;
                 BaseDamage = 1;
             }
         }
@@ -367,10 +380,10 @@ namespace swlsimNET.Tests
         {
             public ChannelSpell()
             {
-                WeaponType = WeaponType.Elemental;
+                WeaponType = WeaponType.Blood;
                 AbilityType = AbilityType.None;
                 SpellType = SpellType.Channel;
-                CastTime = 2.5;
+                CastTime = 2.5m;
                 ChannelTicks = 5;
                 BaseDamage = 1;
             }
@@ -384,7 +397,7 @@ namespace swlsimNET.Tests
                 AbilityType = AbilityType.None;
                 SpellType = SpellType.Dot;
                 CastTime = 0;
-                DotDuration = 2.5;
+                DotDuration = 2.5m;
                 DotTicks = 5;
                 BaseDamage = 1;
 

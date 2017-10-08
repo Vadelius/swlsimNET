@@ -63,7 +63,7 @@ namespace swlsimNET.ServerApp.Spells.Shotgun
             WeaponType = WeaponType.Shotgun;
             AbilityType = AbilityType.Elite;
             SpellType = SpellType.Channel;
-            CastTime = 2.5;
+            CastTime = 2.5m;
             ChannelTicks = 5;
             PrimaryCost = 4;
             PrimaryGimmickCost = 5;

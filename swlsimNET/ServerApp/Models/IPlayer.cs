@@ -16,8 +16,8 @@ namespace swlsimNET.ServerApp.Models
         double BasicSignetBoost { get; }
         double PowerSignetBoost { get; }
         double EliteSignetBoost { get; }
-        double Interval { get; }
-        double CurrentTimeSec { get; }
+        decimal Interval { get; }
+        decimal CurrentTimeSec { get; }
 
         List<ISpell> Spells { get; }
         List<IBuff> Buffs { get; }

@@ -13,14 +13,17 @@ namespace swlsimNET.ServerApp.Spells
         {
             SeedOfAgression, ChokerOfSheedBlood, EgonPendant
         }
+
         public enum LuckTalisman
         {
             ColdSilver, GamblersSoul
         }
+
         public enum HeadTalisman
         {
             Ashes
         }
+
         public enum Gadget
         {
             ElectrograviticAttractor, ShardOfSesshoSeki, ValiMetabolic, MnemonicGuardianWerewolf
@@ -183,7 +186,6 @@ namespace swlsimNET.ServerApp.Spells
             DotDuration = 10;
             BaseDamage = 0.0225;
             Args = args;
-
         }
     }
 
@@ -280,7 +282,5 @@ namespace swlsimNET.ServerApp.Spells
             //TODO: 20% chance per hit to cast "Raven Blade"
         }
     }
-
-
 }
 

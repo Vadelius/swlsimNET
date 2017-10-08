@@ -76,7 +76,7 @@ namespace swlsimNET.ServerApp.Weapons
             }
         }
 
-        private double LastEnergyOnCritTimeStamp { get; set; }
+        private decimal LastEnergyOnCritTimeStamp { get; set; }
 
         #endregion
 
@@ -165,7 +165,7 @@ namespace swlsimNET.ServerApp.Weapons
             {
                 if (eliteSpell.Cooldown > 0)
                 {
-                    eliteSpell.Cooldown -= eliteSpell.Cooldown * 0.05;
+                    eliteSpell.Cooldown -= eliteSpell.Cooldown * 0.05m;
                 }
             }
         }

@@ -63,7 +63,7 @@ namespace swlsimNET.Models
             nfi = (NumberFormatInfo) CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
-            double lastChangeTimeStamp = 0;
+            decimal lastChangeTimeStamp = 0;
             const int interval = 2; // Can't go higher due to inconsistent line-values.
 
             foreach (var iteration in iterationFightResults)
@@ -205,7 +205,7 @@ namespace swlsimNET.Models
 
         public class EnergySnap
         {
-            public double Time { get; set; }
+            public decimal Time { get; set; }
             public int Primary { get; set; }
             public int Secondary { get; set; }
             public double Pgimmick { get; set; }

@@ -5,11 +5,11 @@ namespace swlsimNET.ServerApp.Models
 {
     public interface ICombat
     {
-        double CastTime { get; set; }
-        double CurrentTimeSec { get; }
-        double GCD { get; set; }
+        decimal CastTime { get; set; }
+        decimal CurrentTimeSec { get; }
+        decimal GCD { get; set; }
         int RepeatHits { get; }
         Spell CurrentSpell { get; }
-        RoundResult NewRound(double currentSec, double intervalSec);
+        RoundResult NewRound(decimal currentSec, decimal intervalSec);
     }
 }

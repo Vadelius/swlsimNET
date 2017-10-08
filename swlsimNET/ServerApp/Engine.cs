@@ -43,10 +43,10 @@ namespace swlsimNET.ServerApp
 
             // Run a complete fight
             // Check if we can do something 10 times a second (to account for lag)
-            for (decimal sec = 0; sec < _settings.FightLength; sec += Interval)
+            for (decimal sec = 0; sec <= _settings.FightLength; sec += Interval)
             {
                 // Decimal needed since double is to inaccurate, castint do double afterwards seems fine
-                var roundResult = player.NewRound((double)sec, (double)Interval);
+                var roundResult = player.NewRound(sec, Interval);
 
                 // Only save rounds with any actions
                 if (roundResult.Attacks.Any())

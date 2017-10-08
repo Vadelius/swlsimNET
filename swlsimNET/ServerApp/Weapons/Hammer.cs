@@ -20,10 +20,10 @@ namespace swlsimNET.ServerApp.Weapons
 
         private bool _init;
 
-        private double _enragedLockTimeStamp;
-        private double _timeSinceEnraged;
+        private decimal _enragedLockTimeStamp;
+        private decimal _timeSinceEnraged;
 
-        private double _pneumaticStamp = -1;
+        private decimal _pneumaticStamp = -1;
 
         private int _demolishOriginalCost;
         private int _eruptionOriginalCost;
@@ -93,7 +93,7 @@ namespace swlsimNET.ServerApp.Weapons
             if (_fastAndFurious != null)
             {
                 _timeSinceEnraged = player.CurrentTimeSec - _enragedLockTimeStamp;
-                FastAndFuriousBonus = _timeSinceEnraged < 3.5;
+                FastAndFuriousBonus = _timeSinceEnraged < 3.5m;
             }
 
             if (player.Settings.PrimaryWeaponProc == WeaponProc.PneumaticMaul)

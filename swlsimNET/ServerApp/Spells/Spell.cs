@@ -55,16 +55,16 @@ namespace swlsimNET.ServerApp.Spells
         public double DotExpirationBaseDamage { get; set; }
         public double BaseDamageCrit { get; set; }
         public WeaponType WeaponType { get; set; }
-        public double DotDuration { get; set; }
+        public decimal DotDuration { get; set; }
         public virtual SpellType SpellType { get; set; }
         public AbilityType AbilityType { get; set; }
         public int PrimaryCost { get; set; }
         public int SecondaryCost { get; set; }
         public int PrimaryGain { get; set; }
         public int SecondaryGain { get; set; }
-        public double MaxCooldown { get; set; }
-        public double Cooldown { get; set; }
-        public double CastTime { get; set; }
+        public decimal MaxCooldown { get; set; }
+        public decimal Cooldown { get; set; }
+        public decimal CastTime { get; set; }
         public int ChannelTicks { get; set; }
         public int DotTicks { get; set; } // TODO: implement in spellbase
         public double BonusCritChance { get; set; }
@@ -75,7 +75,7 @@ namespace swlsimNET.ServerApp.Spells
         public Passive PassiveBonusSpell { get; set; }
         public AbilityBuff AbilityBuff { get; set; }
 
-        private double TickInterval => CastTime / ChannelTicks;
+        private decimal TickInterval => CastTime / ChannelTicks;
         private double CritPowerMultiplier => this.SpellType == SpellType.Channel ? 1.25 : 1;
 
         private double _primaryGimmickBeforeCast;
@@ -346,7 +346,7 @@ namespace swlsimNET.ServerApp.Spells
                 if (DotExpirationBaseDamage > 0)
                     expirationdamage = GetDamage(player, isHit, isCrit, DotExpirationBaseDamage);
 
-                damage = damage * DotDuration + expirationdamage;
+                damage = damage * (double) DotDuration + expirationdamage;
             }
 
             // Get energy / gimmick gains on hit
@@ -387,7 +387,7 @@ namespace swlsimNET.ServerApp.Spells
                 if (DotExpirationBaseDamage > 0)
                     expirationdamage = GetDamage(player, isHit, isCrit, DotExpirationBaseDamage);
 
-                damage = damage * DotDuration + expirationdamage;
+                damage = damage * (double) DotDuration + expirationdamage;
             }
 
             // Get energy / gimmick gains on hit

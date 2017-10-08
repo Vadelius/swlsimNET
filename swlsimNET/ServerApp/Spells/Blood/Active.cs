@@ -55,7 +55,7 @@ namespace swlsimNET.ServerApp.Spells.Blood
             WeaponType = WeaponType.Blood;
             AbilityType = AbilityType.Power;
             SpellType = SpellType.Channel;
-            CastTime = 2.5;
+            CastTime = 2.5m;
             ChannelTicks = 5;
             PrimaryCost = 5;
             PrimaryGimmickGain = 3;
@@ -104,7 +104,7 @@ namespace swlsimNET.ServerApp.Spells.Blood
             WeaponType = WeaponType.Blood;
             SpellType = SpellType.Dot; 
             DotDuration = 6;
-            CastTime = 1.0;
+            CastTime = 1.0m;
             PrimaryGimmickRequirement = 10;
             PrimaryCost = 2;
             MaxCooldown = 20;
@@ -121,7 +121,7 @@ namespace swlsimNET.ServerApp.Spells.Blood
         {
             WeaponType = WeaponType.Blood;
             SpellType = SpellType.Dot;
-            CastTime = 1.5;
+            CastTime = 1.5m;
             PrimaryCost = 2;
             PrimaryGimmickCost = 50;
             MaxCooldown = 20;
@@ -142,7 +142,7 @@ namespace swlsimNET.ServerApp.Spells.Blood
             WeaponType = WeaponType.Blood;
             AbilityType = AbilityType.Elite;
             SpellType = SpellType.Dot;
-            CastTime = 1.5;
+            CastTime = 1.5m;
             DotDuration = 6;
             PrimaryCost = 4;
             PrimaryGimmickGain = 15;

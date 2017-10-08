@@ -14,8 +14,8 @@ namespace swlsimNET.ServerApp.Weapons
     {
         public Chamber LeftChamber { get; set; }
         public Chamber RightChamber { get; set; }
-        private double ChamberLockTimeStamp { get; set; }
-        private double LastPistolSpellTimeStamp { get; set; }
+        private decimal ChamberLockTimeStamp { get; set; }
+        private decimal LastPistolSpellTimeStamp { get; set; }
 
         private bool _init;
         private bool _jackpotBonus;
@@ -119,7 +119,7 @@ namespace swlsimNET.ServerApp.Weapons
                 RightChamber = Chamber.White;
             }
 
-            if ((timeSinceLocked > 3 && player.CurrentSpell.Name == "KillBlind") || (timeSinceLocked > 4.5 && player.CurrentSpell.Name == "KillBlind"))
+            if ((timeSinceLocked > 3 && player.CurrentSpell.Name == "KillBlind") || (timeSinceLocked > 4.5m && player.CurrentSpell.Name == "KillBlind"))
             {
                 if (_holdout != null && LeftChamber == RightChamber)
                 {
@@ -205,9 +205,7 @@ namespace swlsimNET.ServerApp.Weapons
         {
             LeftChamber = Dice();
             RightChamber = Dice();
-            if (_sixShooters)
-            { ChamberLockTimeStamp = player.CurrentTimeSec - 0.5; }
-            else ChamberLockTimeStamp = player.CurrentTimeSec;
+            ChamberLockTimeStamp = _sixShooters ? player.CurrentTimeSec - 0.5m : player.CurrentTimeSec;
         }
 
         private Chamber Dice()

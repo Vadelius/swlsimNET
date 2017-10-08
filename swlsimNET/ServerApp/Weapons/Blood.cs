@@ -15,16 +15,22 @@ namespace swlsimNET.ServerApp.Weapons
         private Passive _flay;
         private Passive _defilement;
 
-        private double _defilementBonusToTimeSec;
-        private double _flayBonusToTimeSec;
+        private decimal _defilementBonusToTimeSec;
+        private decimal _flayBonusToTimeSec;
 
         private bool _defilementBonus;
         private bool _flayBonus;
 
+        // TODO: Add settings link
         private bool _eldritchTome = false;
 
-        private double LastBloodSpellTimeStamp { get; set; }
-        private double LastDecayTimeStamp { get; set; }  
+        private decimal LastBloodSpellTimeStamp { get; set; }
+        private decimal LastDecayTimeStamp { get; set; }
+
+        private readonly List<string> _eldritchTomesBonuses = new List<string>
+        {
+            "Reap", "Desecrate", "RunicHex", "EldritchScourge"
+        };
 
         public override double GimmickResource
         {
@@ -110,15 +116,10 @@ namespace swlsimNET.ServerApp.Weapons
             return bonusBaseDamageMultiplier;
         }
 
-        private readonly List<string> _eldritchTomesBonuses = new List<string>
-        {
-            "Reap", "Desecrate", "RunicHex", "EldritchScourge"
-        };
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
             // Set new time stamp for new cast
             LastBloodSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
-            var spellName = spell.Name;
 
             if (_defilement != null && spell.GetType() == typeof(Desecrate))
             {
@@ -130,9 +131,9 @@ namespace swlsimNET.ServerApp.Weapons
                 _flayBonusToTimeSec = player.CurrentTimeSec + spell.DotDuration;
             }
 
-            if (_eldritchTome && spellName != null && !_eldritchTomesBonuses.Contains(spellName, StringComparer.CurrentCultureIgnoreCase)) return;
+            if (_eldritchTome && !_eldritchTomesBonuses.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase))
             {
-                GimmickResource = +4;
+                GimmickResource += 4;
             }
         }   
 

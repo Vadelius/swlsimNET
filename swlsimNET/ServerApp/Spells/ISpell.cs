@@ -8,7 +8,7 @@ namespace swlsimNET.ServerApp.Spells
     {
         string Name { get; }
         double BaseDamage { get; set; }
-        double DotDuration { get; set; }
+        decimal DotDuration { get; set; }
         double DotExpirationBaseDamage { get; set; }
         double BaseDamageCrit { get; set; }
         WeaponType WeaponType { get; }
@@ -26,9 +26,9 @@ namespace swlsimNET.ServerApp.Spells
         int SecondaryGimmickGain { get; set; }
         int PrimaryGimmickRequirement { get; set; }
         int PrimaryGimmickGainOnCrit { get; set; }
-        double MaxCooldown { get; set; }
-        double Cooldown { get; set; }
-        double CastTime { get; set; }
+        decimal MaxCooldown { get; set; }
+        decimal Cooldown { get; set; }
+        decimal CastTime { get; set; }
         int ChannelTicks { get; set; }
         int DotTicks { get; set; }
         double BonusCritChance { get; set; }

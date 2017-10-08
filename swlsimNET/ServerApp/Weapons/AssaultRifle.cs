@@ -11,8 +11,8 @@ namespace swlsimNET.ServerApp.Weapons
     {
         private bool _infernalLoader = false;
         private bool _ksr43 = false;
-        private double _startedCooking;
-        private double _fusetimer;
+        private decimal _startedCooking;
+        private decimal _fusetimer;
 
         public override void PreAttack(IPlayer player, RoundResult roundResult)
         {

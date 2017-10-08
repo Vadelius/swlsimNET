@@ -63,7 +63,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
             WeaponType = WeaponType.AssaultRifle;
             AbilityType = AbilityType.Elite;
             SpellType = SpellType.Cast;
-            CastTime = 2.0;
+            CastTime = 2.0m;
             PrimaryCost = 4;
             MaxCooldown = 20;
             BaseDamage = 6.97;
