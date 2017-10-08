@@ -478,6 +478,7 @@ namespace swlsimNET.ServerApp.Models
         public double Paradox => GetWeaponResourceFromType(WeaponType.Chaos);
         public double Rage => GetWeaponResourceFromType(WeaponType.Hammer);
         public double Shells => GetWeaponResourceFromType(WeaponType.Shotgun);
+        public bool Grenade => GetWeaponResourceFromType(WeaponType.AssaultRifle) > 0;
 
         // Weapon wrappers (for APL)
         public Weapon Blade => GetWeaponFromType(WeaponType.Blade);
