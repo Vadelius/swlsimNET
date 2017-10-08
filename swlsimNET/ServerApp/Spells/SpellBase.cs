@@ -278,6 +278,12 @@ namespace swlsimNET.ServerApp.Spells
             var spellWeapon = player.GetWeaponFromSpell(this);
             var otherWepon = player.GetOtherWeaponFromSpell(this);
 
+
+            if (spellWeapon == null || otherWepon == null)
+            {
+                return false;
+            }
+
             var primary = spellWeapon.Energy >= PrimaryCost;
             var secondary = otherWepon.Energy >= SecondaryCost;
 
