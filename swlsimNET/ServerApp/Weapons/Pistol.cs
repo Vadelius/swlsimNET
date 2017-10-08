@@ -97,13 +97,21 @@ namespace swlsimNET.ServerApp.Weapons
                 bonusBaseDamage += _jackpot.BaseDamage;
             }
 
-            // Misery & Malice Weapon
-            if (_miseryAndMalice)
+            return bonusBaseDamage;
+        }
+
+        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double gimmickBeforeCast)
+        {
+            double bonusBaseDamageMultiplier = 0;
+            if (LeftChamber == RightChamber)
             {
-                bonusBaseDamage += _miseryAndMaliceBonus;
+                if (_miseryAndMalice)
+                {
+                    bonusBaseDamageMultiplier = 0.06;
+                }
             }
 
-            return bonusBaseDamage;
+            return bonusBaseDamageMultiplier;
         }
 
         // Using a pistol ability triggers Chamber Roulette if it hits
@@ -119,7 +127,7 @@ namespace swlsimNET.ServerApp.Weapons
                 RightChamber = Chamber.White;
             }
 
-            if ((timeSinceLocked > 3 && player.CurrentSpell.Name == "KillBlind") || (timeSinceLocked > 4.5 && player.CurrentSpell.Name == "KillBlind"))
+            if (timeSinceLocked > 3 && player.CurrentSpell.GetType() == typeof(KillBlind) || timeSinceLocked > 4.5 && player.CurrentSpell.GetType() == typeof(KillBlind))
             {
                 if (_holdout != null && LeftChamber == RightChamber)
                 {
@@ -151,11 +159,6 @@ namespace swlsimNET.ServerApp.Weapons
                 if (_flechetteRounds != null)
                 {
                     player.AddBonusAttack(rr, new FlechetteRounds());
-                }
-
-                if (_miseryAndMalice)
-                {
-                    _miseryAndMaliceBonus = 0.06; // TODO: 6% with all pistol abilities
                 }
 
                 switch (LeftChamber)
