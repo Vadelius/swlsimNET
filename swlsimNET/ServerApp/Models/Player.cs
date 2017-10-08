@@ -4,7 +4,6 @@ using Expressions;
 using swlsimNET.Models;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Spells;
-using swlsimNET.ServerApp.Utilities;
 using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.ServerApp.Models

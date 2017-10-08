@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace swlsimNET.Models
+﻿namespace swlsimNET.Models
 {
     public class ErrorViewModel
     {

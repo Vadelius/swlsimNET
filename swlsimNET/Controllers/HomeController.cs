@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using swlsimNET.Models;
 using swlsimNET.ServerApp;
 using swlsimNET.ServerApp.Combat;
-using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Utilities;
 using swlsimNET.ServerApp.Weapons;
 

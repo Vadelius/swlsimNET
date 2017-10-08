@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Weapons;
-using swlsimNET.ServerApp.Spells.Pistol;
 
 
 namespace swlsimNET.ServerApp.Spells.Pistol

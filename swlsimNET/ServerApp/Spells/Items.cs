@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using swlsimNET.Models;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Combat;
-using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Utilities;
 using swlsimNET.ServerApp.Weapons;
 

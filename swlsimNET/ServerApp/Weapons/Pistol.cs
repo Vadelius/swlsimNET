@@ -1,5 +1,4 @@
-﻿using System;
-using swlsimNET.ServerApp.Combat;
+﻿using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Spells.Pistol;

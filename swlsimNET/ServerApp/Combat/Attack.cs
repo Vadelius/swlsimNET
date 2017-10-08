@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using swlsimNET.ServerApp.Spells;
+﻿using swlsimNET.ServerApp.Spells;
 
 namespace swlsimNET.ServerApp.Combat
 {
