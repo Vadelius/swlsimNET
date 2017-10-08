@@ -66,7 +66,11 @@ namespace swlsimNET.ServerApp.Weapons
             }
 
             var pneumaticBuffUp = _pneumaticStamp >= player.CurrentTimeSec && PneumaticAvailable;
-            PneumaticMaulActive(player, pneumaticBuffUp);
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.PneumaticMaul)
+            {
+                PneumaticMaulActive(player, pneumaticBuffUp);
+            }
+                
         }
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
