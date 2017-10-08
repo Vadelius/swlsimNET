@@ -27,7 +27,7 @@ namespace swlsimNET.Models
         public string SpellBreakdown { get; private set; }
         public List<SpellResult> SpellBreakdownList { get; private set; }
         public List<BuffResult> BuffBreakdownList { get; private set; }
-        public List<EnergySnap> EnergyList { get; private set; }
+        public List<EnergySnap> EnergyList { get; set; }
         public string PieStuff { get; set; }
 
         public bool GenerateReportData(List<FightResult> iterationFightResults, Settings settings)

@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Results";
 
-    
     var totalCount = Model.SpellBreakdownList.Select(spell => spell.Executes).ToList();
     var totalCritChance = Model.SpellBreakdownList
         .Where(spell => spell.DamagePerExecution >= 1)
@@ -10,9 +9,11 @@
     var avarageCritChance = totalCritChance.Sum() / totalCritChance.Count;
     var spellNameList = Model.SpellBreakdownList.Select(spell => spell.Name).ToList();
     var spellDpsPercentage = Model.SpellBreakdownList.Select(spell => spell.DpsPercentage).ToList();
-
+    spellNameList.Humanize();
 }
 
+
+@using Humanizer
 @model Report
 
 @functions {
@@ -70,7 +71,7 @@
                 @foreach (var spell in Model.SpellBreakdownList)
                 {
                     <tr>
-                        <th scope="row">@spell.Name</th>
+                        <th scope="row">@spell.Name.Humanize()</th>
                         <td>@spell.DamagePerSecond.ToString("F0")</td>
                         <td>@spell.DpsPercentage.ToString("F2")</td>
                         <td>@spell.Executes</td>
