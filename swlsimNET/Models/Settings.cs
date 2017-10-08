@@ -76,7 +76,7 @@ namespace swlsimNET.Models
         public bool HeadSignetIsCdr { get; set; }
         public bool Savagery { get; set; }
 
-        public int Iterations { get; set; } = 10;
+        public int Iterations { get; set; } = 100;
         public int FightLength { get; set; } = 240;
 
         public TargetType TargetType { get; set; }

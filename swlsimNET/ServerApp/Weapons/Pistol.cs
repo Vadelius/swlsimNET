@@ -1,4 +1,5 @@
-﻿using swlsimNET.ServerApp.Combat;
+﻿using System.Linq;
+using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Spells.Pistol;
@@ -33,6 +34,7 @@ namespace swlsimNET.ServerApp.Weapons
         private Passive _winStreak;
         private Passive _flechetteRounds;
         private Passive _holdout;
+        private Passive _focusedFire;
 
         public Pistol(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
@@ -53,6 +55,9 @@ namespace swlsimNET.ServerApp.Weapons
 
                 // If you haven't used a Pistol Ability in the last 4s your right chamber is set to match your left chamber
                 _fixedGame = player.GetPassive(nameof(FixedGame));
+
+                // If no matching chambers gain Double White, BaseDamage of Kill Blind increased to 3,47CP
+                _focusedFire = player.GetPassive(nameof(FocusedFire));
 
                 // Whenever your Pistol Energy reaches 15 you automatically gain Double White set if you do not already have a set
                 _fullyLoaded = player.GetPassive(nameof(FullyLoaded));
@@ -76,6 +81,13 @@ namespace swlsimNET.ServerApp.Weapons
                 LeftChamber = Chamber.White;
                 ChamberLockTimeStamp = player.CurrentTimeSec;
             }
+
+            // KillBlind Active + FocusedFire Passive.
+            if (_focusedFire != null && LeftChamber != RightChamber) // AND CURRENT SPELL IS KILL BLIND 
+            {
+                LeftChamber = Chamber.White;
+                RightChamber = Chamber.White;
+            } 
 
             // Fixed Game passive
             if (_fixedGame != null && timeSinceLastPistolSpell >= 4 && LeftChamber != RightChamber)
@@ -112,8 +124,9 @@ namespace swlsimNET.ServerApp.Weapons
             var timeSinceLocked = player.CurrentTimeSec - ChamberLockTimeStamp;
             LastPistolSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
 
+           
             // Chambers locked as White during combat start
-            if (timeSinceLocked > 3)
+            if ((timeSinceLocked > 3 && spell.Name != "KillBlind") || (timeSinceLocked > 4.5 && spell.Name == "KillBlind"))
             {
                 if (_holdout != null && LeftChamber == RightChamber)
                 {

@@ -66,13 +66,15 @@ namespace swlsimNET.ServerApp.Spells.Pistol
         }
     }
 
-    public class FocusedFire : Spell
+    public class FocusedFire : Passive
     {
-        public FocusedFire(IPlayer player, string args = null)
+        public FocusedFire()
         {
             WeaponType = WeaponType.Pistol;
             SpellType = SpellType.Passive;
+            BaseDamageModifier = 3.47;
             // If no matching chambers gain Double White, BaseDamage of Kill Blind increased to 3,47CP
+            SpellTypes.Add(typeof(KillBlind));
         }
     }
 
