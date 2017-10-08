@@ -82,13 +82,6 @@ namespace swlsimNET.ServerApp.Weapons
                 ChamberLockTimeStamp = player.CurrentTimeSec;
             }
 
-            // KillBlind Active + FocusedFire Passive.
-            if (_focusedFire != null && LeftChamber != RightChamber) // AND CURRENT SPELL IS KILL BLIND 
-            {
-                LeftChamber = Chamber.White;
-                RightChamber = Chamber.White;
-            } 
-
             // Fixed Game passive
             if (_fixedGame != null && timeSinceLastPistolSpell >= 4 && LeftChamber != RightChamber)
             {
@@ -124,7 +117,13 @@ namespace swlsimNET.ServerApp.Weapons
             var timeSinceLocked = player.CurrentTimeSec - ChamberLockTimeStamp;
             LastPistolSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
 
-           
+            // KillBlind Active + FocusedFire Passive.
+            if (_focusedFire != null && LeftChamber != RightChamber && spell.Name == "Kill Blind")
+            {
+                LeftChamber = Chamber.White;
+                RightChamber = Chamber.White;
+            }
+
             // Chambers locked as White during combat start
             if ((timeSinceLocked > 3 && spell.Name != "KillBlind") || (timeSinceLocked > 4.5 && spell.Name == "KillBlind"))
             {
