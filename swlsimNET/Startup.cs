@@ -21,10 +21,11 @@ namespace swlsimNET
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.Configure<MvcOptions>(options =>
-            {
-                options.Filters.Add(new RequireHttpsAttribute());
-            });
+            //services.Configure<MvcOptions>(options =>
+            //{
+            //    options.Filters.Add(new RequireHttpsAttribute());
+            //});
+
             services.AddMvc();
             string domain = $"https://{Configuration["Auth0:Domain"]}/";
             services.AddAuthentication(options =>
@@ -49,10 +50,10 @@ namespace swlsimNET
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 
-            var options = new RewriteOptions()
-                .AddRedirectToHttps();
+            //var options = new RewriteOptions()
+            //    .AddRedirectToHttps();
 
-            app.UseRewriter(options);
+            //app.UseRewriter(options);
 
             if (env.IsDevelopment())
             {
