@@ -131,8 +131,8 @@ namespace swlsimNET.Controllers
         public ActionResult SetPresetHammerPistol(Settings s)
         {
             ModelState.Clear();
-            s.PrimaryWeapon = WeaponType.Blood;
-            s.SecondaryWeapon = WeaponType.Fist;
+            s.PrimaryWeapon = WeaponType.Hammer;
+            s.SecondaryWeapon = WeaponType.Pistol;
             s.Apl = "Hammer.Seethe, Rage < 38\r\n" +
                     "Hammer.Demolish, Enraged\r\n" +
                     "Hammer.Demolish\r\n" +
@@ -151,8 +151,8 @@ namespace swlsimNET.Controllers
         public ActionResult SetPresetHammerShotgun(Settings s)
         {
             ModelState.Clear();
-            s.PrimaryWeapon = WeaponType.Blood;
-            s.SecondaryWeapon = WeaponType.Fist;
+            s.PrimaryWeapon = WeaponType.Hammer;
+            s.SecondaryWeapon = WeaponType.Shotgun;
             s.Apl = "Shotgun.ShellSalvage, Hammer.Energy<10 && Shotgun.Energy< 10\r\n" +
                     "Hammer.Seethe, Hammer.Energy<11\r\n" +
                     "Hammer.UnstoppableForce\r\n" +
