@@ -120,7 +120,7 @@ namespace swlsimNET.ServerApp.Weapons
             var timeSinceLocked = player.CurrentTimeSec - ChamberLockTimeStamp;
             LastPistolSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
 
-            if (_focusedFire != null && LeftChamber != RightChamber && player.CurrentSpell.GetType() == typeof(KillBlind))
+            if (_focusedFire != null && LeftChamber != RightChamber && spell.GetType() == typeof(KillBlind))
             {
                 LeftChamber = Chamber.White;
                 RightChamber = Chamber.White;

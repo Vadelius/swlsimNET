@@ -259,18 +259,6 @@ namespace swlsimNET.ServerApp.Spells
             }
         }
 
-        public virtual bool CanExecuteGadget(Player player)
-        {
-            var args = true;
-
-            // Evaluate args if any
-            if (!string.IsNullOrEmpty(this.Args))
-            {
-                args = Helper.EvaluateArgs(this.Args, player);
-            }
-
-            return Cooldown <= 0 && args;
-        }
         public virtual bool CanExecute(Player player)
         {
             var spell = this; // debug        
@@ -287,21 +275,23 @@ namespace swlsimNET.ServerApp.Spells
                 return false;
             }
 
-            var spellWeapon = player.GetWeaponFromSpell(this);
-            var otherWepon = player.GetOtherWeaponFromSpell(this);
+            if (WeaponType != WeaponType.None)
+            {
+                var spellWeapon = player.GetWeaponFromSpell(this);
+                var otherWepon = player.GetOtherWeaponFromSpell(this);
 
-            var primary = spellWeapon.Energy >= PrimaryCost;
-            var secondary = otherWepon.Energy >= SecondaryCost;
+                var primary = spellWeapon.Energy >= PrimaryCost;
+                var secondary = otherWepon.Energy >= SecondaryCost;
 
-            var pgimmick = spellWeapon.GimmickResource >= PrimaryGimmickCost;
-            var sgimmick = otherWepon.GimmickResource >= SecondaryGimmickCost;
+                var pgimmick = spellWeapon.GimmickResource >= PrimaryGimmickCost;
+                var sgimmick = otherWepon.GimmickResource >= SecondaryGimmickCost;
 
-            var pgimmickreq = spellWeapon.GimmickResource >= PrimaryGimmickRequirement;
+                var pgimmickreq = spellWeapon.GimmickResource >= PrimaryGimmickRequirement;
 
-            var res = primary && secondary && pgimmick && sgimmick && pgimmickreq;
+                var res = primary && secondary && pgimmick && sgimmick && pgimmickreq;
 
-            if (!res) return false;
-
+                if (!res) return false;
+            }
 
             var args = true;
 

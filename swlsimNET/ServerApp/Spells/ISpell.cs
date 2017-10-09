@@ -38,6 +38,5 @@ namespace swlsimNET.ServerApp.Spells
         AbilityBuff AbilityBuff { get; set; }
         Attack Execute(Player player);
         bool CanExecute(Player player);
-        bool CanExecuteGadget(Player player);
     }
 }

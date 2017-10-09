@@ -381,19 +381,14 @@ namespace swlsimNET.ServerApp.Models
             rr.SecondaryGimmickEnd = SecondaryWeapon.GimmickResource;
         }
 
-        public Attack ExecuteNoGcd(ISpell spell)
+        private Attack ExecuteNoGcd(ISpell spell)
         {
             return spell.Execute(this);
         }
 
         public void AddBonusAttack(RoundResult rr, ISpell spell)
         {
-                rr.Attacks.Add(ExecuteNoGcd(spell));
-        }
-
-        public void AddGadgetAttack(RoundResult rr, ISpell spell)
-        {
-            if (spell.CanExecuteGadget(this))
+            if (spell.CanExecute(this))
             {
                 rr.Attacks.Add(ExecuteNoGcd(spell));
             }
