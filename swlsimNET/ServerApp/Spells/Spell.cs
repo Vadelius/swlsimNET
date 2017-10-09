@@ -230,6 +230,8 @@ namespace swlsimNET.ServerApp.Spells
 
             if (MaxCooldown > 0)
             {
+                Cooldown = MaxCooldown;
+
                 // Set Cooldown of all spells of same type
                 foreach (var spell in _spellsOfSameType)
                 {
@@ -310,6 +312,7 @@ namespace swlsimNET.ServerApp.Spells
                     {
                         _spellsOfSameType.Add(s);
                     }
+
                     if(WeaponType != WeaponType.Hammer) continue;
 
                     // Hammer specific shit again

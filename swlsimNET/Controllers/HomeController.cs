@@ -95,13 +95,13 @@ namespace swlsimNET.Controllers
             s.SecondaryWeapon = WeaponType.Fist;
             s.SecondaryWeaponProc = WeaponProc.Shadowbound;
             s.SecondaryWeaponAffix = WeaponAffix.Havoc;
-            s.Gadget = Items.Gadget.ValiMetabolic;
+            s.Gadget = Gadget.ValiMetabolic;
             s.Exposed = true;
             s.Savagery = true;
             s.OpeningShot = true;
-            s.Head = Items.HeadTalisman.Ashes;
-            s.Neck = Items.NeckTalisman.SeedOfAgression;
-            s.Luck = Items.LuckTalisman.ColdSilver;
+            s.Head = HeadTalisman.Ashes;
+            s.Neck = NeckTalisman.SeedOfAgression;
+            s.Luck = LuckTalisman.ColdSilver;
             s.Apl = "Fist.Savagery, Buff.UnstoppableForce.Active\r\n" +
                     "Hammer.Seethe, Buff.UnstoppableForce.Active\r\n" +
                     "Hammer.UnstoppableForce, Rage > 50 || Hammer.Energy > 8\r\n" +

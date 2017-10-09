@@ -13,6 +13,53 @@ namespace swlsimNET.ServerApp.Models
         private bool _passivesInitiated;
         public ExpressionContext Context;
 
+        public Item Item { get; }
+        public Settings Settings { get; set; }
+        public Spell CurrentSpell { get; set; }
+        public BuffWrapper Buff { get; }
+        public List<ISpell> Spells { get; set; }
+        public List<IBuff> Buffs { get; }
+        public List<IBuff> AbilityBuffs { get; }
+        public List<Passive> Passives { get; set; }
+        public Weapon PrimaryWeapon { get; set; }
+        public Weapon SecondaryWeapon { get; set; }
+
+        public double CombatPower { get; protected set; } = 1200;
+        public double GlanceReduction { get; protected set; } = 0.3;
+        public double CriticalChance { get; protected set; } = 0.1;
+        public double CritPower { get; set; } = 2.3;
+        public double BasicSignetBoost { get; protected set; } = 1.74;
+        public double PowerSignetBoost { get; protected set; } = 1.18;
+        public double EliteSignetBoost { get; protected set; } = 1.43;
+        public decimal EliteSignetCooldownReduction { get; protected set; } = 0;
+        public double WaistSignetBoost { get; protected set; } = 1.30;
+
+        public decimal Interval { get; set; }
+        public decimal CastTime { get; set; }
+        public decimal CurrentTimeSec { get; private set; }
+        public decimal GCD { get; set; }    
+
+        // Weapon gimmick resource (for APL)
+        public double Chi => GetWeaponResourceFromType(WeaponType.Blade);
+        public double Corruption => GetWeaponResourceFromType(WeaponType.Blood);
+        public double Fury => GetWeaponResourceFromType(WeaponType.Fist);
+        public double Heat => GetWeaponResourceFromType(WeaponType.Elemental);
+        public double Paradox => GetWeaponResourceFromType(WeaponType.Chaos);
+        public double Rage => GetWeaponResourceFromType(WeaponType.Hammer);
+        public double Shells => GetWeaponResourceFromType(WeaponType.Shotgun);
+        public bool Grenade => GetWeaponResourceFromType(WeaponType.AssaultRifle) > 0;
+
+        // Weapon wrappers (for APL)
+        public Weapon Blade => GetWeaponFromType(WeaponType.Blade);
+        public Weapon Blood => GetWeaponFromType(WeaponType.Blood);
+        public Weapon Chaos => GetWeaponFromType(WeaponType.Chaos);
+        public Weapon Elemental => GetWeaponFromType(WeaponType.Elemental);
+        public Weapon Fist => GetWeaponFromType(WeaponType.Fist);
+        public Weapon Hammer => GetWeaponFromType(WeaponType.Hammer);
+        public Weapon Pistol => GetWeaponFromType(WeaponType.Pistol);
+        public Weapon Rifle => GetWeaponFromType(WeaponType.AssaultRifle);
+        public Weapon Shotgun => GetWeaponFromType(WeaponType.Shotgun);
+
         public Player(Settings settings)
         {
             Settings = settings;
@@ -44,7 +91,7 @@ namespace swlsimNET.ServerApp.Models
             Spells = apl.GetApl();
 
             this.Buff = new BuffWrapper(this);
-            this.Item = new Items(this);
+            this.Item = new Item(this);
         }
 
         private Weapon GetWeaponFromType(WeaponType? wtypenullable, WeaponAffix waffix)
@@ -78,7 +125,6 @@ namespace swlsimNET.ServerApp.Models
 
         private void InitAbilityBuffs()
         {
-
             AbilityBuffs.Add(new Spells.Blade.Buffs.SupremeHarmony());
             AbilityBuffs.Add(new Spells.Fist.Buffs.Savagery());
             AbilityBuffs.Add(new Spells.Hammer.Buffs.UnstoppableForce());
@@ -363,9 +409,29 @@ namespace swlsimNET.ServerApp.Models
             // Lower cooldown of all spells except the one used this round
             foreach (var spell in Spells)
             {
-                if (spell.Name == rr.Attacks.FirstOrDefault()?.Spell.Name) continue;
+                if (spell == rr.Attacks.FirstOrDefault()?.Spell)
+                {
+                    continue;
+                }
 
-                if (spell.Cooldown > 0) spell.Cooldown -= rr.Interval;
+                if (spell.Cooldown > 0)
+                {
+                    spell.Cooldown -= rr.Interval;
+                }
+            }
+
+            // Lower cooldown of all item spells except the one used this round
+            foreach (var spell in Item.Spells)
+            {
+                if (rr.Attacks.Any(s => s.Spell == spell))
+                {
+                    continue;
+                }
+
+                if (spell.Cooldown > 0)
+                {
+                    spell.Cooldown -= rr.Interval;
+                }
             }
 
             // Lower GCD
@@ -449,67 +515,5 @@ namespace swlsimNET.ServerApp.Models
         {
             return Passives.Find(p => p.Name == name);
         }
-
-        // Items
-        public Items Item { get; }
-
-        // Implements IPlayer
-        public Settings Settings { get; set; }
-
-        public double CombatPower { get; protected set; } = 1200;
-
-        public double GlanceReduction { get; protected set; } = 0.3;
-        public double CriticalChance { get; protected set; } = 0.1;
-        public double CritPower { get; set; } = 2.3;
-        public double BasicSignetBoost { get; protected set; } = 1.74;
-        public double PowerSignetBoost { get; protected set; } = 1.18;
-        public double EliteSignetBoost { get; protected set; } = 1.43;
-        public decimal EliteSignetCooldownReduction { get; protected set; } = 0;
-        public double WaistSignetBoost { get; protected set; } = 1.30; 
-        public decimal Interval { get; set; }
-        public List<ISpell> Spells { get; set; }
-        public List<IBuff> Buffs { get; }
-        public List<IBuff> AbilityBuffs { get; }
-        public List<Passive> Passives { get; set; }
-        public Weapon PrimaryWeapon { get; set; }
-        public Weapon SecondaryWeapon { get; set; }
-        public bool ExposedEnabled { get; set; }
-        public bool OpeningShotEnabled { get; set; }
-
-        // Implements ICombat
-        public decimal CastTime { get; set; }
-        public decimal CurrentTimeSec { get; private set; }
-        public decimal GCD { get; set; }
-        public int RepeatHits { get; set; }
-        public Spell CurrentSpell { get; set; }
-
-        // Buffs
-        public BuffWrapper Buff { get; }
-
-        // Weapon gimmick resource (for APL)
-        public double Chi => GetWeaponResourceFromType(WeaponType.Blade);
-        public double Corruption => GetWeaponResourceFromType(WeaponType.Blood);
-        public double Fury => GetWeaponResourceFromType(WeaponType.Fist);
-        public double Heat => GetWeaponResourceFromType(WeaponType.Elemental);
-        public double Paradox => GetWeaponResourceFromType(WeaponType.Chaos);
-        public double Rage => GetWeaponResourceFromType(WeaponType.Hammer);
-        public double Shells => GetWeaponResourceFromType(WeaponType.Shotgun);
-        public bool Grenade => GetWeaponResourceFromType(WeaponType.AssaultRifle) > 0;
-
-        // Weapon wrappers (for APL)
-        public Weapon Blade => GetWeaponFromType(WeaponType.Blade);
-        public Weapon Blood => GetWeaponFromType(WeaponType.Blood);
-        public Weapon Chaos => GetWeaponFromType(WeaponType.Chaos);
-        public Weapon Elemental => GetWeaponFromType(WeaponType.Elemental);
-        public Weapon Fist => GetWeaponFromType(WeaponType.Fist);
-        public Weapon Hammer => GetWeaponFromType(WeaponType.Hammer);
-        public Weapon Pistol => GetWeaponFromType(WeaponType.Pistol);
-        public Weapon Rifle => GetWeaponFromType(WeaponType.AssaultRifle);
-        public Weapon Shotgun => GetWeaponFromType(WeaponType.Shotgun);
-
-
-        // TODO: Can this be made better somehow and still work with APL?
-        // Only done since buffs and spells can have same
-        // Expressions engine does not like this
     }
 }

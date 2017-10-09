@@ -32,13 +32,13 @@ namespace swlsimNET.Models
         [Display(Name = "Secondary weapon proc")]
         public WeaponProc SecondaryWeaponProc { get; set; }
         [Display(Name = "Neck Talisman")]
-        public Items.NeckTalisman Neck { get; set; }
+        public NeckTalisman Neck { get; set; }
         [Display(Name = "Luck Talisman")]
-        public Items.LuckTalisman Luck { get; set; }
+        public LuckTalisman Luck { get; set; }
         [Display(Name = "Head Talisman")]
-        public Items.HeadTalisman Head { get; set; }
+        public HeadTalisman Head { get; set; }
         [Display(Name = "Gadget")]
-        public Items.Gadget Gadget { get; set; }
+        public Gadget Gadget { get; set; }
         [Display(Name = "Combat power")]
         public double CombatPower { get; set; } = 1200;
 
@@ -85,10 +85,10 @@ namespace swlsimNET.Models
         public IEnumerable<SelectListItem> WeaponAffixesList => new SelectList(Enum.GetValues(typeof(WeaponAffix)));
         public IEnumerable<SelectListItem> WeaponProcList => new SelectList(Enum.GetValues(typeof(WeaponProc)));
         public IEnumerable<SelectListItem> TargetTypeList => new SelectList(Enum.GetValues(typeof(TargetType)));
-        public IEnumerable<SelectListItem> NeckTalismanList => new SelectList(Enum.GetValues(typeof(Items.NeckTalisman)));
-        public IEnumerable<SelectListItem> LuckTalismanList => new SelectList(Enum.GetValues(typeof(Items.LuckTalisman)));
-        public IEnumerable<SelectListItem> HeadTalismanList => new SelectList(Enum.GetValues(typeof(Items.HeadTalisman)));
-        public IEnumerable<SelectListItem> GadgetList => new SelectList(Enum.GetValues(typeof(Items.Gadget)));
+        public IEnumerable<SelectListItem> NeckTalismanList => new SelectList(Enum.GetValues(typeof(NeckTalisman)));
+        public IEnumerable<SelectListItem> LuckTalismanList => new SelectList(Enum.GetValues(typeof(LuckTalisman)));
+        public IEnumerable<SelectListItem> HeadTalismanList => new SelectList(Enum.GetValues(typeof(HeadTalisman)));
+        public IEnumerable<SelectListItem> GadgetList => new SelectList(Enum.GetValues(typeof(Gadget)));
 
         public IEnumerable<SelectListItem> Passives = _allPassives.ConvertAll(
             a => new SelectListItem
