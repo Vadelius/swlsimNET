@@ -12,6 +12,7 @@ namespace swlsimNET.Models
     {
         private List<Attack> _allSpellCast = new List<Attack>();
         public List<ISpell> _distinctSpellCast = new List<ISpell>();
+        public List<IBuff> _distinctBuffs = new List<IBuff>();
         public StringBuilder _oneBuilder = new StringBuilder();
         private StringBuilder _twoBuilder = new StringBuilder();
         private NumberFormatInfo nfi;
@@ -38,6 +39,7 @@ namespace swlsimNET.Models
             EnergyList = new List<EnergySnap>();
             InitReportData(iterationFightResults);
             GenerateSpellReportData();
+            GenerateBuffReportData();
             FightDebug = _oneBuilder.ToString();
             SpellBreakdown = _twoBuilder.ToString();
             TotalDps = TotalDamage / _settings.FightLength / _settings.Iterations;
@@ -52,10 +54,25 @@ namespace swlsimNET.Models
             SpellTypeReport(SpellType.Channel);
             SpellTypeReport(SpellType.Dot);
             SpellTypeReport(SpellType.Instant);
-            SpellTypeReport(SpellType.Buff);
+            //SpellTypeReport(SpellType.Buff);
             SpellTypeReport(SpellType.Procc);
             SpellTypeReport(SpellType.Gimmick);
             SpellTypeReport(SpellType.Passive);
+        }
+
+        private void GenerateBuffReportData()
+        {
+            foreach (var buffspell in _distinctBuffs)
+            {
+                BuffBreakdownList.Add(new BuffResult
+                {
+                    Executes = buffspell.ActivationRounds.Count,
+                    Interval = 20,
+                    Name = buffspell.Name,
+                    Refresh = 20,
+                    Uptime = 20
+                });
+            }
         }
 
         private void InitReportData(List<FightResult> iterationFightResults)
@@ -77,8 +94,6 @@ namespace swlsimNET.Models
 
                 foreach (var rr in iteration.RoundResults)
                 {
-                    // Only get first attack every round since all others are proccs
-                    
                     if (lastChangeTimeStamp == 0 || lastChangeTimeStamp + interval < rr.TimeSec)
                     {
                         EnergyList.Add(new EnergySnap
@@ -95,24 +110,8 @@ namespace swlsimNET.Models
 
                     foreach (var a in rr.Attacks)
                     {
-                        var buffspells = _distinctSpellCast.Where(s => s.SpellType == SpellType.Buff).ToList();
-
-                        foreach (var buffspell in buffspells)
-                        {
-                            BuffBreakdownList.Add(new BuffResult
-                            {
-                                Executes = buffspells.Count,
-                                Interval = 20,
-                                Name = buffspell.Name,
-                                Refresh = 20,
-                                Uptime = 20
-                            });
-                        }
-
-
                         if (a.IsHit && a.IsCrit) 
                         {
-
                             _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " + 
                                                    $"{a.Spell.Name} *{a.Damage.ToString("#,##0,.0K", nfi)}* " +
                                                    $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " + 
@@ -136,6 +135,14 @@ namespace swlsimNET.Models
                         if (_distinctSpellCast.All(s => s.Name != a.Spell.Name))
                         {
                             _distinctSpellCast.Add(a.Spell);
+                        }
+                    }
+
+                    foreach (var buff in rr.Buffs)
+                    {
+                        if (_distinctBuffs.All(b => b.Name != buff.Name))
+                        {
+                            _distinctBuffs.Add(buff);
                         }
                     }
                 }

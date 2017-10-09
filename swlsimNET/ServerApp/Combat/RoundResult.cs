@@ -1,18 +1,15 @@
 ﻿using System.Collections.Generic;
+using swlsimNET.ServerApp.Spells;
 
 namespace swlsimNET.ServerApp.Combat
 {
     public class RoundResult
     {
-        public RoundResult()
-        {
-            Attacks = new List<Attack>();
-        }
-
         public decimal TimeSec { get; set; }
         public decimal Interval { get; set; }
 
         public List<Attack> Attacks { get; set; }
+        public List<IBuff> Buffs { get; set; }
 
         public double TotalDamage { get; set; }
         public int TotalHits { get; set; }
@@ -27,5 +24,11 @@ namespace swlsimNET.ServerApp.Combat
         public double PrimaryGimmickEnd { get; set; }
         public double SecondaryGimmickStart { get; set; }
         public double SecondaryGimmickEnd { get; set; }
+
+        public RoundResult()
+        {
+            Attacks = new List<Attack>();
+            Buffs = new List<IBuff>();
+        }
     }
 }

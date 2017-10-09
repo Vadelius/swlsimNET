@@ -113,7 +113,7 @@ namespace swlsimNET.Tests
             var rounds = fight.RoundResults.Count;
 
             var castCount = fight.RoundResults
-                .SelectMany(r => r.Attacks.Where(a => a.Spell.GetType() == typeof(CastSpell))).Count();
+                .SelectMany(r => r.Attacks.Where(a => a.Spell is CastSpell)).Count();
 
             // 0.0, start cast
             // 2.5, finish cast
@@ -151,7 +151,7 @@ namespace swlsimNET.Tests
             var rounds = fight.RoundResults.Count;
 
             var channelTickCount = fight.RoundResults
-                .SelectMany(r => r.Attacks.Where(a => a.Spell.GetType() == typeof(ChannelSpell))).Count();
+                .SelectMany(r => r.Attacks.Where(a => a.Spell is ChannelSpell)).Count();
 
             // 0.0, start channel
             // 0.5, channel tick
@@ -209,7 +209,7 @@ namespace swlsimNET.Tests
             var rounds = fight.RoundResults.Count;
 
             var dotTickCount = fight.RoundResults
-                .SelectMany(r => r.Attacks.Where(a => a.Spell.GetType() == typeof(DotSpell))).Count();
+                .SelectMany(r => r.Attacks.Where(a => a.Spell is DotSpell)).Count();
 
             // TODO: Dot ticks should NOT add any kind of bonus attacks?
 
@@ -245,6 +245,55 @@ namespace swlsimNET.Tests
             Assert.AreEqual(rounds, 20);
             Assert.AreEqual(endTime, 10.0m);
             Assert.IsTrue(dotTickCount == 20);
+        }
+
+        [TestMethod]
+        public void TestGadgetSpell()
+        {
+            var setting = new Settings
+            {
+                PrimaryWeapon = WeaponType.Elemental,
+                SecondaryWeapon = WeaponType.Fist,
+                Gadget = Gadget.Test,
+                FightLength = 10,
+                TargetType = TargetType.Champion,
+                Apl = "Elemental.TestCastSpell"
+            };
+
+            var spell = new CastSpell();
+            var gadgetSpell = new GadgetSpell();
+            var player = new Player(setting);
+            player.Spells.Add(spell);
+            player.Item.Spells.Add(gadgetSpell);
+            var engine = new Engine(setting);
+            var fight = engine.StartFight(player);
+
+            var endTime = fight.RoundResults.Last().TimeSec;
+            var rounds = fight.RoundResults.Count;
+
+            var gadgetCount = fight.RoundResults
+                .SelectMany(r => r.Attacks.Where(a => a.Spell is GadgetSpell)).Count();
+            var castCount = fight.RoundResults
+                .SelectMany(r => r.Attacks.Where(a => a.Spell is CastSpell)).Count();
+
+            // 0.0, gadget 
+            // 0.0, start cast
+            // 2.5, finish cast
+            // 2.5, gadget
+            // 2.5, start next cast
+            // 5.0, finish cast
+            // 5.0, gadget
+            // 5.0, start next cast
+            // 7.5, finish cast
+            // 7.5, gadget
+            // 7.5, start next cast
+            // 10.0, finish cast
+            // 10.0, gadget
+
+            Assert.AreEqual(rounds, 5);
+            Assert.AreEqual(endTime, 10.0m);
+            Assert.IsTrue(gadgetCount == 5);
+            Assert.IsTrue(castCount == 4);
         }
 
         [TestMethod]
@@ -364,24 +413,22 @@ namespace swlsimNET.Tests
             };
         }
 
-        private class CastSpell : Spell
+        private sealed class CastSpell : Spell
         {
             public CastSpell()
             {
                 WeaponType = WeaponType.Elemental;
-                AbilityType = AbilityType.None;
                 SpellType = SpellType.Cast;
                 CastTime = 2.5m;
                 BaseDamage = 1;
             }
         }
 
-        private class ChannelSpell : Spell
+        private sealed class ChannelSpell : Spell
         {
             public ChannelSpell()
             {
                 WeaponType = WeaponType.Blood;
-                AbilityType = AbilityType.None;
                 SpellType = SpellType.Channel;
                 CastTime = 2.5m;
                 ChannelTicks = 5;
@@ -389,12 +436,11 @@ namespace swlsimNET.Tests
             }
         }
 
-        private class DotSpell : Spell
+        private sealed class DotSpell : Spell
         {
             public DotSpell()
             {
                 WeaponType = WeaponType.Blood;
-                AbilityType = AbilityType.None;
                 SpellType = SpellType.Dot;
                 CastTime = 0;
                 DotDuration = 2.5m;
@@ -402,6 +448,17 @@ namespace swlsimNET.Tests
                 BaseDamage = 1;
 
                 // TODO: Add ability debuff
+            }
+        }
+
+        private sealed class GadgetSpell : Spell
+        {
+            public GadgetSpell()
+            {
+                WeaponType = WeaponType.None;
+                AbilityType = AbilityType.Gadget;
+                SpellType = SpellType.Instant;
+                MaxCooldown = 2.5m;
             }
         }
     }

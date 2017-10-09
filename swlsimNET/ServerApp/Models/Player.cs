@@ -200,11 +200,13 @@ namespace swlsimNET.ServerApp.Models
             // TODO: Check order, e.g. should passive bonus spell get bonus from buff cast same round?
             // Order of a round
             PreRound(rr);
-            StartRoundBuffs();
+            StartRound(rr);
+            StartRoundBuffs(rr);
+            Item.PreAttack(rr);
             WeaponPreAttack(rr);
             ExecuteAction(rr);
             ExecuteBuff(rr);
-            Item.Execution(rr);
+            Item.AfterAttack(rr);
             WeaponAfterAttack(rr);
             PassiveBonusSpells(rr);
             EndRound(rr);
@@ -222,13 +224,68 @@ namespace swlsimNET.ServerApp.Models
             rr.SecondaryGimmickStart = SecondaryWeapon.GimmickResource;
         }
 
-        private void StartRoundBuffs()
+        private void StartRound(RoundResult rr)
+        {
+            // Not on first round
+            if(rr.TimeSec == 0) return;
+
+            // +1 resource per sec primary weapon
+            if (rr.TimeSec != 0 && rr.TimeSec % 1 == 0)
+            {
+                PrimaryWeapon.Energy++;
+            }
+
+            // +1 resource every other second secondary weapon
+            if (rr.TimeSec != 0 && rr.TimeSec % 2 == 0)
+            {
+                SecondaryWeapon.Energy++;
+            }
+
+            // Lower cooldown of all spells except the one used this round
+            foreach (var spell in Spells.Where(s => s.Cooldown > 0))
+            {
+                spell.Cooldown -= rr.Interval;
+            }
+
+            // Lower cooldown of all item spells except the one used this round
+            foreach (var spell in Item.Spells.Where(s => s.Cooldown > 0))
+            {
+                spell.Cooldown -= rr.Interval;
+            }
+
+            // Lower GCD
+            if (GCD > 0) GCD -= rr.Interval;
+
+            // Lower CastTime
+            if (CastTime > 0) CastTime -= rr.Interval;
+
+            // Lower Buff cooldowns
+            foreach (var buff in Buffs)
+            {
+                if (buff.Duration >= 0) buff.Duration -= rr.Interval;
+                if (buff.Cooldown > 0) buff.Cooldown -= rr.Interval;
+
+                if (buff is AbilityBuff ab)
+                {
+                    var weapon = GetWeaponFromType(ab.WeaponType);
+                    if (weapon == null) continue;
+
+                    if (ab.Active && ab.Duration % 1 == 0)
+                    {
+                        weapon.GimmickResource += ab.GimmickGainPerSec;
+                        weapon.Energy += ab.EnergyGainPerSec;
+                    }
+                }
+            }
+        }
+
+        private void StartRoundBuffs(RoundResult rr)
         {
             var availableBuffs = Buffs.Where(b => b.CanActivate());
 
             foreach (var buff in availableBuffs)
             {
-                buff.Activate();
+                buff.Activate(rr.TimeSec);
             }
         }
 
@@ -263,6 +320,9 @@ namespace swlsimNET.ServerApp.Models
                 {
                     rr.Attacks.Add(attack);
 
+                    // TODO: Can we fix this somehow, it fucks up the order of a round
+                    // Cast complete, we start other actions same round
+                    Item.PreAttack(rr);
                     // Cast complete, we can start casting same round
                     var spell = GetSpellFromApl();
                     attack = spell?.Execute(this);
@@ -303,7 +363,7 @@ namespace swlsimNET.ServerApp.Models
             if (attack?.Spell.AbilityBuff == null) return;
 
             var buff = Buffs.Find(b => b == attack.Spell.AbilityBuff);
-            buff.Activate();
+            buff.Activate(rr.TimeSec);
         }
 
         private void WeaponAfterAttack(RoundResult rr)
@@ -343,13 +403,13 @@ namespace swlsimNET.ServerApp.Models
         private void EndRound(RoundResult rr)
         {
             var attack = rr.Attacks.FirstOrDefault();
-
             if (attack != null && attack.IsHit)
             {
                 var weapon = GetWeaponFromSpell(attack.Spell);
 
                 if (attack.IsCrit)
                 {
+                    // TODO: Make sure this can never happen more than 1/s
                     // Energy on crit 1s IDC
                     weapon?.EnergyOnCrit(this);
                 }
@@ -366,85 +426,42 @@ namespace swlsimNET.ServerApp.Models
 
         private void EndRoundBuffs(RoundResult rr)
         {
-            var attack = rr.Attacks.FirstOrDefault();
-            var abilityBuff = attack?.Spell.AbilityBuff;
+            //var attack = rr.Attacks.FirstOrDefault();
+            //var abilityBuff = attack?.Spell.AbilityBuff;
 
-            foreach (var buff in Buffs)
-            {
-                if (buff == abilityBuff) continue;
+            //foreach (var buff in Buffs)
+            //{
+            //    if (buff == abilityBuff) continue;
 
-                if (buff.Duration >= 0)
-                    buff.Duration -= rr.Interval;
-                if (buff.Cooldown > 0)
-                    buff.Cooldown -= rr.Interval;
+            //    if (buff.Duration >= 0)
+            //        buff.Duration -= rr.Interval;
+            //    if (buff.Cooldown > 0)
+            //        buff.Cooldown -= rr.Interval;
 
-                if (buff is AbilityBuff ab)
-                {
-                    var weapon = GetWeaponFromType(ab.WeaponType);
-                    if (weapon == null) continue;
+            //    if (buff is AbilityBuff ab)
+            //    {
+            //        var weapon = GetWeaponFromType(ab.WeaponType);
+            //        if (weapon == null) continue;
 
-                    if (ab.Active && ab.Duration % 1 == 0)
-                    {
-                        weapon.GimmickResource += ab.GimmickGainPerSec;
-                        weapon.Energy += ab.EnergyGainPerSec;
-                    }
-                }
-            }
+            //        if (ab.Active && ab.Duration % 1 == 0)
+            //        {
+            //            weapon.GimmickResource += ab.GimmickGainPerSec;
+            //            weapon.Energy += ab.EnergyGainPerSec;
+            //        }
+            //    }
+            //}
         }
 
         private void PostRound(RoundResult rr)
         {
-            // +1 resource per sec primary weapon
-            if (rr.TimeSec != 0 && rr.TimeSec % 1 == 0)
-            {
-                PrimaryWeapon.Energy++;
-            }
-
-            // +1 resource every other second secondary weapon
-            if (rr.TimeSec != 0 && rr.TimeSec % 2 == 0)
-            {
-                SecondaryWeapon.Energy++;
-            }
-
-            // Lower cooldown of all spells except the one used this round
-            foreach (var spell in Spells)
-            {
-                if (spell == rr.Attacks.FirstOrDefault()?.Spell)
-                {
-                    continue;
-                }
-
-                if (spell.Cooldown > 0)
-                {
-                    spell.Cooldown -= rr.Interval;
-                }
-            }
-
-            // Lower cooldown of all item spells except the one used this round
-            foreach (var spell in Item.Spells)
-            {
-                if (rr.Attacks.Any(s => s.Spell == spell))
-                {
-                    continue;
-                }
-
-                if (spell.Cooldown > 0)
-                {
-                    spell.Cooldown -= rr.Interval;
-                }
-            }
-
-            // Lower GCD
-            if (GCD > 0) GCD -= rr.Interval;
-
-            // Lower CastTime
-            if (CastTime > 0) CastTime -= rr.Interval;
-
             // Add relevant info to round result
             rr.PrimaryEnergyEnd = PrimaryWeapon.Energy;
             rr.SecondaryEnergyEnd = SecondaryWeapon.Energy;
             rr.PrimaryGimmickEnd = PrimaryWeapon.GimmickResource;
             rr.SecondaryGimmickEnd = SecondaryWeapon.GimmickResource;
+
+            var activeBuffs = Buffs.Where(b => b.Active).ToList();
+            rr.Buffs = activeBuffs;
         }
 
         private Attack ExecuteNoGcd(ISpell spell)

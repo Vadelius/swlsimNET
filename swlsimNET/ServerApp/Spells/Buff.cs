@@ -1,4 +1,5 @@
-﻿using swlsimNET.ServerApp.Weapons;
+﻿using System.Collections.Generic;
+using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.ServerApp.Spells
 {
@@ -10,6 +11,7 @@ namespace swlsimNET.ServerApp.Spells
         decimal MaxCooldown { get; }
         decimal Cooldown { get; set; }
         bool Active { get; }
+        List<decimal> ActivationRounds { get; }
 
         WeaponType WeaponType { get; }
         bool SpecificWeaponTypeBonus { get; }
@@ -27,9 +29,10 @@ namespace swlsimNET.ServerApp.Spells
         int GimmickGainPerSec { get; }
         int EnergyGainPerSec { get; }
 
-        void Activate();
+        void Activate(decimal round);
         bool CanActivate();
-        void Deactivate();
+        void Deactivate(decimal round);
+        List<decimal> DeactivationRounds { get; }
     }
 
     public class Buff : IBuff
@@ -40,6 +43,8 @@ namespace swlsimNET.ServerApp.Spells
         public decimal MaxCooldown { get; set; }
         public decimal Cooldown { get; set; }
         public virtual bool Active => Duration > 0;
+        public List<decimal> ActivationRounds { get; } = new List<decimal>();
+        public List<decimal> DeactivationRounds { get; } = new List<decimal>();
 
         public double MaxBonusCritChance { get; set; }
         public double MaxBonusCritMultiplier { get; set; }
@@ -57,12 +62,13 @@ namespace swlsimNET.ServerApp.Spells
         public int GimmickGainPerSec { get; set; }
         public int EnergyGainPerSec { get; set; }
 
-        public virtual void Activate()
+        public virtual void Activate(decimal round)
         {
             Cooldown = MaxCooldown;
 
             // Make it infinite if max duration is 0
             Duration = MaxDuration == 0 ? decimal.MaxValue : MaxDuration;
+            ActivationRounds.Add(round);
 
             BonusCritChance = MaxBonusCritChance;
             BonusCritMultiplier = MaxBonusCritMultiplier;
@@ -75,20 +81,21 @@ namespace swlsimNET.ServerApp.Spells
             return Cooldown <= 0 && Duration <= 0;
         }
 
-        public virtual void Deactivate()
+        public virtual void Deactivate(decimal round)
         {
             BonusCritChance = 0;
             BonusCritMultiplier = 0;
             BonusDamageMultiplier = 0;
             BonusBaseDamageMultiplier = 0;
+            DeactivationRounds.Add(round);
         }
     }
 
     public class Debuff : Buff
     {
-        public override void Activate()
+        public override void Activate(decimal round)
         {
-            base.Activate();
+            base.Activate(round);
         }
 
         public override bool CanActivate()
@@ -96,9 +103,9 @@ namespace swlsimNET.ServerApp.Spells
             return base.CanActivate();
         }
 
-        public override void Deactivate()
+        public override void Deactivate(decimal round)
         {
-            base.Deactivate();
+            base.Deactivate(round);
         }
     }
 
@@ -106,9 +113,9 @@ namespace swlsimNET.ServerApp.Spells
     {
         public override bool Active => Duration >= 0;
 
-        public override void Activate()
+        public override void Activate(decimal round)
         {
-            base.Activate();
+            base.Activate(round);
         }
 
         public override bool CanActivate()
@@ -116,9 +123,9 @@ namespace swlsimNET.ServerApp.Spells
             return false;
         }
 
-        public override void Deactivate()
+        public override void Deactivate(decimal round)
         {
-            base.Deactivate();
+            base.Deactivate(round);
         }
     }
 }

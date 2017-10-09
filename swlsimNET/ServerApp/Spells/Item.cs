@@ -10,22 +10,22 @@ namespace swlsimNET.ServerApp.Spells
 {
     public enum NeckTalisman
     {
-        SeedOfAgression, ChokerOfSheedBlood, EgonPendant
+        None, SeedOfAgression, ChokerOfSheedBlood, EgonPendant
     }
 
     public enum LuckTalisman
     {
-        ColdSilver, GamblersSoul
+        None, ColdSilver, GamblersSoul
     }
 
     public enum HeadTalisman
     {
-        Ashes
+        None, Ashes
     }
 
     public enum Gadget
     {
-        ElectrograviticAttractor, ShardOfSesshoSeki, ValiMetabolic, MnemonicGuardianWerewolf
+        None, ElectrograviticAttractor, ShardOfSesshoSeki, ValiMetabolic, MnemonicGuardianWerewolf, Test
     }
 
     public class Item
@@ -59,7 +59,27 @@ namespace swlsimNET.ServerApp.Spells
             };
         }
 
-        public void Execution(RoundResult rr)
+        public void PreAttack(RoundResult rr)
+        {
+            //Gadgets
+            switch (_player.Settings.Gadget)
+            {
+                case Gadget.ValiMetabolic:
+                    _player.AddBonusAttack(rr, _valiMetabolicAccelerator);
+                    break;
+                case Gadget.MnemonicGuardianWerewolf:
+                    _player.AddBonusAttack(rr, _werewolf);
+                    break;
+                case Gadget.ElectrograviticAttractor:
+                    _player.AddBonusAttack(rr, _electrograviticAttractor);
+                    break;
+                case Gadget.Test: // Unit test
+                    _player.AddBonusAttack(rr, Spells.Find(s => s.Name == "GadgetSpell"));
+                    break;
+            }
+        }
+
+        public void AfterAttack(RoundResult rr)
         {
             var attack = rr.Attacks.FirstOrDefault();
             if (attack == null || !attack.IsHit || attack.Damage <= 0) return;
@@ -110,23 +130,6 @@ namespace swlsimNET.ServerApp.Spells
                 RepeatHits++;
             }
 
-            //Gadgets below
-            switch (_player.Settings.Gadget)
-            {
-                case Gadget.ValiMetabolic:
-                    _player.AddBonusAttack(rr, _valiMetabolicAccelerator);
-                    break;
-                case Gadget.MnemonicGuardianWerewolf:
-                    _player.AddBonusAttack(rr, _werewolf);
-                    break;
-                case Gadget.ShardOfSesshoSeki when attack.Spell.SpellType != SpellType.Dot:
-                    _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
-                    break;
-                case Gadget.ElectrograviticAttractor:
-                    _player.AddBonusAttack(rr, _electrograviticAttractor);
-                    break;
-            }
-
             if (_player.Settings.PrimaryWeaponProc == WeaponProc.AnimaTouched && _rnd.Next(1, 4) == 3)
             {
                 _player.AddBonusAttack(rr, new AnimaTouched(_player));
@@ -159,6 +162,13 @@ namespace swlsimNET.ServerApp.Spells
             if (_player.Settings.PrimaryWeaponProc == WeaponProc.Shadowbound && _rnd.Next(1, 6) == 5)
             {
                 _player.AddBonusAttack(rr, new Shadowbound());
+            }
+
+            // Gadget
+            if (_player.Settings.Gadget == Gadget.ShardOfSesshoSeki && attack.Spell.SpellType != SpellType.Dot)
+            {
+                // TODO: Check if it should procc on dot apply
+                _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
             }
         }
 

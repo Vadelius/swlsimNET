@@ -255,6 +255,10 @@ namespace swlsimNET.ServerApp.Spells
                     return CastNoGcdFinished(player);
                 case SpellType.Procc:
                     return CastNoGcdFinished(player);
+                case SpellType.Instant:
+                    return CastNoGcdFinished(player);
+                case SpellType.Passive: // TODO: Needs a test for passive spelltype
+                    return CastFinished(player);
                 default:
                     return CastFinished(player);
                 // TODO: Implement other types
