@@ -3,16 +3,6 @@ using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.ServerApp.Spells.Blade
 {
-    public class BladePassive : Spell
-    {
-        public BladePassive(IPlayer player, string args = null)
-        {
-            WeaponType = WeaponType.Blade;
-            BaseDamage = 0;
-            // RandomEntry
-        }
-    }
-
     public class EyeOfTheStorm : Passive
     {
         public EyeOfTheStorm()
@@ -29,7 +19,8 @@ namespace swlsimNET.ServerApp.Spells.Blade
         {
             WeaponType = WeaponType.Blade;
             SpellTypes.Add(typeof(Hone));
-            BaseDamageCritModifier = 0.4; // Adds 40% critpower buff during hone
+            BaseDamageCritModifier = 0.4;
+            // Adds 40% critpower buff during hone
         }
     }
 
@@ -79,6 +70,7 @@ namespace swlsimNET.ServerApp.Spells.Blade
         {
             WeaponType = WeaponType.Blade;
             SpellTypes.Add(typeof(SwallowCut));
+            ModelledInWeapon = true;
             // Has 30% chance to not consume a spirit blade attackcharge when used.
         }
     }

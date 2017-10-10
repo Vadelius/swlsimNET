@@ -1,4 +1,4 @@
-﻿using swlsimNET.ServerApp.Combat;
+﻿﻿using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
 using System;
@@ -10,7 +10,7 @@ namespace swlsimNET.ServerApp.Weapons
     {
         private int SpiritBladeCharges;
         private bool SpiritBladeActive => SpiritBladeCharges > 0;
-
+        private int _deluge;
         public Blade(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
             _maxGimickResource = 5;
@@ -30,6 +30,12 @@ namespace swlsimNET.ServerApp.Weapons
                 GimmickResource++;
             }
 
+            if (_deluge >= 6)
+            {
+                player.AddBonusAttack(rr, new SpiritBlade(player));
+                _deluge = 0;
+            }
+            
             ChiGenerator(player);
             ChiConsumer();
             SpiritBladeConsumer(player, rr);
@@ -45,7 +51,7 @@ namespace swlsimNET.ServerApp.Weapons
             {
                 GimmickResource++;
             }
-            if (roll == 2 && GimmickResource < 5)
+            if (roll == 2 && GimmickResource <= 5)
             {
                 GimmickResource++;
             }
@@ -75,23 +81,46 @@ namespace swlsimNET.ServerApp.Weapons
         private void SpiritBladeConsumer(IPlayer player, RoundResult rr)
         {
             if (!SpiritBladeActive) return;
-
+            var highroller = Rnd.Next(1, 101);
+            
             if (player.Settings.PrimaryWeaponProc == WeaponProc.BladeOfTheSeventhSon)
             {
                 player.AddBonusAttack(rr, new SpiritBlade(player));
                 player.AddBonusAttack(rr, new BladeOfTheSeventhSon(player));
                 SpiritBladeCharges--;
             }
+            if (player.HasPassive("HardenedBlade") && highroller <= 30)
+            {
+                {
+                    if (player.HasPassive("Deluge"))
+                    {
+                        _deluge += 1;
+                    }
+                    
+                    player.AddBonusAttack(rr, new SpiritBlade(player));
+                    return;
+                }
+                
+            }
+            if (player.HasPassive("Deluge"))
+            {
+                _deluge += 1;
+            }
             else player.AddBonusAttack(rr, new SpiritBlade(player));
             SpiritBladeCharges--;
         }
 
+        
+
+// Every 6th hit with spirit blade unleashes an AoE of 0.38CP
         private void SpiritBladeExtender()
         {
             if (!SpiritBladeActive) return;
 
             switch (GimmickResource)
             {
+                case 0: 
+                    break;
                 case 1:
                     SpiritBladeCharges += 1;
                     break;
@@ -128,6 +157,15 @@ namespace swlsimNET.ServerApp.Weapons
                 WeaponType = WeaponType.Blade;
                 SpellType = SpellType.Gimmick;
                 BaseDamage = player.CombatPower * 0.97 * 0.61;
+            }
+        }
+        private class Deluge : Spell
+        {
+            public Deluge(IPlayer player)
+            {
+                WeaponType = WeaponType.Blade;
+                SpellType = SpellType.Procc;
+                BaseDamage = player.CombatPower * 0.38;
             }
         }
     }

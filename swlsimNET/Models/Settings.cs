@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using swlsimNET.ServerApp.Weapons;
@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Spells;
-using swlsimNET.ServerApp.Spells.Blood;
+ using swlsimNET.ServerApp.Spells.Blade;
+ using swlsimNET.ServerApp.Spells.Blood;
 using swlsimNET.ServerApp.Spells.Hammer;
 using swlsimNET.ServerApp.Spells.Pistol;
 using swlsimNET.ServerApp.Spells.Shotgun;
@@ -122,6 +123,13 @@ namespace swlsimNET.Models
         {
             // TODO: Add ALL passives here
 
+            // Blade   
+            
+            new HardenedBlade(),
+            new EyeOfTheStorm(),
+            new StormSurge(),
+            new Deluge(),
+            
             // Hammer
             new Outrage(),
             new Obliterate(),
