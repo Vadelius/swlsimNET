@@ -19,7 +19,7 @@ namespace swlsimNET.ServerApp.Weapons
 
         }
 
-        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double heatBeforeCast)
+        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, decimal heatBeforeCast)
         {
             var hasFigurine = player.Settings.PrimaryWeaponProc == WeaponProc.FrozenFigurine &&
                               spell.ElementalType == "Cold";
@@ -85,7 +85,7 @@ namespace swlsimNET.ServerApp.Weapons
             }
         }
 
-        private void Decay(double heatBeforeCast)
+        private void Decay(decimal heatBeforeCast)
         {
             // Corruption = -4 for each second.
             // Only reduce per second, so for example 1.5s = 1s

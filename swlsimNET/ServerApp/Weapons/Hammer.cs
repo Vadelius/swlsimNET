@@ -108,7 +108,7 @@ namespace swlsimNET.ServerApp.Weapons
             }
         }
 
-        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double rageBeforeCast)
+        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, decimal rageBeforeCast)
         {
             double bonusBaseDamageMultiplier = 0;
 
@@ -139,7 +139,7 @@ namespace swlsimNET.ServerApp.Weapons
             return bonusBaseDamageMultiplier;
         }
 
-        public override void OnHit(IPlayer player, ISpell spell, double rageBeforeCast)
+        public override void OnHit(IPlayer player, ISpell spell, decimal rageBeforeCast)
         {
             // TODO: Save enrage states between rounds instead
 

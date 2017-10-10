@@ -215,8 +215,8 @@ namespace swlsimNET.Models
             public decimal Time { get; set; }
             public int Primary { get; set; }
             public int Secondary { get; set; }
-            public double Pgimmick { get; set; }
-            public double Sgimmick { get; set; }
+            public decimal Pgimmick { get; set; }
+            public decimal Sgimmick { get; set; }
         }
 
         public class BuffResult
