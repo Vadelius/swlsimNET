@@ -483,7 +483,7 @@ namespace swlsimNET.ServerApp.Models
                     var rrc = ContinueRound(rr, spell);
                     if (rrc.Attacks.Count == rr.Attacks.Count)
                     {
-                        break;;
+                        break;
                     }
                     rr = rrc;
                 }

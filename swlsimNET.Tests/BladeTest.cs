@@ -33,15 +33,11 @@ namespace swlsimNET.Tests
             var engine = new Engine(setting);
             var fight = engine.StartFight(player);
 
-            var endTime = fight.RoundResults.Last().TimeSec;
-            var rounds = fight.RoundResults.Count;
-
             var bSpells = fight.RoundResults
                 .SelectMany(r => r.Attacks.Where(a => a.Spell is BladeSpell)).Count();
 
-            Assert.AreEqual(rounds, 4);
-            Assert.AreEqual(endTime, 3.0m);
-            Assert.IsTrue(bSpells == 2);
+            // TODO: ChiGenerator(player); ChiConsumer(); SpiritBladeConsumer(player, rr); SpiritBladeExtender(); Not all in same test ofc
+            Assert.IsTrue(false);
         }
 
         private sealed class BladeSpell : Spell
