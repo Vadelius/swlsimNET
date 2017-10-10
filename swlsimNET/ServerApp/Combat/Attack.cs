@@ -1,4 +1,5 @@
-﻿using swlsimNET.ServerApp.Spells;
+﻿using Newtonsoft.Json;
+using swlsimNET.ServerApp.Spells;
 
 namespace swlsimNET.ServerApp.Combat
 {
@@ -17,6 +18,7 @@ namespace swlsimNET.ServerApp.Combat
         public double Damage { get; set; } = 0;
         public bool IsCrit { get; set; } = false;
         public bool IsHit { get; set; } = false;
+        [JsonIgnore]
         public ISpell Spell { get; set; }
     }
 }

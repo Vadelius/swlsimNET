@@ -85,102 +85,102 @@ namespace swlsimNET.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpPost]
-        public ActionResult SetPresetHammerFist(Settings s)
-        {
-            ModelState.Clear();
-            s.PrimaryWeapon = WeaponType.Hammer;
-            s.PrimaryWeaponProc = WeaponProc.AnimaTouched;
-            s.PrimaryWeaponAffix = WeaponAffix.Destruction;
-            s.SecondaryWeapon = WeaponType.Fist;
-            s.SecondaryWeaponProc = WeaponProc.Shadowbound;
-            s.SecondaryWeaponAffix = WeaponAffix.Havoc;
-            s.Gadget = Gadget.ValiMetabolic;
-            s.Exposed = true;
-            s.Savagery = true;
-            s.OpeningShot = true;
-            s.Head = HeadTalisman.Ashes;
-            s.Neck = NeckTalisman.SeedOfAgression;
-            s.Luck = LuckTalisman.ColdSilver;
-            s.Apl = "Fist.Savagery, Buff.UnstoppableForce.Active\r\n" +
-                    "Hammer.Seethe, Buff.UnstoppableForce.Active\r\n" +
-                    "Hammer.UnstoppableForce, Rage > 50 || Hammer.Energy > 8\r\n" +
-                    "Hammer.Demolish, Buff.UnstoppableForce.Active\r\n" +
-                    "Hammer.Demolish, Rage > 60 || Hammer.Energy > 13\r\n" +
-                    "Hammer.Smash";
+        //[HttpPost]
+        //public ActionResult SetPresetHammerFist(Settings s)
+        //{
+        //    ModelState.Clear();
+        //    s.PrimaryWeapon = WeaponType.Hammer;
+        //    s.PrimaryWeaponProc = WeaponProc.AnimaTouched;
+        //    s.PrimaryWeaponAffix = WeaponAffix.Destruction;
+        //    s.SecondaryWeapon = WeaponType.Fist;
+        //    s.SecondaryWeaponProc = WeaponProc.Shadowbound;
+        //    s.SecondaryWeaponAffix = WeaponAffix.Havoc;
+        //    s.Gadget = Gadget.ValiMetabolic;
+        //    s.Exposed = true;
+        //    s.Savagery = true;
+        //    s.OpeningShot = true;
+        //    s.Head = HeadTalisman.Ashes;
+        //    s.Neck = NeckTalisman.SeedOfAgression;
+        //    s.Luck = LuckTalisman.ColdSilver;
+        //    s.Apl = "Fist.Savagery, Buff.UnstoppableForce.Active\r\n" +
+        //            "Hammer.Seethe, Buff.UnstoppableForce.Active\r\n" +
+        //            "Hammer.UnstoppableForce, Rage > 50 || Hammer.Energy > 8\r\n" +
+        //            "Hammer.Demolish, Buff.UnstoppableForce.Active\r\n" +
+        //            "Hammer.Demolish, Rage > 60 || Hammer.Energy > 13\r\n" +
+        //            "Hammer.Smash";
 
-            s.Passive1 = "Outrage";
-            s.Passive2 = "Obliterate";
-            s.Passive3 = "Berserker";
-            s.Passive4 = "FastAndFurious";
-            s.Passive5 = "UnbridledWrath";
+        //    s.Passive1 = "Outrage";
+        //    s.Passive2 = "Obliterate";
+        //    s.Passive3 = "Berserker";
+        //    s.Passive4 = "FastAndFurious";
+        //    s.Passive5 = "UnbridledWrath";
 
-            return View("Import", s);
-        }
+        //    return View("Import", s);
+        //}
 
-        [HttpPost]
-        public ActionResult SetPresetBloodFist(Settings s)
-        {
-            ModelState.Clear();
-            s.PrimaryWeapon = WeaponType.Blood;
-            s.SecondaryWeapon = WeaponType.Fist;
-            s.Apl = "Fist.Savagery, Corruption >= 10 && EldritchScourge.Cooldown <= 0 && Desecrate.Cooldown <= 0\r\n" +
-                    "Blood.EldritchScourge, Corruption > 0 && Buff.Savagery.Active\r\n" +
-                    "Blood.Desecrate, Buff.Savagery.Active\r\n" +
-                    "Blood.Maleficium, Blood.Energy > 10\r\n" +
-                    "Blood.Torment";
+        //[HttpPost]
+        //public ActionResult SetPresetBloodFist(Settings s)
+        //{
+        //    ModelState.Clear();
+        //    s.PrimaryWeapon = WeaponType.Blood;
+        //    s.SecondaryWeapon = WeaponType.Fist;
+        //    s.Apl = "Fist.Savagery, Corruption >= 10 && EldritchScourge.Cooldown <= 0 && Desecrate.Cooldown <= 0\r\n" +
+        //            "Blood.EldritchScourge, Corruption > 0 && Buff.Savagery.Active\r\n" +
+        //            "Blood.Desecrate, Buff.Savagery.Active\r\n" +
+        //            "Blood.Maleficium, Blood.Energy > 10\r\n" +
+        //            "Blood.Torment";
 
-            s.Passive1 = "CrimsonPulse";
-            s.Passive2 = "Desolate";
-            s.Passive3 = "Defilement";
-            s.Passive4 = "Flay";
-            s.Passive5 = "Contaminate"; // not used
+        //    s.Passive1 = "CrimsonPulse";
+        //    s.Passive2 = "Desolate";
+        //    s.Passive3 = "Defilement";
+        //    s.Passive4 = "Flay";
+        //    s.Passive5 = "Contaminate"; // not used
 
-            return View("Import", s);
-        }
+        //    return View("Import", s);
+        //}
 
-        [HttpPost]
-        public ActionResult SetPresetHammerPistol(Settings s)
-        {
-            ModelState.Clear();
-            s.PrimaryWeapon = WeaponType.Hammer;
-            s.SecondaryWeapon = WeaponType.Pistol;
-            s.Apl = "Hammer.Seethe, Rage < 38\r\n" +
-                    "Hammer.Demolish, Enraged\r\n" +
-                    "Hammer.Demolish\r\n" +
-                    "Pistol.DualShot\r\n" +
-                    "Hammer.Smash";
+        //[HttpPost]
+        //public ActionResult SetPresetHammerPistol(Settings s)
+        //{
+        //    ModelState.Clear();
+        //    s.PrimaryWeapon = WeaponType.Hammer;
+        //    s.SecondaryWeapon = WeaponType.Pistol;
+        //    s.Apl = "Hammer.Seethe, Rage < 38\r\n" +
+        //            "Hammer.Demolish, Enraged\r\n" +
+        //            "Hammer.Demolish\r\n" +
+        //            "Pistol.DualShot\r\n" +
+        //            "Hammer.Smash";
 
-            s.Passive1 = "Outrage";
-            s.Passive2 = "Obliterate";
-            s.Passive3 = "Berserker";
-            s.Passive4 = "FastAndFurious";
-            s.Passive5 = "UnbridledWrath";
+        //    s.Passive1 = "Outrage";
+        //    s.Passive2 = "Obliterate";
+        //    s.Passive3 = "Berserker";
+        //    s.Passive4 = "FastAndFurious";
+        //    s.Passive5 = "UnbridledWrath";
 
-            return View("Import", s);
-        }
+        //    return View("Import", s);
+        //}
 
-        public ActionResult SetPresetHammerShotgun(Settings s)
-        {
-            ModelState.Clear();
-            s.PrimaryWeapon = WeaponType.Hammer;
-            s.SecondaryWeapon = WeaponType.Shotgun;
-            s.Apl = "Shotgun.ShellSalvage, Hammer.Energy<10 && Shotgun.Energy< 10\r\n" +
-                    "Hammer.Seethe, Hammer.Energy<11\r\n" +
-                    "Hammer.UnstoppableForce\r\n" +
-                    "Hammer.Demolish\r\n" +
-                    "Shotgun.RagingShot\r\n" +
-                    "Shotgun.Reload, Shells == 0\r\n" +
-                    "Hammer.Smash";
+        //public ActionResult SetPresetHammerShotgun(Settings s)
+        //{
+        //    ModelState.Clear();
+        //    s.PrimaryWeapon = WeaponType.Hammer;
+        //    s.SecondaryWeapon = WeaponType.Shotgun;
+        //    s.Apl = "Shotgun.ShellSalvage, Hammer.Energy<10 && Shotgun.Energy< 10\r\n" +
+        //            "Hammer.Seethe, Hammer.Energy<11\r\n" +
+        //            "Hammer.UnstoppableForce\r\n" +
+        //            "Hammer.Demolish\r\n" +
+        //            "Shotgun.RagingShot\r\n" +
+        //            "Shotgun.Reload, Shells == 0\r\n" +
+        //            "Hammer.Smash";
 
-            s.Passive1 = "Outrage";
-            s.Passive2 = "Obliterate";
-            s.Passive3 = "UnbridledWrath";
-            s.Passive4 = "FastAndFurious";
-            s.Passive5 = "SalvageExpert";
+        //    s.Passive1 = "Outrage";
+        //    s.Passive2 = "Obliterate";
+        //    s.Passive3 = "UnbridledWrath";
+        //    s.Passive4 = "FastAndFurious";
+        //    s.Passive5 = "SalvageExpert";
 
-            return View("Import", s);
-        }
+        //    return View("Import", s);
+        //}
 
         private bool StartSimulation()
         {

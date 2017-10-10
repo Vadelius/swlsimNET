@@ -110,13 +110,14 @@
             @Html.ValidationMessageFor(m => m.Apl, "", new { @class = "text-danger" })
             @Html.TextAreaFor(m => m.Apl, new { Class = "form-control" })
         </div>
-
-        <div class="col-md-9" style="margin-bottom: 10px">
+        
+        @*TODO: Make JS*@
+        @*<div class="col-md-9" style="margin-bottom: 10px">
             <input type="submit" value="Blood/Fist" formaction=@Url.Action("SetPresetBloodFist") formmethod="post" class="btn btn-primary" />
             <input type="submit" value="Hammer/Fist" formaction=@Url.Action("SetPresetHammerFist") formmethod="post" class="btn btn-primary" />
             <input type="submit" value="Hammer/Pistol" formaction=@Url.Action("SetPresetHammerPistol") formmethod="post" class="btn btn-primary" />
             <input type="submit" value="Hammer/Shotgun" formaction=@Url.Action("SetPresetHammerShotgun") formmethod="post" class="btn btn-primary" />
-        </div>
+        </div>*@
 
         <div class="col-md-9" style="margin-bottom: 10px">
             @Html.LabelFor(m => m.Passives)
@@ -130,21 +131,21 @@
 
         <div>
             @Html.CheckBoxFor(m => m.OpeningShot)
-            <label for="OpeningShot">Opening Shot every ~ 20 seconds.</label>
+            @Html.LabelFor(m => m.OpeningShot)
         </div>
 
         <div>
             @Html.CheckBoxFor(m => m.Exposed)
-            <label for="Exposed">Exposed with 100% uptime</label>
+            @Html.LabelFor(m => m.Exposed)
         </div>
 
         <div>
             @Html.CheckBoxFor(m => m.HeadSignetIsCdr)
-            <label for="HeadSignetIsCdr">Head signet is CDR</label>
+            @Html.LabelFor(m => m.HeadSignetIsCdr)
         </div>
         <div>
             @Html.CheckBoxFor(m => m.Savagery)
-            <label for="Savagery">Enable Savagery</label>
+            @Html.LabelFor(m => m.Savagery)
         </div>
 
         <input type="submit" value="Start Simulation" formaction=@Url.Action("Import") formmethod="post" class="btn btn-default waves-effect waves-light" />
@@ -181,22 +182,111 @@
     <button style="margin-top: 10px" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#full-width-modal">Login</button>
 </div>
 
-
 <script type="text/javascript">
     function onLoad() {
-        var name = document.getElementById("Apl");
-        name.value = localStorage.name || '';
-        name.addEventListener('blur', function (e) {
-            if (this.value) {
-                localStorage.setItem('name', this.value)
-            };
-        });
+        // TODO: Can we solve with a loop?
+        //var elements = ["Apl"];
+        //elements.forEach(persistInput);
 
-        window.addEventListener('storage', function () {
-            console.log('updated');
-            name.value = localStorage.name;
-        }, false);
+        var inputElement = document.getElementById("Apl");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("PrimaryWeapon");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("SecondaryWeapon");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("PrimaryWeaponAffix");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("SecondaryWeaponAffix");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("PrimaryWeaponProc");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("SecondaryWeaponProc");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("Neck");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("Luck");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("Head");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("Gadget");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("CombatPower");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("GlanceReduction");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("CriticalChance");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("CritPower");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("BasicSignet");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("PowerSignet");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("EliteSignet");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("WaistSignet");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("Passive1");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("Passive2");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("Passive3");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("Passive4");
+        persistInput(inputElement);
+
+        inputElement = document.getElementById("Passive5");
+        persistInput(inputElement);
+
+        // TODO: Fix checkboxes 
+        //inputElement = document.getElementById("OpeningShot");
+        //persistInput(inputElement);
+
+        //inputElement = document.getElementById("Exposed");
+        //persistInput(inputElement);
+
+        //inputElement = document.getElementById("HeadSignetIsCdr");
+        //persistInput(inputElement);
+
+        //inputElement = document.getElementById("Savagery");
+        //persistInput(inputElement);
     }
     window.onload = onLoad();
 
+    function persistInput(input) {
+        if (input == null) return;
+
+        var key = "input-" + input.id;
+        var storedValue = localStorage.getItem(key);
+
+        if (storedValue)
+            input.value = storedValue;
+
+        input.addEventListener('input', function ()
+        {
+            localStorage.setItem(key, input.value);
+        });
+    }
 </script>

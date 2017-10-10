@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using swlsimNET.ServerApp.Weapons;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Spells.Blood;
@@ -27,18 +28,25 @@ namespace swlsimNET.Models
 
         [Display(Name = "Secondary weapon affix")]
         public WeaponAffix SecondaryWeaponAffix { get; set; }
+
         [Display(Name = "Primary weapon proc")]
         public WeaponProc PrimaryWeaponProc { get; set; }
+
         [Display(Name = "Secondary weapon proc")]
         public WeaponProc SecondaryWeaponProc { get; set; }
+
         [Display(Name = "Neck Talisman")]
         public NeckTalisman Neck { get; set; }
+
         [Display(Name = "Luck Talisman")]
         public LuckTalisman Luck { get; set; }
+
         [Display(Name = "Head Talisman")]
         public HeadTalisman Head { get; set; }
+
         [Display(Name = "Gadget")]
         public Gadget Gadget { get; set; }
+
         [Display(Name = "Combat power")]
         public double CombatPower { get; set; } = 1200;
 
@@ -65,15 +73,23 @@ namespace swlsimNET.Models
         [Display(Name = "Action priority list *")]
         [Required(ErrorMessage = "required.")]
         public string Apl { get; set; }
+
         public string Passive1 { get; set; }
         public string Passive2 { get; set; }
         public string Passive3 { get; set; }
         public string Passive4 { get; set; }
         public string Passive5 { get; set; }
-
+        
+        [Display(Name = "Opening Shot every ~ 20 seconds")]
         public bool OpeningShot { get; set; }
+
+        [Display(Name = "Exposed with 100% uptime")]
         public bool Exposed { get; set; }
+
+        [Display(Name = "Head signet is CDR")]
         public bool HeadSignetIsCdr { get; set; }
+
+        [Display(Name = "Enable Savagery")]
         public bool Savagery { get; set; }
 
         public int Iterations { get; set; } = 100;
@@ -98,8 +114,10 @@ namespace swlsimNET.Models
             Selected = false
         });
 
+        [JsonIgnore]
         public List<Passive> AllPassives => _allPassives;
 
+        [JsonIgnore]
         private static List<Passive> _allPassives = new List<Passive>
         {
             // TODO: Add ALL passives here
