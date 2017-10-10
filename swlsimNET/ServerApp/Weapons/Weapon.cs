@@ -9,7 +9,7 @@ namespace swlsimNET.ServerApp.Weapons
 {
     public enum WeaponType
     {
-        None, AssaultRifle, Blade, Blood, Chaos, Elemental, Fist, Hammer, Pistol, Shotgun
+        None, Rifle, Blade, Blood, Chaos, Elemental, Fist, Hammer, Pistol, Shotgun
     }
 
     public enum WeaponAffix

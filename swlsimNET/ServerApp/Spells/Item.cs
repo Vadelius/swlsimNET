@@ -79,9 +79,9 @@ namespace swlsimNET.ServerApp.Spells
             }
         }
 
-        public void AfterAttack(RoundResult rr)
+        public void AfterAttack(RoundResult rr, ISpell spell)
         {
-            var attack = rr.Attacks.FirstOrDefault();
+            var attack = rr.Attacks.FirstOrDefault(s => s.Spell == spell);
             if (attack == null || !attack.IsHit || attack.Damage <= 0) return;
 
             var weapon = _player.GetWeaponFromSpell(attack.Spell);

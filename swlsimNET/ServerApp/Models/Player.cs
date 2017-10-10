@@ -47,7 +47,7 @@ namespace swlsimNET.ServerApp.Models
         public double Paradox => GetWeaponResourceFromType(WeaponType.Chaos);
         public double Rage => GetWeaponResourceFromType(WeaponType.Hammer);
         public double Shells => GetWeaponResourceFromType(WeaponType.Shotgun);
-        public bool Grenade => GetWeaponResourceFromType(WeaponType.AssaultRifle) > 0;
+        public bool Grenade => GetWeaponResourceFromType(WeaponType.Rifle) > 0;
 
         // Weapon wrappers (for APL)
         public Weapon Blade => GetWeaponFromType(WeaponType.Blade);
@@ -57,7 +57,7 @@ namespace swlsimNET.ServerApp.Models
         public Weapon Fist => GetWeaponFromType(WeaponType.Fist);
         public Weapon Hammer => GetWeaponFromType(WeaponType.Hammer);
         public Weapon Pistol => GetWeaponFromType(WeaponType.Pistol);
-        public Weapon Rifle => GetWeaponFromType(WeaponType.AssaultRifle);
+        public Weapon Rifle => GetWeaponFromType(WeaponType.Rifle);
         public Weapon Shotgun => GetWeaponFromType(WeaponType.Shotgun);
 
         public Player(Settings settings)
@@ -114,8 +114,8 @@ namespace swlsimNET.ServerApp.Models
                     return new Hammer(wtype, waffix);
                 case WeaponType.Pistol:
                     return new Pistol(wtype, waffix);
-                case WeaponType.AssaultRifle:
-                    return new AssaultRifle(wtype, waffix);
+                case WeaponType.Rifle:
+                    return new Rifle(wtype, waffix);
                 case WeaponType.Shotgun:
                     return new Shotgun(wtype, waffix);
             }
@@ -204,14 +204,33 @@ namespace swlsimNET.ServerApp.Models
             StartRoundBuffs(rr);
             Item.PreAttack(rr);
             WeaponPreAttack(rr);
-            ExecuteAction(rr);
-            ExecuteBuff(rr);
-            Item.AfterAttack(rr);
-            WeaponAfterAttack(rr);
-            PassiveBonusSpells(rr);
-            EndRound(rr);
-            EndRoundBuffs(rr);
-            PostRound(rr);
+            var spell = ExecuteAction(rr);
+            ExecuteBuff(rr, spell);
+            Item.AfterAttack(rr, spell);
+            WeaponAfterAttack(rr, spell);
+            PassiveBonusSpells(rr, spell);
+            EndRound(rr, spell);
+            //EndRoundBuffs(rr);
+            PostRound(rr, spell);
+
+            return rr;
+        }
+
+        private RoundResult ContinueRound(RoundResult rr, ISpell prevSpell)
+        {
+            // TODO: Check if all this should be done in continue round
+            // TODO: Fix timestamtp and cooldown checks in all methods below etc
+            // Order of a round
+            Item.PreAttack(rr);
+            WeaponPreAttack(rr);
+            var spell = ExecuteAction(rr, prevSpell);
+            ExecuteBuff(rr, spell);
+            Item.AfterAttack(rr, spell);
+            WeaponAfterAttack(rr, spell);
+            PassiveBonusSpells(rr, spell);
+            EndRound(rr, spell);
+            //EndRoundBuffs(rr);
+            //PostRound(rr);
 
             return rr;
         }
@@ -295,23 +314,31 @@ namespace swlsimNET.ServerApp.Models
             SecondaryWeapon.PreAttack(this, rr);
         }
 
-        private void ExecuteAction(RoundResult rr)
+        private ISpell ExecuteAction(RoundResult rr, ISpell prevSpell = null)
         {
             Attack attack;
-
+            var spell = prevSpell;
+            
             if (CurrentSpell == null)
             {
-                var spell = GetSpellFromApl();
+                spell = GetSpellFromApl();
                 attack = spell?.Execute(this);
 
                 // If attack is null we have started a cast
                 if (attack != null)
                 {
                     rr.Attacks.Add(attack);
+                    return spell;
                 }
             }
             else
             {
+                // We have already continued on this cast this turn
+                if (spell != null)
+                {
+                    return null;
+                }
+
                 // We are already casting
                 attack = CurrentSpell.Continue(this);
 
@@ -319,21 +346,25 @@ namespace swlsimNET.ServerApp.Models
                 if (attack != null)
                 {
                     rr.Attacks.Add(attack);
+                    return CurrentSpell;
 
-                    // TODO: Can we fix this somehow, it fucks up the order of a round
-                    // Cast complete, we start other actions same round
-                    Item.PreAttack(rr);
-                    // Cast complete, we can start casting same round
-                    var spell = GetSpellFromApl();
-                    attack = spell?.Execute(this);
+                    //// TODO: Can we fix this somehow, it fucks up the order of a round
+                    //// Cast complete, we start other actions same round
+                    //Item.PreAttack(rr);
+                    //WeaponPreAttack(rr);
+                    //// Cast complete, we can start casting same round
+                    //var spell = GetSpellFromApl();
+                    //attack = spell?.Execute(this);
 
-                    // If attack is null we have started a cast
-                    if (attack != null)
-                    {
-                        rr.Attacks.Add(attack);
-                    }
+                    //// If attack is null we have started a cast
+                    //if (attack != null)
+                    //{
+                    //    rr.Attacks.Add(attack);
+                    //}
                 }
             }
+
+            return null;
         }
 
         private ISpell GetSpellFromApl()
@@ -357,18 +388,17 @@ namespace swlsimNET.ServerApp.Models
             return spell;
         }
 
-        private void ExecuteBuff(RoundResult rr)
+        private void ExecuteBuff(RoundResult rr, ISpell spell)
         {
-            var attack = rr.Attacks.FirstOrDefault();
-            if (attack?.Spell.AbilityBuff == null) return;
+            if (spell?.AbilityBuff == null) return;
 
-            var buff = Buffs.Find(b => b == attack.Spell.AbilityBuff);
+            var buff = Buffs.Find(b => b == spell.AbilityBuff);
             buff.Activate(rr.TimeSec);
         }
 
-        private void WeaponAfterAttack(RoundResult rr)
+        private void WeaponAfterAttack(RoundResult rr, ISpell spell)
         {
-            var attack = rr.Attacks.FirstOrDefault();
+            var attack = rr.Attacks.FirstOrDefault(a => a.Spell == spell);
             if (attack == null || !attack.IsHit) return;
 
             var weapon = GetWeaponFromSpell(attack.Spell);
@@ -376,13 +406,12 @@ namespace swlsimNET.ServerApp.Models
             weapon?.WeaponAffixes(this, attack.Spell, rr);
         }
 
-        private void PassiveBonusSpells(RoundResult rr)
+        private void PassiveBonusSpells(RoundResult rr, ISpell spell)
         {
-            var attack = rr.Attacks.FirstOrDefault();
+            var attack = rr.Attacks.FirstOrDefault(a => a.Spell == spell);
             if (attack == null || !attack.IsHit) return;
 
-            var spell = attack.Spell;
-            if (spell?.PassiveBonusSpell != null)
+            if (spell.PassiveBonusSpell != null)
             {
                 if (spell.PassiveBonusSpell.BonusSpellOnlyOnCrit)
                 {
@@ -400,9 +429,9 @@ namespace swlsimNET.ServerApp.Models
             }
         }
 
-        private void EndRound(RoundResult rr)
+        private void EndRound(RoundResult rr, ISpell spell)
         {
-            var attack = rr.Attacks.FirstOrDefault();
+            var attack = rr.Attacks.FirstOrDefault(a => a.Spell == spell);
             if (attack != null && attack.IsHit)
             {
                 var weapon = GetWeaponFromSpell(attack.Spell);
@@ -413,14 +442,6 @@ namespace swlsimNET.ServerApp.Models
                     // Energy on crit 1s IDC
                     weapon?.EnergyOnCrit(this);
                 }
-            }
-
-            foreach (var a in rr.Attacks)
-            {
-                // non damage attacks never added to report totals for hit/crits
-                if (a.IsHit && a.Damage > 0) rr.TotalHits++;
-                if (a.IsCrit && a.Damage > 0) rr.TotalCrits++;
-                rr.TotalDamage += a.Damage;
             }
         }
 
@@ -452,8 +473,22 @@ namespace swlsimNET.ServerApp.Models
             //}
         }
 
-        private void PostRound(RoundResult rr)
+        private void PostRound(RoundResult rr, ISpell spell)
         {
+            // Make sure we cant do anything more this round
+            if (rr.Attacks != null && rr.Attacks.Any())
+            {
+                while (true)
+                {
+                    var rrc = ContinueRound(rr, spell);
+                    if (rrc.Attacks.Count == rr.Attacks.Count)
+                    {
+                        break;;
+                    }
+                    rr = rrc;
+                }
+            }           
+
             // Add relevant info to round result
             rr.PrimaryEnergyEnd = PrimaryWeapon.Energy;
             rr.SecondaryEnergyEnd = SecondaryWeapon.Energy;

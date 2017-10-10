@@ -7,7 +7,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public PlacedShot(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             BaseDamage = 1.17;
             Args = args;
         }
@@ -17,7 +17,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public FullAuto(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             AbilityType = AbilityType.Power;
             SpellType = SpellType.Channel;
             CastTime = 1;
@@ -32,7 +32,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public LockAndLoad(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             AbilityType = AbilityType.Special;
             SpellType = SpellType.Instant;
             PrimaryGain = 4;
@@ -45,7 +45,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public BurstFire(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             AbilityType = AbilityType.Power;
             SpellType = SpellType.Channel;
             CastTime = 1;
@@ -60,7 +60,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public RedMist(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             AbilityType = AbilityType.Elite;
             SpellType = SpellType.Cast;
             CastTime = 2.0m;
@@ -75,7 +75,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public IncendiaryGrenade(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             AbilityType = AbilityType.Special;
             SpellType = SpellType.Dot;
             PrimaryCost = 2;
@@ -91,7 +91,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public TacticalRetreat(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             AbilityType = AbilityType.Special;
             PrimaryCost = 2;
             MaxCooldown = 20;
@@ -105,7 +105,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public HighExplosiveGrenade(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             AbilityType = AbilityType.Elite;
             SpellType = SpellType.Dot;
             PrimaryCost = 4;

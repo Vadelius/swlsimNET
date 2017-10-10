@@ -45,15 +45,22 @@ namespace swlsimNET.ServerApp
             // Check if we can do something 10 times a second (to account for lag)
             for (decimal sec = 0; sec <= _settings.FightLength; sec += Interval)
             {
-                var roundResult = player.NewRound(sec, Interval);
+                var rr = player.NewRound(sec, Interval);
+                foreach (var a in rr.Attacks)
+                {
+                    // non damage attacks never added to report totals for hit/crits
+                    if (a.IsHit && a.Damage > 0) rr.TotalHits++;
+                    if (a.IsCrit && a.Damage > 0) rr.TotalCrits++;
+                    rr.TotalDamage += a.Damage;
+                }
 
                 // Only save rounds with any actions
-                if (roundResult.Attacks.Any())
+                if (rr.Attacks.Any())
                 {
-                    fightResult.RoundResults.Add(roundResult);
-                    fightResult.TotalDamage += roundResult.TotalDamage;
-                    fightResult.TotalHits += roundResult.TotalHits;
-                    fightResult.TotalCrits += roundResult.TotalCrits;
+                    fightResult.RoundResults.Add(rr);
+                    fightResult.TotalDamage += rr.TotalDamage;
+                    fightResult.TotalHits += rr.TotalHits;
+                    fightResult.TotalCrits += rr.TotalCrits;
                 }
             }
 

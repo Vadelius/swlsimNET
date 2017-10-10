@@ -7,7 +7,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public ExtendedMagazine()
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             SpellTypes.Add(typeof(FullAuto));
             ChannelTicks = 1;
             // TODO: Test
@@ -19,7 +19,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public HeavyPayload(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             SpellTypes.Add(typeof(LockAndLoad));
             // 41% chance to load a grenade on use
         }
@@ -29,7 +29,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public Stability(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             SpellTypes.Add(typeof(BurstFire));
             // Each successive hit to deal 25% more base damage
         }
@@ -39,7 +39,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public UnerringAccuracy()
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             SpellTypes.Add(typeof(RedMist));
             BaseDamageCritModifier = 0.68;
             // Critical hits deal 68 % more damage
@@ -51,7 +51,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public SlowBurn(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             SpellTypes.Add(typeof(IncendiaryGrenade));
             DotDuration = 3;
             // TODO: Test
@@ -63,7 +63,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public AutoLoader(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             SpellTypes.Add(typeof(HighExplosiveGrenade));
             // After using High Explosive Grenade next grenade gen ability gets 100% chance to load a grenade
         }
@@ -73,7 +73,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public ExplosivesExpert(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             // Grenade fuse time now 9s and fully cooked with 6s remaining
             // If a grenade detonates before launch no selfharm and nearby enemies take 0.44CP
         }
@@ -83,7 +83,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public SecondaryExplosion(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             // Extra explosives 1.5s after every grenade ability dealing 0.44Cp within 2m of original target
         }
     }
@@ -92,7 +92,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public BackupPlan(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             // If you load a grenade while one is already cooking gain 10% AR damage for 4s
         }
     }
@@ -101,7 +101,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public EmergencyLoader(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             // Whenever you are below 85% health Chance to load grenades is incresed to 45% 
             // when using Full Auto and 80% when using Burst Fire
         }
@@ -111,7 +111,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
     {
         public JungleStyle(IPlayer player, string args = null)
         {
-            WeaponType = WeaponType.AssaultRifle;
+            WeaponType = WeaponType.Rifle;
             // Whenever you run out of AR energy you gain 1 AR energy
         }
     }
