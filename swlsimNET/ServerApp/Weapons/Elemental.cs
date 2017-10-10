@@ -16,10 +16,7 @@ namespace swlsimNET.ServerApp.Weapons
         }
         public override void PreAttack(IPlayer player, RoundResult rr)
         {
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.UnstableElectronCore && GimmickResource > 50)
-            {
-                player.AddBonusAttack(rr, new UnstableElectronCore());
-            }
+
         }
 
         public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double heatBeforeCast)
@@ -72,6 +69,20 @@ namespace swlsimNET.ServerApp.Weapons
             // heatBeforeCast >= 0 && heatBeforeCast <= 25
             // Normal damage
             return 0;
+        }
+
+        public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
+        {
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.UnstableElectronCore && GimmickResource > 50 && (spell.ElementalType == "Fire" || spell.ElementalType == "Lightning"))
+            {
+                player.AddBonusAttack(rr, new UnstableElectronCore());
+            }
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.CryoChargedConduit && spell.ElementalType == "Cold")
+            {
+                GimmickResource -= 15;
+                //TODO: and cause any targets hit to become frostbitten for 6 seconds. Critically hitting a frostbitten enemy with an Elemental attack deals an additional (3.45*Combat Power) magical damage.
+                //What does it even mean?
+            }
         }
 
         private void Decay(double heatBeforeCast)

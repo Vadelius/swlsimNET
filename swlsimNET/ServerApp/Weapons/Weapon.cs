@@ -26,7 +26,8 @@ namespace swlsimNET.ServerApp.Weapons
         BladedGauntlets, TreshingClaws, BloodDrinkers,
         Apocalypse, RazorsEdge, BladeOfTheSeventhSon, Soulblade,
         IfritanDespoiler, Spesc221,
-        UnstableElectronCore, FrozenFigurine
+        UnstableElectronCore, FrozenFigurine, CryoChargedConduit,
+        WarpedVisage, OtherworldlyArtifact, SovTechParadoxGenerator
     }
 
     public class Weapon
