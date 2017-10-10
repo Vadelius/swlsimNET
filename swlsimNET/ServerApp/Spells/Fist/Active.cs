@@ -49,7 +49,7 @@ namespace swlsimNET.ServerApp.Spells.Fist
             WeaponType = WeaponType.Fist;
             Args = args;
             PrimaryGimmickCost = 60;
-            MaxCooldown = 5;;
+            MaxCooldown = 5; ;
             // TODO: Activate FrenziedWrath buff
             // 2 Self Cleanse
         }
@@ -147,7 +147,7 @@ namespace swlsimNET.ServerApp.Spells.Fist
         public Savagery(IPlayer player, string args = null)
         {
             WeaponType = WeaponType.Fist;
-            SpellType = SpellType.Instant; // TODO: Instant no gcd?
+            SpellType = SpellType.Instant;
             Args = args;
             PrimaryCost = 2;
             PrimaryGimmickGain = 8;

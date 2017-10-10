@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace swlsimNET.ServerApp.Weapons
 {
@@ -18,7 +18,7 @@ namespace swlsimNET.ServerApp.Weapons
     }
     public enum WeaponProc
     {
-        None, AnimaTouched, FlameWreathed, PlasmaForged, Shadowbound, PneumaticMaul, FumingDespoiler
+        None, AnimaTouched, FlameWreathed, PlasmaForged, Shadowbound, PneumaticMaul, FumingDespoiler, EldritchTome, MiseryAndMalice, SixShooters, SovTechHarmonisers, Cb3Annihilators, HeavyCaliberPistols, InfernalLoader, Ksr43, BladedGauntlets, TreshingClaws, BloodDrinkers
     }
 
     public class Weapon

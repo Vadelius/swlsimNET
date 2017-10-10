@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using swlsimNET.ServerApp.Combat;
+﻿using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Spells.Blood;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace swlsimNET.ServerApp.Weapons
@@ -20,9 +20,6 @@ namespace swlsimNET.ServerApp.Weapons
 
         private bool _defilementBonus;
         private bool _flayBonus;
-
-        // TODO: Add settings link
-        private bool _eldritchTome = false;
 
         private decimal LastBloodSpellTimeStamp { get; set; }
         private decimal LastDecayTimeStamp { get; set; }
@@ -62,9 +59,9 @@ namespace swlsimNET.ServerApp.Weapons
                 // If at max corruption we gain 16.5% blood ability damage.
                 _defilement = player.GetPassive(nameof(Defilement));
             }
-        
-        // Set Defilment bonus corruption gain
-        _defilementBonus = _defilementBonusToTimeSec >= player.CurrentTimeSec;
+
+            // Set Defilment bonus corruption gain
+            _defilementBonus = _defilementBonusToTimeSec >= player.CurrentTimeSec;
 
             // Set Flay bonus damage
             _flayBonus = _flayBonusToTimeSec >= player.CurrentTimeSec;
@@ -101,7 +98,7 @@ namespace swlsimNET.ServerApp.Weapons
             {
                 bonusBaseDamageMultiplier += 0.534; // 53.4%
             }
-            if (_eldritchTome && spell.SpellType == SpellType.Dot && spell.WeaponType == WeaponType.Blood)
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.EldritchTome && spell.SpellType == SpellType.Dot && spell.WeaponType == WeaponType.Blood)
             {
                 //Your Blood Magic damage over time effects deal 75 % more damage.
                 bonusBaseDamageMultiplier += 0.75; // 75%
@@ -131,11 +128,11 @@ namespace swlsimNET.ServerApp.Weapons
                 _flayBonusToTimeSec = player.CurrentTimeSec + spell.DotDuration;
             }
 
-            if (_eldritchTome && !_eldritchTomesBonuses.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase))
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.EldritchTome && !_eldritchTomesBonuses.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase))
             {
                 GimmickResource += 4;
             }
-        }   
+        }
 
         private void Decay(IPlayer player)
         {

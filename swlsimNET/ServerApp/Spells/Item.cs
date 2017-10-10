@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
-using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Utilities;
 using swlsimNET.ServerApp.Weapons;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace swlsimNET.ServerApp.Spells
 {
@@ -34,7 +34,7 @@ namespace swlsimNET.ServerApp.Spells
         private MnemonicGuardianWerewolf _werewolf;
         private ValiMetabolicAccelerator _valiMetabolicAccelerator;
 
-        public List<ISpell> Spells { get; set; } 
+        public List<ISpell> Spells { get; set; }
 
         private IPlayer _player;
         private readonly Random _rnd = new Random();
@@ -109,7 +109,7 @@ namespace swlsimNET.ServerApp.Spells
                         weapon.Energy++;
                         _player.AddBonusAttack(rr, new ColdSilver());
                         break;
-                }              
+                }
             }
 
             // Hit 11% (<50% BossHP) +1 Energy.
@@ -165,9 +165,8 @@ namespace swlsimNET.ServerApp.Spells
             }
 
             // Gadget
-            if (_player.Settings.Gadget == Gadget.ShardOfSesshoSeki && attack.Spell.SpellType != SpellType.Dot)
+            if (_player.Settings.Gadget == Gadget.ShardOfSesshoSeki)
             {
-                // TODO: Check if it should procc on dot apply
                 _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
             }
         }
@@ -203,7 +202,7 @@ namespace swlsimNET.ServerApp.Spells
             public ShardOfSesshoSeki(IPlayer player, string args = null)
             {
                 AbilityType = AbilityType.Gadget;
-                SpellType = SpellType.Procc;
+                SpellType = SpellType.Instant;
                 BaseDamage = 0.068; // Passively does this for every single hit except dots.
                 Args = args;
             }

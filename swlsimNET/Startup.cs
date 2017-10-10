@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -70,6 +68,10 @@ namespace swlsimNET
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "root",
+                    template: "{action}/{id?}",
+                    defaults: new { controller = "Home", action = "Index" });
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

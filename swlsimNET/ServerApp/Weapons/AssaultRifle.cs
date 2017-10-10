@@ -1,41 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using swlsimNET.ServerApp.Combat;
+﻿using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace swlsimNET.ServerApp.Weapons
 {
     public class AssaultRifle : Weapon
     {
-        private bool _infernalLoader = false;
-        private bool _ksr43 = false;
+
         private decimal _startedCooking;
         private decimal _fusetimer;
 
         public override void PreAttack(IPlayer player, RoundResult roundResult)
         {
+            var ksr43 = player.Settings.PrimaryWeaponProc == WeaponProc.Ksr43;
+
             _fusetimer = _fusetimer + player.CurrentTimeSec;
-            if (_ksr43 && _fusetimer >= 3)
+            if (ksr43 && _fusetimer >= 3)
             {
                 GimmickResource = 0;
             }
-            if (!_ksr43 && _fusetimer >= 5)
+            if (!ksr43 && _fusetimer >= 5)
             {
                 GimmickResource = 0;
             }
         }
 
-        private void GrenadeCook()
+        private void GrenadeCook(IPlayer player)
         {
-            if (_ksr43)
+            var ksr43 = player.Settings.PrimaryWeaponProc == WeaponProc.Ksr43;
+
+            if (ksr43)
             {
                 GimmickResource++;
                 _startedCooking = 0;
                 _fusetimer = 0;
             }
-            if (!_ksr43 && _startedCooking > 5)
+            if (!ksr43 && _startedCooking > 5)
             {
                 GimmickResource++;
                 _startedCooking = 0;
@@ -47,7 +50,7 @@ namespace swlsimNET.ServerApp.Weapons
         {
             double bonusBaseDamage = 0;
             // Infernal Loader Weapon
-            if (_infernalLoader)
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.InfernalLoader)
             {
                 bonusBaseDamage += 0.075; // TODO: 7.5% AR damage
             }
@@ -72,8 +75,8 @@ namespace swlsimNET.ServerApp.Weapons
             if (Rnd.Next(1, 101) <= 65)
             {
                 _startedCooking = player.CurrentTimeSec;
-                GrenadeCook();
+                GrenadeCook(player);
             }
-        } 
+        }
     }
 }

@@ -19,11 +19,7 @@ namespace swlsimNET.ServerApp.Weapons
 
         private bool _init;
         private bool _jackpotBonus;
-        private bool _harmonisers = false;
-        private bool _sixShooters = false;
-        private bool _miseryAndMalice = false;
-        private bool _annihilators = false;
-        private bool _heavyCaliberPistols = false;
+
 
         private Passive _jackpot;
         private Passive _fixedGame;
@@ -104,7 +100,7 @@ namespace swlsimNET.ServerApp.Weapons
             double bonusBaseDamageMultiplier = 0;
             if (LeftChamber == RightChamber)
             {
-                if (_miseryAndMalice)
+                if (player.Settings.PrimaryWeaponProc == WeaponProc.MiseryAndMalice)
                 {
                     bonusBaseDamageMultiplier = 0.06;
                 }
@@ -117,6 +113,9 @@ namespace swlsimNET.ServerApp.Weapons
         // Matching Chambers lasts for 3 seconds
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
+            var annihilators = player.Settings.PrimaryWeaponProc == WeaponProc.Cb3Annihilators;
+            var harmonisers = player.Settings.PrimaryWeaponProc == WeaponProc.SovTechHarmonisers;
+
             var timeSinceLocked = player.CurrentTimeSec - ChamberLockTimeStamp;
             LastPistolSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
 
@@ -164,8 +163,8 @@ namespace swlsimNET.ServerApp.Weapons
                 {
 
                     case Chamber.White:
-                        if (_annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
-                        if (_harmonisers)
+                        if (annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
+                        if (harmonisers)
                         {
                             var roll = Rnd.Next(1, 5);
                             if (roll == 4)
@@ -178,8 +177,8 @@ namespace swlsimNET.ServerApp.Weapons
                         else player.AddBonusAttack(rr, new WhiteChambers(player));
                         break;
                     case Chamber.Blue:
-                        if (_annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
-                        if (_harmonisers)
+                        if (annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
+                        if (harmonisers)
                         {
                             var roll = Rnd.Next(1, 101);
                             if (roll <= 15)
@@ -192,7 +191,7 @@ namespace swlsimNET.ServerApp.Weapons
                         else player.AddBonusAttack(rr, new BlueChambers(player));
                         break;
                     case Chamber.Red:
-                        if (_annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
+                        if (annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
                         player.AddBonusAttack(rr, new RedChambers(player));
                         break;
                 }
@@ -205,15 +204,15 @@ namespace swlsimNET.ServerApp.Weapons
 
         private void ChamberRoulette(IPlayer player)
         {
-            LeftChamber = Dice();
-            RightChamber = Dice();
-            ChamberLockTimeStamp = _sixShooters ? player.CurrentTimeSec - 0.5m : player.CurrentTimeSec;
+            LeftChamber = Dice(player);
+            RightChamber = Dice(player);
+            ChamberLockTimeStamp = player.Settings.PrimaryWeaponProc == WeaponProc.SixShooters ? player.CurrentTimeSec - 0.5m : player.CurrentTimeSec;
         }
 
-        private Chamber Dice()
+        private Chamber Dice(IPlayer player)
         {
 
-            if (_heavyCaliberPistols)
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.HeavyCaliberPistols)
             {
                 var caliberRoll = Rnd.Next(1, 7);
                 // "You are more likely to roll a Double Red set of chambers, but less likely to roll a Double White or Double Blue set of chambers." Thanks Funcom.
