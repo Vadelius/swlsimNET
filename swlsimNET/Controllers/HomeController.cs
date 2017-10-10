@@ -6,16 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using swlsimNET.Models;
 using swlsimNET.ServerApp;
 using swlsimNET.ServerApp.Combat;
-using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Utilities;
-using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.Controllers
 {
     public class HomeController : Controller
     {
-        private Settings _settings = new Settings();
         private List<FightResult> _iterationFightResults;
+        private Settings _settings = new Settings();
 
         public IActionResult Index()
         {
@@ -45,19 +43,13 @@ namespace swlsimNET.Controllers
                 // Simulation Async
                 var result = await Task.Run(() => StartSimulation());
                 if (!result)
-                {
-                    // Simulation failed
                     return View(settings);
-                }                
 
                 var report = new Report();
 
                 result = await Task.Run(() => report.GenerateReportData(_iterationFightResults, settings));
                 if (!result)
-                {
-                    // Report generation failed
                     return View(settings);
-                }
 
                 return View("Results", report);
             }
@@ -82,7 +74,7 @@ namespace swlsimNET.Controllers
 
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
         //[HttpPost]

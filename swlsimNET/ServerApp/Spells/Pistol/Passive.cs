@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Weapons;
 
-
 namespace swlsimNET.ServerApp.Spells.Pistol
 {
     public class HighRoller : Spell
@@ -171,19 +170,19 @@ namespace swlsimNET.ServerApp.Spells.Pistol
             WeaponType = WeaponType.Pistol;
             SpecificSpellTypes.Add(new Passive
             {
-                SpellTypes = new List<Type> { typeof(WhiteChambers) },
+                SpellTypes = new List<Type> {typeof(WhiteChambers)},
                 BaseDamageModifier = 0.28
             });
 
             SpecificSpellTypes.Add(new Passive
             {
-                SpellTypes = new List<Type> { typeof(BlueChambers) },
+                SpellTypes = new List<Type> {typeof(BlueChambers)},
                 BaseDamageModifier = 0.1415
             });
 
             SpecificSpellTypes.Add(new Passive
             {
-                SpellTypes = new List<Type> { typeof(RedChambers) },
+                SpellTypes = new List<Type> {typeof(RedChambers)},
                 BaseDamageModifier = 0.09
             });
             // Increased bonus damage from matching set, Double White: 28%, Double Blue: 14.15%, Double Red: 9%

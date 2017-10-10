@@ -40,7 +40,7 @@ namespace swlsimNET.ServerApp.Spells.Shotgun
             PrimaryGimmickCost = 1;
             MaxCooldown = 20;
             Args = args;
-        }   // TODO: 30% Crit Power 8s Entire Group.
+        } // TODO: 30% Crit Power 8s Entire Group.
     }
 
     public class RagingShot : Spell
@@ -68,7 +68,7 @@ namespace swlsimNET.ServerApp.Spells.Shotgun
             PrimaryCost = 4;
             PrimaryGimmickCost = 5;
             MaxCooldown = 20;
-            BaseDamage = 1.51;  // Channel 5 hits 1.51 per hit.         
+            BaseDamage = 1.51; // Channel 5 hits 1.51 per hit.         
             Args = args;
         }
     }
@@ -131,9 +131,9 @@ namespace swlsimNET.ServerApp.Spells.Shotgun
             PrimaryCost = 4;
             PrimaryGimmickCost = 6;
             MaxCooldown = 20;
-            BaseDamage = 0.70;  // 10s Ground AoE 0.70CP Every 1.25s for 10s TAoE 3m  0.36CP       
+            BaseDamage = 0.70; // 10s Ground AoE 0.70CP Every 1.25s for 10s TAoE 3m  0.36CP       
             Args = args;
-        }   // Exposed
+        } // Exposed
     }
 
     public class Reload : Spell

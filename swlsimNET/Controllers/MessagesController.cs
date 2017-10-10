@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace swlsimNET.Controllers
-{ 
+{
     [Route("api/messages")]
     public class MessagesController : Controller
     {

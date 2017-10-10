@@ -49,9 +49,7 @@ namespace swlsimNET.ServerApp.Spells.Pistol
             MaxCooldown = 20;
             PrimaryGain = 4;
             if (player.HasPassive(nameof(LethalAim)))
-            { 
                 AbilityBuff = player.GetAbilityBuffFromName(Name) as AbilityBuff;
-            }
             Args = args;
         } // Cleanse 1 effect.
     }
@@ -188,6 +186,7 @@ namespace swlsimNET.ServerApp.Spells.Pistol
             Args = args;
         } // PBAoE 6E 10M, Rooted during channel, Slow.
     }
+
     public class WhiteChambers : Spell
     {
         public WhiteChambers(IPlayer player)

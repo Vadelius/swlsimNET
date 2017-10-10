@@ -23,9 +23,9 @@ namespace swlsimNET.ServerApp.Spells.Rifle
             CastTime = 1;
             ChannelTicks = 4;
             PrimaryCost = 3;
-            BaseDamage = 0.31;  //Multihit 4times 0.31CP     
+            BaseDamage = 0.31; //Multihit 4times 0.31CP     
             Args = args;
-        }   // 37.5% Chance to load grenade.
+        } // 37.5% Chance to load grenade.
     }
 
     public class LockAndLoad : Spell
@@ -51,9 +51,9 @@ namespace swlsimNET.ServerApp.Spells.Rifle
             CastTime = 1;
             ChannelTicks = 3;
             PrimaryCost = 5;
-            BaseDamage = 1.14;  //Multihit 3times 1.14CP       
+            BaseDamage = 1.14; //Multihit 3times 1.14CP       
             Args = args;
-        }   //65% Chance to load grenade. 
+        } //65% Chance to load grenade. 
     }
 
     public class RedMist : Spell
@@ -84,7 +84,7 @@ namespace swlsimNET.ServerApp.Spells.Rifle
             BaseDamage = 0.51;
             DotDuration = 8;
             Args = args;
-        }   // Uncooked Damage: 0.13CP, Requires a grenade to activate. GTAoE
+        } // Uncooked Damage: 0.13CP, Requires a grenade to activate. GTAoE
     }
 
     public class TacticalRetreat : Spell
@@ -97,8 +97,9 @@ namespace swlsimNET.ServerApp.Spells.Rifle
             MaxCooldown = 20;
             BaseDamage = 4.09;
             Args = args;
-        }   // 5m Dash backwards, If used with grenade active distance increased to 10m and CD reduced to 4s(can only happen every 15s)
-            // Uncooked Damage: 1.03CP, 70% slow 4s
+        } // 5m Dash backwards, If used with grenade active distance increased to 10m and CD reduced to 4s(can only happen every 15s)
+
+        // Uncooked Damage: 1.03CP, 70% slow 4s
     }
 
     public class HighExplosiveGrenade : Spell
@@ -114,6 +115,6 @@ namespace swlsimNET.ServerApp.Spells.Rifle
             BaseDamage = 1.48;
             DotDuration = 8;
             Args = args;
-        }   // Uncooked damage: 0.72CP, Requires a grenade to activate, TAoE
+        } // Uncooked damage: 0.72CP, Requires a grenade to activate, TAoE
     }
 }

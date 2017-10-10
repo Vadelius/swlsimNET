@@ -49,7 +49,8 @@ namespace swlsimNET.ServerApp.Spells.Fist
             WeaponType = WeaponType.Fist;
             Args = args;
             PrimaryGimmickCost = 60;
-            MaxCooldown = 5; ;
+            MaxCooldown = 5;
+            ;
             // TODO: Activate FrenziedWrath buff
             // 2 Self Cleanse
         }

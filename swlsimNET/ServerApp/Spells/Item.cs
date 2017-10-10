@@ -1,46 +1,53 @@
-﻿using swlsimNET.ServerApp.Combat;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Utilities;
 using swlsimNET.ServerApp.Weapons;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace swlsimNET.ServerApp.Spells
 {
     public enum NeckTalisman
     {
-        None, SeedOfAgression, ChokerOfSheedBlood, EgonPendant
+        None,
+        SeedOfAgression,
+        ChokerOfSheedBlood,
+        EgonPendant
     }
 
     public enum LuckTalisman
     {
-        None, ColdSilver, GamblersSoul
+        None,
+        ColdSilver,
+        GamblersSoul
     }
 
     public enum HeadTalisman
     {
-        None, Ashes
+        None,
+        Ashes
     }
 
     public enum Gadget
     {
-        None, ElectrograviticAttractor, ShardOfSesshoSeki, ValiMetabolic, MnemonicGuardianWerewolf, Test
+        None,
+        ElectrograviticAttractor,
+        ShardOfSesshoSeki,
+        ValiMetabolic,
+        MnemonicGuardianWerewolf,
+        Test
     }
 
     public class Item
     {
-        private ElectrograviticAttractor _electrograviticAttractor;
-        private MnemonicGuardianWerewolf _werewolf;
-        private ValiMetabolicAccelerator _valiMetabolicAccelerator;
-
-        public List<ISpell> Spells { get; set; }
-
-        private IPlayer _player;
         private readonly Random _rnd = new Random();
+        private readonly ElectrograviticAttractor _electrograviticAttractor;
         private int _lastPlasma;
 
-        public int RepeatHits { get; set; }
+        private readonly IPlayer _player;
+        private readonly ValiMetabolicAccelerator _valiMetabolicAccelerator;
+        private readonly MnemonicGuardianWerewolf _werewolf;
 
         public Item(IPlayer player)
         {
@@ -58,6 +65,10 @@ namespace swlsimNET.ServerApp.Spells
                 _valiMetabolicAccelerator
             };
         }
+
+        public List<ISpell> Spells { get; set; }
+
+        public int RepeatHits { get; set; }
 
         public void PreAttack(RoundResult rr)
         {
@@ -131,17 +142,12 @@ namespace swlsimNET.ServerApp.Spells
             }
 
             if (_player.Settings.PrimaryWeaponProc == WeaponProc.AnimaTouched && _rnd.Next(1, 4) == 3)
-            {
                 _player.AddBonusAttack(rr, new AnimaTouched(_player));
-            }
 
             if (_player.Settings.PrimaryWeaponProc == WeaponProc.FlameWreathed && _rnd.Next(1, 101) <= 15)
-            {
                 _player.AddBonusAttack(rr, new FlameWreathed(_player));
-            }
 
             if (_player.Settings.PrimaryWeaponProc == WeaponProc.PlasmaForged && _rnd.Next(1, 5) == 4)
-            {
                 switch (_lastPlasma)
                 {
                     case 0:
@@ -157,18 +163,13 @@ namespace swlsimNET.ServerApp.Spells
                         _lastPlasma = 0;
                         break;
                 }
-            }
 
             if (_player.Settings.PrimaryWeaponProc == WeaponProc.Shadowbound && _rnd.Next(1, 6) == 5)
-            {
                 _player.AddBonusAttack(rr, new Shadowbound());
-            }
 
             // Gadget
             if (_player.Settings.Gadget == Gadget.ShardOfSesshoSeki)
-            {
                 _player.AddBonusAttack(rr, new ShardOfSesshoSeki(_player));
-            }
         }
 
         private sealed class ValiMetabolicAccelerator : Spell
@@ -351,4 +352,3 @@ namespace swlsimNET.ServerApp.Spells
         }
     }
 }
-

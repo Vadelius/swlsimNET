@@ -7,27 +7,25 @@ namespace swlsimNET.ServerApp.Weapons
 {
     public enum Chamber
     {
-        White, Blue, Red
+        White,
+        Blue,
+        Red
     }
 
     public class Pistol : Weapon
     {
-        public Chamber LeftChamber { get; set; }
-        public Chamber RightChamber { get; set; }
-        private decimal ChamberLockTimeStamp { get; set; }
-        private decimal LastPistolSpellTimeStamp { get; set; }
+        private Passive _fixedGame;
+        private Passive _flechetteRounds;
+        private Passive _focusedFire;
+        private Passive _fullyLoaded;
+        private Passive _holdout;
 
         private bool _init;
-        private bool _jackpotBonus;
 
 
         private Passive _jackpot;
-        private Passive _fixedGame;
-        private Passive _fullyLoaded;
+        private bool _jackpotBonus;
         private Passive _winStreak;
-        private Passive _flechetteRounds;
-        private Passive _holdout;
-        private Passive _focusedFire;
 
         public Pistol(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
@@ -35,6 +33,11 @@ namespace swlsimNET.ServerApp.Weapons
             RightChamber = Chamber.White;
             ChamberLockTimeStamp = 0;
         }
+
+        public Chamber LeftChamber { get; set; }
+        public Chamber RightChamber { get; set; }
+        private decimal ChamberLockTimeStamp { get; set; }
+        private decimal LastPistolSpellTimeStamp { get; set; }
 
         public override void PreAttack(IPlayer player, RoundResult rr)
         {
@@ -88,9 +91,7 @@ namespace swlsimNET.ServerApp.Weapons
 
             // Jackpot passive
             if (_jackpot != null && _jackpotBonus)
-            {
                 bonusBaseDamage += _jackpot.BaseDamage;
-            }
 
             return bonusBaseDamage;
         }
@@ -99,12 +100,8 @@ namespace swlsimNET.ServerApp.Weapons
         {
             double bonusBaseDamageMultiplier = 0;
             if (LeftChamber == RightChamber)
-            {
                 if (player.Settings.PrimaryWeaponProc == WeaponProc.MiseryAndMalice)
-                {
                     bonusBaseDamageMultiplier = 0.06;
-                }
-            }
 
             return bonusBaseDamageMultiplier;
         }
@@ -125,73 +122,75 @@ namespace swlsimNET.ServerApp.Weapons
                 RightChamber = Chamber.White;
             }
 
-            if (timeSinceLocked > 3) //&& player.CurrentSpell.GetType() != typeof(KillBlind) || timeSinceLocked > 4.5m && player.CurrentSpell.GetType() == typeof(KillBlind)
-            {
+            if (timeSinceLocked > 3
+            ) //&& player.CurrentSpell.GetType() != typeof(KillBlind) || timeSinceLocked > 4.5m && player.CurrentSpell.GetType() == typeof(KillBlind)
                 if (_holdout != null && LeftChamber == RightChamber)
                 {
-
                     if (Rnd.Next(1, 4) < 3 && spell.GetType() == typeof(Unload))
-                    {
                         ChamberRoulette(player);
-                    }
                 }
                 else
                 {
                     ChamberRoulette(player);
                 }
-            }
 
             if (LeftChamber == RightChamber)
             {
-
                 if (_jackpot != null)
-                {
                     _jackpotBonus = timeSinceLocked <= 3;
-                }
 
                 if (_winStreak != null)
-                {
                     player.AddBonusAttack(rr, new WinStreak(GetRandomNumber(0.06, 0.335)));
-                }
 
                 if (_flechetteRounds != null)
-                {
                     player.AddBonusAttack(rr, new FlechetteRounds());
-                }
 
                 switch (LeftChamber)
                 {
-
                     case Chamber.White:
-                        if (annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
+                        if (annihilators) player.AddBonusAttack(rr, new Cb3Annihilators(player));
                         if (harmonisers)
                         {
                             var roll = Rnd.Next(1, 5);
                             if (roll == 4)
                             {
-                                LeftChamber = Chamber.Blue; RightChamber = Chamber.Blue;
+                                LeftChamber = Chamber.Blue;
+                                RightChamber = Chamber.Blue;
                                 player.AddBonusAttack(rr, new BlueChambers(player));
                             }
-                            else player.AddBonusAttack(rr, new WhiteChambers(player));
+                            else
+                            {
+                                player.AddBonusAttack(rr, new WhiteChambers(player));
+                            }
                         }
-                        else player.AddBonusAttack(rr, new WhiteChambers(player));
+                        else
+                        {
+                            player.AddBonusAttack(rr, new WhiteChambers(player));
+                        }
                         break;
                     case Chamber.Blue:
-                        if (annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
+                        if (annihilators) player.AddBonusAttack(rr, new Cb3Annihilators(player));
                         if (harmonisers)
                         {
                             var roll = Rnd.Next(1, 101);
                             if (roll <= 15)
                             {
-                                LeftChamber = Chamber.Red; RightChamber = Chamber.Red;
+                                LeftChamber = Chamber.Red;
+                                RightChamber = Chamber.Red;
                                 player.AddBonusAttack(rr, new RedChambers(player));
                             }
-                            else player.AddBonusAttack(rr, new BlueChambers(player));
+                            else
+                            {
+                                player.AddBonusAttack(rr, new BlueChambers(player));
+                            }
                         }
-                        else player.AddBonusAttack(rr, new BlueChambers(player));
+                        else
+                        {
+                            player.AddBonusAttack(rr, new BlueChambers(player));
+                        }
                         break;
                     case Chamber.Red:
-                        if (annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
+                        if (annihilators) player.AddBonusAttack(rr, new Cb3Annihilators(player));
                         player.AddBonusAttack(rr, new RedChambers(player));
                         break;
                 }
@@ -206,12 +205,13 @@ namespace swlsimNET.ServerApp.Weapons
         {
             LeftChamber = Dice(player);
             RightChamber = Dice(player);
-            ChamberLockTimeStamp = player.Settings.PrimaryWeaponProc == WeaponProc.SixShooters ? player.CurrentTimeSec - 0.5m : player.CurrentTimeSec;
+            ChamberLockTimeStamp = player.Settings.PrimaryWeaponProc == WeaponProc.SixShooters
+                ? player.CurrentTimeSec - 0.5m
+                : player.CurrentTimeSec;
         }
 
         private Chamber Dice(IPlayer player)
         {
-
             if (player.Settings.PrimaryWeaponProc == WeaponProc.HeavyCaliberPistols)
             {
                 var caliberRoll = Rnd.Next(1, 7);

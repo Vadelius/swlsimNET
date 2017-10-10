@@ -44,6 +44,7 @@ namespace swlsimNET.ServerApp.Spells.Blood
             DotDuration = 7;
             Args = args;
         }
+
         // Dot 0.25CP per second for 7s. Restores 35% Health and cleanse 1 effect
         // Corruption level must be higher than 10 to use.
     }
@@ -76,7 +77,8 @@ namespace swlsimNET.ServerApp.Spells.Blood
             MaxCooldown = 20;
             BaseDamage = 5.7;
             Args = args;
-        }   
+        }
+
         // PBAoE 5m when the barrier expires or is destroyed, Increases Corruption by 20 when cast, 
         // TODO: Reduces Corruption by 20 when barrier expires or is destroyed, 10s Duration Barrier
     }
@@ -93,6 +95,7 @@ namespace swlsimNET.ServerApp.Spells.Blood
             BaseDamage = 2.9;
             Args = args;
         }
+
         // Stun 3s
         // TODO: Damage dealt is based on CP if over 10 Corruption and HP if over 10 Martyrdom
     }
@@ -102,7 +105,7 @@ namespace swlsimNET.ServerApp.Spells.Blood
         public Desecrate(IPlayer player, string args = null)
         {
             WeaponType = WeaponType.Blood;
-            SpellType = SpellType.Dot; 
+            SpellType = SpellType.Dot;
             DotDuration = 6;
             CastTime = 1.0m;
             PrimaryGimmickRequirement = 10;
@@ -110,7 +113,8 @@ namespace swlsimNET.ServerApp.Spells.Blood
             MaxCooldown = 20;
             BaseDamage = 0.37;
             Args = args;
-        }   
+        }
+
         // Dot 0,37CP every second for 6s, During this time you do not take damage from Corruption
         // Corruption must be higher than 10 to use.
     }
@@ -130,6 +134,7 @@ namespace swlsimNET.ServerApp.Spells.Blood
             DotExpirationBaseDamage = 0.87;
             Args = args;
         }
+
         // TODO: Test, especially DotExpirationBaseDamage
         // Dot 0,24CP every second for 6s, 
         // 0,87CP Damage when it expires to nearby enemies, Slow, Debilitated
@@ -162,5 +167,4 @@ namespace swlsimNET.ServerApp.Spells.Blood
         // Dot 0,68CP every second for 6s, Dot spreads to nearby enemies 0,53Cp every second for 3s, Debilitated
         // Corruption increase only occurs if Corruption is above 0
     }
-
 }

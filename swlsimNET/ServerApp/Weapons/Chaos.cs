@@ -1,7 +1,7 @@
-﻿using swlsimNET.ServerApp.Combat;
+﻿using System;
+using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
-using System;
 
 namespace swlsimNET.ServerApp.Weapons
 {
@@ -18,16 +18,12 @@ namespace swlsimNET.ServerApp.Weapons
             var highroller = Rnd.Next(1, 1001);
 
             if (roll >= 1 && roll <= 3)
-            {
                 ParadoxGenerator(player);
-            }
 
             roll = Rnd.Next(1, 9);
             {
                 if (roll == 8)
-                {
                     ParadoxGenerator(player);
-                }
             }
 
             ParadoxGenerator(player);
@@ -35,15 +31,11 @@ namespace swlsimNET.ServerApp.Weapons
             if (GimmickResource != 8) return;
 
             if (player.Settings.PrimaryWeaponProc == WeaponProc.WarpedVisage && GimmickResource == 8)
-            {
                 player.AddBonusAttack(rr, new Doppleganger(player));
-            }
 
-            if (GimmickResource == 8 || player.Settings.PrimaryWeaponProc == WeaponProc.SovTechParadoxGenerator && highroller <= 55)
-            {
+            if (GimmickResource == 8 || player.Settings.PrimaryWeaponProc == WeaponProc.SovTechParadoxGenerator &&
+                highroller <= 55)
                 ChaoticEffects(player, rr);
-            }
-
         }
 
         private void ParadoxGenerator(IPlayer player)
@@ -57,23 +49,17 @@ namespace swlsimNET.ServerApp.Weapons
                 case 1:
                     GimmickResource = +2;
                     if (player.Settings.PrimaryWeaponProc == WeaponProc.OtherworldlyArtifact)
-                    {
                         GimmickResource++;
-                    }
                     break;
                 case 2:
                     GimmickResource = +3;
                     if (player.Settings.PrimaryWeaponProc == WeaponProc.OtherworldlyArtifact)
-                    {
                         GimmickResource++;
-                    }
                     break;
                 case 3:
                     GimmickResource = +4;
                     if (player.Settings.PrimaryWeaponProc == WeaponProc.OtherworldlyArtifact)
-                    {
                         GimmickResource++;
-                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -99,6 +85,7 @@ namespace swlsimNET.ServerApp.Weapons
                     throw new ArgumentOutOfRangeException();
             }
         }
+
         #region ChaosProcs
 
         public class Singularity : Spell

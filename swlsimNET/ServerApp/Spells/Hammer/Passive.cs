@@ -89,27 +89,25 @@ namespace swlsimNET.ServerApp.Spells.Hammer
 
             SpecificSpellTypes.Add(new Passive
             {
-                SpellTypes = new List<Type> { typeof(RazorShardsRage) },
+                SpellTypes = new List<Type> {typeof(RazorShardsRage)},
                 BaseDamageModifier = 0.15
             });
 
             SpecificSpellTypes.Add(new Passive
             {
-                SpellTypes = new List<Type> { typeof(DemolishRage) },
+                SpellTypes = new List<Type> {typeof(DemolishRage)},
                 BaseDamageModifier = 0.08
             });
         }
 
         public override void Init(IPlayer player)
         {
-            if(player.HasPassive(nameof(Annihilate)))
-            {
+            if (player.HasPassive(nameof(Annihilate)))
                 SpecificSpellTypes.Add(new Passive
                 {
-                    SpellTypes = new List<Type> { typeof(EruptionRage) },
+                    SpellTypes = new List<Type> {typeof(EruptionRage)},
                     BaseDamageModifier = 0.055
-                });                
-            }
+                });
 
             base.Init(player);
         }

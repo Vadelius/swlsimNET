@@ -10,13 +10,13 @@ namespace swlsimNET.Models
 {
     public class Report
     {
-        private List<Attack> _allSpellCast = new List<Attack>();
-        public List<ISpell> _distinctSpellCast = new List<ISpell>();
+        private readonly List<Attack> _allSpellCast = new List<Attack>();
         public List<IBuff> _distinctBuffs = new List<IBuff>();
+        public List<ISpell> _distinctSpellCast = new List<ISpell>();
         public StringBuilder _oneBuilder = new StringBuilder();
-        private StringBuilder _twoBuilder = new StringBuilder();
-        private NumberFormatInfo nfi;
         private Settings _settings;
+        private readonly StringBuilder _twoBuilder = new StringBuilder();
+        private NumberFormatInfo nfi;
 
         public int TotalCrits { get; private set; }
         public int TotalHits { get; private set; }
@@ -63,7 +63,6 @@ namespace swlsimNET.Models
         private void GenerateBuffReportData()
         {
             foreach (var buffspell in _distinctBuffs)
-            {
                 BuffBreakdownList.Add(new BuffResult
                 {
                     Executes = buffspell.ActivationRounds.Count,
@@ -72,7 +71,6 @@ namespace swlsimNET.Models
                     Refresh = 20,
                     Uptime = 20
                 });
-            }
         }
 
         private void InitReportData(List<FightResult> iterationFightResults)
@@ -110,41 +108,29 @@ namespace swlsimNET.Models
 
                     foreach (var a in rr.Attacks)
                     {
-                        if (a.IsHit && a.IsCrit) 
-                        {
-                            _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " + 
+                        if (a.IsHit && a.IsCrit)
+                            _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
                                                    $"{a.Spell.Name} *{a.Damage.ToString("#,##0,.0K", nfi)}* " +
-                                                   $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " + 
+                                                   $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " +
                                                    $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})</div>");
-                        }
                         else if (a.IsHit && a.Spell.SpellType != SpellType.Procc)
-                        {
                             _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
                                                    $"{a.Spell.Name} {a.Damage.ToString("#,##0,.0K", nfi)} " +
                                                    $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " +
                                                    $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})</div>");
-                        }
                         else if (a.IsHit && a.Spell.SpellType == SpellType.Procc)
-                        {
                             _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
                                                    $"[{a.Spell.Name}] proc!</div>");
-                        }
 
                         _allSpellCast.Add(a);
 
                         if (_distinctSpellCast.All(s => s.Name != a.Spell.Name))
-                        {
                             _distinctSpellCast.Add(a.Spell);
-                        }
                     }
 
                     foreach (var buff in rr.Buffs)
-                    {
                         if (_distinctBuffs.All(b => b.Name != buff.Name))
-                        {
                             _distinctBuffs.Add(buff);
-                        }
-                    }
                 }
             }
 
@@ -179,21 +165,17 @@ namespace swlsimNET.Models
                 var hdmg = allOfSameSpellDatas.Max(s => s.Damage);
                 var ldmg = allOfSameSpellDatas.Where(s => s.IsHit).Min(s => s.Damage);
                 var dmgPerSecond = alldmg / _settings.FightLength / _settings.Iterations;
-                var executes = (avghits + avgcrits);
+                var executes = avghits + avgcrits;
 
                 var ofTotal = alldmg / TotalDamage * 100;
 
                 if (dSpell.BaseDamage == 0)
-                {
                     _twoBuilder.AppendLine($"{ofTotal:0.0}% | {dSpell.Name}, hits: {avghits.ToString("#,0.0", nfi)}");
-                }
                 else
-                {
                     _twoBuilder.AppendLine(
                         $"{ofTotal:0.0}% | {dSpell.Name}, dmg: {avgDmg.ToString("#,##0,.0K", nfi)}, " +
                         $"high: {hdmg.ToString("#,##0,.0K", nfi)}, low: {ldmg.ToString("#,##0,.0K", nfi)}," +
                         $" hits: {avghits.ToString("#,0.0", nfi)}, crits: {avgcrits.ToString("#,0.0", nfi)} ({cc:0.0}%)");
-                }
 
                 SpellBreakdownList.Add(new SpellResult
                 {
@@ -227,6 +209,7 @@ namespace swlsimNET.Models
             public double Interval { get; set; }
             public double Uptime { get; set; }
         }
+
         public class SpellResult
         {
             // [spellName, DPS, DPS%, Executes, DPE, SpellType, Count, Average, Crit%]
@@ -243,5 +226,3 @@ namespace swlsimNET.Models
         }
     }
 }
-
-    

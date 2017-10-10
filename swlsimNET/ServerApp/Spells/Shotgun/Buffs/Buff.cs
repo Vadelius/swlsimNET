@@ -15,5 +15,4 @@ namespace swlsimNET.ServerApp.Spells.Shotgun.Buffs
             }
         }
     }
-
 }

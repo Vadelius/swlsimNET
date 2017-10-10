@@ -13,4 +13,3 @@ namespace swlsimNET.ServerApp.Spells.Pistol.Buffs
         }
     }
 }
-

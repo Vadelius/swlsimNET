@@ -1,25 +1,27 @@
-﻿using swlsimNET.ServerApp.Combat;
-using swlsimNET.ServerApp.Models;
-using swlsimNET.ServerApp.Spells;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using swlsimNET.ServerApp.Combat;
+using swlsimNET.ServerApp.Models;
+using swlsimNET.ServerApp.Spells;
 
 namespace swlsimNET.ServerApp.Weapons
 {
     public class Rifle : Weapon
     {
+        private readonly List<string> _grenadeGenerators = new List<string>
+        {
+            "FullAuto",
+            "UnveilEssence",
+            "BurstFire"
+        };
+
         private decimal _cookingReadyTimeSec = decimal.MaxValue;
         private decimal _fuseTimeSec;
-        private bool _ksr43;
         private bool _infernalLoader;
 
         private bool _init;
-
-        private readonly List<string> _grenadeGenerators = new List<string>
-        {
-            "FullAuto", "UnveilEssence", "BurstFire"
-        };
+        private bool _ksr43;
 
         public Rifle(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
@@ -43,13 +45,9 @@ namespace swlsimNET.ServerApp.Weapons
                 _fuseTimeSec += rr.Interval;
 
                 if (_ksr43 && _fuseTimeSec >= 3)
-                {
                     GimmickResource = 0;
-                }
                 else if (!_ksr43 && _fuseTimeSec >= 5)
-                {
                     GimmickResource = 0;
-                }
             }
             else if (_cookingReadyTimeSec <= player.CurrentTimeSec)
             {
@@ -57,16 +55,14 @@ namespace swlsimNET.ServerApp.Weapons
                 GimmickResource = 1;
                 _cookingReadyTimeSec = decimal.MaxValue;
                 _fuseTimeSec = 0;
-            }     
+            }
         }
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
-            if (GimmickResource < 1 && Rnd.Next(1, 101) > 65 
-                && _grenadeGenerators.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase) 
+            if (GimmickResource < 1 && Rnd.Next(1, 101) > 65
+                && _grenadeGenerators.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase)
                 || GimmickResource < 1 && spell.Name == "RifleLoadGrenadeSpell") // Unit test
-            {
-                // Start cooking, if KSR43 it can be used directly
                 if (_ksr43)
                 {
                     _cookingReadyTimeSec = decimal.MaxValue;
@@ -77,7 +73,6 @@ namespace swlsimNET.ServerApp.Weapons
                 {
                     _cookingReadyTimeSec = player.CurrentTimeSec + 5;
                 }
-            }
         }
 
         public override double GetBonusBaseDamage(IPlayer player, ISpell spell, double gimmickBeforeCast)
@@ -85,11 +80,9 @@ namespace swlsimNET.ServerApp.Weapons
             double bonusBaseDamage = 0;
 
             if (_infernalLoader)
-            {
                 bonusBaseDamage += 0.075; // TODO: 7.5% AR damage
-            }
 
             return bonusBaseDamage;
-        } 
+        }
     }
 }

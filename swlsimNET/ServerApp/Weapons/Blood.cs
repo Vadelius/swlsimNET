@@ -1,33 +1,41 @@
-﻿using swlsimNET.ServerApp.Combat;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Spells.Blood;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace swlsimNET.ServerApp.Weapons
 {
     public class Blood : Weapon
     {
-        private bool _init;
+        private readonly List<string> _eldritchTomesBonuses = new List<string>
+        {
+            "Reap",
+            "Desecrate",
+            "RunicHex",
+            "EldritchScourge"
+        };
 
-        private Passive _flay;
         private Passive _defilement;
 
-        private decimal _defilementBonusToTimeSec;
-        private decimal _flayBonusToTimeSec;
-
         private bool _defilementBonus;
+
+        private decimal _defilementBonusToTimeSec;
+
+        private Passive _flay;
         private bool _flayBonus;
+        private decimal _flayBonusToTimeSec;
+        private bool _init;
+
+        public Blood(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
+        {
+            _maxGimickResource = 100;
+        }
 
         private decimal LastBloodSpellTimeStamp { get; set; }
         private decimal LastDecayTimeStamp { get; set; }
-
-        private readonly List<string> _eldritchTomesBonuses = new List<string>
-        {
-            "Reap", "Desecrate", "RunicHex", "EldritchScourge"
-        };
 
         public override double GimmickResource
         {
@@ -38,11 +46,6 @@ namespace swlsimNET.ServerApp.Weapons
                 var x = _defilementBonus && value > 0 ? value * 1.2 : value;
                 base.GimmickResource = x;
             }
-        }
-
-        public Blood(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
-        {
-            _maxGimickResource = 100;
         }
 
         public override void PreAttack(IPlayer player, RoundResult rr)
@@ -75,9 +78,7 @@ namespace swlsimNET.ServerApp.Weapons
 
             // Flay passive
             if (_flay != null && _flayBonus && spell.GetType() == typeof(Maleficium))
-            {
                 bonusBaseDamage += _flay.BaseDamage;
-            }
 
             return bonusBaseDamage;
         }
@@ -87,28 +88,17 @@ namespace swlsimNET.ServerApp.Weapons
             double bonusBaseDamageMultiplier = 0;
 
             if (corruptionBeforeCast >= 11 && corruptionBeforeCast <= 60)
-            {
                 bonusBaseDamageMultiplier += 0.156; // 15.6%
-            }
             if (corruptionBeforeCast >= 61 && corruptionBeforeCast <= 90)
-            {
                 bonusBaseDamageMultiplier += 0.327; // 32.7%
-            }
             if (corruptionBeforeCast >= 91)
-            {
                 bonusBaseDamageMultiplier += 0.534; // 53.4%
-            }
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.EldritchTome && spell.SpellType == SpellType.Dot && spell.WeaponType == WeaponType.Blood)
-            {
-                //Your Blood Magic damage over time effects deal 75 % more damage.
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.EldritchTome && spell.SpellType == SpellType.Dot &&
+                spell.WeaponType == WeaponType.Blood)
                 bonusBaseDamageMultiplier += 0.75; // 75%
-
-            }
             // Defilement passive
             if (_defilement != null && corruptionBeforeCast >= 100)
-            {
                 bonusBaseDamageMultiplier += 0.165; // 16.5%
-            }
 
             return bonusBaseDamageMultiplier;
         }
@@ -119,19 +109,14 @@ namespace swlsimNET.ServerApp.Weapons
             LastBloodSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
 
             if (_defilement != null && spell.GetType() == typeof(Desecrate))
-            {
                 _defilementBonusToTimeSec = player.CurrentTimeSec + spell.DotDuration;
-            }
 
             if (_flay != null && spell.DotDuration > 0)
-            {
                 _flayBonusToTimeSec = player.CurrentTimeSec + spell.DotDuration;
-            }
 
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.EldritchTome && !_eldritchTomesBonuses.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase))
-            {
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.EldritchTome &&
+                !_eldritchTomesBonuses.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase))
                 GimmickResource += 4;
-            }
         }
 
         private void Decay(IPlayer player)
@@ -146,12 +131,10 @@ namespace swlsimNET.ServerApp.Weapons
 
                 // Remove previous decay from this decay
                 if (LastDecayTimeStamp != 0 && timeSinceLastBloodSpell > timeSinceLastDecay)
-                {
                     time -= timeSinceLastDecay;
-                }
 
                 // Only reduce per second, so for example 1.5s = 1s
-                var reduce = (int)(time * 4);
+                var reduce = (int) (time * 4);
 
                 if (reduce <= 0) return;
 

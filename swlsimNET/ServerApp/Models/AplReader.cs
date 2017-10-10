@@ -48,11 +48,11 @@ namespace swlsimNET.ServerApp.Models
                 if (myType == null) continue;
 
                 // TODO: Handle errors here
-                var spell = (ISpell)Activator.CreateInstance(myType, _player, expr);
+                var spell = (ISpell) Activator.CreateInstance(myType, _player, expr);
                 apl.Add(spell);
 
                 if (myTypeRage == null) continue;
-                spell = (ISpell)Activator.CreateInstance(myTypeRage, _player, expr);
+                spell = (ISpell) Activator.CreateInstance(myTypeRage, _player, expr);
                 apl.Add(spell);
             }
 
