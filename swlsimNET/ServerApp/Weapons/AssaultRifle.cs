@@ -26,25 +26,38 @@ namespace swlsimNET.ServerApp.Weapons
             {
                 GimmickResource = 0;
             }
+
+
         }
 
-        private void GrenadeCook(IPlayer player)
+        public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
+            var spellName = spell.Name;
+            var roll = Rnd.Next(1, 101);
             var ksr43 = player.Settings.PrimaryWeaponProc == WeaponProc.Ksr43;
 
-            if (ksr43)
+            if (spellName != null && _grenadeGenerators.Contains(spellName, StringComparer.CurrentCultureIgnoreCase))
             {
-                GimmickResource++;
-                _startedCooking = 0;
-                _fusetimer = 0;
+                if (roll > 65)
+                {
+                    GimmickResource++;
+                }
             }
-            if (!ksr43 && _startedCooking > 5)
+
+
+            if (GimmickResource >= 1)
             {
-                GimmickResource++;
-                _startedCooking = 0;
-                _fusetimer = 0;
+                if (ksr43)
+                {
+                    _startedCooking = 0;
+                }
+                if (!ksr43)
+                {
+                    _startedCooking = 0;
+                }
             }
         }
+
 
         public override double GetBonusBaseDamage(IPlayer player, ISpell spell, double gimmickBeforeCast)
         {
@@ -67,16 +80,6 @@ namespace swlsimNET.ServerApp.Weapons
             _maxGimickResource = 1;
         }
 
-        public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
-        {
-            var spellName = spell.Name;
-            if (spellName != null && !_grenadeGenerators.Contains(spellName, StringComparer.CurrentCultureIgnoreCase)) return;
 
-            if (Rnd.Next(1, 101) <= 65)
-            {
-                _startedCooking = player.CurrentTimeSec;
-                GrenadeCook(player);
-            }
-        }
     }
 }
