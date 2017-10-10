@@ -14,7 +14,6 @@ namespace swlsimNET.ServerApp.Spells.Hammer
             PrimaryGimmickGain = 5;
         }
     }
-
     public class RazorShards : Spell
     {
         public RazorShards(IPlayer player, string args = null)
@@ -27,7 +26,6 @@ namespace swlsimNET.ServerApp.Spells.Hammer
             // TODO: 5s Dot 0,89CP
         }
     }
-
     public class RazorShardsRage : Spell
     {
         public RazorShardsRage(IPlayer player, string args = null)
@@ -123,7 +121,7 @@ namespace swlsimNET.ServerApp.Spells.Hammer
             //Exposed, PBAoE 6 Enemies        
         }
     }
-
+    
     public class UnstoppableForce : Spell
     {
         public UnstoppableForce(IPlayer player, string args = null)

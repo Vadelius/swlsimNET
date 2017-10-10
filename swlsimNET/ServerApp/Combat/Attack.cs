@@ -14,11 +14,10 @@ namespace swlsimNET.ServerApp.Combat
 
     public class Attack
     {
-        public string Name => Spell.Name;
+        public string Name => this.Spell.Name;
         public double Damage { get; set; } = 0;
         public bool IsCrit { get; set; } = false;
         public bool IsHit { get; set; } = false;
-
         [JsonIgnore]
         public ISpell Spell { get; set; }
     }

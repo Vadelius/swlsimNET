@@ -5,12 +5,6 @@ namespace swlsimNET.ServerApp.Combat
 {
     public class RoundResult
     {
-        public RoundResult()
-        {
-            Attacks = new List<Attack>();
-            Buffs = new List<IBuff>();
-        }
-
         public decimal TimeSec { get; set; }
         public decimal Interval { get; set; }
 
@@ -30,5 +24,11 @@ namespace swlsimNET.ServerApp.Combat
         public double PrimaryGimmickEnd { get; set; }
         public double SecondaryGimmickStart { get; set; }
         public double SecondaryGimmickEnd { get; set; }
+
+        public RoundResult()
+        {
+            Attacks = new List<Attack>();
+            Buffs = new List<IBuff>();
+        }
     }
 }

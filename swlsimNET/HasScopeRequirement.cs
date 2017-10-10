@@ -15,8 +15,7 @@ namespace swlsimNET
             this.issuer = issuer;
         }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-            HasScopeRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, HasScopeRequirement requirement)
         {
             // If user does not have the scope claim, get out of here
             if (!context.User.HasClaim(c => c.Type == "scope" && c.Issuer == issuer))

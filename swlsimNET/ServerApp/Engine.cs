@@ -10,7 +10,7 @@ namespace swlsimNET.ServerApp
     public class Engine
     {
         private const decimal Interval = 0.1m;
-        private readonly Settings _settings;
+        private Settings _settings;
 
         public Engine(Settings settings)
         {

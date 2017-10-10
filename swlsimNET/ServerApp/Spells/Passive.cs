@@ -16,9 +16,7 @@ namespace swlsimNET.ServerApp.Spells
         public bool BonusSpellOnlyOnCrit { get; set; }
         public bool ModelledInWeapon { get; set; }
 
-        public virtual void Init(IPlayer player)
-        {
-        }
+        public virtual void Init(IPlayer player){}
 
         public void LoopSpellsFromPassive(IPlayer player)
         {
@@ -29,7 +27,9 @@ namespace swlsimNET.ServerApp.Spells
                 var spells = player.Spells.Where(s => s.GetType() == spellType);
 
                 foreach (var spell in spells)
+                {
                     ModifySpellWithPassive(spell);
+                }
             }
         }
 
@@ -62,8 +62,8 @@ namespace swlsimNET.ServerApp.Spells
             //spell.PassiveBonusSpell = PassiveBonusSpell;
 
             // Passive specials
-            spell.BaseDamage *= 1 + BaseDamageModifier;
-            spell.BaseDamageCrit *= 1 + BaseDamageCritModifier;
+            spell.BaseDamage *= (1 + BaseDamageModifier);
+            spell.BaseDamageCrit *= (1 + BaseDamageCritModifier);
         }
     }
 }

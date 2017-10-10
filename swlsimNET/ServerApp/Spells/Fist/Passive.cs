@@ -155,7 +155,7 @@ namespace swlsimNET.ServerApp.Spells.Fist
             WeaponType = WeaponType.Fist;
             BaseDamage = 0;
             PrimaryGain = 1;
-
+            
             // TODO: 1 Fury per sec in combat
         }
     }

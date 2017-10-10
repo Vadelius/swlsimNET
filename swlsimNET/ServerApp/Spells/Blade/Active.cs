@@ -15,7 +15,7 @@ namespace swlsimNET.ServerApp.Spells.Blade
     }
 
     public class Hurricane : Spell
-    {
+    { 
         public Hurricane(IPlayer player, string args = null)
         {
             WeaponType = WeaponType.Blade;
@@ -137,3 +137,4 @@ namespace swlsimNET.ServerApp.Spells.Blade
         }
     }
 }
+

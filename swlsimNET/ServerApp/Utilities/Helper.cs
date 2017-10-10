@@ -48,23 +48,27 @@ namespace swlsimNET.ServerApp.Utilities
 
             var res = expression.Invoke(player.Context);
 
-            return (bool) res;
+            return (bool)res;
         }
 
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>
             (this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
-            var seenKeys = new HashSet<TKey>();
-            foreach (var element in source)
+            HashSet<TKey> seenKeys = new HashSet<TKey>();
+            foreach (TSource element in source)
+            {
                 if (seenKeys.Add(keySelector(element)))
+                {
                     yield return element;
+                }
+            }
         }
 
         public static class Env
         {
-#if DEBUG
-            public static readonly bool Debugging = true;
-#else
+            #if DEBUG
+                public static readonly bool Debugging = true;
+            #else
                 public static readonly bool Debugging = false;
             #endif
         }

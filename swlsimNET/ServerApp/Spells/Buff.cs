@@ -15,7 +15,7 @@ namespace swlsimNET.ServerApp.Spells
 
         WeaponType WeaponType { get; }
         bool SpecificWeaponTypeBonus { get; }
-
+        
         double MaxBonusCritChance { get; }
         double MaxBonusCritMultiplier { get; }
         double MaxBonusDamageMultiplier { get; }
@@ -28,11 +28,11 @@ namespace swlsimNET.ServerApp.Spells
 
         int GimmickGainPerSec { get; }
         int EnergyGainPerSec { get; }
-        List<decimal> DeactivationRounds { get; }
 
         void Activate(decimal round);
         bool CanActivate();
         void Deactivate(decimal round);
+        List<decimal> DeactivationRounds { get; }
     }
 
     public class Buff : IBuff

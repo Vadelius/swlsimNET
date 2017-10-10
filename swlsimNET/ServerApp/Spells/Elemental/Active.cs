@@ -14,8 +14,9 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             PrimaryGimmickGain = 6;
             ElementalType = "Fire";
         }
-    }
 
+
+    }
     public class ChainLightning : Spell
     {
         public ChainLightning(IPlayer player, string args = null)
@@ -30,7 +31,6 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             // AOE
         }
     }
-
     public class FlashFreeze : Spell
     {
         public FlashFreeze(IPlayer player, string args = null)
@@ -59,7 +59,6 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             // If passive is slotted and it crits 32% basedamage more.
         }
     }
-
     public class IceBeam : Spell
     {
         public IceBeam(IPlayer player, string args = null)
@@ -76,7 +75,6 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             // If passive is slotted and it crits 32% basedamage more.
         }
     }
-
     public class CrystallizedFrost : Spell
     {
         public CrystallizedFrost(IPlayer player, string args = null)
@@ -94,7 +92,6 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             //AOE
         }
     }
-
     public class CrystallizedFlame : Spell
     {
         public CrystallizedFlame(IPlayer player, string args = null)
@@ -111,7 +108,6 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             //AOE
         }
     }
-
     public class Blizzard : Spell
     {
         public Blizzard(IPlayer player, string args = null)
@@ -128,7 +124,6 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             //AOE
         }
     }
-
     public class FireBolt : Spell
     {
         public FireBolt(IPlayer player, string args = null)
@@ -142,7 +137,6 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             ElementalType = "Fire";
         }
     }
-
     public class Inferno : Spell
     {
         public Inferno(IPlayer player, string args = null)
@@ -156,7 +150,6 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             ElementalType = "Fire";
         }
     }
-
     public class Flashpoint : Spell
     {
         public Flashpoint(IPlayer player, string args = null)
@@ -168,7 +161,6 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             // For 4 seconds all elemetnal abilities deal damage equial to as if our heat was MAX.
         }
     }
-
     public class Overload : Spell
     {
         public Overload(IPlayer player, string args = null)

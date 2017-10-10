@@ -6,17 +6,17 @@ namespace swlsimNET.ServerApp.Weapons
 {
     public class Elemental : Weapon
     {
-        public Elemental(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
-        {
-            _maxGimickResource = 100;
-        }
-
         private decimal LastElementalSpellTimeStamp { get; set; }
         private ISpell LastElementalSpell { get; set; }
         private decimal TimeSinceLastElementalSpell { get; set; }
 
+        public Elemental(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
+        {
+            _maxGimickResource = 100;
+        }
         public override void PreAttack(IPlayer player, RoundResult rr)
         {
+
         }
 
         public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double heatBeforeCast)
@@ -31,22 +31,39 @@ namespace swlsimNET.ServerApp.Weapons
             LastElementalSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
 
             if (player.Settings.PrimaryWeaponProc != WeaponProc.FrozenFigurine)
+            {
                 Decay(heatBeforeCast);
+            }
 
             //HeatStop();
 
             if (!hasFigurine && heatBeforeCast >= 25 && heatBeforeCast <= 50)
+            {
+                // GimmickBonusDamage = 1.087; // 8.7%
                 return 0.087;
+            }
             if (!hasFigurine && heatBeforeCast >= 50 && heatBeforeCast <= 75)
+            {
+                // GimmickBonusDamage = 1.174; // 17.4%
                 return 0.174;
+            }
             if (!hasFigurine && heatBeforeCast >= 75 && heatBeforeCast <= 100)
+            {
+                // GimmickBonusDamage = 1.348 // 34.8%
                 return 0.348;
+            }
             if (hasFigurine && heatBeforeCast >= 25 && heatBeforeCast <= 50)
+            {
                 return 0.797;
+            }
             if (hasFigurine && heatBeforeCast >= 50 && heatBeforeCast <= 75)
+            {
                 return 0.884;
+            }
             if (hasFigurine && heatBeforeCast >= 75 && heatBeforeCast <= 100)
+            {
                 return 1.058;
+            }
 
 
             // heatBeforeCast >= 0 && heatBeforeCast <= 25
@@ -56,11 +73,16 @@ namespace swlsimNET.ServerApp.Weapons
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.UnstableElectronCore && GimmickResource > 50 &&
-                (spell.ElementalType == "Fire" || spell.ElementalType == "Lightning"))
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.UnstableElectronCore && GimmickResource > 50 && (spell.ElementalType == "Fire" || spell.ElementalType == "Lightning"))
+            {
                 player.AddBonusAttack(rr, new UnstableElectronCore());
+            }
             if (player.Settings.PrimaryWeaponProc == WeaponProc.CryoChargedConduit && spell.ElementalType == "Cold")
+            {
                 GimmickResource -= 15;
+                //TODO: and cause any targets hit to become frostbitten for 6 seconds. Critically hitting a frostbitten enemy with an Elemental attack deals an additional (3.45*Combat Power) magical damage.
+                //What does it even mean?
+            }
         }
 
         private void Decay(double heatBeforeCast)
@@ -68,16 +90,28 @@ namespace swlsimNET.ServerApp.Weapons
             // Corruption = -4 for each second.
             // Only reduce per second, so for example 1.5s = 1s
             var time = TimeSinceLastElementalSpell;
-            var reduce = 0;
+            int reduce = 0;
 
             if (heatBeforeCast <= 25)
-                reduce = (int) (time * 1);
+            {
+                // Heat = -1 per second.
+                reduce = (int)(time * 1);
+            }
             if (heatBeforeCast >= 26 && heatBeforeCast <= 50)
-                reduce = (int) (time * 2);
+            {
+                // Heat = -2 per second.
+                reduce = (int)(time * 2);
+            }
             if (heatBeforeCast >= 51 && heatBeforeCast <= 75)
-                reduce = (int) (time * 3);
+            {
+                // Heat = -3 per second.
+                reduce = (int)(time * 3);
+            }
             if (heatBeforeCast >= 76)
-                reduce = (int) (time * 4);
+            {
+                // Heat = -4 per second.
+                reduce = (int)(time * 4);
+            }
 
             GimmickResource -= reduce;
 

@@ -1,4 +1,7 @@
-﻿namespace swlsimNET.ServerApp.Spells
+﻿using swlsimNET.ServerApp.Models;
+using swlsimNET.ServerApp.Weapons;
+
+namespace swlsimNET.ServerApp.Spells
 {
     public class OpeningShot : Buff
     {

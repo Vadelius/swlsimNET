@@ -10,7 +10,7 @@ namespace swlsimNET.ServerApp.Models
     {
         Settings Settings { get; }
         double CombatPower { get; }
-        double GlanceReduction { get; }
+        double GlanceReduction { get; } 
         double CriticalChance { get; }
         double CritPower { get; }
         double BasicSignetBoost { get; }
@@ -23,13 +23,13 @@ namespace swlsimNET.ServerApp.Models
         List<IBuff> Buffs { get; }
         List<IBuff> AbilityBuffs { get; }
 
-        Weapon PrimaryWeapon { get; }
-        Weapon SecondaryWeapon { get; }
-
         IBuff GetBuffFromName(string name);
         IBuff GetAbilityBuffFromName(string name);
         bool HasPassive(string name);
         Passive GetPassive(string name);
+
+        Weapon PrimaryWeapon { get; }
+        Weapon SecondaryWeapon { get; }
 
         Weapon GetWeaponFromSpell(ISpell spell);
         Weapon GetOtherWeaponFromSpell(ISpell spell);

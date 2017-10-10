@@ -16,7 +16,6 @@ namespace swlsimNET.ServerApp.Spells.Chaos
             Args = args;
         }
     }
-
     public class Chism : Spell
     {
         public Chism(IPlayer player, string args = null)
@@ -30,7 +29,6 @@ namespace swlsimNET.ServerApp.Spells.Chaos
             // PBAoE
         }
     }
-
     public class Entropy : Spell
     {
         public Entropy(IPlayer player, string args = null)
@@ -59,7 +57,6 @@ namespace swlsimNET.ServerApp.Spells.Chaos
             Args = args;
         }
     }
-
     public class Pandemonium : Spell
     {
         public Pandemonium(IPlayer player, string args = null)
@@ -72,7 +69,6 @@ namespace swlsimNET.ServerApp.Spells.Chaos
             // PBAoE
         }
     }
-
     public class TumultousWhisper : Spell
     {
         public TumultousWhisper(IPlayer player, string args = null)

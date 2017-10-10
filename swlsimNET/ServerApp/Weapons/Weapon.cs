@@ -1,81 +1,37 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace swlsimNET.ServerApp.Weapons
 {
     public enum WeaponType
     {
-        None,
-        Rifle,
-        Blade,
-        Blood,
-        Chaos,
-        Elemental,
-        Fist,
-        Hammer,
-        Pistol,
-        Shotgun
+        None, Rifle, Blade, Blood, Chaos, Elemental, Fist, Hammer, Pistol, Shotgun
     }
 
     public enum WeaponAffix
     {
-        None,
-        Efficiency,
-        Destruction,
-        Energy,
-        Havoc
+        None, Efficiency, Destruction, Energy, Havoc
     }
-
     public enum WeaponProc
     {
-        None,
-        AnimaTouched,
-        FlameWreathed,
-        PlasmaForged,
-        Shadowbound,
-        PneumaticMaul,
-        FumingDespoiler,
+        None, AnimaTouched, FlameWreathed, PlasmaForged, Shadowbound,
+        PneumaticMaul, FumingDespoiler,
         EldritchTome,
-        MiseryAndMalice,
-        SixShooters,
-        SovTechHarmonisers,
-        Cb3Annihilators,
-        HeavyCaliberPistols,
-        InfernalLoader,
-        Ksr43,
-        BladedGauntlets,
-        TreshingClaws,
-        BloodDrinkers,
-        Apocalypse,
-        RazorsEdge,
-        BladeOfTheSeventhSon,
-        Soulblade,
-        IfritanDespoiler,
-        Spesc221,
-        UnstableElectronCore,
-        FrozenFigurine,
-        CryoChargedConduit,
-        WarpedVisage,
-        OtherworldlyArtifact,
-        SovTechParadoxGenerator
+        MiseryAndMalice, SixShooters, SovTechHarmonisers, Cb3Annihilators, HeavyCaliberPistols,
+        InfernalLoader, Ksr43,
+        BladedGauntlets, TreshingClaws, BloodDrinkers,
+        Apocalypse, RazorsEdge, BladeOfTheSeventhSon, Soulblade,
+        IfritanDespoiler, Spesc221,
+        UnstableElectronCore, FrozenFigurine, CryoChargedConduit,
+        WarpedVisage, OtherworldlyArtifact, SovTechParadoxGenerator
     }
 
     public class Weapon
     {
-        #region Constructor
-
-        public Weapon(WeaponType wtype, WeaponAffix waffix)
-        {
-            WeaponType = wtype;
-            WeaponAffix = waffix;
-        }
-
-        #endregion
-
         #region Fields
 
         protected const int MaxEnergy = 15;
@@ -85,6 +41,16 @@ namespace swlsimNET.ServerApp.Weapons
 
         private List<ISpell> _eliteSpells = new List<ISpell>();
         protected readonly Random Rnd = new Random();
+
+        #endregion
+
+        #region Constructor
+
+        public Weapon(WeaponType wtype, WeaponAffix waffix)
+        {
+            WeaponType = wtype;
+            WeaponAffix = waffix;
+        }
 
         #endregion
 
@@ -138,8 +104,7 @@ namespace swlsimNET.ServerApp.Weapons
             return 0;
         }
 
-        public virtual double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell,
-            double gimmickResourceBeforeCast)
+        public virtual double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double gimmickResourceBeforeCast)
         {
             // This happens BEFORE the attack is made and BEFORE damage calculations
             // Only when a spell is being being cast (finished) or channel tick
@@ -198,32 +163,41 @@ namespace swlsimNET.ServerApp.Weapons
         private void EfficiencyAffix(IPlayer player)
         {
             if (!_eliteSpells.Any())
+            {
                 _eliteSpells = player.Spells.Where(s => s.AbilityType == AbilityType.Elite).ToList();
+            }
 
             // 50% chance
             if (Rnd.Next(1, 3) <= 1) return;
 
             foreach (var eliteSpell in _eliteSpells)
+            {
                 if (eliteSpell.Cooldown > 0)
+                {
                     eliteSpell.Cooldown -= eliteSpell.Cooldown * 0.05m;
+                }
+            }
         }
 
         private void DestructionAffix(IPlayer player, RoundResult rr)
         {
             // Get percentage of fight done
-            var percentageChange = (player.CurrentTimeSec - player.Settings.FightLength) / player.Settings.FightLength *
-                                   -100;
+            var percentageChange = (player.CurrentTimeSec - player.Settings.FightLength) / player.Settings.FightLength * -100;
 
             // TODO: < 35% Target HP
             if (percentageChange < 35)
+            {
                 player.AddBonusAttack(rr, new Destruction());
+            }
         }
 
         private void EnergyAffix(IPlayer player, ISpell spell)
         {
             var roll = Rnd.Next(1, 101);
             if (roll <= 33 && spell?.AbilityType == AbilityType.Power)
+            {
                 player.PrimaryWeapon.Energy++;
+            }
         }
 
         private void HavocAffix(IPlayer player)
@@ -243,6 +217,6 @@ namespace swlsimNET.ServerApp.Weapons
 
         #endregion
 
-        #endregion
+        #endregion 
     }
 }

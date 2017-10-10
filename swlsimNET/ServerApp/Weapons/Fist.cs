@@ -6,12 +6,8 @@ namespace swlsimNET.ServerApp.Weapons
 {
     public class Fist : Weapon
     {
-        private int _bladedStartBonus = 1;
 
-        public Fist(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
-        {
-            _maxGimickResource = 100;
-        }
+        private int _bladedStartBonus = 1;
 
 
         public bool AllowFrenziedWrathAbilities { get; private set; }
@@ -24,19 +20,32 @@ namespace swlsimNET.ServerApp.Weapons
                 _bladedStartBonus = 2;
             }
             if (player.Settings.PrimaryWeaponProc == WeaponProc.BladedGauntlets)
+            {
                 GimmickResource = +2;
+            }
             if (player.Settings.PrimaryWeaponProc == WeaponProc.TreshingClaws && AllowFrenziedWrathAbilities)
+            {
                 player.AddBonusAttack(rr, new TreshingClaws(player));
+            }
+        }
+
+        public Fist(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
+        {
+            _maxGimickResource = 100;
         }
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
             if (GimmickResource >= 65)
+            {
+                // TODO: Set this variable 
                 AllowFrenziedWrathAbilities = true;
+            }
             if (player.Settings.PrimaryWeaponProc == WeaponProc.BloodDrinkers && spell.SpellType == SpellType.Dot)
+            {
                 GimmickResource = +3;
+            }
         }
-
         public class TreshingClaws : Spell
         {
             public TreshingClaws(IPlayer player)

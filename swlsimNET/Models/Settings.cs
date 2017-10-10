@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using swlsimNET.ServerApp.Weapons;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using swlsimNET.ServerApp.Combat;
@@ -9,59 +10,11 @@ using swlsimNET.ServerApp.Spells.Blood;
 using swlsimNET.ServerApp.Spells.Hammer;
 using swlsimNET.ServerApp.Spells.Pistol;
 using swlsimNET.ServerApp.Spells.Shotgun;
-using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.Models
 {
     public class Settings
     {
-        [JsonIgnore] private static readonly List<Passive> _allPassives = new List<Passive>
-        {
-            // TODO: Add ALL passives here
-
-            // Hammer
-            new Outrage(),
-            new Obliterate(),
-            new Berserker(),
-            new Annihilate(),
-            new UnbridledWrath(),
-            new LetLoose(),
-            new FastAndFurious(),
-
-            // Pistol
-            new FatalShot(),
-            new DeadlyDance(),
-            new Jackpot(),
-            new FixedGame(),
-            new HeavyCaliberRounds(),
-            new FullyLoaded(),
-            new WinStreak(),
-            new FlechetteRounds(),
-            new BeginnersLuck(),
-            new BulletEcho(),
-            new Holdout(),
-            new LethalAim(),
-
-            // Blood
-            new CrimsonPulse(),
-            new Desolate(),
-            new Contaminate(),
-            new Flay(),
-            new Defilement(),
-
-            // Shotgun
-            new SalvageExpert(),
-            new PointBlankShot()
-        };
-
-        public IEnumerable<SelectListItem> Passives = _allPassives.ConvertAll(
-            a => new SelectListItem
-            {
-                Text = a.ToString().Substring(a.ToString().LastIndexOf('.') + 1),
-                Value = a.ToString().Substring(a.ToString().LastIndexOf('.') + 1),
-                Selected = false
-            });
-
         [Display(Name = "Primary weapon *")]
         [Required(ErrorMessage = "required.")] // {0} is required. to display name also
         public WeaponType? PrimaryWeapon { get; set; }
@@ -114,7 +67,6 @@ namespace swlsimNET.Models
 
         [Display(Name = "Elite signet")]
         public double EliteSignet { get; set; } = 56;
-
         [Display(Name = "Waist signet")]
         public double WaistSignet { get; set; } = 90;
 
@@ -127,7 +79,7 @@ namespace swlsimNET.Models
         public string Passive3 { get; set; }
         public string Passive4 { get; set; }
         public string Passive5 { get; set; }
-
+        
         [Display(Name = "Opening Shot every ~ 20 seconds")]
         public bool OpeningShot { get; set; }
 
@@ -154,7 +106,55 @@ namespace swlsimNET.Models
         public IEnumerable<SelectListItem> HeadTalismanList => new SelectList(Enum.GetValues(typeof(HeadTalisman)));
         public IEnumerable<SelectListItem> GadgetList => new SelectList(Enum.GetValues(typeof(Gadget)));
 
+        public IEnumerable<SelectListItem> Passives = _allPassives.ConvertAll(
+            a => new SelectListItem
+        {
+            Text = a.ToString().Substring(a.ToString().LastIndexOf('.') + 1),
+            Value = a.ToString().Substring(a.ToString().LastIndexOf('.') + 1),
+            Selected = false
+        });
+
         [JsonIgnore]
         public List<Passive> AllPassives => _allPassives;
+
+        [JsonIgnore]
+        private static List<Passive> _allPassives = new List<Passive>
+        {
+            // TODO: Add ALL passives here
+
+            // Hammer
+            new Outrage(),
+            new Obliterate(),
+            new Berserker(),
+            new Annihilate(),
+            new UnbridledWrath(),
+            new LetLoose(),
+            new FastAndFurious(),
+
+            // Pistol
+            new FatalShot(),
+            new DeadlyDance(),
+            new Jackpot(),
+            new FixedGame(),
+            new HeavyCaliberRounds(),
+            new FullyLoaded(),
+            new WinStreak(),
+            new FlechetteRounds(),
+            new BeginnersLuck(),
+            new BulletEcho(),
+            new Holdout(),
+            new LethalAim(),
+
+            // Blood
+            new CrimsonPulse(),
+            new Desolate(),
+            new Contaminate(),
+            new Flay(),
+            new Defilement(),
+
+            // Shotgun
+            new SalvageExpert(),
+            new PointBlankShot(),
+        };
     }
 }

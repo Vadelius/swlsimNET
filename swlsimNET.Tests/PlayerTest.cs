@@ -73,7 +73,7 @@ namespace swlsimNET.Tests
 
             var iterationCount = iterations.Count;
 
-            var endTime1 = fight1.RoundResults.Last().TimeSec;
+            var endTime1 = fight1.RoundResults.Last().TimeSec;            
             var rounds1 = fight1.RoundResults.Count;
             var endTime2 = fight2.RoundResults.Last().TimeSec;
             var rounds2 = fight2.RoundResults.Count;
@@ -84,7 +84,7 @@ namespace swlsimNET.Tests
                 .SelectMany(r => r.Attacks.Where(a => a.Spell.GetType() == typeof(Smash))).Count();
 
             Assert.AreEqual(iterationCount, 2);
-            Assert.AreEqual(endTime1, 10.0m);
+            Assert.AreEqual(endTime1, 10.0m);          
             Assert.AreEqual(rounds1, 11);
             Assert.AreEqual(endTime2, 10.0m);
             Assert.AreEqual(rounds2, 11);
@@ -139,7 +139,7 @@ namespace swlsimNET.Tests
                 FightLength = 10,
                 TargetType = TargetType.Champion,
                 Apl = "Blood.ChannelSpell"
-            };
+            };          
 
             var spell = new ChannelSpell();
             var player = new Player(setting);
@@ -333,7 +333,7 @@ namespace swlsimNET.Tests
                 FightLength = 5,
                 TargetType = TargetType.Champion,
                 Apl = "Hammer.UnstoppableForce\r\n" +
-                      "Fist.Savagery, !Buff.UnstoppableForce.Active\r\n" +
+                      "Fist.Savagery, !Buff.UnstoppableForce.Active\r\n" +                      
                       "Hammer.Smash"
             };
 
@@ -470,7 +470,7 @@ namespace swlsimNET.Tests
             return new Settings
             {
                 PrimaryWeapon = WeaponType.Hammer,
-                SecondaryWeapon = WeaponType.Fist
+                SecondaryWeapon = WeaponType.Fist,
             };
         }
 

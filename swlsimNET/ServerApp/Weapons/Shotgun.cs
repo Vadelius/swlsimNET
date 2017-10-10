@@ -5,22 +5,20 @@ using swlsimNET.ServerApp.Spells.Shotgun;
 
 namespace swlsimNET.ServerApp.Weapons
 {
+
     public class Shotgun : Weapon
     {
         private int _ifritanDespoilerCounter;
         private double _shellstamp;
-
         public Shotgun(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
             _maxGimickResource = 6;
             _gimickResource = 6;
         }
-
         public override void PreAttack(IPlayer player, RoundResult rr)
         {
             _shellstamp = GimmickResource;
         }
-
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
             var roll = Rnd.Next(1, 6);
@@ -28,24 +26,36 @@ namespace swlsimNET.ServerApp.Weapons
             if (player.Settings.PrimaryWeaponProc == WeaponProc.IfritanDespoiler)
             {
                 if (spell.GetType() == typeof(DragonBreath))
+                {
                     _ifritanDespoilerCounter += 2;
+
+                }
                 if (spell.GetType() == typeof(DepletedUranium))
+                {
                     _ifritanDespoilerCounter++;
+                }
                 if (_ifritanDespoilerCounter >= 12)
                 {
                     player.AddBonusAttack(rr, new IfritanDespoiler(player, ""));
                     _ifritanDespoilerCounter = 0;
+
                 }
             }
 
             if (player.Settings.PrimaryWeaponProc == WeaponProc.Spesc221 && GimmickResource < _shellstamp && roll == 5)
+            {
                 player.AddBonusAttack(rr, new SpesC221());
+            }
 
             // Not all spells should procc gimmick
             if (spell.GetType() == typeof(Reload) || spell.GetType() == typeof(ShellSalvage)) return;
 
             if (Rnd.Next(1, 3) == 1)
+            {
+                // TODO: Check & FIX DOT duration/stacks and assume perfect play by default 
+                // in weapon-model so APL does not have to worry about it at all.
                 player.AddBonusAttack(rr, new DragonBreath());
+            }
             else player.AddBonusAttack(rr, new DepletedUranium());
         }
 
@@ -98,7 +108,6 @@ namespace swlsimNET.ServerApp.Weapons
                 BaseDamage = 0; // 3% HP heal
             }
         }
-
         public class IfritanDespoiler : Spell
         {
             public IfritanDespoiler(IPlayer player, string args = null)
@@ -108,7 +117,6 @@ namespace swlsimNET.ServerApp.Weapons
                 AbilityBuff = player.GetAbilityBuffFromName(Name) as AbilityBuff;
             }
         }
-
         private class SpesC221 : Spell
         {
             public SpesC221()

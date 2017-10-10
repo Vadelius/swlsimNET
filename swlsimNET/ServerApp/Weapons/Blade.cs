@@ -1,21 +1,20 @@
-﻿using System;
-using System.Linq;
-using swlsimNET.ServerApp.Combat;
+﻿using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
+using System;
+using System.Linq;
 
 namespace swlsimNET.ServerApp.Weapons
 {
     public class Blade : Weapon
     {
         private int SpiritBladeCharges;
+        private bool SpiritBladeActive => SpiritBladeCharges > 0;
 
         public Blade(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
             _maxGimickResource = 5;
         }
-
-        private bool SpiritBladeActive => SpiritBladeCharges > 0;
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
@@ -27,7 +26,9 @@ namespace swlsimNET.ServerApp.Weapons
             if (weapon == null) return;
 
             if (player.Settings.PrimaryWeaponProc == WeaponProc.RazorsEdge && attack.IsCrit && roll == 2)
+            {
                 GimmickResource++;
+            }
 
             ChiGenerator(player);
             ChiConsumer();
@@ -41,9 +42,13 @@ namespace swlsimNET.ServerApp.Weapons
             var highroller = Rnd.Next(1, 101);
 
             if (player.Settings.PrimaryWeaponProc == WeaponProc.Soulblade && highroller < 50 + GimmickResource * 3)
+            {
                 GimmickResource++;
+            }
             if (roll == 2 && GimmickResource < 5)
+            {
                 GimmickResource++;
+            }
         }
 
         public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double gimmickBeforeCast)
@@ -51,12 +56,13 @@ namespace swlsimNET.ServerApp.Weapons
             double bonusBaseDamageMultiplier = 0;
 
             if (player.Settings.PrimaryWeaponProc == WeaponProc.Apocalypse)
+            {
                 bonusBaseDamageMultiplier = 0.03 * player.PrimaryWeapon.GimmickResource;
+            }
 
 
             return bonusBaseDamageMultiplier;
         }
-
         private void ChiConsumer()
         {
             if (GimmickResource == 5 && !SpiritBladeActive)
@@ -76,10 +82,7 @@ namespace swlsimNET.ServerApp.Weapons
                 player.AddBonusAttack(rr, new BladeOfTheSeventhSon(player));
                 SpiritBladeCharges--;
             }
-            else
-            {
-                player.AddBonusAttack(rr, new SpiritBlade(player));
-            }
+            else player.AddBonusAttack(rr, new SpiritBlade(player));
             SpiritBladeCharges--;
         }
 
@@ -104,8 +107,8 @@ namespace swlsimNET.ServerApp.Weapons
                 case 5:
                     SpiritBladeCharges += 6;
                     break;
-                default: return;
-                    
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -118,7 +121,6 @@ namespace swlsimNET.ServerApp.Weapons
                 BaseDamage = player.CombatPower * 0.97;
             }
         }
-
         private class BladeOfTheSeventhSon : Spell
         {
             public BladeOfTheSeventhSon(IPlayer player)
