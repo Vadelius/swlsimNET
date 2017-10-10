@@ -110,14 +110,14 @@
             @Html.ValidationMessageFor(m => m.Apl, "", new { @class = "text-danger" })
             @Html.TextAreaFor(m => m.Apl, new { Class = "form-control" })
         </div>
-        
+
         @*TODO: Make JS*@
         @*<div class="col-md-9" style="margin-bottom: 10px">
-            <input type="submit" value="Blood/Fist" formaction=@Url.Action("SetPresetBloodFist") formmethod="post" class="btn btn-primary" />
-            <input type="submit" value="Hammer/Fist" formaction=@Url.Action("SetPresetHammerFist") formmethod="post" class="btn btn-primary" />
-            <input type="submit" value="Hammer/Pistol" formaction=@Url.Action("SetPresetHammerPistol") formmethod="post" class="btn btn-primary" />
-            <input type="submit" value="Hammer/Shotgun" formaction=@Url.Action("SetPresetHammerShotgun") formmethod="post" class="btn btn-primary" />
-        </div>*@
+                <input type="submit" value="Blood/Fist" formaction=@Url.Action("SetPresetBloodFist") formmethod="post" class="btn btn-primary" />
+                <input type="submit" value="Hammer/Fist" formaction=@Url.Action("SetPresetHammerFist") formmethod="post" class="btn btn-primary" />
+                <input type="submit" value="Hammer/Pistol" formaction=@Url.Action("SetPresetHammerPistol") formmethod="post" class="btn btn-primary" />
+                <input type="submit" value="Hammer/Shotgun" formaction=@Url.Action("SetPresetHammerShotgun") formmethod="post" class="btn btn-primary" />
+            </div>*@
 
         <div class="col-md-9" style="margin-bottom: 10px">
             @Html.LabelFor(m => m.Passives)
@@ -128,26 +128,26 @@
             @Html.DropDownListFor(m => m.Passive4, Model.Passives, new { Class = "form-control select2" })
             @Html.DropDownListFor(m => m.Passive5, Model.Passives, new { Class = "form-control select2" })
         </div>
+        <div id="checkbox-container">
+            <div>
+                @Html.CheckBoxFor(m => m.OpeningShot)
+                @Html.LabelFor(m => m.OpeningShot)
+            </div>
 
-        <div>
-            @Html.CheckBoxFor(m => m.OpeningShot)
-            @Html.LabelFor(m => m.OpeningShot)
-        </div>
+            <div>
+                @Html.CheckBoxFor(m => m.Exposed)
+                @Html.LabelFor(m => m.Exposed)
+            </div>
 
-        <div>
-            @Html.CheckBoxFor(m => m.Exposed)
-            @Html.LabelFor(m => m.Exposed)
+            <div>
+                @Html.CheckBoxFor(m => m.HeadSignetIsCdr)
+                @Html.LabelFor(m => m.HeadSignetIsCdr)
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.Savagery)
+                @Html.LabelFor(m => m.Savagery)
+            </div>
         </div>
-
-        <div>
-            @Html.CheckBoxFor(m => m.HeadSignetIsCdr)
-            @Html.LabelFor(m => m.HeadSignetIsCdr)
-        </div>
-        <div>
-            @Html.CheckBoxFor(m => m.Savagery)
-            @Html.LabelFor(m => m.Savagery)
-        </div>
-
         <input type="submit" value="Start Simulation" formaction=@Url.Action("Import") formmethod="post" class="btn btn-default waves-effect waves-light" />
 
     </form>
@@ -183,97 +183,25 @@
 </div>
 
 <script type="text/javascript">
+
+
     function onLoad() {
-        // TODO: Can we solve with a loop?
-        //var elements = ["Apl"];
-        //elements.forEach(persistInput);
 
-        var inputElement = document.getElementById("Apl");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("PrimaryWeapon");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("SecondaryWeapon");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("PrimaryWeaponAffix");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("SecondaryWeaponAffix");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("PrimaryWeaponProc");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("SecondaryWeaponProc");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("Neck");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("Luck");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("Head");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("Gadget");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("CombatPower");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("GlanceReduction");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("CriticalChance");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("CritPower");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("BasicSignet");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("PowerSignet");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("EliteSignet");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("WaistSignet");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("Passive1");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("Passive2");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("Passive3");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("Passive4");
-        persistInput(inputElement);
-
-        inputElement = document.getElementById("Passive5");
-        persistInput(inputElement);
-
-        // TODO: Fix checkboxes 
-        //inputElement = document.getElementById("OpeningShot");
-        //persistInput(inputElement);
-
-        //inputElement = document.getElementById("Exposed");
-        //persistInput(inputElement);
-
-        //inputElement = document.getElementById("HeadSignetIsCdr");
-        //persistInput(inputElement);
-
-        //inputElement = document.getElementById("Savagery");
-        //persistInput(inputElement);
+        persistInput(window.inputElement);
+        ['Apl', 'PrimaryWeapon', 'SecondaryWeapon', 'PrimaryWeaponProc', 'SecodaryWeaponProc',
+            'PrimaryWeaponAffix', 'SecondaryWeaponAffix', 'Neck', 'Luck', 'Head', 'Gadget',
+            'CombatPower', 'GlanceReduction', 'CriticalChance', 'CritPower',
+            'Basic Signet', 'PowerSignet', 'EliteSignet', 'WaistSignet',
+            'Passive1', 'Passive2', 'Passive3', 'Passive4', 'Passive5'
+        ]
+            .map(document.getElementById.bind(document))
+            .map(persistInput);
+        $.each(checkboxValues, function (key, value) {
+            $("#" + key).prop('checked', value);
+        });
     }
-    window.onload = onLoad();
+
+    document.addEventListener("DOMContentLoaded", onLoad);
 
     function persistInput(input) {
         if (input == null) return;
@@ -284,9 +212,20 @@
         if (storedValue)
             input.value = storedValue;
 
-        input.addEventListener('input', function ()
-        {
+        input.addEventListener('input', function () {
             localStorage.setItem(key, input.value);
         });
     }
+
+    var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {},
+        $checkboxes = $('#OpeningShot, #Exposed, #HeadSignetIsCdr, #Savagery');
+
+    $checkboxes.on("change", function () {
+        $checkboxes.each(function () {
+            checkboxValues[this.id] = this.checked;
+        });
+
+        localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
+    });
+
 </script>
