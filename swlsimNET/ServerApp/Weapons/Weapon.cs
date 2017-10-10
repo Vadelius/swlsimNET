@@ -25,7 +25,8 @@ namespace swlsimNET.ServerApp.Weapons
         InfernalLoader, Ksr43,
         BladedGauntlets, TreshingClaws, BloodDrinkers,
         Apocalypse, RazorsEdge, BladeOfTheSeventhSon, Soulblade,
-        IfritanDespoiler, Spesc221
+        IfritanDespoiler, Spesc221,
+        UnstableElectronCore, FrozenFigurine
     }
 
     public class Weapon

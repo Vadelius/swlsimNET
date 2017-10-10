@@ -14,6 +14,7 @@ namespace swlsimNET.ServerApp.Spells
         WeaponType WeaponType { get; }
         SpellType SpellType { get; }
         AbilityType AbilityType { get; }
+        string ElementalType { get; }
         int PrimaryCost { get; set; }
         int SecondaryCost { get; set; }
         int PrimaryGain { get; set; }

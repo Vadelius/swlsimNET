@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using swlsimNET.ServerApp.Combat;
+﻿using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Utilities;
 using swlsimNET.ServerApp.Weapons;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace swlsimNET.ServerApp.Spells
 {
@@ -70,6 +70,8 @@ namespace swlsimNET.ServerApp.Spells
         public double BonusCritChance { get; set; }
         public double BonusCritPower { get; set; }
         public string Args { get; set; }
+        public string ElementalType { get; set; }
+
 
         // Triggered bonus spell / buff
         public Passive PassiveBonusSpell { get; set; }
@@ -180,7 +182,7 @@ namespace swlsimNET.ServerApp.Spells
             {
                 AddBuffBonuses(player);
                 AddGimmickBonuses(player);
-            }          
+            }
 
             var isHit = IsHit(player);
 
@@ -261,7 +263,7 @@ namespace swlsimNET.ServerApp.Spells
                     return CastFinished(player);
                 default:
                     return CastFinished(player);
-                // TODO: Implement other types
+                    // TODO: Implement other types
             }
         }
 
@@ -317,10 +319,10 @@ namespace swlsimNET.ServerApp.Spells
                         _spellsOfSameType.Add(s);
                     }
 
-                    if(WeaponType != WeaponType.Hammer) continue;
+                    if (WeaponType != WeaponType.Hammer) continue;
 
                     // Hammer specific shit again
-                    if(s.Name + "Rage" == Name || s.Name == Name + "Rage")
+                    if (s.Name + "Rage" == Name || s.Name == Name + "Rage")
                     {
                         _spellsOfSameType.Add(s);
                     }
@@ -355,7 +357,7 @@ namespace swlsimNET.ServerApp.Spells
                 if (DotExpirationBaseDamage > 0)
                     expirationdamage = GetDamage(player, isHit, isCrit, DotExpirationBaseDamage);
 
-                damage = damage * (double) DotDuration + expirationdamage;
+                damage = damage * (double)DotDuration + expirationdamage;
             }
 
             // Get energy / gimmick gains on hit
@@ -396,7 +398,7 @@ namespace swlsimNET.ServerApp.Spells
                 if (DotExpirationBaseDamage > 0)
                     expirationdamage = GetDamage(player, isHit, isCrit, DotExpirationBaseDamage);
 
-                damage = damage * (double) DotDuration + expirationdamage;
+                damage = damage * (double)DotDuration + expirationdamage;
             }
 
             // Get energy / gimmick gains on hit
@@ -420,7 +422,7 @@ namespace swlsimNET.ServerApp.Spells
 
                 spellWeapon.Energy += PrimaryGain;
                 otherWepon.Energy += SecondaryGain;
-                
+
                 spellWeapon.GimmickResource += PrimaryGimmickGain;
                 otherWepon.GimmickResource += SecondaryGimmickGain;
             }
@@ -434,7 +436,7 @@ namespace swlsimNET.ServerApp.Spells
                 //var otherWepon = player.GetOtherWeaponFromSpell(this);
 
                 spellWeapon.GimmickResource += PrimaryGimmickGainOnCrit;
-            }           
+            }
         }
 
         private void AddBuffBonuses(IPlayer player)
@@ -453,7 +455,7 @@ namespace swlsimNET.ServerApp.Spells
             {
                 if (buff.SpecificWeaponTypeBonus)
                 {
-                    if(spellWeapon?.WeaponType != buff.WeaponType) continue;
+                    if (spellWeapon?.WeaponType != buff.WeaponType) continue;
                 }
 
                 _bonusCritChance += buff.BonusCritChance;
@@ -470,7 +472,7 @@ namespace swlsimNET.ServerApp.Spells
             if (spellWeapon == null) return;
 
             _bonusBaseDamageMultiplier += spellWeapon.GetBonusBaseDamageMultiplier(player, this, _primaryGimmickBeforeCast);
-            _bonusBaseDamage += spellWeapon.GetBonusBaseDamage(player, this, _primaryGimmickBeforeCast); 
+            _bonusBaseDamage += spellWeapon.GetBonusBaseDamage(player, this, _primaryGimmickBeforeCast);
         }
 
         private bool IsHit(IPlayer player)
@@ -528,11 +530,11 @@ namespace swlsimNET.ServerApp.Spells
             }
 
             // Calculate from spell basedamage
-            damage = isHit 
-                ? (BaseDamage + _bonusBaseDamage) * (1 + _bonusBaseDamageMultiplier) * player.CombatPower * boost 
+            damage = isHit
+                ? (BaseDamage + _bonusBaseDamage) * (1 + _bonusBaseDamageMultiplier) * player.CombatPower * boost
                 : 0;
 
-            damage = isCrit 
+            damage = isCrit
                 ? (Math.Max(BaseDamage, BaseDamageCrit) + _bonusBaseDamage) * (1 + _bonusBaseDamageMultiplier)
                 * player.CombatPower * boost * ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * CritPowerMultiplier)
                 : damage;

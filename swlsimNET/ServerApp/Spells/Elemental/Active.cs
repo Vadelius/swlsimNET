@@ -12,7 +12,10 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             BaseDamage = 1.175;
             Args = args;
             PrimaryGimmickGain = 6;
+            ElementalType = "Fire";
         }
+
+
     }
     public class ChainLightning : Spell
     {
@@ -24,6 +27,7 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             PrimaryCost = 3;
             Args = args;
             PrimaryGimmickGain = 20;
+            ElementalType = "Lightning";
             // AOE
         }
     }
@@ -37,7 +41,7 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             PrimaryCost = 2;
             Args = args;
             PrimaryGimmickCost = 30; //Can be used while overheated
-            // AOE
+            ElementalType = "Cold";
         }
     }
 
@@ -51,6 +55,7 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             PrimaryGimmickGain = 30;
             BaseDamage = 3.45;
             Args = args;
+            ElementalType = "Lightning";
             // If passive is slotted and it crits 32% basedamage more.
         }
     }
@@ -66,6 +71,7 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             CastTime = 2;
             BaseDamage = 7;
             Args = args;
+            ElementalType = "Cold";
             // If passive is slotted and it crits 32% basedamage more.
         }
     }
@@ -82,6 +88,7 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             DotDuration = 3; // Actually 9 but damage per 3 sec.
             PrimaryGimmickCost = 8; // 8 per sec for 3 sec
             Args = args;
+            ElementalType = "Cold";
             //AOE
         }
     }
@@ -97,6 +104,7 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             BaseDamage = 0.58;
             DotDuration = 4; // Actually 10 but for every 2.5s
             Args = args;
+            ElementalType = "Fire";
             //AOE
         }
     }
@@ -112,6 +120,7 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             BaseDamage = 0.68;
             DotDuration = 8;
             Args = args;
+            ElementalType = "Cold";
             //AOE
         }
     }
@@ -125,6 +134,7 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             PrimaryGimmickGain = 20;
             BaseDamage = 2.52;
             Args = args;
+            ElementalType = "Fire";
         }
     }
     public class Inferno : Spell
@@ -137,6 +147,7 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             PrimaryGimmickGain = 30;
             BaseDamage = 1.71;
             Args = args;
+            ElementalType = "Fire";
         }
     }
     public class Flashpoint : Spell
@@ -146,6 +157,7 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             WeaponType = WeaponType.Elemental;
             AbilityType = AbilityType.Special;
             PrimaryCost = 5;
+            ElementalType = "Lightning";
             // For 4 seconds all elemetnal abilities deal damage equial to as if our heat was MAX.
         }
     }
@@ -161,6 +173,7 @@ namespace swlsimNET.ServerApp.Spells.Elemental
             CastTime = 3;
             BaseDamage = 2.71;
             PrimaryGimmickCost = 10; // -30 first sec. +10 second sec. +10 third sic.
+            ElementalType = "Lightning";
         }
     }
 }
