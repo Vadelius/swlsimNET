@@ -1,7 +1,8 @@
-﻿using System;
-using swlsimNET.ServerApp.Combat;
+﻿using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
+using System;
+using System.Linq;
 
 namespace swlsimNET.ServerApp.Weapons
 {
@@ -17,21 +18,51 @@ namespace swlsimNET.ServerApp.Weapons
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
-            ChiGenerator();
+            var roll = Rnd.Next(1, 3);
+            var attack = rr.Attacks.FirstOrDefault();
+            if (attack == null || !attack.IsHit || attack.Damage <= 0) return;
+
+            var weapon = player.GetWeaponFromSpell(attack.Spell);
+            if (weapon == null) return;
+
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.RazorsEdge && attack.IsCrit && roll == 2)
+            {
+                GimmickResource++;
+            }
+
+            ChiGenerator(player);
             ChiConsumer();
             SpiritBladeConsumer(player, rr);
             SpiritBladeExtender();
         }
 
-        private void ChiGenerator()
+        private void ChiGenerator(IPlayer player)
         {
-            // 50% chance
-            if (Rnd.NextDouble() >= 0.5)
+            var roll = Rnd.Next(1, 3);
+            var highroller = Rnd.Next(1, 101);
+
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.Soulblade && highroller < 50 + GimmickResource * 3)
             {
-                if(GimmickResource < 5) GimmickResource++;
+                GimmickResource++;
+            }
+            if (roll == 2 && GimmickResource < 5)
+            {
+                GimmickResource++;
             }
         }
 
+        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double gimmickBeforeCast)
+        {
+            double bonusBaseDamageMultiplier = 0;
+
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.Apocalypse)
+            {
+                bonusBaseDamageMultiplier = 0.03 * player.PrimaryWeapon.GimmickResource;
+            }
+
+
+            return bonusBaseDamageMultiplier;
+        }
         private void ChiConsumer()
         {
             if (GimmickResource == 5 && !SpiritBladeActive)
@@ -45,7 +76,13 @@ namespace swlsimNET.ServerApp.Weapons
         {
             if (!SpiritBladeActive) return;
 
-            player.AddBonusAttack(rr, new SpiritBlade(player));
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.BladeOfTheSeventhSon)
+            {
+                player.AddBonusAttack(rr, new SpiritBlade(player));
+                player.AddBonusAttack(rr, new BladeOfTheSeventhSon(player));
+                SpiritBladeCharges--;
+            }
+            else player.AddBonusAttack(rr, new SpiritBlade(player));
             SpiritBladeCharges--;
         }
 
@@ -82,6 +119,15 @@ namespace swlsimNET.ServerApp.Weapons
                 WeaponType = WeaponType.Blade;
                 SpellType = SpellType.Gimmick;
                 BaseDamage = player.CombatPower * 0.97;
+            }
+        }
+        private class BladeOfTheSeventhSon : Spell
+        {
+            public BladeOfTheSeventhSon(IPlayer player)
+            {
+                WeaponType = WeaponType.Blade;
+                SpellType = SpellType.Gimmick;
+                BaseDamage = player.CombatPower * 0.97 * 0.61;
             }
         }
     }

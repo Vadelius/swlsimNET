@@ -18,7 +18,13 @@ namespace swlsimNET.ServerApp.Weapons
     }
     public enum WeaponProc
     {
-        None, AnimaTouched, FlameWreathed, PlasmaForged, Shadowbound, PneumaticMaul, FumingDespoiler, EldritchTome, MiseryAndMalice, SixShooters, SovTechHarmonisers, Cb3Annihilators, HeavyCaliberPistols, InfernalLoader, Ksr43, BladedGauntlets, TreshingClaws, BloodDrinkers
+        None, AnimaTouched, FlameWreathed, PlasmaForged, Shadowbound,
+        PneumaticMaul, FumingDespoiler,
+        EldritchTome,
+        MiseryAndMalice, SixShooters, SovTechHarmonisers, Cb3Annihilators, HeavyCaliberPistols,
+        InfernalLoader, Ksr43,
+        BladedGauntlets, TreshingClaws, BloodDrinkers,
+        Apocalypse, RazorsEdge, BladeOfTheSeventhSon, Soulblade
     }
 
     public class Weapon
