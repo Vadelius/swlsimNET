@@ -29,13 +29,13 @@ namespace swlsimNET.ServerApp.Weapons
             "Reap", "Desecrate", "RunicHex", "EldritchScourge"
         };
 
-        public override double GimmickResource
+        public override decimal GimmickResource
         {
             get => _gimickResource;
             set
             {
                 // If defilement bonus is up 20% more corruption
-                var x = _defilementBonus && value > 0 ? value * 1.2 : value;
+                var x = _defilementBonus && value > 0 ? value * 1.2m : value;
                 base.GimmickResource = x;
             }
         }
@@ -69,7 +69,7 @@ namespace swlsimNET.ServerApp.Weapons
             Decay(player);
         }
 
-        public override double GetBonusBaseDamage(IPlayer player, ISpell spell, double corruptionBeforeCast)
+        public override double GetBonusBaseDamage(IPlayer player, ISpell spell, decimal corruptionBeforeCast)
         {
             double bonusBaseDamage = 0;
 
@@ -82,7 +82,7 @@ namespace swlsimNET.ServerApp.Weapons
             return bonusBaseDamage;
         }
 
-        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double corruptionBeforeCast)
+        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, decimal corruptionBeforeCast)
         {
             double bonusBaseDamageMultiplier = 0;
 

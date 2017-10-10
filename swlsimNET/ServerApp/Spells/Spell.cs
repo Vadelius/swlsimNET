@@ -80,7 +80,7 @@ namespace swlsimNET.ServerApp.Spells
         private decimal TickInterval => CastTime / ChannelTicks;
         private double CritPowerMultiplier => this.SpellType == SpellType.Channel ? 1.25 : 1;
 
-        private double _primaryGimmickBeforeCast;
+        private decimal _primaryGimmickBeforeCast;
         private readonly List<ISpell> _spellsOfSameType = new List<ISpell>();
 
         private double _bonusCritChance;

@@ -82,7 +82,7 @@ namespace swlsimNET.ServerApp.Weapons
         }
 
 
-        public override double GetBonusBaseDamage(IPlayer player, ISpell spell, double gimmickBeforeCast)
+        public override double GetBonusBaseDamage(IPlayer player, ISpell spell, decimal gimmickBeforeCast)
         {
             double bonusBaseDamage = 0;
 
@@ -95,7 +95,7 @@ namespace swlsimNET.ServerApp.Weapons
             return bonusBaseDamage;
         }
 
-        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double gimmickBeforeCast)
+        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, decimal gimmickBeforeCast)
         {
             double bonusBaseDamageMultiplier = 0;
             if (LeftChamber == RightChamber)

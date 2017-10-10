@@ -36,7 +36,7 @@ namespace swlsimNET.ServerApp.Weapons
 
         protected const int MaxEnergy = 15;
         protected int _energy = 15;
-        protected double _gimickResource;
+        protected decimal _gimickResource;
         protected int _maxGimickResource;
 
         private List<ISpell> _eliteSpells = new List<ISpell>();
@@ -59,7 +59,7 @@ namespace swlsimNET.ServerApp.Weapons
         public WeaponType WeaponType { get; }
         public WeaponAffix WeaponAffix { get; }
 
-        public virtual double GimmickResource
+        public virtual decimal GimmickResource
         {
             get => _gimickResource;
             set
@@ -97,21 +97,21 @@ namespace swlsimNET.ServerApp.Weapons
             // All the time every round
         }
 
-        public virtual double GetBonusBaseDamage(IPlayer player, ISpell spell, double gimmickResourceBeforeCast)
+        public virtual double GetBonusBaseDamage(IPlayer player, ISpell spell, decimal gimmickResourceBeforeCast)
         {
             // This happens BEFORE the attack is made and BEFORE damage calculations
             // Only when a spell is being being cast (finished) or channel tick
             return 0;
         }
 
-        public virtual double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double gimmickResourceBeforeCast)
+        public virtual double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, decimal gimmickResourceBeforeCast)
         {
             // This happens BEFORE the attack is made and BEFORE damage calculations
             // Only when a spell is being being cast (finished) or channel tick
             return 0;
         }
 
-        public virtual void OnHit(IPlayer player, ISpell spell, double gimmickResourceBeforeCast)
+        public virtual void OnHit(IPlayer player, ISpell spell, decimal gimmickResourceBeforeCast)
         {
             // This happens BEFORE the attack is made and AFTER damage calculations
             // Only when spell hit

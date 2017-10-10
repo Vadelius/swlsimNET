@@ -8,9 +8,10 @@ namespace swlsimNET.ServerApp.Weapons
 {
     public class Blade : Weapon
     {
-        private int SpiritBladeCharges;
-        private bool SpiritBladeActive => SpiritBladeCharges > 0;
+        private int _spiritBladeCharges;
+        private bool SpiritBladeActive => _spiritBladeCharges > 0;
         private int _deluge;
+
         public Blade(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
             _maxGimickResource = 5;
@@ -57,24 +58,25 @@ namespace swlsimNET.ServerApp.Weapons
             }
         }
 
-        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, double gimmickBeforeCast)
+        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, decimal gimmickBeforeCast)
         {
             double bonusBaseDamageMultiplier = 0;
 
             if (player.Settings.PrimaryWeaponProc == WeaponProc.Apocalypse)
             {
-                bonusBaseDamageMultiplier = 0.03 * player.PrimaryWeapon.GimmickResource;
+                bonusBaseDamageMultiplier = 0.03 * (double) player.PrimaryWeapon.GimmickResource;
             }
 
 
             return bonusBaseDamageMultiplier;
         }
+
         private void ChiConsumer()
         {
             if (GimmickResource == 5 && !SpiritBladeActive)
             {
                 GimmickResource = 0;
-                SpiritBladeCharges = 10;
+                _spiritBladeCharges = 10;
             }
         }
 
@@ -87,7 +89,7 @@ namespace swlsimNET.ServerApp.Weapons
             {
                 player.AddBonusAttack(rr, new SpiritBlade(player));
                 player.AddBonusAttack(rr, new BladeOfTheSeventhSon(player));
-                SpiritBladeCharges--;
+                _spiritBladeCharges--;
             }
             if (player.HasPassive("HardenedBlade") && highroller <= 30)
             {
@@ -107,7 +109,7 @@ namespace swlsimNET.ServerApp.Weapons
                 _deluge += 1;
             }
             else player.AddBonusAttack(rr, new SpiritBlade(player));
-            SpiritBladeCharges--;
+            _spiritBladeCharges--;
         }
 
         
@@ -122,19 +124,19 @@ namespace swlsimNET.ServerApp.Weapons
                 case 0: 
                     break;
                 case 1:
-                    SpiritBladeCharges += 1;
+                    _spiritBladeCharges += 1;
                     break;
                 case 2:
-                    SpiritBladeCharges += 1;
+                    _spiritBladeCharges += 1;
                     break;
                 case 3:
-                    SpiritBladeCharges += 2;
+                    _spiritBladeCharges += 2;
                     break;
                 case 4:
-                    SpiritBladeCharges += 4;
+                    _spiritBladeCharges += 4;
                     break;
                 case 5:
-                    SpiritBladeCharges += 6;
+                    _spiritBladeCharges += 6;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

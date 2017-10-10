@@ -35,7 +35,7 @@ namespace swlsimNET.ServerApp.Models
         Weapon GetOtherWeaponFromSpell(ISpell spell);
         Weapon GetWeaponFromType(WeaponType wtype);
 
-        double GetWeaponResourceFromType(WeaponType wtype);
+        decimal GetWeaponResourceFromType(WeaponType wtype);
 
         void AddBonusAttack(RoundResult rr, ISpell spell);
     }

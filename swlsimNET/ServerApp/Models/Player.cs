@@ -40,13 +40,13 @@ namespace swlsimNET.ServerApp.Models
         public decimal GCD { get; set; }    
 
         // Weapon gimmick resource (for APL)
-        public double Chi => GetWeaponResourceFromType(WeaponType.Blade);
-        public double Corruption => GetWeaponResourceFromType(WeaponType.Blood);
-        public double Fury => GetWeaponResourceFromType(WeaponType.Fist);
-        public double Heat => GetWeaponResourceFromType(WeaponType.Elemental);
-        public double Paradox => GetWeaponResourceFromType(WeaponType.Chaos);
-        public double Rage => GetWeaponResourceFromType(WeaponType.Hammer);
-        public double Shells => GetWeaponResourceFromType(WeaponType.Shotgun);
+        public decimal Chi => GetWeaponResourceFromType(WeaponType.Blade);
+        public decimal Corruption => GetWeaponResourceFromType(WeaponType.Blood);
+        public decimal Fury => GetWeaponResourceFromType(WeaponType.Fist);
+        public decimal Heat => GetWeaponResourceFromType(WeaponType.Elemental);
+        public decimal Paradox => GetWeaponResourceFromType(WeaponType.Chaos);
+        public decimal Rage => GetWeaponResourceFromType(WeaponType.Hammer);
+        public decimal Shells => GetWeaponResourceFromType(WeaponType.Shotgun);
         public bool Grenade => GetWeaponResourceFromType(WeaponType.Rifle) > 0;
 
         // Weapon wrappers (for APL)
@@ -532,7 +532,7 @@ namespace swlsimNET.ServerApp.Models
             return SecondaryWeapon.WeaponType == wtype ? SecondaryWeapon : null;
         }
 
-        public double GetWeaponResourceFromType(WeaponType wtype)
+        public decimal GetWeaponResourceFromType(WeaponType wtype)
         {
             if (PrimaryWeapon.WeaponType == wtype)
                 return PrimaryWeapon.GimmickResource;

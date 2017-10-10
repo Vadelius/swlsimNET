@@ -20,10 +20,10 @@ namespace swlsimNET.ServerApp.Combat
         public int SecondaryEnergyStart { get; set; }
         public int SecondaryEnergyEnd { get; set; }
 
-        public double PrimaryGimmickStart { get; set; }
-        public double PrimaryGimmickEnd { get; set; }
-        public double SecondaryGimmickStart { get; set; }
-        public double SecondaryGimmickEnd { get; set; }
+        public decimal PrimaryGimmickStart { get; set; }
+        public decimal PrimaryGimmickEnd { get; set; }
+        public decimal SecondaryGimmickStart { get; set; }
+        public decimal SecondaryGimmickEnd { get; set; }
 
         public RoundResult()
         {
