@@ -8,8 +8,8 @@ namespace swlsimNET.ServerApp.Weapons
 {
     public class Blade : Weapon
     {
-        private int spiritBladeCharges;
-        private bool SpiritBladeActive => spiritBladeCharges > 0;
+        private int _spiritBladeCharges;
+        private bool SpiritBladeActive => _spiritBladeCharges > 0;
         private int _deluge;
 
         public Blade(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)

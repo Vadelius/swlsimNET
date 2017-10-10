@@ -9,16 +9,19 @@ namespace swlsimNET.ServerApp.Weapons
     public class Shotgun : Weapon
     {
         private int _ifritanDespoilerCounter;
-        private double _shellstamp;
+        private decimal _shellstamp;
+
         public Shotgun(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
             _maxGimickResource = 6;
             _gimickResource = 6;
         }
+
         public override void PreAttack(IPlayer player, RoundResult rr)
         {
             _shellstamp = GimmickResource;
         }
+
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
             var roll = Rnd.Next(1, 6);

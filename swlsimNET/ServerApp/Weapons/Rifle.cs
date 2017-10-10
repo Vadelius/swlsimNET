@@ -80,7 +80,7 @@ namespace swlsimNET.ServerApp.Weapons
             }
         }
 
-        public override double GetBonusBaseDamage(IPlayer player, ISpell spell, double gimmickBeforeCast)
+        public override double GetBonusBaseDamage(IPlayer player, ISpell spell, decimal gimmickBeforeCast)
         {
             double bonusBaseDamage = 0;
 
