@@ -24,7 +24,8 @@ namespace swlsimNET.ServerApp.Weapons
         MiseryAndMalice, SixShooters, SovTechHarmonisers, Cb3Annihilators, HeavyCaliberPistols,
         InfernalLoader, Ksr43,
         BladedGauntlets, TreshingClaws, BloodDrinkers,
-        Apocalypse, RazorsEdge, BladeOfTheSeventhSon, Soulblade
+        Apocalypse, RazorsEdge, BladeOfTheSeventhSon, Soulblade,
+        IfritanDespoiler, Spesc221
     }
 
     public class Weapon
