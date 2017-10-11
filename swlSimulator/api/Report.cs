@@ -1,17 +1,15 @@
-using Microsoft.AspNetCore.Mvc;
-using swlSimulator.api.Combat;
-using swlSimulator.api.Spells;
-using swlSimulator.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using swlSimulator.api.Combat;
+using swlSimulator.api.Spells;
+using swlSimulator.Models;
 
-namespace swlSimulator.Controllers
+namespace swlSimulator.api
 {
-    [Route("api/[controller]")]
-    public class ReportController : Controller
+    public class Report
     {
 
         private List<Attack> _allSpellCast = new List<Attack>();
