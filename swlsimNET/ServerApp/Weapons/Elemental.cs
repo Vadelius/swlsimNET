@@ -21,8 +21,7 @@ namespace swlsimNET.ServerApp.Weapons
 
         public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, decimal heatBeforeCast)
         {
-            var hasFigurine = player.Settings.PrimaryWeaponProc == WeaponProc.FrozenFigurine &&
-                              spell.ElementalType == "Cold";
+            var hasFigurine = player.Settings.PrimaryWeaponProc == WeaponProc.FrozenFigurine && spell.ElementalType == "Cold";
             LastElementalSpell = spell;
 
             TimeSinceLastElementalSpell = player.CurrentTimeSec - LastElementalSpellTimeStamp;
@@ -37,34 +36,22 @@ namespace swlsimNET.ServerApp.Weapons
 
             //HeatStop();
 
-            if (!hasFigurine && heatBeforeCast >= 25 && heatBeforeCast <= 50)
+            // TODO: Add all constants to own file?
+            if (heatBeforeCast >= 25 && heatBeforeCast <= 50)
             {
                 // GimmickBonusDamage = 1.087; // 8.7%
-                return 0.087;
+                return hasFigurine ? 0.797 : 0.087;
             }
-            if (!hasFigurine && heatBeforeCast >= 50 && heatBeforeCast <= 75)
+            if (heatBeforeCast >= 50 && heatBeforeCast <= 75)
             {
                 // GimmickBonusDamage = 1.174; // 17.4%
-                return 0.174;
+                return hasFigurine ? 0.884 : 0.174;
             }
-            if (!hasFigurine && heatBeforeCast >= 75 && heatBeforeCast <= 100)
+            if (heatBeforeCast >= 75 && heatBeforeCast <= 100)
             {
                 // GimmickBonusDamage = 1.348 // 34.8%
-                return 0.348;
+                return hasFigurine ? 1.058 : 0.348;
             }
-            if (hasFigurine && heatBeforeCast >= 25 && heatBeforeCast <= 50)
-            {
-                return 0.797;
-            }
-            if (hasFigurine && heatBeforeCast >= 50 && heatBeforeCast <= 75)
-            {
-                return 0.884;
-            }
-            if (hasFigurine && heatBeforeCast >= 75 && heatBeforeCast <= 100)
-            {
-                return 1.058;
-            }
-
 
             // heatBeforeCast >= 0 && heatBeforeCast <= 25
             // Normal damage
@@ -118,6 +105,7 @@ namespace swlsimNET.ServerApp.Weapons
             if (GimmickResource < 0) GimmickResource = 0;
         }
 
+        // TODO: Fix HeatStop
         //private void HeatStop()
         //{
         //    if (Player.Heat == 100)

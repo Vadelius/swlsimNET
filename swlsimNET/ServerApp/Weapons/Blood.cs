@@ -98,7 +98,7 @@ namespace swlsimNET.ServerApp.Weapons
             {
                 bonusBaseDamageMultiplier += 0.534; // 53.4%
             }
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.EldritchTome && spell.SpellType == SpellType.Dot && spell.WeaponType == WeaponType.Blood)
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.EldritchTome && spell.SpellType == SpellType.Dot)
             {
                 //Your Blood Magic damage over time effects deal 75 % more damage.
                 bonusBaseDamageMultiplier += 0.75; // 75%

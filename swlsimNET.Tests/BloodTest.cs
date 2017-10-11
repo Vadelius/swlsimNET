@@ -52,6 +52,8 @@ namespace swlsimNET.Tests
             Assert.IsTrue(bSpells == 5);
         }
 
+        // TODO: Add Decay test
+
         private sealed class BloodSpell : Spell
         {
             public BloodSpell()
