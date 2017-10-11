@@ -10,3 +10,5 @@ $checkboxes.on("change", function () {
 
     localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
 });
+
+console.log(presets);

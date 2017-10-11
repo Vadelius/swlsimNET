@@ -48,12 +48,12 @@
         'input-Passive4': 'null',
         'input-Passive5': 'null',
         'input-Apl':
-            "Fist.Savagery, Corruption >= 10 && EldritchScourge.Cooldown <= 0 && Desecrate.Cooldown <= 0\r\n" +
-                "Blood.EldritchScourge, Corruption > 0 && Buff.Savagery.Active\r\n" +
-                "Blood.Desecrate, Buff.Savagery.Active\r\n" +
-                "Blood.Maleficium, Blood.Energy > 10\r\n" +
-                "Blood.Torment"
-    },
+            "Fist.Savagery, HighExplosiveGrenade.Cooldown <= 0\r\n" +
+                "Rifle.HighExplosiveGrenade, Buff.Savagery\r\n" +
+                "Rifle.IncendiaryGrenade, HighExplosiveGrenade.Cooldown >6\r\n" +
+                "Rifle.BurstFire\r\n" +
+                "Rifle.PlacedShot"
+    }
 };
 
-module.export = presets;
+module.exports = presets;
