@@ -1,10 +1,3 @@
-/**
-* Theme: Ubold Admin Template
-* Author: Coderthemes
-* Component: Dashboard 4
-* 
-*/
-
 !function($) {
     "use strict";
 
