@@ -1,15 +1,19 @@
+using Microsoft.AspNetCore.Mvc;
+using swlSimulator.api.Combat;
+using swlSimulator.api.Spells;
+using swlSimulator.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using swlSimulator.api.Combat;
-using swlSimulator.api.Spells;
 
-namespace swlSimulator.Models
+namespace swlSimulator.Controllers
 {
-    public class Report
+    [Route("api/[controller]")]
+    public class ReportController : Controller
     {
+
         private List<Attack> _allSpellCast = new List<Attack>();
         public List<ISpell> _distinctSpellCast = new List<ISpell>();
         public List<IBuff> _distinctBuffs = new List<IBuff>();
@@ -77,7 +81,7 @@ namespace swlSimulator.Models
 
         private void InitReportData(List<FightResult> iterationFightResults)
         {
-            nfi = (NumberFormatInfo) CultureInfo.InvariantCulture.NumberFormat.Clone();
+            nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
             decimal lastChangeTimeStamp = 0;
@@ -110,11 +114,11 @@ namespace swlSimulator.Models
 
                     foreach (var a in rr.Attacks)
                     {
-                        if (a.IsHit && a.IsCrit) 
+                        if (a.IsHit && a.IsCrit)
                         {
-                            _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " + 
+                            _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
                                                    $"{a.Spell.Name} *{a.Damage.ToString("#,##0,.0K", nfi)}* " +
-                                                   $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " + 
+                                                   $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " +
                                                    $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})</div>");
                         }
                         else if (a.IsHit && a.Spell.SpellType != SpellType.Procc)
@@ -173,8 +177,8 @@ namespace swlSimulator.Models
                 var hits = allOfSameSpellDatas.Count(s => s.IsHit);
 
                 // Can't divide int with int, 4.9 will result in 4 etc, either print with decimal or do a correct rounding
-                var avghits = hits / (double) _settings.Iterations;
-                var avgcrits = crits / (double) _settings.Iterations;
+                var avghits = hits / (double)_settings.Iterations;
+                var avgcrits = crits / (double)_settings.Iterations;
                 var cc = decimal.Divide(crits, hits) * 100;
                 var hdmg = allOfSameSpellDatas.Max(s => s.Damage);
                 var ldmg = allOfSameSpellDatas.Where(s => s.IsHit).Min(s => s.Damage);
@@ -243,5 +247,3 @@ namespace swlSimulator.Models
         }
     }
 }
-
-    
