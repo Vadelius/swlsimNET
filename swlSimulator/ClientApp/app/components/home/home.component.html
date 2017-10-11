@@ -1,16 +1,81 @@
-<h1>Hello, world!</h1>
-<p>Welcome to your new single-page application, built with:</p>
-<ul>
-    <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-    <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for client-side code</li>
-    <li><a href='https://webpack.github.io/'>Webpack</a> for building and bundling client-side resources</li>
-    <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
-<p>To help you get started, we've also set up:</p>
-<ul>
-    <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-    <li><strong>Server-side prerendering</strong>. For faster initial loading and improved SEO, your Angular app is prerendered on the server. The resulting HTML is then transferred to the browser where a client-side copy of the app takes over.</li>
-    <li><strong>Webpack dev middleware</strong>. In development mode, there's no need to run the <code>webpack</code> build tool. Your client-side resources are dynamically built on demand. Updates are available as soon as you modify any file.</li>
-    <li><strong>Hot module replacement</strong>. In development mode, you don't even need to reload the page after making most changes. Within seconds of saving changes to files, your Angular app will be rebuilt and a new instance injected is into the page.</li>
-    <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and the <code>webpack</code> build tool produces minified static CSS and JavaScript files.</li>
-</ul>
+<div class="col-xs-12" style="height:110px;"></div>
+<div class="account-pages"></div>
+<div class="clearfix"></div>
+
+<div class="wrapper-page">
+    <div class="card-box">
+        <div class="panel-heading">
+            <h3 class="text-center"> Sign In to <strong class="text-custom">SWLSimulator</strong></h3>
+        </div>
+
+        <div class="panel-body">
+            <form class="form-horizontal m-t-20">
+
+                <div class="form-group ">
+                    <div class="col-xs-12">
+                        <input class="form-control" type="text" required="" placeholder="Username">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input class="form-control" type="password" required="" placeholder="Password">
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <div class="col-xs-12">
+                        <div class="checkbox checkbox-primary">
+                            <input id="checkbox-signup" type="checkbox">
+                            <label for="checkbox-signup"> Remember me </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group text-center m-t-40">
+                    <div class="col-xs-12">
+                        <button class="btn btn-pink btn-block text-uppercase waves-effect waves-light" type="submit">
+                            Log In
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group m-t-20 m-b-0">
+                    <div class="col-sm-12">
+                        <a href="#" class="text-dark"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
+                    </div>
+                </div>
+
+                <div class="form-group m-t-20 m-b-0">
+                    <div class="col-sm-12 text-center">
+                        <h4><b>Sign in with</b></h4>
+                    </div>
+                </div>
+
+                <div class="form-group m-b-0 text-center">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-facebook waves-effect waves-light m-t-20">
+                            <i class="fa fa-facebook m-r-5"></i> Facebook
+                        </button>
+
+
+
+                        <button type="button" class="btn btn-googleplus waves-effect waves-light m-t-20">
+                            <i class="fa fa-google-plus m-r-5"></i> Google+
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <p>
+                Don't have an account? <a href="#" class="text-primary m-l-5"><b>Sign Up</b></a>
+            </p>
+        </div>
+    </div>
+
+</div>
