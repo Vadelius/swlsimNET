@@ -349,7 +349,7 @@ namespace swlsimNET.ServerApp.Models
                 if (attack != null)
                 {
                     rr.Attacks.Add(attack);
-                    return CurrentSpell;
+                    return attack.Spell;
                 }
             }
 

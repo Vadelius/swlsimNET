@@ -45,33 +45,23 @@ namespace swlsimNET.Tests
                 .SelectMany(r => r.Attacks.Where(a => a.Spell is RifleGrenadeSpell)).Count();
 
             // 0.0, start load cast
-            // 1.0, finish load cast
+            // 1.0, finish load cast        load: 1
             // 1.0, start cook grenade
             // 1.0, finish cook grenade
-            // 1.0, grenade cast
+            // 1.0, grenade cast (gcd)      grenade: 1
 
             // 2.0, start next load cast
-            // 3.0, finish load cast
+            // 3.0, finish load cast        load: 2
             // 3.0, start cook grenade
             // 3.0, finish cook grenade
-            // 3.0, grenade cast
+            // 3.0, grenade cast (gcd)      grenade: 2
 
-            // 3.0, finish load cast
-            // 3.0, start next load cast
-            // 4.0, finish load cast
-            // 4.0, start next load cast
-            // 5.0, finish load cast
-            // 5.0, start next load cast
-            // 6.0, finish load cast
-            // 6.0, cooking timer finished
-            // 6.0, grenade cast
+            // Rounds where something is executed, 1 and 3 (2 total)
 
-            // TODO: Fix this
-
-            Assert.AreEqual(rounds, 5);
-            Assert.AreEqual(endTime, 6.0m);
-            Assert.IsTrue(loadCount == 6);
-            Assert.IsTrue(grenadeCount == 1);
+            Assert.AreEqual(rounds, 2);
+            Assert.AreEqual(endTime, 3.0m);
+            Assert.IsTrue(loadCount == 2);
+            Assert.IsTrue(grenadeCount == 2);
         }
 
         private sealed class RifleLoadGrenadeSpell : Spell
