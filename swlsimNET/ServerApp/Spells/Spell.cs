@@ -207,6 +207,7 @@ namespace swlsimNET.ServerApp.Spells
 
         private void AddGimmickOnHitBonuses(IPlayer player)
         {
+            // TODO: Check all callers of this method, must non dmg spells actually hit? Should non dmg spells get here?
             var spellWeapon = player.GetWeaponFromSpell(this);
             spellWeapon?.OnHit(player, this, _primaryGimmickBeforeCast);
         }
@@ -402,13 +403,11 @@ namespace swlsimNET.ServerApp.Spells
             }
 
             // Get energy / gimmick gains on hit
-            //if (isHit || BaseDamage <= 0) OnHitGains(player);
-            //if (isHit && damage > 0) OnCritGains(player);
+            // TODO: Is this correct for all spells, no damage = it doesn't have to hit to get gains?
+            if (isHit || BaseDamage <= 0) OnHitGains(player);
+            if (isHit && damage > 0) OnCritGains(player);
 
-            //if (isHit) AddGimmickOnHitBonuses(player);
-
-            // Mark casting spell as finished
-            //player.CurrentSpell = null;
+            if (isHit) AddGimmickOnHitBonuses(player);
 
             return new Attack { Spell = this, Damage = damage, IsCrit = isCrit, IsHit = isHit };
         }
