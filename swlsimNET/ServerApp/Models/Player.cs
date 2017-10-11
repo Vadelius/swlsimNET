@@ -478,9 +478,9 @@ namespace swlsimNET.ServerApp.Models
             // Make sure we cant do anything more this round
             if (rr.Attacks != null && rr.Attacks.Any())
             {
-                var rrc = ContinueRound(rr, spell);
-                while (rrc.Attacks.Count == rr.Attacks.Count)
+                while (true)
                 {
+                    var rrc = ContinueRound(rr, spell);
                     if (rrc.Attacks.Count == rr.Attacks.Count)
                     {
                         break;
