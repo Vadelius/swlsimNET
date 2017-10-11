@@ -26,23 +26,19 @@
     <div class="navbar-custom">
         <div class="container">
             <div id="navigation">
-                <!-- Navigation Menu-->
                 <ul class="navigation-menu">
                     <li class="has-submenu">
-                        <a asp-area="" asp-controller="Home" asp-action="Index" class="navigation-menu"><i class="md md-dashboard"></i>Dashboard</a>
-                    </li>
+                    <a [routerLink]="['/home']" class="navigation-menu"><i class="md md-dashboard"></i>Dashboard</a>
                     <li class="has-submenu">
-                        <a asp-area="" asp-controller="Home" asp-action="Import" class="navigation-menu"><i class="md md-layers"></i>Import</a> <!-- </i> -->
+                    <a [routerLink]="['/import']" class="navigation-menu"><i class="md md-layers"></i>Import</a>
                     <li class="has-submenu">
-                        <a asp-area="" asp-controller="Home" asp-action="Export" class="navigation-menu"><i class="md md-class"></i>Export</a>
+                    <a [routerLink]="['/results']" class="navigation-menu"><i class="md md-layers"></i>Results</a>
                     <li class="has-submenu">
-                        <a asp-area="" asp-controller="Home" asp-action="Spellquery" class="navigation-menu"><i class="md md-folder-special"></i>Spellquery</a>
+                    <a [routerLink]="['/spellquery']" class="navigation-menu"><i class="md md-folder-special"></i>Spellquery</a>
                     <li class="has-submenu">
                         <a href="http://www.github.com/vadelius/swlsimNET/" class="navigation-menu"><i class="md md-star-rate"></i>Github</a>
                 </ul>
-                <!-- End navigation menu        -->
             </div>
-        </div> <!-- end container -->
-    </div> <!-- end navbar-custom -->
+        </div>
+    </div>
 </header>
-<!-- End Navigation Bar-->
