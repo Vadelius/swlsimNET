@@ -20,7 +20,7 @@ namespace swlsimNET.ServerApp.Weapons
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
             var roll = Rnd.Next(1, 3);
-            var attack = rr.Attacks.FirstOrDefault();
+            var attack = rr.Attacks.FirstOrDefault(a => a.Spell == spell);
             if (attack == null || !attack.IsHit || attack.Damage <= 0) return;
 
             var weapon = player.GetWeaponFromSpell(attack.Spell);

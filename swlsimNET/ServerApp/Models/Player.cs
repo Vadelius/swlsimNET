@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Expressions;
 using swlsimNET.Models;
@@ -216,11 +217,14 @@ namespace swlsimNET.ServerApp.Models
             return rr;
         }
 
-        private RoundResult ContinueRound(RoundResult rr, ISpell prevSpell)
+        private bool ContinueRound(RoundResult rr, ISpell prevSpell)
         {
             // TODO: Check if all this should be done in continue round
             // TODO: Fix timestamtp and cooldown checks in all methods below etc
             // Order of a round
+
+            var actions = rr.Attacks.Count;
+
             Item.PreAttack(rr);
             WeaponPreAttack(rr);
             var spell = ExecuteAction(rr, prevSpell);
@@ -229,10 +233,9 @@ namespace swlsimNET.ServerApp.Models
             WeaponAfterAttack(rr, spell);
             PassiveBonusSpells(rr, spell);
             EndRound(rr, spell);
-            //EndRoundBuffs(rr);
-            //PostRound(rr);
 
-            return rr;
+            // Did any change occur?
+            return actions != rr.Attacks.Count;
         }
 
         private void PreRound(RoundResult rr)
@@ -347,20 +350,6 @@ namespace swlsimNET.ServerApp.Models
                 {
                     rr.Attacks.Add(attack);
                     return CurrentSpell;
-
-                    //// TODO: Can we fix this somehow, it fucks up the order of a round
-                    //// Cast complete, we start other actions same round
-                    //Item.PreAttack(rr);
-                    //WeaponPreAttack(rr);
-                    //// Cast complete, we can start casting same round
-                    //var spell = GetSpellFromApl();
-                    //attack = spell?.Execute(this);
-
-                    //// If attack is null we have started a cast
-                    //if (attack != null)
-                    //{
-                    //    rr.Attacks.Add(attack);
-                    //}
                 }
             }
 
@@ -476,16 +465,12 @@ namespace swlsimNET.ServerApp.Models
         private void PostRound(RoundResult rr, ISpell spell)
         {
             // Make sure we cant do anything more this round
-            if (rr.Attacks != null && rr.Attacks.Any())
+            if (rr.Attacks.Any())
             {
-                while (true)
+                var changes = true;
+                while (changes)
                 {
-                    var rrc = ContinueRound(rr, spell);
-                    if (rrc.Attacks.Count == rr.Attacks.Count)
-                    {
-                        break;
-                    }
-                    rr = rrc;
+                    changes = ContinueRound(rr, spell);
                 }
             }           
 

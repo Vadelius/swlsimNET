@@ -161,7 +161,7 @@ namespace swlsimNET.ServerApp.Spells
                 return ChannelTick(player);
             }
 
-            if (player.CastTime % TickInterval == 0)
+            if (player.CastTime % TickInterval == 0 && player.CastTime < CastTime)
             {
                 // Ticks
                 return ChannelTick(player);
@@ -174,8 +174,8 @@ namespace swlsimNET.ServerApp.Spells
         {
             var spell = this; // debug
 
-            var initialTick = CastTime == player.CastTime + TickInterval;
-            var lastTick = CastTime == player.CastTime;
+            var initialTick = CastTime - TickInterval == player.CastTime;
+            var lastTick = CastTime == 0;
 
             // All bonuses applied only on first tick
             if (initialTick)

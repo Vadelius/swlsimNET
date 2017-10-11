@@ -211,7 +211,7 @@ namespace swlsimNET.ServerApp.Weapons
             }
 
             // Buff is not up and not on cooldown
-            var attack = rr.Attacks.FirstOrDefault();
+            var attack = rr.Attacks.FirstOrDefault(a => a.Spell == spell);
             if (attack != null && attack.IsCrit)
             {
                 // Activate buff and set to available
