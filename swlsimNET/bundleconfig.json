@@ -11,8 +11,7 @@
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/js/jquery.dashboard_4.js",
-      "wwwroot/js/site.js"
+
 
     ],
     // Optionally specify minification options
