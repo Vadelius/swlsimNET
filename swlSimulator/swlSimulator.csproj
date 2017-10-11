@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Expressions" Version="0.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Humanizer" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>

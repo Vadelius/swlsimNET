@@ -1,33 +1,48 @@
-<div class='main-nav'>
-    <div class='navbar navbar-inverse'>
-        <div class='navbar-header'>
-            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
-                <span class='sr-only'>Toggle navigation</span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-            </button>
-            <a class='navbar-brand' [routerLink]="['/home']">swlSimulator</a>
-        </div>
-        <div class='clearfix'></div>
-        <div class='navbar-collapse collapse'>
-            <ul class='nav navbar-nav'>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/home']">
-                        <span class='glyphicon glyphicon-home'></span> Home
+  <!-- Navigation Bar-->
+<header id="topnav">
+    <div class="topbar-main">
+        <div class="container">
+            <!-- Logo container-->
+            <div class="logo"><span></span></div>
+            <!-- End Logo container-->
+            <div class="menu-extras">
+                <ul class="nav navbar-nav navbar-right pull-right"></ul>
+                <div class="menu-item">
+                    <!-- Mobile menu toggle-->
+                    <a class="navbar-toggle">
+                        <div class="lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                     </a>
-                </li>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/counter']">
-                        <span class='glyphicon glyphicon-education'></span> Counter
-                    </a>
-                </li>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/fetch-data']">
-                        <span class='glyphicon glyphicon-th-list'></span> Fetch data
-                    </a>
-                </li>
-            </ul>
+                    <!-- End mobile menu toggle-->
+                </div>
+            </div>
+
         </div>
     </div>
-</div>
+
+    <div class="navbar-custom">
+        <div class="container">
+            <div id="navigation">
+                <!-- Navigation Menu-->
+                <ul class="navigation-menu">
+                    <li class="has-submenu">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="navigation-menu"><i class="md md-dashboard"></i>Dashboard</a>
+                    </li>
+                    <li class="has-submenu">
+                        <a asp-area="" asp-controller="Home" asp-action="Import" class="navigation-menu"><i class="md md-layers"></i>Import</a> <!-- </i> -->
+                    <li class="has-submenu">
+                        <a asp-area="" asp-controller="Home" asp-action="Export" class="navigation-menu"><i class="md md-class"></i>Export</a>
+                    <li class="has-submenu">
+                        <a asp-area="" asp-controller="Home" asp-action="Spellquery" class="navigation-menu"><i class="md md-folder-special"></i>Spellquery</a>
+                    <li class="has-submenu">
+                        <a href="http://www.github.com/vadelius/swlsimNET/" class="navigation-menu"><i class="md md-star-rate"></i>Github</a>
+                </ul>
+                <!-- End navigation menu        -->
+            </div>
+        </div> <!-- end container -->
+    </div> <!-- end navbar-custom -->
+</header>
+<!-- End Navigation Bar-->
