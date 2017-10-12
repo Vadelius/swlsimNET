@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppModuleShared } from './app.module.shared';
 import { AppComponent } from './components/app/app.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 require("!style-loader!css-loader!../assets/css/core.css");
 require("!style-loader!css-loader!../assets/css/components.css");
 require("!style-loader!css-loader!../assets/css/pages.css");
@@ -12,7 +13,9 @@ require("!style-loader!css-loader!../assets/css/icons.css");
     bootstrap: [ AppComponent ],
     imports: [
         BrowserModule,
-        AppModuleShared
+        AppModuleShared,
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [
         { provide: 'BASE_URL', useFactory: getBaseUrl }

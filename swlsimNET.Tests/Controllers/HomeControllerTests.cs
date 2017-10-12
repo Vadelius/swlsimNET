@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using swlsimNET.Controllers;
-using swlsimNET.Models;
-using swlsimNET.ServerApp.Weapons;
+using swlSimulator.api.Weapons;
+using swlSimulator.Models;
+using swlSimulator.Controllers;
 
 namespace swlsimNET.Tests.Controllers
 {

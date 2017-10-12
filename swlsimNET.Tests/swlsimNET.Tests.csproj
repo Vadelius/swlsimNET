@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\swlsimNET\swlsimNET.csproj" />
+    <ProjectReference Include="..\swlSimulator\swlSimulator.csproj" />
   </ItemGroup>
 
 </Project>

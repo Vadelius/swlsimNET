@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Expressions" Version="0.1.3" />
+    <PackageReference Include="Expressions" Version="0.1.3" NoWarn="NU1701" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Humanizer" Version="2.2.0" />
   </ItemGroup>
@@ -24,10 +24,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\assets\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\swlsimNET\swlsimNET.csproj" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

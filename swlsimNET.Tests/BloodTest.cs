@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using swlsimNET.Models;
-using swlsimNET.ServerApp;
-using swlsimNET.ServerApp.Combat;
-using swlsimNET.ServerApp.Models;
-using swlsimNET.ServerApp.Spells;
-using swlsimNET.ServerApp.Spells.Hammer;
-using swlsimNET.ServerApp.Weapons;
+using swlSimulator.api;
+using swlSimulator.api.Combat;
+using swlSimulator.api.Models;
+using swlSimulator.api.Spells;
+using swlSimulator.api.Weapons;
+using swlSimulator.Models;
 
 namespace swlsimNET.Tests
 {

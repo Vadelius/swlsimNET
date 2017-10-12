@@ -1,27 +1,38 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
+import {
+    FormGroup, FormBuilder
+    } from '@angular/forms';
 
 @Component({
     selector: 'import',
-    templateUrl: './import.component.html'
-})
-export class ImportComponent {
-    primaryWeapon = "";
-    primaryProc = "";  
-    primaryAffix = "";
-    secondaryWeapon = "";
-    secondaryyProc = "";
-    secondaryAffix = "";
-    head = "";
-    neck = "";
-    luck = "";
-    gadget = "";
-    basicSignet = 101;
-    powerSignet = 18;
-    eliteSignet = 31;
-    luckSignet = 12;
-    waistSignet = 52;
-    combatPower = 1300;
-    criticalChance = 31;
-    criticalPower = 110;
-}
+    templateUrl: './import.component.html',
 
+})
+   
+export class ImportComponent implements OnInit {
+    myform: FormGroup;
+
+    constructor(fb: FormBuilder) {
+        this.myform = fb.group({
+            "val": [""]
+            //"primaryAffix": [""],
+            //"primaryProc": [""],
+            //"secondaryWeapon": [""],
+            //"secondaryAffix": [""],
+            //"secondaryProc": [""],
+            //"combatPower": [""],
+            //"criticalChance": [""],
+            //"criticalPower": [""],
+
+
+        });
+    }
+
+    ngOnInit() {
+    }
+
+    onSubmit(value: string): void {
+        console.log('you submitted value: ', value);
+    }
+
+}
