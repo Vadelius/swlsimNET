@@ -1,38 +1,50 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import {
-    FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { NgModule } from '@angular/core';
 
 @Component({
     selector: 'import',
     templateUrl: './import.component.html',
 
 })
-   
+
+@NgModule({
+    imports: [FormBuilder, FormGroup],
+})
 export class ImportComponent implements OnInit {
-    myform: FormGroup;
+    public initialState: any;
+    public areasForm: FormGroup;
 
-    
-    constructor(fb: FormBuilder) {
-        this.myform = fb.group({
-            "val": [""]
-            //"primaryAffix": [""],
-            //"primaryProc": [""],
-            //"secondaryWeapon": [""],
-            //"secondaryAffix": [""],
-            //"secondaryProc": [""],
-            //"combatPower": [""],
-            //"criticalChance": [""],
-            //"criticalPower": [""],
+    constructor(private fb: FormBuilder) { }
 
-
+    area(): any {
+        return this.fb.group({
+            primaryWeapon: [""],
+            primaryProc: [""],
+            primaryAffix: [""],
+            secondaryWeapon: [""],
+            secondaryProc: [""],
+            secondaryAffix: [""]
         });
     }
 
-    ngOnInit() {
-    }
+    ngOnInit(): void {
+        this.areasForm = this.fb.group({
+            primaryWeapon: [""],
+            primaryAffix: [""],
+            primaryProc: [""],
+            secondaryWeapon: [""],
+            secondaryProc: [""],
+            secondaryAffix: [""],
+            areas: this.fb.array([this.area()])
+        });
 
-    onSubmit(value: string): void {
-        console.log('you submitted value: ', value);
-    }
+        this.areasForm.valueChanges.subscribe(data => {
+            console.log(this.areasForm.controls.primaryWeapon);
+        });
 
+    }
 }
+
+
+

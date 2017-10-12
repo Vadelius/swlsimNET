@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using swlSimulator.api.Combat;
 using swlSimulator.api.Spells;
 using swlSimulator.api.Spells.Blade;
@@ -11,88 +7,41 @@ using swlSimulator.api.Spells.Hammer;
 using swlSimulator.api.Spells.Pistol;
 using swlSimulator.api.Spells.Shotgun;
 using swlSimulator.api.Weapons;
+using System;
+using System.Collections.Generic;
 
 namespace swlSimulator.Models
 {
     public class Settings
     {
-        [Display(Name = "Primary weapon *")]
-        [Required(ErrorMessage = "required.")] // {0} is required. to display name also
         public WeaponType? PrimaryWeapon { get; set; }
-
-        [Display(Name = "Secondary weapon *")]
-        [Required(ErrorMessage = "required.")]
         public WeaponType? SecondaryWeapon { get; set; }
-
-        [Display(Name = "Primary weapon affix")]
         public WeaponAffix PrimaryWeaponAffix { get; set; }
-
-        [Display(Name = "Secondary weapon affix")]
         public WeaponAffix SecondaryWeaponAffix { get; set; }
-
-        [Display(Name = "Primary weapon proc")]
         public WeaponProc PrimaryWeaponProc { get; set; }
-
-        [Display(Name = "Secondary weapon proc")]
         public WeaponProc SecondaryWeaponProc { get; set; }
-
-        [Display(Name = "Neck Talisman")]
         public NeckTalisman Neck { get; set; }
-
-        [Display(Name = "Luck Talisman")]
         public LuckTalisman Luck { get; set; }
-
-        [Display(Name = "Head Talisman")]
         public HeadTalisman Head { get; set; }
-
-        [Display(Name = "Gadget")]
         public Gadget Gadget { get; set; }
-
-        [Display(Name = "Combat power")]
         public double CombatPower { get; set; } = 1200;
-
-        [Display(Name = "Glance reduction %")]
         public double GlanceReduction { get; set; } = 30;
-
-        [Display(Name = "Critical chance %")]
         public double CriticalChance { get; set; } = 25;
-
-        [Display(Name = "Crit power")]
         public double CritPower { get; set; } = 100;
-
-        [Display(Name = "Basic signet")]
         public double BasicSignet { get; set; } = 75;
-
-        [Display(Name = "Power signet")]
         public double PowerSignet { get; set; } = 17;
-
-        [Display(Name = "Elite signet")]
         public double EliteSignet { get; set; } = 56;
-        [Display(Name = "Waist signet")]
         public double WaistSignet { get; set; } = 90;
-
-        [Display(Name = "Action priority list *")]
-        [Required(ErrorMessage = "required.")]
         public string Apl { get; set; }
-
         public string Passive1 { get; set; }
         public string Passive2 { get; set; }
         public string Passive3 { get; set; }
         public string Passive4 { get; set; }
         public string Passive5 { get; set; }
-        
-        [Display(Name = "Opening Shot every ~ 20 seconds")]
         public bool OpeningShot { get; set; }
-
-        [Display(Name = "Exposed with 100% uptime")]
         public bool Exposed { get; set; }
-
-        [Display(Name = "Head signet is CDR")]
         public bool HeadSignetIsCdr { get; set; }
-
-        [Display(Name = "Enable Savagery")]
         public bool Savagery { get; set; }
-
         public int Iterations { get; set; } = 100;
         public int FightLength { get; set; } = 240;
 
@@ -109,16 +58,14 @@ namespace swlSimulator.Models
 
         public IEnumerable<SelectListItem> Passives = _allPassives.ConvertAll(
             a => new SelectListItem
-        {
-            Text = a.ToString().Substring(a.ToString().LastIndexOf('.') + 1),
-            Value = a.ToString().Substring(a.ToString().LastIndexOf('.') + 1),
-            Selected = false
-        });
+            {
+                Text = a.ToString().Substring(a.ToString().LastIndexOf('.') + 1),
+                Value = a.ToString().Substring(a.ToString().LastIndexOf('.') + 1),
+                Selected = false
+            });
 
-        [JsonIgnore]
         public List<Passive> AllPassives => _allPassives;
 
-        [JsonIgnore]
         private static List<Passive> _allPassives = new List<Passive>
         {
             // TODO: Add ALL passives here
