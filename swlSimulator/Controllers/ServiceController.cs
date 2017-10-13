@@ -10,26 +10,24 @@ namespace swlSimulator.Controllers
 {
 
     [Produces("application/json")]
-    [Route("api/Service")]
+    [Route("api/values")]
     public class ServiceController : Controller
     {
         private List<FightResult> _iterationFightResults;
-
         private Settings _settings = new Settings();
 
-        // GET: api/Service
+        // GET: api/values
         [Produces("application/json")]
         [HttpGet]
-        public List<FightResult> Get()
+        public IEnumerable<string> Get()
         {
-            return new List<FightResult>();
+            return new string[] { "Hello", "World" };
         }
 
-        // GET: api/Service/5
+        // GET: api/values/5
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
-
             return "value";
         }
 

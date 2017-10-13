@@ -4,6 +4,7 @@ import { Configuration } from './app/app.constants'
 import { HubConnection } from '@aspnet/signalr-client';
 import { SettingsService } from "./settings.service";
 import { Settings } from "./settings.interface";
+import { Http } from '@angular/http'
 
 @Component({
     selector: 'home',
@@ -19,10 +20,11 @@ export class HomeComponent implements OnInit {
 
     constructor(
         private _settingsservice: SettingsService,
-        private _settings: Configuration) {
+        private _settings: Configuration,
+        private httpService: Http) {
     }
     public settings: Settings[];
-
+    apiValues: string[] = [];
     public sendMessage(): void {
         const data = `Sent: ${this.message}`;
 
@@ -31,6 +33,17 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
+
+
+        // Below is webAPI
+
+        this.httpService.get('/api/values').subscribe((values: any) => {
+            this.apiValues = values.json() as string[];
+        });
+
+
+        // Below is SingalR.
+
         this.hubConnection = new HubConnection('/loopy');
 
         this.hubConnection.on('Send', (data: any) => {

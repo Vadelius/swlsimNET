@@ -9,12 +9,4 @@ import { Http } from '@angular/http'
 })
 
 export class AppComponent {
-
-constructor(private httpService: Http) { }
-apiService: string[] = [];
-ngOnInit() {
-    this.httpService.get('/api/Service').subscribe(values => {
-        this.apiService = values.json() as string[];
-    });
-}
 }
