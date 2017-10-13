@@ -1,22 +1,23 @@
-﻿import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { Settings } from './settings.interface';
+﻿import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
+import { Hero } from './settings.interface';
 
 @Component({
-    moduleId: "import",
     selector: 'import',
     templateUrl: 'import.component.html',
 })
-export class ImportComponent implements OnInit {
+export class ImportComponent {
 
-    orderForm: FormGroup;
-    items: any[] = [];
-    model: Settings;
-    fb = FormBuilder;
+    powers = ['Shitforms',
+        'kms', 'plzstop'];
 
-    ngOnInit() {
-        this.orderForm = this.fb.apply({
-            item: "",
-        });
+    model = new Hero(18, 'Dr Angular', this.powers[0], 'Testskit');
+
+    submitted = false;
+
+    onSubmit() { this.submitted = true; }
+
+    newHero() {
+        this.model = new Hero(42, '', '');
     }
 }
