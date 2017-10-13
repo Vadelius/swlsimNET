@@ -25,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="ClientApp\api\settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ClientApp\assets\" />
   </ItemGroup>
 
