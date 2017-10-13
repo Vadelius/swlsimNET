@@ -1,81 +1,38 @@
 <div class="col-xs-12" style="height:110px;"></div>
-<div class="account-pages"></div>
-<div class="clearfix"></div>
 
-<div class="wrapper-page">
-    <div class="card-box">
-        <div class="panel-heading">
-            <h3 class="text-center"> Sign In to <strong class="text-custom">SWLSimulator</strong></h3>
-        </div>
-
-        <div class="panel-body">
-            <form class="form-horizontal m-t-20">
-
-                <div class="form-group ">
-                    <div class="col-xs-12">
-                        <input class="form-control" type="text" required="" placeholder="Username">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-xs-12">
-                        <input class="form-control" type="password" required="" placeholder="Password">
-                    </div>
-                </div>
-
-                <div class="form-group ">
-                    <div class="col-xs-12">
-                        <div class="checkbox checkbox-primary">
-                            <input id="checkbox-signup" type="checkbox">
-                            <label for="checkbox-signup"> Remember me </label>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="form-group text-center m-t-40">
-                    <div class="col-xs-12">
-                        <button class="btn btn-pink btn-block text-uppercase waves-effect waves-light" type="submit">
-                            Log In
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group m-t-20 m-b-0">
-                    <div class="col-sm-12">
-                        <a href="#" class="text-dark"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
-                    </div>
-                </div>
-
-                <div class="form-group m-t-20 m-b-0">
-                    <div class="col-sm-12 text-center">
-                        <h4><b>Sign in with</b></h4>
-                    </div>
-                </div>
-
-                <div class="form-group m-b-0 text-center">
-                    <div class="col-sm-12">
-                        <button type="button" class="btn btn-facebook waves-effect waves-light m-t-20">
-                            <i class="fa fa-facebook m-r-5"></i> Facebook
-                        </button>
-
-
-
-                        <button type="button" class="btn btn-googleplus waves-effect waves-light m-t-20">
-                            <i class="fa fa-google-plus m-r-5"></i> Google+
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-        </div>
-    </div>
+<div class="container-fluid">
+ 
+    <h1>Send some basic messages</h1>
+ 
+ 
     <div class="row">
-        <div class="col-sm-12 text-center">
-            <p>
-                Don't have an account? <a href="#" class="text-primary m-l-5"><b>Sign Up</b></a>
-            </p>
+        <form class="form-inline" (ngSubmit)="sendMessage()" #messageForm="ngForm">
+            <div class="form-group">
+                <label class="sr-only" for="message">Message</label>
+                <input type="text" class="form-control" id="message" placeholder="your message..." name="message" [(ngModel)]="message" required>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!messageForm.valid">Send SignalR</button>
+        </form>
+    </div>
+    <div class="row" *ngIf="messages.length > 0">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Messages</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let message of messages; let i = index">
+                    <td>{{i + 1}}</td>
+                    <td>{{message}}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-
+    <div class="row" *ngIf="messages.length <= 0">
+        <span>No messages</span>
+    </div>
 </div>

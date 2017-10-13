@@ -1,5 +1,5 @@
 {
-  "name": "swlSimulator",
+  "name": "swlsimulator",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -46,7 +46,10 @@
     "webpack": "2.5.1",
     "webpack-hot-middleware": "2.18.2",
     "webpack-merge": "4.1.0",
-    "zone.js": "0.8.12"
+    "zone.js": "0.8.12",
+    "msgpack5": "^3.5.1",
+    "@aspnet/signalr-client": "1.0.0-alpha1-final"
+
   },
   "devDependencies": {
     "@types/chai": "4.0.1",
