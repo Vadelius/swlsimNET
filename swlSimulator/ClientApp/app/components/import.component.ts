@@ -1,50 +1,22 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { NgModule } from '@angular/core';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { Settings } from './settings.interface';
 
 @Component({
+    moduleId: "import",
     selector: 'import',
-    templateUrl: './import.component.html',
-
-})
-
-@NgModule({
-    imports: [FormBuilder, FormGroup],
+    templateUrl: 'import.component.html',
 })
 export class ImportComponent implements OnInit {
-    public initialState: any;
-    public areasForm: FormGroup;
 
-    constructor(private fb: FormBuilder) { }
+    orderForm: FormGroup;
+    items: any[] = [];
+    model: Settings;
+    fb = FormBuilder;
 
-    area(): any {
-        return this.fb.group({
-            primaryWeapon: [""],
-            primaryProc: [""],
-            primaryAffix: [""],
-            secondaryWeapon: [""],
-            secondaryProc: [""],
-            secondaryAffix: [""]
+    ngOnInit() {
+        this.orderForm = this.fb.apply({
+            item: "",
         });
-    }
-
-    ngOnInit(): void {
-        this.areasForm = this.fb.group({
-            primaryWeapon: [""],
-            primaryAffix: [""],
-            primaryProc: [""],
-            secondaryWeapon: [""],
-            secondaryProc: [""],
-            secondaryAffix: [""],
-            areas: this.fb.array([this.area()])
-        });
-
-        this.areasForm.valueChanges.subscribe(data => {
-            console.log(this.areasForm.controls.primaryWeapon);
-        });
-
     }
 }
-
-
-

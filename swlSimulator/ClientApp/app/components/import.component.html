@@ -1,17 +1,12 @@
 ﻿<div class="col-xs-12" style="height:110px;"></div>
 
-<div>
-    <h1>Import Character Stats</h1>
-    <form [formGroup]="areasForm" (ngSubmit)="onSubmit(areasForm.value)">
-    <div class="col-xs-12">
-        <div class="col-xs-1">
-            <label style="margin-right: 10px">Primary Weapon:</label>
-            <input mdInput placeholder="Primary Weapon" type="text" formControlName="primaryWeapon">
-            <input mdInput placeholder="Primary Proc" type="text" formControlName="primaryProc">
-            <input mdInput placeholder="Primary Affix" type="text" formControlName="primaryAffix">
-            <input mdInput placeholder="Secondary Weapon" type="text" formControlName="primaryWeapon">
-            <input mdInput placeholder="Secondary Proc" type="text" formControlName="primaryProc">
-            <input mdInput placeholder="Secondary Affix" type="text" formControlName="primaryAffix">
-            </div></div>
-</form>
+<div formArrayName="items"
+     *ngFor="let item of orderForm.get('items').controls; let i = index;">
+    <div [formGroupName]="i">
+        <input formControlName="name" placeholder="Item name">
+        <input formControlName="description" placeholder="Item description">
+        <input formControlName="price" placeholder="Item price">
+    </div>
+
+    Chosen name: {{ orderForm.controls.items.controls[i].controls.name.value }}
 </div>

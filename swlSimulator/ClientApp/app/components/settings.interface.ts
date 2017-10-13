@@ -1,4 +1,4 @@
-﻿export interface ISettings {
+﻿export interface Settings {
     primaryWeapon: "Hammer",
     primaryAffix: "Havoc",
     primaryProc: "Pneumatic",

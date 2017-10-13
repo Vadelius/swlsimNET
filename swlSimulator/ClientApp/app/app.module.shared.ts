@@ -1,6 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpModule } from '@angular/http';
+import { Component, NgModule, VERSION } from '@angular/core'
+import { BrowserModule } from '@angular/platform-browser'
+import { HttpModule, Http } from '@angular/http';
+import { ReactiveFormsModule, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu.component';
@@ -9,8 +11,8 @@ import { ImportComponent } from './components/import.component';
 import { SpellqueryComponent } from './components/spellquery.component';
 import { ResultComponent } from './components/result.component';
 import { Configuration } from './components/app/app.constants'
-import { ISettingsService } from "./components/isettings.service";
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { SettingsService } from "./components/settings.service";
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -43,7 +45,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     ],
     providers: [
         Configuration,
-        ISettingsService
+        SettingsService
     ],
 })
 export class AppModuleShared {

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Configuration } from './app/app.constants'
 import { HubConnection } from '@aspnet/signalr-client';
-import { ISettingsService } from "./isettings.service";
-import { ISettings } from "./isettings";
+import { SettingsService } from "./settings.service";
+import { Settings } from "./settings.interface";
 
 @Component({
     selector: 'home',
@@ -18,10 +18,10 @@ export class HomeComponent implements OnInit {
 
 
     constructor(
-        private _settingsservice: ISettingsService,
+        private _settingsservice: SettingsService,
         private _settings: Configuration) {
     }
-    public settings: ISettings[];
+    public settings: Settings[];
 
     public sendMessage(): void {
         const data = `Sent: ${this.message}`;
@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
 
         this._settingsservice
             .getAll()
-            .subscribe((data: ISettings[]) => this.settings = data,
+            .subscribe((data: Settings[]) => this.settings = data,
                 error => console.log(error),
                 () => console.log("getAllItems() complete from init"));
     }
