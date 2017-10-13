@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using swlSimulator.SignalRHubs;
+using System.IO;
 
 namespace swlSimulator
 {
@@ -23,7 +24,6 @@ namespace swlSimulator
             services.AddSignalR();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -44,6 +44,17 @@ namespace swlSimulator
             app.UseSignalR(routes =>
             {
                 routes.MapHub<LoopyHub>("loopy");
+            });
+
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+
             });
 
             app.UseMvc(routes =>
