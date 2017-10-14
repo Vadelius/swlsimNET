@@ -9,12 +9,14 @@ namespace swlsimNET.ServerApp.Weapons
 {
     public class Rifle : Weapon
     {
-        private const int Fusetimer = 5;
-        private const int FusetimerKsr43 = 3;
-        private const int Cookingtimer = 5;
+        // TODO: Check values, 6s total cooktimer and fully cooked after 3s??
+        // TODO: All greande spells have a 4s cooldown
+        // TODO: Grenades can be used when not fully cooked. But with no bonus effect? What bonus effect...
+        private const decimal FUSE_TIMER = 5;
+        private const decimal FUSE_TIMER_KSR43 = 3;
+        private const decimal COOKINGTIMER = 5;
 
         private decimal _cookingReadyTimeSec = decimal.MaxValue;
-        private decimal _fuseTimeSec;
 
         private bool _ksr43;
         private bool _infernalLoader;
@@ -32,8 +34,8 @@ namespace swlsimNET.ServerApp.Weapons
             _maxGimickResource = 1;
         }
 
-        public decimal FuseTimer => _fuseTimeSec;
-        //public decimal Cookingtimer => ;
+        public decimal FuseTimer { get; private set; }
+        //public decimal CookingTimer => COOKINGTIMER - FuseTimer; // TODO: Fix cooking timer for APL and remove fusetimer
 
         public override void PreAttack(IPlayer player, RoundResult rr)
         {
@@ -51,14 +53,14 @@ namespace swlsimNET.ServerApp.Weapons
             {
                 if (_rr == null || rr.TimeSec != _rr.TimeSec)
                 {
-                    _fuseTimeSec += rr.Interval; 
+                    FuseTimer += rr.Interval; 
                 }               
 
-                if (_ksr43 && _fuseTimeSec > FusetimerKsr43)
+                if (_ksr43 && FuseTimer > FUSE_TIMER_KSR43)
                 {
                     GimmickResource = 0;
                 }
-                else if (!_ksr43 && _fuseTimeSec > Fusetimer)
+                else if (!_ksr43 && FuseTimer > FUSE_TIMER)
                 {
                     GimmickResource = 0;
                 }
@@ -68,7 +70,7 @@ namespace swlsimNET.ServerApp.Weapons
                 // We can use grenade
                 GimmickResource = 1;
                 _cookingReadyTimeSec = decimal.MaxValue;
-                _fuseTimeSec = 0;
+                FuseTimer = 0;
             }
 
             _rr = rr;
@@ -76,6 +78,7 @@ namespace swlsimNET.ServerApp.Weapons
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
+            // TODO: Check values some spells have 37.5% chance and some 65%
             if (GimmickResource < 1 && Rnd.Next(1, 101) > 65
                 && _grenadeGenerators.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase) 
                 || GimmickResource < 1 && spell.Name == "RifleLoadGrenadeSpell") // Unit test
@@ -85,11 +88,11 @@ namespace swlsimNET.ServerApp.Weapons
                 {
                     _cookingReadyTimeSec = decimal.MaxValue;
                     GimmickResource = 1;
-                    _fuseTimeSec = 0;
+                    FuseTimer = 0;
                 }
-                else if (_cookingReadyTimeSec > player.CurrentTimeSec + Cookingtimer)
+                else if (_cookingReadyTimeSec > player.CurrentTimeSec + COOKINGTIMER)
                 {
-                    _cookingReadyTimeSec = player.CurrentTimeSec + Cookingtimer;
+                    _cookingReadyTimeSec = player.CurrentTimeSec + COOKINGTIMER;
                 }
             }
         }
