@@ -4,7 +4,6 @@ import { AppModuleShared } from './app.module.shared';
 import { AppComponent } from './components/app/app.component';
 require("!style-loader!css-loader!../assets/css/core.css");
 require("!style-loader!css-loader!../assets/css/components.css");
-require("!style-loader!css-loader!../assets/css/pages.css");
 require("!style-loader!css-loader!../assets/css/responsive.css");
 require("!style-loader!css-loader!../assets/css/icons.css");
 
