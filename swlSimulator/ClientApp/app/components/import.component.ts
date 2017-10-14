@@ -7,12 +7,12 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 })
 export class ImportComponent {
 
-    primaryWeapon: string[] = ['Rifle' , "Blade", "Blood", "Chaos", "Elemental", "Fist", "Hammer", "Pistol", "Shotgun"];
+    primaryWeapon: string[] = ['Rifle', "Blade", "Blood", "Chaos", "Elemental", "Fist", "Hammer", "Pistol", "Shotgun"];
     primaryAffix: string[] = ["Havoc", "Destruction", "Effieciency", "Energy", "None"];
     secondaryWeapon: string[] = ["Rifle", "Blade", "Blood", "Chaos", "Elemental", "Fist", "Hammer", "Pistol", "Shotgun"];
     secondaryAffix: string[] = ["Havoc", "Destruction", "Effieciency", "Energy", "None"];
-    primaryProc: string []
-    secondaryProc: string[] 
+    primaryProc: string[]
+    secondaryProc: string[]
     hammerProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Pneumatic Maul", "Fuming Despoiler"]
     fistProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Bladed Gauntlets", "Treshing Claws", "Blood Drinkers"]
     bladeProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Apocalypse", "Razors Edge", "Blade Of The eventh Son", "Soulblade"]
@@ -33,10 +33,10 @@ export class ImportComponent {
     luckSignet: 12;
     eliteSignet: 51;
 
-    head: string [] = ["None", "Ashes"]
+    head: string[] = ["None", "Ashes"]
     neck: string[] = ["None", "SeedOfAgression", "ChokerOfSheedBlood", "EgonPendant"]
-    luck: string [] = ["None", "ColdSilver", "GamblersSoul"]
-    gadget: string [] = ["None", "ElectrograviticAttractor", "ShardOfSesshoSeki", "ValiMetabolic", "MnemonicGuardianWerewolf"]
+    luck: string[] = ["None", "ColdSilver", "GamblersSoul"]
+    gadget: string[] = ["None", "ElectrograviticAttractor", "ShardOfSesshoSeki", "ValiMetabolic", "MnemonicGuardianWerewolf"]
 
     apl: string;
     passive1: string;
@@ -76,8 +76,8 @@ export class ImportComponent {
             wristSignet: new FormControl(),
             gadget: new FormControl(),
             apl: new FormControl(),
-            
+
         });
-        
+
     }
 }

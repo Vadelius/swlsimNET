@@ -44,13 +44,13 @@
                 <label>Secondary Affix</label>
                 <select class="form-control " formControlName="secondaryAffix">
                     <option *ngFor="let affix of secondaryAffix " [value]="affix">{{affix}}</option>
-            </select>
+                </select>
             </div>
             <div class="col-xs-4 ">
                 <label>Secondary Proc</label>
                 <select class="form-control " formControlName="secondaryProc">
                     <option *ngFor="let proc of secondaryProc " [value]="proc">{{proc}}</option>
-            </select>
+                </select>
             </div>
             <div class="col-xs-4 ">
                 <label>Head Talisman</label>
@@ -105,8 +105,8 @@
             <div class="col-xs-4 ">
                 <label>Gadget</label>
                 <select class="form-control " formControlName="gadget">
-                            <option *ngFor="let g of gadget" [value]="g">{{g}}</option>
-                    </select>
+                    <option *ngFor="let g of gadget" [value]="g">{{g}}</option>
+                </select>
             </div>
         </div>
         <div class="col-xs-9" align="right">
