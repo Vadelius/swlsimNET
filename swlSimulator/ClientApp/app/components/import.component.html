@@ -12,7 +12,7 @@
     <button id="9 " type="button " class="btn btn-purple waves-effect waves-light " onclick="presetRifle ">Assault Rifle</button>
 </div>
 
-<form novalidate [formGroup]="myform ">
+<form novalidate [formGroup]="myform" (ngSubmit)="onSubmit()">
 
     <div class="col-xs-12 ">
         <div class="col-xs-3 ">
@@ -131,9 +131,22 @@
 
     </div>
 
-
-
+    <button type="submit" class="btn btn-primary" >Submit</button>
 
 </form>
-<input type="submit" value="Start Simulation" ngClick="Submit" class="btn btn-default waves-effect waves-light" />
+
 <pre>debug: {{myform.value | json}}</pre>
+
+<script>
+    var data = myform.value | json;
+    function onSubmit($scope, $http, $log) {
+        $log.info("In onSubmit");
+        $scope.do_obj = {};
+        $scope.doSomething = function (data) {
+            $http.post('/api/values', data)
+                .success(function(successData){
+                    console.log(successData);
+                });
+        }
+    }
+</script>

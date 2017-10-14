@@ -1,6 +1,5 @@
 ﻿import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-
 @Component({
     selector: 'import',
     templateUrl: 'import.component.html',
@@ -55,7 +54,7 @@ export class ImportComponent {
 
     myform: FormGroup;
 
-    ngOnInit() {
+   ngOnInit() {
         this.myform = new FormGroup({
             primaryWeapon: new FormControl(),
             primaryAffix: new FormControl(),
@@ -79,5 +78,6 @@ export class ImportComponent {
 
         });
 
-    }
+ }   
+
 }
