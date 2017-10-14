@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
-import { Hero } from './settings.interface';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Settings } from './settings.interface';
 
 @Component({
     selector: 'import',
@@ -8,16 +8,27 @@ import { Hero } from './settings.interface';
 })
 export class ImportComponent {
 
-    powers = ['Shitforms',
-        'kms', 'plzstop'];
 
-    model = new Hero(18, 'Dr Angular', this.powers[0], 'Testskit');
+    settings = Settings;
+    myform: FormGroup;
 
-    submitted = false;
-
-    onSubmit() { this.submitted = true; }
-
-    newHero() {
-        this.model = new Hero(42, '', '');
+    ngOnInit() {
+        this.myform = new FormGroup({
+            primaryWeapon: new FormControl(),
+            primaryAffix: new FormControl(),
+            primaryProc: new FormControl(),
+            secondaryWeapon: new FormControl(),
+            secondaryAffix: new FormControl(),
+            secondaryProc: new FormControl(),
+            combatPower: new FormControl( [
+                    Validators.required
+            ]),
+            criticalChance: new FormControl([
+                Validators.required
+            ]),
+            criticalPower: new FormControl([
+                Validators.required
+            ]),
+        });
     }
 }

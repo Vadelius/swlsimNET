@@ -1,31 +1,32 @@
-﻿export interface Settings {
-    primaryWeapon: "Hammer",
-    primaryAffix: "Havoc",
-    primaryProc: "Pneumatic",
-    secondaryWeapon: "Fist",
-    secondaryAffix: "Alacrity",
-    secondarProc: "Bladed Gauntlets",
-    combatPower: 1300,
-    criticalChance: 31,
-    critaicalPower: 110,
+﻿export class Settings {
+    primaryWeapon: ["Rifle", "Blade", "Blood", "Chaos", "Elemental", "Fist", "Hammer", "Pistol", "Shotgun"];
+    primaryAffix: ["Havoc", "Destruction", "Effieciency", "Energy", "None"];
+    primaryProc: "Pneumatic";
+    secondaryWeapon: ["Rifle", "Blade", "Blood", "Chaos", "Elemental", "Fist", "Hammer", "Pistol", "Shotgun"];
+    secondaryAffix: ["Havoc", "Destruction", "Effieciency", "Energy", "None"];
+    secondarProc: "Bladed Gauntlets";
 
-    basicSignet: 110,
-    powerSignet: 21,
-    waistSignet: 52,
-    luckSignet: 12,
-    eliteSignet: 51,
+    combatPower: 1300;
+    criticalChance: 31;
+    critaicalPower: 110;
 
-    head: "Ashes",
-    neck: "Seed of Agression",
-    luck: "Cold Silver Dice",
-    gadget: "Vali Metabolic",
+    basicSignet: 110;
+    powerSignet: 21;
+    waistSignet: 52;
+    luckSignet: 12;
+    eliteSignet: 51;
 
-    apl: string,
-    passive1: string,
-    passive2: string,
-    passive3: string,
-    passive4: string,
-    passive5: string,
+    head: "Ashes";
+    neck: "Seed of Agression";
+    luck: "Cold Silver Dice";
+    gadget: "Vali Metabolic";
+
+    apl: string;
+    passive1: string;
+    passive2: string;
+    passive3: string;
+    passive4: string;
+    passive5: string;
 
     exposed: true;
     openingShot: true;
@@ -36,13 +37,15 @@
     target: "Regional";
 }
 
-export class Hero {
-
-    constructor(
-        public id: number,
-        public name: string,
-        public power: string,
-        public alterEgo?: string
-    ) { }
-
+export enum WeaponProc {
+    None, AnimaTouched, FlameWreathed, PlasmaForged, Shadowbound,
+    PneumaticMaul, FumingDespoiler,
+    EldritchTome,
+    MiseryAndMalice, SixShooters, SovTechHarmonisers, Cb3Annihilators, HeavyCaliberPistols,
+    InfernalLoader, Ksr43,
+    BladedGauntlets, TreshingClaws, BloodDrinkers,
+    Apocalypse, RazorsEdge, BladeOfTheSeventhSon, Soulblade,
+    IfritanDespoiler, Spesc221,
+    UnstableElectronCore, FrozenFigurine, CryoChargedConduit,
+    WarpedVisage, OtherworldlyArtifact, SovTechParadoxGenerator
 }
