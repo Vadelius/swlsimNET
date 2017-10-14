@@ -51,15 +51,15 @@ namespace swlsimNET.ServerApp.Models
         public bool Grenade => GetWeaponResourceFromType(WeaponType.Rifle) > 0;
 
         // Weapon wrappers (for APL)
-        public Weapon Blade => GetWeaponFromType(WeaponType.Blade);
-        public Weapon Blood => GetWeaponFromType(WeaponType.Blood);
-        public Weapon Chaos => GetWeaponFromType(WeaponType.Chaos);
-        public Weapon Elemental => GetWeaponFromType(WeaponType.Elemental);
-        public Weapon Fist => GetWeaponFromType(WeaponType.Fist);
-        public Weapon Hammer => GetWeaponFromType(WeaponType.Hammer);
-        public Weapon Pistol => GetWeaponFromType(WeaponType.Pistol);
-        public Weapon Rifle => GetWeaponFromType(WeaponType.Rifle);
-        public Weapon Shotgun => GetWeaponFromType(WeaponType.Shotgun);
+        public Blade Blade => GetWeaponFromType(WeaponType.Blade) as Blade;
+        public Blood Blood => GetWeaponFromType(WeaponType.Blood) as Blood;
+        public Chaos Chaos => GetWeaponFromType(WeaponType.Chaos) as Chaos;
+        public Elemental Elemental => GetWeaponFromType(WeaponType.Elemental) as Elemental;
+        public Fist Fist => GetWeaponFromType(WeaponType.Fist) as Fist;
+        public Hammer Hammer => GetWeaponFromType(WeaponType.Hammer) as Hammer;
+        public Pistol Pistol => GetWeaponFromType(WeaponType.Pistol) as Pistol;
+        public Rifle Rifle => GetWeaponFromType(WeaponType.Rifle) as Rifle;
+        public Shotgun Shotgun => GetWeaponFromType(WeaponType.Shotgun) as Shotgun;
 
         public Player(Settings settings)
         {
@@ -432,34 +432,6 @@ namespace swlsimNET.ServerApp.Models
                     weapon?.EnergyOnCrit(this);
                 }
             }
-        }
-
-        private void EndRoundBuffs(RoundResult rr)
-        {
-            //var attack = rr.Attacks.FirstOrDefault();
-            //var abilityBuff = attack?.Spell.AbilityBuff;
-
-            //foreach (var buff in Buffs)
-            //{
-            //    if (buff == abilityBuff) continue;
-
-            //    if (buff.Duration >= 0)
-            //        buff.Duration -= rr.Interval;
-            //    if (buff.Cooldown > 0)
-            //        buff.Cooldown -= rr.Interval;
-
-            //    if (buff is AbilityBuff ab)
-            //    {
-            //        var weapon = GetWeaponFromType(ab.WeaponType);
-            //        if (weapon == null) continue;
-
-            //        if (ab.Active && ab.Duration % 1 == 0)
-            //        {
-            //            weapon.GimmickResource += ab.GimmickGainPerSec;
-            //            weapon.Energy += ab.EnergyGainPerSec;
-            //        }
-            //    }
-            //}
         }
 
         private void PostRound(RoundResult rr, ISpell spell)

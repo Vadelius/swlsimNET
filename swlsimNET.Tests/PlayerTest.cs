@@ -1,8 +1,5 @@
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using swlsimNET.Models;
-using swlsimNET.ServerApp;
-using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
 using swlsimNET.ServerApp.Spells.Hammer;

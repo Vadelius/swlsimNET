@@ -19,12 +19,10 @@ namespace swlsimNET.ServerApp.Weapons
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
-            var roll = Rnd.Next(1, 3);
             var attack = rr.Attacks.FirstOrDefault(a => a.Spell == spell);
             if (attack == null || !attack.IsHit || attack.Damage <= 0) return;
 
-            var weapon = player.GetWeaponFromSpell(attack.Spell);
-            if (weapon == null) return;
+            var roll = Rnd.Next(1, 3);
 
             if (player.Settings.PrimaryWeaponProc == WeaponProc.RazorsEdge && attack.IsCrit && roll == 2)
             {
@@ -33,7 +31,7 @@ namespace swlsimNET.ServerApp.Weapons
 
             if (_deluge >= 6)
             {
-                player.AddBonusAttack(rr, new SpiritBlade(player));
+                player.AddBonusAttack(rr, new SpiritBlade());
                 _deluge = 0;
             }
             
@@ -41,6 +39,18 @@ namespace swlsimNET.ServerApp.Weapons
             ChiConsumer();
             SpiritBladeConsumer(player, rr);
             SpiritBladeExtender();
+        }
+
+        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, decimal gimmickBeforeCast)
+        {
+            double bonusBaseDamageMultiplier = 0;
+
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.Apocalypse)
+            {
+                bonusBaseDamageMultiplier = 0.03 * (double)player.PrimaryWeapon.GimmickResource;
+            }
+
+            return bonusBaseDamageMultiplier;
         }
 
         private void ChiGenerator(IPlayer player)
@@ -52,23 +62,11 @@ namespace swlsimNET.ServerApp.Weapons
             {
                 GimmickResource++;
             }
+
             if (roll == 2 && GimmickResource <= 5)
             {
                 GimmickResource++;
             }
-        }
-
-        public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, decimal gimmickBeforeCast)
-        {
-            double bonusBaseDamageMultiplier = 0;
-
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.Apocalypse)
-            {
-                bonusBaseDamageMultiplier = 0.03 * (double) player.PrimaryWeapon.GimmickResource;
-            }
-
-
-            return bonusBaseDamageMultiplier;
         }
 
         private void ChiConsumer()
@@ -82,15 +80,20 @@ namespace swlsimNET.ServerApp.Weapons
 
         private void SpiritBladeConsumer(IPlayer player, RoundResult rr)
         {
-            if (!SpiritBladeActive) return;
+            if (!SpiritBladeActive)
+            {
+                return;
+            }
+
             var highroller = Rnd.Next(1, 101);
             
             if (player.Settings.PrimaryWeaponProc == WeaponProc.BladeOfTheSeventhSon)
             {
-                player.AddBonusAttack(rr, new SpiritBlade(player));
-                player.AddBonusAttack(rr, new BladeOfTheSeventhSon(player));
+                player.AddBonusAttack(rr, new SpiritBlade());
+                player.AddBonusAttack(rr, new BladeOfTheSeventhSon());
                 _spiritBladeCharges--;
             }
+
             if (player.HasPassive("HardenedBlade") && highroller <= 30)
             {
                 {
@@ -99,25 +102,31 @@ namespace swlsimNET.ServerApp.Weapons
                         _deluge += 1;
                     }
                     
-                    player.AddBonusAttack(rr, new SpiritBlade(player));
+                    player.AddBonusAttack(rr, new SpiritBlade());
                     return;
                 }
                 
             }
+
             if (player.HasPassive("Deluge"))
             {
                 _deluge += 1;
             }
-            else player.AddBonusAttack(rr, new SpiritBlade(player));
+
+            else
+            {
+                player.AddBonusAttack(rr, new SpiritBlade());
+            }
             _spiritBladeCharges--;
-        }
+        }     
 
-        
-
-// Every 6th hit with spirit blade unleashes an AoE of 0.38CP
+        // Every 6th hit with spirit blade unleashes an AoE of 0.38CP
         private void SpiritBladeExtender()
         {
-            if (!SpiritBladeActive) return;
+            if (!SpiritBladeActive)
+            {
+                return;
+            }
 
             switch (GimmickResource)
             {
@@ -143,31 +152,32 @@ namespace swlsimNET.ServerApp.Weapons
             }
         }
 
-        private class SpiritBlade : Spell
+        private sealed class SpiritBlade : Spell
         {
-            public SpiritBlade(IPlayer player)
+            public SpiritBlade()
             {
                 WeaponType = WeaponType.Blade;
                 SpellType = SpellType.Gimmick;
-                BaseDamage = player.CombatPower * 0.97;
+                BaseDamage = 0.97;
             }
         }
-        private class BladeOfTheSeventhSon : Spell
+
+        private sealed class BladeOfTheSeventhSon : Spell
         {
-            public BladeOfTheSeventhSon(IPlayer player)
+            public BladeOfTheSeventhSon()
             {
                 WeaponType = WeaponType.Blade;
                 SpellType = SpellType.Gimmick;
-                BaseDamage = player.CombatPower * 0.97 * 0.61;
+                BaseDamage = 0.97 * 0.61; // TODO: Is this correct?
             }
         }
-        private class Deluge : Spell
+        private sealed class Deluge : Spell
         {
             public Deluge(IPlayer player)
             {
                 WeaponType = WeaponType.Blade;
                 SpellType = SpellType.Procc;
-                BaseDamage = player.CombatPower * 0.38;
+                BaseDamage = 0.38;
             }
         }
     }

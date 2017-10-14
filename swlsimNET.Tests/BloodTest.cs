@@ -6,7 +6,6 @@ using swlsimNET.ServerApp;
 using swlsimNET.ServerApp.Combat;
 using swlsimNET.ServerApp.Models;
 using swlsimNET.ServerApp.Spells;
-using swlsimNET.ServerApp.Spells.Hammer;
 using swlsimNET.ServerApp.Weapons;
 
 namespace swlsimNET.Tests

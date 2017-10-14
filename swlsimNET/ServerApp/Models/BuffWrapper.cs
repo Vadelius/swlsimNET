@@ -31,6 +31,9 @@ namespace swlsimNET.ServerApp.Models
         public bool WhiteChambers => _player.GetWeaponFromType(WeaponType.Pistol) is Pistol pistol &&
                                         pistol.LeftChamber == Chamber.White && pistol.LeftChamber == pistol.RightChamber;
 
+        // Fist APL specifics
+        public bool dd => _player.GetWeaponFromType(WeaponType.Fist) is Fist fist && fist.AllowFrenziedWrathAbilities;
+
         // TODO: Need to add all buffs here if we cant solve it in another way..
     }
 }
