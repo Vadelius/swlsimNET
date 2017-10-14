@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Configuration } from './app/app.constants'
 import { HubConnection } from '@aspnet/signalr-client';
-import { SettingsService } from "./settings.service";
-import { Settings } from "./settings.interface";
 import { Http } from '@angular/http'
 
 @Component({
@@ -19,11 +17,9 @@ export class HomeComponent implements OnInit {
 
 
     constructor(
-        private _settingsservice: SettingsService,
-        private _settings: Configuration,
         private httpService: Http) {
     }
-    public settings: Settings[];
+
     apiValues: string[] = [];
     public sendMessage(): void {
         const data = `Sent: ${this.message}`;
@@ -59,11 +55,6 @@ export class HomeComponent implements OnInit {
                 console.log('Error while establishing connection')
             });
 
-        this._settingsservice
-            .getAll()
-            .subscribe((data: Settings[]) => this.settings = data,
-                error => console.log(error),
-                () => console.log("getAllItems() complete from init"));
     }
 
 }

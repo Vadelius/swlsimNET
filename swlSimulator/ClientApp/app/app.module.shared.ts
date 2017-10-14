@@ -11,7 +11,6 @@ import { ImportComponent } from './components/import.component';
 import { SpellqueryComponent } from './components/spellquery.component';
 import { ResultComponent } from './components/result.component';
 import { Configuration } from './components/app/app.constants'
-import { SettingsService } from "./components/settings.service";
 import { FormsModule } from '@angular/forms';
 
 
@@ -45,7 +44,6 @@ import { FormsModule } from '@angular/forms';
     ],
     providers: [
         Configuration,
-        SettingsService
     ],
 })
 export class AppModuleShared {
