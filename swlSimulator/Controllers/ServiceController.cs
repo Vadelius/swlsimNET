@@ -9,9 +9,9 @@ using System.Collections.Generic;
 namespace swlSimulator.Controllers
 {
 
-[Consumes("application/json")]
-[Produces("application/json")]
-[Route("/api/values")]
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    [Route("/api/values")]
     public class ServiceController : Controller
     {
         private List<FightResult> _iterationFightResults;
