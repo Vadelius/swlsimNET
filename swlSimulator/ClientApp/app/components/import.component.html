@@ -109,7 +109,25 @@
                         <option *ngFor="let g of gadget" [value]="g">{{g}}</option>
                     </select>
                 </div>
-                <div class="col-xs-12">
+                <div class="col-xs-12 " style="margin-top: 10px">
+                    <label>Passives</label>
+                    <select class="form-control " formControlName="passive1">
+                        <option *ngFor="let p of passives " [value]="p">{{p}} </option>
+                    </select>
+                    <select class="form-control " formControlName="passive2">
+                        <option *ngFor="let p of passives " [value]="p">{{p}} </option>
+                    </select>
+                    <select class="form-control " formControlName="passive3">
+                        <option *ngFor="let p of passives " [value]="p">{{p}} </option>
+                    </select>
+                    <select class="form-control " formControlName="passive4">
+                        <option *ngFor="let p of passives " [value]="p">{{p}} </option>
+                    </select>
+                    <select class="form-control " formControlName="passive5">
+                        <option *ngFor="let p of passives " [value]="p">{{p}} </option>
+                    </select>
+                </div>
+                <div class="col-xs-12" style="margin-top: 10px">
                     <input id="exposed" type="checkbox">
                     <label for="exposed">Apply Exposed</label>
                 </div>

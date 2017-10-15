@@ -23,6 +23,8 @@ export class ImportComponent {
     rifleProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Infernal Loader", "KSR43"];
     chaosProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Warped Visage", "Otherwordly Artifact", "Sov Tech Paradox Generator"];
 
+    passives: string[] = ["Obliterate", "Fast and Furious", "Outrage", "Berserker", "Unbridled Wrath", "Flay", "Contaminate","Desolate", "Defilement", "Crimson Pulse", "Lethal Aim", "Jackpot", "Beginners Luck", "Fatal Shot", "Focused Fire"];
+
     combatPower: 1300;
     criticalChance: 31;
     critaicalPower: 110;
@@ -78,7 +80,7 @@ export class ImportComponent {
         this.myform.patchValue({ headCdr: false });
         this.myform.patchValue({ waistCdr: true });
         this.myform.patchValue({ passive1: "Obliterate" });
-        this.myform.patchValue({ passive2: "Fast And Furious" });
+        this.myform.patchValue({ passive2: "Fast and Furious" });
         this.myform.patchValue({ passive3: "Outrage" });
         this.myform.patchValue({ passive4: "Berserker" });
         this.myform.patchValue({ passive5: "Unbridled Wrath" });
@@ -409,6 +411,11 @@ export class ImportComponent {
            openingShot: new FormControl(),
            headCdr: new FormControl(),
            waistCdr: new FormControl(),
+           passive1: new FormControl(),
+           passive2: new FormControl(),
+           passive3: new FormControl(),
+           passive4: new FormControl(),
+           passive5: new FormControl(),
 
    });
 
