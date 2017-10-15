@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using swlSimulator.SignalRHubs;
+using System.Collections.Generic;
 using System.IO;
 
 namespace swlSimulator
@@ -21,7 +21,7 @@ namespace swlSimulator
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddSignalR();
+            services.AddScoped<List<string>>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -40,11 +40,6 @@ namespace swlSimulator
             }
 
             app.UseStaticFiles();
-
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<LoopyHub>("loopy");
-            });
 
             app.Use(async (context, next) =>
             {

@@ -16,23 +16,16 @@ namespace swlSimulator.Controllers
     {
         private List<FightResult> _iterationFightResults;
         private Settings _settings = new Settings();
-        private List<string> data;
-
-        public ServiceController(List<string> data)
-        {
-            this.data = data;
-        }
 
         [HttpPost]
-        public IActionResult Post([FromBody] string item)
+        public IActionResult Post([FromBody] Settings settings)
         {
-            if (string.IsNullOrWhiteSpace(item))
+            if (settings == null)
             {
                 return BadRequest(new { Message = "value is not valid" });
             }
-
-            data.Add(item);
-            return Ok(data);
+            StartSimulation();
+            return Ok(settings);
         }
 
 

@@ -398,7 +398,7 @@ export class ImportComponent {
 
     onSubmit() {
         var data = this.myform.value;
-        this.http.post("/api/values", data).subscribe(
+        this.http.post("/api/values/", data).subscribe(
             data => {
                 console.log("Sent JSON successfully");
             },
