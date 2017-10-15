@@ -5,6 +5,7 @@ using swlSimulator.api.Utilities;
 using swlSimulator.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace swlSimulator.Controllers
 {
@@ -20,13 +21,19 @@ namespace swlSimulator.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Settings settings)
         {
-            if (settings == null)
+
+            if (!ModelState.IsValid)
             {
-                return BadRequest(new { Message = "value is not valid" });
+                return BadRequest(ModelState);
             }
-            StartSimulation();
-            return Ok(settings);
+            
+            else
+            {
+                StartSimulation();
+                return Ok(settings);
+            }   
         }
+        
 
 
 

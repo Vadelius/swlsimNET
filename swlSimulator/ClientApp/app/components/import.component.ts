@@ -17,17 +17,17 @@ export class ImportComponent {
     secondaryAffix: string[] = ["Havoc", "Destruction", "Effieciency", "Energy", "None"];
     primaryProc: string[];
     secondaryProc: string[];
-    hammerProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Pneumatic Maul", "Fuming Despoiler"];
-    fistProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Bladed Gauntlets", "Treshing Claws", "Blood Drinkers"];
-    bladeProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Apocalypse", "Razors Edge", "Blade Of The eventh Son", "Soulblade"];
-    elementalProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Unstable Electron Core", "Frozen Figurine", "Cryo Charged Conduit"];
-    bloodProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Eldritch Tome"];
-    pistolProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Misery & Malice", "Six Shooters", "Sov-Tech Harmonisers", "CB-3 Annihilators", "Heavy Caliber Pistols"];
+    hammerProc: string[] = ["None", "AnimaTouched", "PlasmaForged", "Shadowbound", "Pneumatic Maul", "Fuming Despoiler"];
+    fistProc: string[] = ["None", "AnimaTouched", "PlasmaForged", "Shadowbound", "Bladed Gauntlets", "Treshing Claws", "Blood Drinkers"];
+    bladeProc: string[] = ["None", "AnimaTouched", "PlasmaForged", "Shadowbound", "Apocalypse", "RazorsEdge", "Blade Of The eventh Son", "Soulblade"];
+    elementalProc: string[] = ["None", "AnimaTouched", "Plasma Forged", "Shadowbound", "UnstableElectronCore", "Frozen Figurine", "Cryo Charged Conduit"];
+    bloodProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "EldritchTome"];
+    pistolProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Misery & Malice", "Six Shooters", "Sov-Tech Harmonisers", "CB-3Annihilators", "HeavyCaliberPistols"];
     shotgunProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Ifritan Despoiler", "SpesC221"];
     rifleProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Infernal Loader", "KSR43"];
     chaosProc: string[] = ["None", "Anima Touched", "Plasma Forged", "Shadowbound", "Warped Visage", "Otherwordly Artifact", "Sov Tech Paradox Generator"];
 
-    passives: string[] = ["Obliterate", "Fast and Furious", "Outrage", "Berserker", "Unbridled Wrath", "Flay", "Contaminate","Desolate", "Defilement", "Crimson Pulse", "Lethal Aim", "Jackpot", "Beginners Luck", "Fatal Shot", "Focused Fire"];
+    passives: string[] = ["Obliterate", "FastandFurious", "Outrage", "Berserker", "UnbridledWrath", "Flay", "Contaminate","Desolate", "Defilement", "CrimsonPulse", "LethalAim", "Jackpot", "Beginners Luck", "Fatal Shot", "Focused Fire"];
 
     combatPower: 1300;
     criticalChance: 31;
@@ -40,9 +40,9 @@ export class ImportComponent {
     eliteSignet: 51;
 
     head: string[] = ["None", "Ashes"];
-    neck: string[] = ["None", "Seed Of Agression", "Choker Of Sheed Blood", "Egon Pendant"];
-    luck: string[] = ["None", "Cold Silver Dice", "Gamblers Soul"];
-    gadget: string[] = ["None", "Electrogravitic Attractor", "Shard Of SesshoSeki", "Vali Metabolic", "Mnemonic Guardian Werewolf"];
+    neck: string[] = ["None", "SeedOfAgression", "Choker Of Sheed Blood", "Egon Pendant"];
+    luck: string[] = ["None", "ColdSilverDice", "GamblersSoul"];
+    gadget: string[] = ["None", "Electrogravitic Attractor", "Shard Of SesshoSeki", "ValiMetabolic", "Mnemonic Guardian Werewolf"];
 
     apl: string;
     passive1: string;
@@ -64,7 +64,7 @@ export class ImportComponent {
     hammerPreset() {
         this.myform.patchValue({ primaryWeapon: "Hammer" });
         this.myform.patchValue({ primaryAffix: "Havoc" });
-        this.myform.patchValue({ primaryProc: "Pneumatic Maul" });
+        this.myform.patchValue({ primaryProc: "PneumaticMaul" });
         this.myform.patchValue({ secondaryWeapon: "Fist" });
         this.myform.patchValue({ secondaryAffix: "Destruction" });
         this.myform.patchValue({ secondaryProc: "None" });
@@ -75,19 +75,20 @@ export class ImportComponent {
         this.myform.patchValue({ powerSignet: 19 });
         this.myform.patchValue({ eliteSignet: 41 });
         this.myform.patchValue({ waistSignet: 49 });
+        this.myform.patchValue({ luckSignet: 12 });
         this.myform.patchValue({ head: "Ashes" });
-        this.myform.patchValue({ neck: "Seed Of Agression" });
-        this.myform.patchValue({ luck: "Cold Silver Dice" });
-        this.myform.patchValue({ gadget: "Vali Metabolic" });
+        this.myform.patchValue({ neck: "SeedOfAgression" });
+        this.myform.patchValue({ luck: "ColdSilverDice" });
+        this.myform.patchValue({ gadget: "ValiMetabolic" });
         this.myform.patchValue({ exposed: true });
         this.myform.patchValue({ openingShot: true });
         this.myform.patchValue({ headCdr: false });
         this.myform.patchValue({ waistCdr: true });
         this.myform.patchValue({ passive1: "Obliterate" });
-        this.myform.patchValue({ passive2: "Fast and Furious" });
+        this.myform.patchValue({ passive2: "FastandFurious" });
         this.myform.patchValue({ passive3: "Outrage" });
         this.myform.patchValue({ passive4: "Berserker" });
-        this.myform.patchValue({ passive5: "Unbridled Wrath" });
+        this.myform.patchValue({ passive5: "UnbridledWrath" });
         this.myform.patchValue({ apl:            
         "Fist.Savagery, Buff.UnstoppableForce.Active\r\n" +
         "Hammer.Seethe, Buff.UnstoppableForce.Active\r\n" +
@@ -426,7 +427,6 @@ export class ImportComponent {
            powerSignet: new FormControl(),
            eliteSignet: new FormControl(),
            luckSignet: new FormControl(),
-           wristSignet: new FormControl(),
            gadget: new FormControl(),
            apl: new FormControl(),
            exposed: new FormControl(),

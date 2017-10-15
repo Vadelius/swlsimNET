@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using swlSimulator.api.Combat;
+﻿using swlSimulator.api.Combat;
 using swlSimulator.api.Models;
 using swlSimulator.api.Utilities;
 using swlSimulator.api.Weapons;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace swlSimulator.api.Spells
 {
@@ -15,7 +15,7 @@ namespace swlSimulator.api.Spells
 
     public enum LuckTalisman
     {
-        None, ColdSilver, GamblersSoul
+        None, ColdSilverDice, GamblersSoul
     }
 
     public enum HeadTalisman
@@ -105,7 +105,7 @@ namespace swlSimulator.api.Spells
                         _player.AddBonusAttack(rr, new GamblersSoul(_player));
                         break;
                     // Cold Silver Dice 22% on Crit +1 Energy.
-                    case LuckTalisman.ColdSilver when Helper.RNG() >= 0.78:
+                    case LuckTalisman.ColdSilverDice when Helper.RNG() >= 0.78:
                         weapon.Energy++;
                         _player.AddBonusAttack(rr, new ColdSilver());
                         break;
