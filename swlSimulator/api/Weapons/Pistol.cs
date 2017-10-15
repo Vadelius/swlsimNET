@@ -12,14 +12,16 @@ namespace swlSimulator.api.Weapons
 
     public class Pistol : Weapon
     {
-        public Chamber LeftChamber { get; set; }
-        public Chamber RightChamber { get; set; }
-        private decimal ChamberLockTimeStamp { get; set; }
-        private decimal LastPistolSpellTimeStamp { get; set; }
+        public Chamber LeftChamber { get; private set; }
+        public Chamber RightChamber { get; private set; }
+
+        public decimal ChamberLockTimeStamp { get; private set; }
+        public decimal LastPistolSpellTimeStamp { get; private set; }
 
         private bool _init;
         private bool _jackpotBonus;
-
+        private bool _annihilators;
+        private bool _harmonisers;
 
         private Passive _jackpot;
         private Passive _fixedGame;
@@ -63,6 +65,9 @@ namespace swlSimulator.api.Weapons
 
                 // Unload: 33% Chance to not spin chambers if matching set
                 _holdout = player.GetPassive(nameof(Holdout));
+
+                _annihilators = player.Settings.PrimaryWeaponProc == WeaponProc.Cb3Annihilators;
+                _harmonisers = player.Settings.PrimaryWeaponProc == WeaponProc.SovTechHarmonisers;
             }
 
             var timeSinceLastPistolSpell = player.CurrentTimeSec - LastPistolSpellTimeStamp;
@@ -80,7 +85,6 @@ namespace swlSimulator.api.Weapons
                 ChamberLockTimeStamp = player.CurrentTimeSec;
             }
         }
-
 
         public override double GetBonusBaseDamage(IPlayer player, ISpell spell, decimal gimmickBeforeCast)
         {
@@ -113,11 +117,8 @@ namespace swlSimulator.api.Weapons
         // Matching Chambers lasts for 3 seconds
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
-            var annihilators = player.Settings.PrimaryWeaponProc == WeaponProc.Cb3Annihilators;
-            var harmonisers = player.Settings.PrimaryWeaponProc == WeaponProc.SovTechHarmonisers;
-
             var timeSinceLocked = player.CurrentTimeSec - ChamberLockTimeStamp;
-            LastPistolSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
+            LastPistolSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;            
 
             if (_focusedFire != null && LeftChamber != RightChamber && spell.GetType() == typeof(KillBlind))
             {
@@ -125,11 +126,10 @@ namespace swlSimulator.api.Weapons
                 RightChamber = Chamber.White;
             }
 
-            if (timeSinceLocked > 3) //&& player.CurrentSpell.GetType() != typeof(KillBlind) || timeSinceLocked > 4.5m && player.CurrentSpell.GetType() == typeof(KillBlind)
+            if (timeSinceLocked > 3)
             {
                 if (_holdout != null && LeftChamber == RightChamber)
                 {
-
                     if (Rnd.Next(1, 4) < 3 && spell.GetType() == typeof(Unload))
                     {
                         ChamberRoulette(player);
@@ -143,7 +143,6 @@ namespace swlSimulator.api.Weapons
 
             if (LeftChamber == RightChamber)
             {
-
                 if (_jackpot != null)
                 {
                     _jackpotBonus = timeSinceLocked <= 3;
@@ -161,37 +160,59 @@ namespace swlSimulator.api.Weapons
 
                 switch (LeftChamber)
                 {
-
                     case Chamber.White:
-                        if (annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
-                        if (harmonisers)
+                        if (_annihilators)
                         {
-                            var roll = Rnd.Next(1, 5);
-                            if (roll == 4)
+                            player.AddBonusAttack(rr, new Cb3Annihilators(player));
+                        }
+                        if (_harmonisers)
+                        {
+                            if (Rnd.Next(1, 5) == 4)
                             {
-                                LeftChamber = Chamber.Blue; RightChamber = Chamber.Blue;
+                                LeftChamber = Chamber.Blue;
+                                RightChamber = Chamber.Blue;
                                 player.AddBonusAttack(rr, new BlueChambers(player));
                             }
-                            else player.AddBonusAttack(rr, new WhiteChambers(player));
-                        }
-                        else player.AddBonusAttack(rr, new WhiteChambers(player));
-                        break;
-                    case Chamber.Blue:
-                        if (annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
-                        if (harmonisers)
-                        {
-                            var roll = Rnd.Next(1, 101);
-                            if (roll <= 15)
+                            else
                             {
-                                LeftChamber = Chamber.Red; RightChamber = Chamber.Red;
+                                player.AddBonusAttack(rr, new WhiteChambers(player));
+                            }
+                        }
+                        else
+                        {
+                            player.AddBonusAttack(rr, new WhiteChambers(player));
+                        }
+                        break;
+
+                    case Chamber.Blue:
+                        if (_annihilators)
+                        {
+                            player.AddBonusAttack(rr, new Cb3Annihilators(player));
+                        }
+                        if (_harmonisers)
+                        {
+                            if (Rnd.Next(1, 101) <= 15)
+                            {
+                                LeftChamber = Chamber.Red;
+                                RightChamber = Chamber.Red;
                                 player.AddBonusAttack(rr, new RedChambers(player));
                             }
-                            else player.AddBonusAttack(rr, new BlueChambers(player));
+                            else
+                            {
+                                player.AddBonusAttack(rr, new BlueChambers(player));
+                            }
                         }
-                        else player.AddBonusAttack(rr, new BlueChambers(player));
+                        else
+                        {
+                            player.AddBonusAttack(rr, new BlueChambers(player));
+                        }
                         break;
+
                     case Chamber.Red:
-                        if (annihilators) { player.AddBonusAttack(rr, new Cb3Annihilators(player)); }
+                        if (_annihilators)
+                        {
+                            player.AddBonusAttack(rr, new Cb3Annihilators(player));
+                        }
                         player.AddBonusAttack(rr, new RedChambers(player));
                         break;
                 }
@@ -211,21 +232,19 @@ namespace swlSimulator.api.Weapons
 
         private Chamber Dice(IPlayer player)
         {
+            var roll = Rnd.Next(1, 7);
 
             if (player.Settings.PrimaryWeaponProc == WeaponProc.HeavyCaliberPistols)
             {
-                var caliberRoll = Rnd.Next(1, 7);
                 // "You are more likely to roll a Double Red set of chambers, but less likely to roll a Double White or Double Blue set of chambers." Thanks Funcom.
                 // Purely speculation below. TODO: Confirm..
-                if (caliberRoll >= 2 && caliberRoll <= 3)
+                if (roll >= 2 && roll <= 3)
                     return Chamber.White;
-                if (caliberRoll == 4)
+                if (roll == 4)
                     return Chamber.Blue;
-                if (caliberRoll >= 5)
+                if (roll >= 5)
                     return Chamber.Red;
-            }
-
-            var roll = Rnd.Next(1, 7);
+            } 
 
             if (roll >= 1 && roll <= 3)
                 return Chamber.White;

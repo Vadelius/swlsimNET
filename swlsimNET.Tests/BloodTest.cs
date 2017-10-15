@@ -1,14 +1,14 @@
 using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using swlSimulator.api;
-using swlSimulator.api.Combat;
-using swlSimulator.api.Models;
-using swlSimulator.api.Spells;
-using swlSimulator.api.Weapons;
-using swlSimulator.Models;
+using swlsimNET.Models;
+using swlsimNET.ServerApp;
+using swlsimNET.ServerApp.Combat;
+using swlsimNET.ServerApp.Models;
+using swlsimNET.ServerApp.Spells;
+using swlsimNET.ServerApp.Weapons;
 
-namespace swlSimulator.Tests
+namespace swlsimNET.Tests
 {
     [TestClass]
     public class BloodTest

@@ -1,11 +1,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using swlSimulator.api.Models;
-using swlSimulator.api.Spells;
-using swlSimulator.api.Spells.Hammer;
-using swlSimulator.api.Weapons;
-using swlSimulator.Models;
+using swlsimNET.Models;
+using swlsimNET.ServerApp.Models;
+using swlsimNET.ServerApp.Spells;
+using swlsimNET.ServerApp.Spells.Hammer;
+using swlsimNET.ServerApp.Weapons;
 
-namespace swlSimulator.Tests
+namespace swlsimNET.Tests
 {
     [TestClass]
     public class PlayerTest

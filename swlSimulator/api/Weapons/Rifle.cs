@@ -9,12 +9,18 @@ namespace swlSimulator.api.Weapons
 {
     public class Rifle : Weapon
     {
+        // TODO: Check values, 6s total cooktimer and fully cooked after 3s??
+        // TODO: All greande spells have a 4s cooldown
+        private const decimal FUSE_TIMER = 3;
+        private const decimal COOKINGTIMER = 3;
+
         private decimal _cookingReadyTimeSec = decimal.MaxValue;
-        private decimal _fuseTimeSec;
+
         private bool _ksr43;
         private bool _infernalLoader;
-
         private bool _init;
+
+        private RoundResult _rr;
 
         private readonly List<string> _grenadeGenerators = new List<string>
         {
@@ -25,6 +31,9 @@ namespace swlSimulator.api.Weapons
         {
             _maxGimickResource = 1;
         }
+
+        public decimal FuseTimer { get; private set; }
+        //public decimal CookingTimer => COOKINGTIMER - FuseTimer; // TODO: Fix cooking timer for APL and remove fusetimer
 
         public override void PreAttack(IPlayer player, RoundResult rr)
         {
@@ -40,13 +49,12 @@ namespace swlSimulator.api.Weapons
 
             if (GimmickResource >= 1)
             {
-                _fuseTimeSec += rr.Interval;
-
-                if (_ksr43 && _fuseTimeSec >= 3)
+                if (_rr == null || rr.TimeSec != _rr.TimeSec)
                 {
-                    GimmickResource = 0;
-                }
-                else if (!_ksr43 && _fuseTimeSec >= 5)
+                    FuseTimer += rr.Interval; 
+                }               
+
+                if (FuseTimer > FUSE_TIMER)
                 {
                     GimmickResource = 0;
                 }
@@ -56,13 +64,16 @@ namespace swlSimulator.api.Weapons
                 // We can use grenade
                 GimmickResource = 1;
                 _cookingReadyTimeSec = decimal.MaxValue;
-                _fuseTimeSec = 0;
-            }     
+                FuseTimer = 0;
+            }
+
+            _rr = rr;
         }
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
-            if (GimmickResource < 1 && Rnd.Next(1, 101) > 65 
+            // TODO: Check values some spells have 37.5% chance and some 65%
+            if (GimmickResource < 1 && Rnd.Next(1, 101) > 65
                 && _grenadeGenerators.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase) 
                 || GimmickResource < 1 && spell.Name == "RifleLoadGrenadeSpell") // Unit test
             {
@@ -71,11 +82,11 @@ namespace swlSimulator.api.Weapons
                 {
                     _cookingReadyTimeSec = decimal.MaxValue;
                     GimmickResource = 1;
-                    _fuseTimeSec = 0;
+                    FuseTimer = 0;
                 }
-                else
+                else if (_cookingReadyTimeSec > player.CurrentTimeSec + COOKINGTIMER)
                 {
-                    _cookingReadyTimeSec = player.CurrentTimeSec + 5;
+                    _cookingReadyTimeSec = player.CurrentTimeSec + COOKINGTIMER;
                 }
             }
         }
@@ -86,7 +97,7 @@ namespace swlSimulator.api.Weapons
 
             if (_infernalLoader)
             {
-                bonusBaseDamage += 0.075; // TODO: 7.5% AR damage
+                bonusBaseDamage += 0.075; // +7.5% AR damage
             }
 
             return bonusBaseDamage;

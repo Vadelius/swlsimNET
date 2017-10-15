@@ -70,8 +70,7 @@ namespace swlSimulator.Models
         {
             // TODO: Add ALL passives here
 
-            // Blade   
-            
+            // Blade
             new HardenedBlade(),
             new EyeOfTheStorm(),
             new StormSurge(),

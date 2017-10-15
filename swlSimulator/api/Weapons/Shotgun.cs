@@ -5,7 +5,6 @@ using swlSimulator.api.Spells.Shotgun;
 
 namespace swlSimulator.api.Weapons
 {
-
     public class Shotgun : Weapon
     {
         private int _ifritanDespoilerCounter;
@@ -59,7 +58,10 @@ namespace swlSimulator.api.Weapons
                 // in weapon-model so APL does not have to worry about it at all.
                 player.AddBonusAttack(rr, new DragonBreath());
             }
-            else player.AddBonusAttack(rr, new DepletedUranium());
+            else
+            {
+                player.AddBonusAttack(rr, new DepletedUranium());
+            }
         }
 
         #region Gimmickspells
