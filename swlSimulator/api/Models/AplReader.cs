@@ -41,8 +41,8 @@ namespace swlSimulator.api.Models
                 // Name can't contain any spaces at all
                 name = name.Replace(" ", string.Empty);
 
-                var myType = Type.GetType("swlsimNET.ServerApp.Spells." + name, false, true);
-                var myTypeRage = Type.GetType("swlsimNET.ServerApp.Spells." + name + "Rage", false, true);
+                var myType = Type.GetType("swlSimulator.api.Spells." + name, false, true);
+                var myTypeRage = Type.GetType("swlSimulator.api.Spells." + name + "Rage", false, true);
 
                 // TODO: Show where user input is BAD
                 if (myType == null) continue;

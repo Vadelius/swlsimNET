@@ -1,10 +1,8 @@
-﻿using swlsimNET.ServerApp.Combat;
-using swlsimNET.ServerApp.Models;
-using swlsimNET.ServerApp.Spells;
-using System;
-using System.Linq;
+﻿using swlSimulator.api.Combat;
+using swlSimulator.api.Models;
+using swlSimulator.api.Spells;
 
-namespace swlsimNET.ServerApp.Weapons
+namespace swlSimulator.api.Weapons
 {
     public class Chaos : Weapon
     {

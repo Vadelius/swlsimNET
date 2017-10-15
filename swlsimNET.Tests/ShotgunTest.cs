@@ -1,14 +1,14 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using swlsimNET.Models;
-using swlsimNET.ServerApp;
-using swlsimNET.ServerApp.Combat;
-using swlsimNET.ServerApp.Models;
-using swlsimNET.ServerApp.Spells;
-using swlsimNET.ServerApp.Spells.Shotgun;
-using swlsimNET.ServerApp.Weapons;
+using swlSimulator.api;
+using swlSimulator.api.Combat;
+using swlSimulator.api.Models;
+using swlSimulator.api.Spells;
+using swlSimulator.api.Spells.Shotgun;
+using swlSimulator.api.Weapons;
+using swlSimulator.Models;
 
-namespace swlsimNET.Tests
+namespace swlSimulator.Tests
 {
     [TestClass]
     public class ShotgunTest
