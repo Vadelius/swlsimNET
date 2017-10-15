@@ -72,6 +72,7 @@ export class ImportComponent {
         this.myform.patchValue({ head: "Ashes" });
         this.myform.patchValue({ neck: "Seed Of Agression" });
         this.myform.patchValue({ luck: "Cold Silver Dice" });
+        this.myform.patchValue({ gadget: "Vali Metabolic" });
         this.myform.patchValue({ exposed: true });
         this.myform.patchValue({ openingShot: true });
         this.myform.patchValue({ headCdr: false });
@@ -108,6 +109,7 @@ export class ImportComponent {
         this.myform.patchValue({ head: "Ashes" });
         this.myform.patchValue({ neck: "Seed Of Agression" });
         this.myform.patchValue({ luck: "Cold Silver Dice" });
+        this.myform.patchValue({ gadget: "Vali Metabolic" });
         this.myform.patchValue({ exposed: true });
         this.myform.patchValue({ openingShot: true });
         this.myform.patchValue({ headCdr: false });
@@ -143,6 +145,7 @@ export class ImportComponent {
         this.myform.patchValue({ head: "Ashes" });
         this.myform.patchValue({ neck: "Seed Of Agression" });
         this.myform.patchValue({ luck: "Cold Silver Dice" });
+        this.myform.patchValue({ gadget: "Vali Metabolic" });
         this.myform.patchValue({ exposed: true });
         this.myform.patchValue({ openingShot: true });
         this.myform.patchValue({ headCdr: false });
@@ -179,6 +182,7 @@ export class ImportComponent {
         this.myform.patchValue({ head: "Ashes" });
         this.myform.patchValue({ neck: "Seed Of Agression" });
         this.myform.patchValue({ luck: "Cold Silver Dice" });
+        this.myform.patchValue({ gadget: "Vali Metabolic" });
         this.myform.patchValue({ exposed: true });
         this.myform.patchValue({ openingShot: true });
         this.myform.patchValue({ headCdr: false });
@@ -215,6 +219,7 @@ export class ImportComponent {
         this.myform.patchValue({ head: "Ashes" });
         this.myform.patchValue({ neck: "Seed Of Agression" });
         this.myform.patchValue({ luck: "Cold Silver Dice" });
+        this.myform.patchValue({ gadget: "Vali Metabolic" });
         this.myform.patchValue({ exposed: true });
         this.myform.patchValue({ openingShot: true });
         this.myform.patchValue({ headCdr: false });
@@ -251,6 +256,7 @@ export class ImportComponent {
         this.myform.patchValue({ head: "Ashes" });
         this.myform.patchValue({ neck: "Seed Of Agression" });
         this.myform.patchValue({ luck: "Cold Silver Dice" });
+        this.myform.patchValue({ gadget: "Vali Metabolic" });
         this.myform.patchValue({ exposed: true });
         this.myform.patchValue({ openingShot: true });
         this.myform.patchValue({ headCdr: false });
@@ -287,6 +293,7 @@ export class ImportComponent {
         this.myform.patchValue({ head: "Ashes" });
         this.myform.patchValue({ neck: "Seed Of Agression" });
         this.myform.patchValue({ luck: "Cold Silver Dice" });
+        this.myform.patchValue({ gadget: "Vali Metabolic" });
         this.myform.patchValue({ exposed: true });
         this.myform.patchValue({ openingShot: true });
         this.myform.patchValue({ headCdr: false });
@@ -322,6 +329,7 @@ export class ImportComponent {
         this.myform.patchValue({ head: "Ashes" });
         this.myform.patchValue({ neck: "Seed Of Agression" });
         this.myform.patchValue({ luck: "Cold Silver Dice" });
+        this.myform.patchValue({ gadget: "Vali Metabolic" });
         this.myform.patchValue({ exposed: true });
         this.myform.patchValue({ openingShot: true });
         this.myform.patchValue({ headCdr: false });
@@ -357,6 +365,7 @@ export class ImportComponent {
         this.myform.patchValue({ head: "Ashes" });
         this.myform.patchValue({ neck: "Seed Of Agression" });
         this.myform.patchValue({ luck: "Cold Silver Dice" });
+        this.myform.patchValue({ gadget: "Vali Metabolic" });
         this.myform.patchValue({ exposed: true });
         this.myform.patchValue({ openingShot: true });
         this.myform.patchValue({ headCdr: false });
@@ -396,6 +405,10 @@ export class ImportComponent {
            wristSignet: new FormControl(),
            gadget: new FormControl(),
            apl: new FormControl(),
+           exposed: new FormControl(),
+           openingShot: new FormControl(),
+           headCdr: new FormControl(),
+           waistCdr: new FormControl(),
 
    });
 
