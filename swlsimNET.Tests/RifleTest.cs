@@ -19,7 +19,7 @@ namespace swlsimNET.Tests
             {
                 PrimaryWeapon = WeaponType.Rifle,
                 SecondaryWeapon = WeaponType.Fist,
-                FightLength = 6,
+                FightLength = 4,
                 TargetType = TargetType.Champion,
                 Apl = ""
             };
@@ -41,33 +41,25 @@ namespace swlsimNET.Tests
             var grenadeCount = fight.RoundResults
                 .SelectMany(r => r.Attacks.Where(a => a.Spell is RifleGrenadeSpell)).Count();
 
-            // private const int Fusetimer = 5;
-            // private const int FusetimerKsr43 = 3;
-            // private const int Cookingtimer = 5;
-
             // 0.0, start load cast
+
             // 1.0, finish load cast        load: 1
             // 1.0, start cook grenade
-
             // 1.0, start next load cast
+
             // 2.0, finish load cast        load: 2
             // 2.0, start next load cast
+
             // 3.0, finish load cast        load: 3
             // 3.0, start next load cast
+
             // 4.0, finish load cast        load: 4
-            // 4.0, start next load cast
-            // 5.0, finish load cast        load: 5
-            // 5.0, start next load cast
-            // 6.0, finish load cast        load: 6
+            // 4.0, finish cook grenade
+            // 4.0, grenade cast (gcd)      grenade: 1
 
-            // 6.0, finish cook grenade
-            // 6.0, grenade cast (gcd)      grenade: 1
-
-            // Rounds where something is executed, 1 and 3 (2 total)
-
-            Assert.AreEqual(rounds, 6);
-            Assert.AreEqual(endTime, 6.0m);
-            Assert.IsTrue(loadCount == 6);
+            Assert.AreEqual(rounds, 4);
+            Assert.AreEqual(endTime, 4.0m);
+            Assert.IsTrue(loadCount == 4);
             Assert.IsTrue(grenadeCount == 1);
         }
 
@@ -126,12 +118,12 @@ namespace swlsimNET.Tests
             {
                 PrimaryWeapon = WeaponType.Rifle,
                 SecondaryWeapon = WeaponType.Fist,
-                FightLength = 11,
+                FightLength = 7,
                 TargetType = TargetType.Champion,
                 Apl = ""
             };
 
-            var spell = new RifleGrenadeSpell { Args = "Rifle.FuseTimer == 5" };
+            var spell = new RifleGrenadeSpell { Args = "Rifle.FuseTimer == 3" };
             var spell2 = new RifleLoadGrenadeSpell();
             var player = new Player(setting);
             player.Spells.Add(spell);
@@ -148,9 +140,9 @@ namespace swlsimNET.Tests
             var grenadeCount = fight.RoundResults
                 .SelectMany(r => r.Attacks.Where(a => a.Spell is RifleGrenadeSpell)).Count();
 
-            Assert.AreEqual(rounds, 11);
-            Assert.AreEqual(endTime, 11.0m);
-            Assert.IsTrue(loadCount == 11);
+            Assert.AreEqual(rounds, 7);
+            Assert.AreEqual(endTime, 7.0m);
+            Assert.IsTrue(loadCount == 7);
             Assert.IsTrue(grenadeCount == 1);
         }
 
@@ -161,12 +153,12 @@ namespace swlsimNET.Tests
             {
                 PrimaryWeapon = WeaponType.Rifle,
                 SecondaryWeapon = WeaponType.Fist,
-                FightLength = 12,
+                FightLength = 8,
                 TargetType = TargetType.Champion,
                 Apl = ""
             };
 
-            var spell = new RifleGrenadeSpell { Args = "Rifle.FuseTimer > 5" };
+            var spell = new RifleGrenadeSpell { Args = "Rifle.FuseTimer > 3" };
             var spell2 = new RifleLoadGrenadeSpell();
             var player = new Player(setting);
             player.Spells.Add(spell);
@@ -185,9 +177,9 @@ namespace swlsimNET.Tests
 
             // NO grenade spells since fusetimer will blow
 
-            Assert.AreEqual(rounds, 12);
-            Assert.AreEqual(endTime, 12.0m);
-            Assert.IsTrue(loadCount == 12);
+            Assert.AreEqual(rounds, 8);
+            Assert.AreEqual(endTime, 8.0m);
+            Assert.IsTrue(loadCount == 8);
             Assert.IsTrue(grenadeCount == 0);
             Assert.IsTrue(!player.Grenade);
         }

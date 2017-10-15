@@ -11,10 +11,8 @@ namespace swlsimNET.ServerApp.Weapons
     {
         // TODO: Check values, 6s total cooktimer and fully cooked after 3s??
         // TODO: All greande spells have a 4s cooldown
-        // TODO: Grenades can be used when not fully cooked. But with no bonus effect? What bonus effect...
-        private const decimal FUSE_TIMER = 5;
-        private const decimal FUSE_TIMER_KSR43 = 3;
-        private const decimal COOKINGTIMER = 5;
+        private const decimal FUSE_TIMER = 3;
+        private const decimal COOKINGTIMER = 3;
 
         private decimal _cookingReadyTimeSec = decimal.MaxValue;
 
@@ -56,11 +54,7 @@ namespace swlsimNET.ServerApp.Weapons
                     FuseTimer += rr.Interval; 
                 }               
 
-                if (_ksr43 && FuseTimer > FUSE_TIMER_KSR43)
-                {
-                    GimmickResource = 0;
-                }
-                else if (!_ksr43 && FuseTimer > FUSE_TIMER)
+                if (FuseTimer > FUSE_TIMER)
                 {
                     GimmickResource = 0;
                 }
