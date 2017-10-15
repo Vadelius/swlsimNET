@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "swlsimNET.Tests", "swlsimNET.Tests\swlsimNET.Tests.csproj", "{897434E7-CFA1-449D-A27B-23628B5534EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "swlSimulator.Tests", "swlsimNET.Tests\swlSimulator.Tests.csproj", "{897434E7-CFA1-449D-A27B-23628B5534EF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "swlSimulator", "swlSimulator\swlSimulator.csproj", "{0BE27454-B983-4B85-B4A0-46EF055A4505}"
 EndProject

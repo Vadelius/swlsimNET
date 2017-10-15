@@ -8,7 +8,7 @@ using swlSimulator.api.Spells;
 using swlSimulator.api.Weapons;
 using swlSimulator.Models;
 
-namespace swlsimNET.Tests
+namespace swlSimulator.Tests
 {
     [TestClass]
     public class ElementalTest

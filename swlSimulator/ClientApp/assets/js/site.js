@@ -1,7 +1,7 @@
 ﻿var presets = require("./presets.js");
 
 var checkboxValues = JSON.parse(localStorage.getItem('checkboxValues')) || {},
-    $checkboxes = $('#OpeningShot, #Exposed, #HeadSignetIsCdr, #Savagery');
+    $checkboxes = $('#openingShot, #exposed, #headCdr, #waistCdr');
 
 $checkboxes.on("change", function () {
     $checkboxes.each(function () {
@@ -12,3 +12,7 @@ $checkboxes.on("change", function () {
 });
 
 console.log(presets);
+
+$("#presetHammer").click(function () {
+    alert("Handler for .click() called.");
+});

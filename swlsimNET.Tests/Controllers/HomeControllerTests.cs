@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using swlSimulator.api.Weapons;
-using swlSimulator.Models;
 using swlSimulator.Controllers;
+using swlSimulator.Models;
 
-namespace swlsimNET.Tests.Controllers
+namespace swlSimulator.Tests.Controllers
 {
     [TestClass]
     public class HomeControllerTests

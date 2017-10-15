@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using swlSimulator.api;
@@ -9,7 +8,7 @@ using swlSimulator.api.Spells.Hammer;
 using swlSimulator.api.Weapons;
 using swlSimulator.Models;
 
-namespace swlsimNET.Tests
+namespace swlSimulator.Tests
 {
     [TestClass]
     public class BuffTest

@@ -1,15 +1,15 @@
 ﻿<div class="col-xs-12" style="height:110px;"></div>
 <div class="col-xs-12" align="right" style="margin-bottom: 10px">
     <label>Presets:</label>
-    <button id=" 1 " type="button " class="btn btn-purple waves-effect waves-light " onclick="presetHammer ">Hammer</button>
-    <button id="2 " type="button " class="btn btn-purple waves-effect waves-light " onclick="presetBlood ">Blood</button>
-    <button id="3 " type="button " class="btn btn-purple waves-effect waves-light " onclick="presetBlade ">Blade</button>
-    <button id="4 " type="button " class="btn btn-purple waves-effect waves-light " onclick="presetChaos ">Chaos</button>
-    <button id="5 " type="button " class="btn btn-purple waves-effect waves-light " onclick="presetElemental ">Elemental</button>
-    <button id="6 " type="button " class="btn btn-purple waves-effect waves-light " onclick="presetPistols ">Pistols</button>
-    <button id="7 " type="button " class="btn btn-purple waves-effect waves-light " onclick="presetFist ">Fist</button>
-    <button id="8 " type="button " class="btn btn-purple waves-effect waves-light " onclick="presetShotgun ">Shotgun</button>
-    <button id="9 " type="button " class="btn btn-purple waves-effect waves-light " onclick="presetRifle ">Assault Rifle</button>
+    <button id="1" type="button " class="btn btn-purple waves-effect waves-light " ng-click="hammerPreset()">Hammer</button>
+    <button id="2 " type="button " class="btn btn-purple waves-effect waves-light " >Blood</button>
+    <button id="3 " type="button " class="btn btn-purple waves-effect waves-light " >Blade</button>
+    <button id="4 " type="button " class="btn btn-purple waves-effect waves-light " > Chaos</button>
+    <button id="5 " type="button " class="btn btn-purple waves-effect waves-light " >Elemental</button>
+    <button id="6 " type="button " class="btn btn-purple waves-effect waves-light " >Pistols</button>
+    <button id="7 " type="button " class="btn btn-purple waves-effect waves-light " >Fist</button>
+    <button id="8 " type="button " class="btn btn-purple waves-effect waves-light " >Shotgun</button>
+    <button id="9 " type="button " class="btn btn-purple waves-effect waves-light " >Assault Rifle</button>
 </div>
 
 <form novalidate [formGroup]="myform" (ngSubmit)="onSubmit()">
@@ -108,27 +108,28 @@
                     <option *ngFor="let g of gadget" [value]="g">{{g}}</option>
                 </select>
             </div>
-        </div>
+            <div class="col-xs-12">
+                <input id="exposed" type="checkbox">
+                <label for="exposed">Apply Exposed</label>
+            </div>
+            <div class="col-xs-12">
+                <input id="openingShot" type="checkbox">
+                <label for="openingShot">Opening Shot every 20s.</label>
+            </div><div class="col-xs-12">
+                <input id="headCdr" type="checkbox">
+                <label for="exposed">Head Signet is CDR</label>
+            </div>
+            <div class="col-xs-12">
+                <input id="waistCdr" type="checkbox">
+                <label for="exposed">Waist Signet is CDR</label>
+            </div>
+
+
+
+            </div>
         <div class="col-xs-9" align="right">
             <textarea class="form-control" formControlName="apl"></textarea>
-
         </div>
-    </div>
-
-    <div class="col-xs-12 ">
-
-
-
-    </div>
-
-
-    <div class="col-xs-12 ">
-
-    </div>
-
-    <div class="col-xs-12 ">
-
-
     </div>
 
     <button type="submit" class="btn btn-primary" >Submit</button>
@@ -138,15 +139,22 @@
 <pre>debug: {{myform.value | json}}</pre>
 
 <script>
+
+    function onLoad() {
+    }
+
+
     var data = myform.value | json;
+
     function onSubmit($scope, $http, $log) {
         $log.info("In onSubmit");
         $scope.do_obj = {};
-        $scope.doSomething = function (data) {
+        $scope.doSomething = function(data) {
             $http.post('/api/values', data)
-                .success(function(successData){
+                .success(function(successData) {
                     console.log(successData);
                 });
-        }
+        };
     }
+
 </script>

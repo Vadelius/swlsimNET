@@ -15,6 +15,12 @@ namespace swlSimulator.Controllers
     {
         private List<FightResult> _iterationFightResults;
         private Settings _settings = new Settings();
+        private List<string> data;
+
+        public ServiceController(List<string> data)
+        {
+            this.data = data;
+        }
 
         // GET: api/values
         [Produces("application/json")]
@@ -24,12 +30,20 @@ namespace swlSimulator.Controllers
             return new string[] { "Hello", "World" };
         }
 
-        // GET: api/values/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpPost()]
+        [Produces("application/json"), Consumes("application/json")]
+        public IActionResult Post([FromBody] string item)
         {
-            return "value";
+            if (string.IsNullOrWhiteSpace(item))
+            {
+                return BadRequest(new { Message = "value is not valid" });
+            }
+
+            data.Add(item);
+            return Ok(data);
         }
+
+
 
         private bool StartSimulation()
         {

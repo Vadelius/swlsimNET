@@ -5,7 +5,7 @@ using swlSimulator.api.Spells.Hammer;
 using swlSimulator.api.Weapons;
 using swlSimulator.Models;
 
-namespace swlsimNET.Tests
+namespace swlSimulator.Tests
 {
     [TestClass]
     public class PlayerTest

@@ -1,7 +1,7 @@
 ﻿presets = {
     hammer:
     {
-        'input-PrimaryWeapon': 'Hammer',
+        'primaryWeapon.value': 'Hammer',
         'input-PrimaryWeaponAffix': 'Destruction',
         'input-PrimaryWeaponProc': 'null',
         'input-SecondaryWeapon': 'Fist',
