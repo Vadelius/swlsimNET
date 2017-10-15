@@ -1,4 +1,15 @@
-﻿presets = {
+﻿function hammerPreset(){
+myform.patchValue({ primaryWeapon: "Hammer" });
+myform.patchValue({ primaryAffix: "Havoc" });
+myform.patchValue({ primaryProc: "PneumaticMaul" });
+myform.patchValue({ secondaryWeapon: "Fist" });
+myform.patchValue({ secondaryAffix: "None" });
+myform.patchValue({ head: "Ashes" });
+myform.patchValue({ neck: "SeedOfAgression" });
+myform.patchValue({ luck: "ColdSilverDice" });
+
+}
+presets = {
     hammer:
     {
         'primaryWeapon.value': 'Hammer',

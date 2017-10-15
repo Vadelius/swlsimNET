@@ -1,146 +1,149 @@
-﻿<div class="col-xs-12" style="height:110px;"></div>
+﻿<script src="../ClientApp/assets/js/site.js"></script>
+<div class="col-xs-12" style="height:110px;"></div>
 <div class="col-xs-12" align="right" style="margin-bottom: 10px">
     <label>Presets:</label>
-    <button id="1" type="button " class="btn btn-purple waves-effect waves-light " ng-click="hammerPreset()">Hammer</button>
-    <button id="2 " type="button " class="btn btn-purple waves-effect waves-light " >Blood</button>
-    <button id="3 " type="button " class="btn btn-purple waves-effect waves-light " >Blade</button>
-    <button id="4 " type="button " class="btn btn-purple waves-effect waves-light " > Chaos</button>
-    <button id="5 " type="button " class="btn btn-purple waves-effect waves-light " >Elemental</button>
-    <button id="6 " type="button " class="btn btn-purple waves-effect waves-light " >Pistols</button>
-    <button id="7 " type="button " class="btn btn-purple waves-effect waves-light " >Fist</button>
-    <button id="8 " type="button " class="btn btn-purple waves-effect waves-light " >Shotgun</button>
-    <button id="9 " type="button " class="btn btn-purple waves-effect waves-light " >Assault Rifle</button>
+    <button id="1" type="button " class="btn btn-purple waves-effect waves-light " (click)="hammerPreset()">Hammer</button>
+    <button id="2 " type="button " class="btn btn-purple waves-effect waves-light " (click)="bloodPreset()">Blood</button>
+    <button id="3 " type="button " class="btn btn-purple waves-effect waves-light " (click)="pistolPreset()">Pistol</button>
+    <button id="4 " type="button " class="btn btn-purple waves-effect waves-light " (click)="elementalismPreset()">Elementalism</button>
+    <button id="5 " type="button " class="btn btn-purple waves-effect waves-light " (click)="riflePreset()">Rifle</button>
+    <button id="6 " type="button " class="btn btn-purple waves-effect waves-light " (click)="shotgunPreset()">Shotgun</button>
+    <button id="7 " type="button " class="btn btn-purple waves-effect waves-light " (click)="bladePreset()">Blade</button>
+    <button id="8 " type="button " class="btn btn-purple waves-effect waves-light " (click)="chaosPreset()">Chaos</button>
+    <button id="9 " type="button " class="btn btn-purple waves-effect waves-light " (click)="fistPreset()">Fist</button>
 </div>
+<div id="main" ng-controller="importController">
+    <form novalidate [formGroup]="myform" (ngSubmit)="onSubmit()">
 
-<form novalidate [formGroup]="myform" (ngSubmit)="onSubmit()">
-
-    <div class="col-xs-12 ">
-        <div class="col-xs-3 ">
-            <div class="col-xs-4 ">
-                <label>Primary Weapon</label>
-                <select class="form-control " formControlName="primaryWeapon">
-                    <option *ngFor="let weapon of primaryWeapon " [value]="weapon">{{weapon}} </option>
-                </select>
-            </div>
-            <div class="col-xs-4 ">
-                <label>Primary Affix</label>
-                <select class="form-control " formControlName="primaryAffix">
-                    <option *ngFor="let affix of primaryAffix " [value]="affix">{{affix}} </option>
-                </select>
-            </div>
-            <div class="col-xs-4 ">
-                <label>Primary Proc</label>
-                <select class="form-control " formControlName="primaryProc">
-                    <option *ngFor="let proc of primaryProc " [value]="proc">{{proc}} </option>
-                </select>
-            </div>
-            <div class="col-xs-4 ">
-                <label>Secondary Weapon</label>
-                <select class="form-control " formControlName="secondaryWeapon">
-                    <option *ngFor="let weapon of secondaryWeapon " [value]="weapon">{{weapon}}</option>
-                </select>
-            </div>
-            <div class="col-xs-4 ">
-                <label>Secondary Affix</label>
-                <select class="form-control " formControlName="secondaryAffix">
-                    <option *ngFor="let affix of secondaryAffix " [value]="affix">{{affix}}</option>
-                </select>
-            </div>
-            <div class="col-xs-4 ">
-                <label>Secondary Proc</label>
-                <select class="form-control " formControlName="secondaryProc">
-                    <option *ngFor="let proc of secondaryProc " [value]="proc">{{proc}}</option>
-                </select>
-            </div>
-            <div class="col-xs-4 ">
-                <label>Head Talisman</label>
-                <select class="form-control " formControlName="head">
-                    <option *ngFor="let h of head " [value]="h">{{h}}</option>
-                </select>
-            </div>
-            <div class="col-xs-4 ">
-                <label>Neck Talisman</label>
-                <select class="form-control " formControlName="neck">
-                    <option *ngFor="let n of neck " [value]="n">{{n}}</option>
-                </select>
-            </div>
-            <div class="col-xs-4 ">
-                <label>Luck Talisman</label>
-                <select class="form-control " formControlName="luck">
-                    <option *ngFor="let l of luck " [value]="l">{{l}}</option>
-                </select>
-            </div>
-            <div class="col-xs-4 ">
-                <label>Combat Power</label>
-                <input type="number " class="form-control " formControlName="combatPower">
-            </div>
-            <div class="col-xs-4 ">
-                <label>Critical Chance</label>
-                <input type="number " class="form-control " formControlName="criticalChance">
-            </div>
-            <div class="col-xs-4 ">
-                <label>Critical Power</label>
-                <input type="number " class="form-control " formControlName="criticalPower">
-            </div>
-            <div class="col-xs-4 ">
-                <label>Basic Signet</label>
-                <input type="number " class="form-control " formControlName="basicSignet">
-            </div>
-            <div class="col-xs-4 ">
-                <label>Power Signet</label>
-                <input type="number " class="form-control " formControlName="powerSignet">
-            </div>
-            <div class="col-xs-4 ">
-                <label>Elite Signet</label>
-                <input type="number " class="form-control " formControlName="eliteSignet">
-            </div>
-            <div class="col-xs-4 ">
-                <label>Luck Signet</label>
-                <input type="number " class="form-control " formControlName="basicSignet">
-            </div>
-            <div class="col-xs-4 ">
-                <label>Wrist Signet</label>
-                <input type="number " class="form-control " formControlName="powerSignet">
-            </div>
-            <div class="col-xs-4 ">
-                <label>Gadget</label>
-                <select class="form-control " formControlName="gadget">
-                    <option *ngFor="let g of gadget" [value]="g">{{g}}</option>
-                </select>
-            </div>
-            <div class="col-xs-12">
-                <input id="exposed" type="checkbox">
-                <label for="exposed">Apply Exposed</label>
-            </div>
-            <div class="col-xs-12">
-                <input id="openingShot" type="checkbox">
-                <label for="openingShot">Opening Shot every 20s.</label>
-            </div><div class="col-xs-12">
-                <input id="headCdr" type="checkbox">
-                <label for="exposed">Head Signet is CDR</label>
-            </div>
-            <div class="col-xs-12">
-                <input id="waistCdr" type="checkbox">
-                <label for="exposed">Waist Signet is CDR</label>
-            </div>
-
+        <div class="col-xs-12 ">
+            <div class="col-xs-3 ">
+                <div class="col-xs-4 ">
+                    <label>Primary Weapon</label>
+                    <select class="form-control " formControlName="primaryWeapon">
+                        <option *ngFor="let weapon of primaryWeapon " [value]="weapon">{{weapon}} </option>
+                    </select>
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Primary Affix</label>
+                    <select class="form-control " formControlName="primaryAffix">
+                        <option *ngFor="let affix of primaryAffix " [value]="affix">{{affix}} </option>
+                    </select>
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Primary Proc</label>
+                    <select class="form-control " formControlName="primaryProc">
+                        <option *ngFor="let proc of primaryProc " [value]="proc">{{proc}} </option>
+                    </select>
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Secondary Weapon</label>
+                    <select class="form-control " formControlName="secondaryWeapon">
+                        <option *ngFor="let weapon of secondaryWeapon " [value]="weapon">{{weapon}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Secondary Affix</label>
+                    <select class="form-control " formControlName="secondaryAffix">
+                        <option *ngFor="let affix of secondaryAffix " [value]="affix">{{affix}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Secondary Proc</label>
+                    <select class="form-control " formControlName="secondaryProc">
+                        <option *ngFor="let proc of secondaryProc " [value]="proc">{{proc}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Head Talisman</label>
+                    <select class="form-control " formControlName="head">
+                        <option *ngFor="let h of head " [value]="h">{{h}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Neck Talisman</label>
+                    <select class="form-control " formControlName="neck">
+                        <option *ngFor="let n of neck " [value]="n">{{n}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Luck Talisman</label>
+                    <select class="form-control " formControlName="luck">
+                        <option *ngFor="let l of luck " [value]="l">{{l}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Combat Power</label>
+                    <input type="number " class="form-control " formControlName="combatPower">
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Critical Chance</label>
+                    <input type="number " class="form-control " formControlName="criticalChance">
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Critical Power</label>
+                    <input type="number " class="form-control " formControlName="criticalPower">
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Basic Signet</label>
+                    <input type="number " class="form-control " formControlName="basicSignet">
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Power Signet</label>
+                    <input type="number " class="form-control " formControlName="powerSignet">
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Elite Signet</label>
+                    <input type="number " class="form-control " formControlName="eliteSignet">
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Luck Signet</label>
+                    <input type="number " class="form-control " formControlName="basicSignet">
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Wrist Signet</label>
+                    <input type="number " class="form-control " formControlName="powerSignet">
+                </div>
+                <div class="col-xs-4 ">
+                    <label>Gadget</label>
+                    <select class="form-control " formControlName="gadget">
+                        <option *ngFor="let g of gadget" [value]="g">{{g}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-12">
+                    <input id="exposed" type="checkbox">
+                    <label for="exposed">Apply Exposed</label>
+                </div>
+                <div class="col-xs-12">
+                    <input id="openingShot" type="checkbox">
+                    <label for="openingShot">Opening Shot every 20s.</label>
+                </div>
+                <div class="col-xs-12">
+                    <input id="headCdr" type="checkbox">
+                    <label for="exposed">Head Signet is CDR</label>
+                </div>
+                <div class="col-xs-12">
+                    <input id="waistCdr" type="checkbox">
+                    <label for="exposed">Waist Signet is CDR</label>
+                </div>
 
 
+
             </div>
-        <div class="col-xs-9" align="right">
-            <textarea class="form-control" formControlName="apl"></textarea>
+            <div class="col-xs-9" align="right">
+                <textarea class="form-control" formControlName="apl"></textarea>
+            </div>
         </div>
-    </div>
 
-    <button type="submit" class="btn btn-primary" >Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
 
-</form>
-
+    </form>
+</div>
 <pre>debug: {{myform.value | json}}</pre>
 
-<script>
-
+<script type="text/javascript">
     function onLoad() {
+
+
     }
 
 
@@ -156,5 +159,4 @@
                 });
         };
     }
-
 </script>
