@@ -1,7 +1,14 @@
 ﻿<script src="../ClientApp/assets/js/site.js"></script>
-<div class="col-xs-12" style="height:110px;"></div>
-<div class="col-xs-12" align="right" style="margin-bottom: 10px">
-    <label>Presets:</label>
+<script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+    crossorigin="anonymous"></script>
+    <div class="col-xs-12" style="height:110px;"></div>
+    <div class="col-xs-12" align="right" style="margin-bottom: 10px">
+    <label>Saved:</label>
+    <button id="user1save" type="button " class="btn btn-purple waves-effect waves-light " (click)="userSaveOne()">User #1 Save</button>
+    <button id="user1load" type="button " class="btn btn-purple waves-effect waves-light " (click)="userLoadOne()">User #1 Load</button>
+    <label style="margin-left: 10px">Presets:</label>
     <button id="1" type="button " class="btn btn-purple waves-effect waves-light " (click)="hammerPreset()">Hammer</button>
     <button id="2 " type="button " class="btn btn-purple waves-effect waves-light " (click)="bloodPreset()">Blood</button>
     <button id="3 " type="button " class="btn btn-purple waves-effect waves-light " (click)="pistolPreset()">Pistol</button>
@@ -152,7 +159,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="Submit" class="btn btn-primary">Submit</button>
 
     </form>
 </div>
@@ -161,20 +168,5 @@
 <script type="text/javascript">
     function onLoad() {
 
-
-    }
-
-
-    var data = myform.value | json;
-
-    function onSubmit($scope, $http, $log) {
-        $log.info("In onSubmit");
-        $scope.do_obj = {};
-        $scope.doSomething = function(data) {
-            $http.post('/api/values', data)
-                .success(function(successData) {
-                    console.log(successData);
-                });
-        };
     }
 </script>

@@ -1,11 +1,15 @@
 ﻿import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Http } from '@angular/http';
 
 @Component({
     selector: 'import',
     templateUrl: 'import.component.html',
 })
 export class ImportComponent {
+    constructor(private http: Http) {
+        
+    }
 
     primaryWeapon: string[] = ['Rifle', "Blade", "Blood", "Chaos", "Elemental", "Fist", "Hammer", "Pistol", "Shotgun"];
     primaryAffix: string[] = ["Havoc", "Destruction", "Effieciency", "Energy", "None"];
@@ -385,7 +389,20 @@ export class ImportComponent {
         "Shotgun.PumpAction\r\n" });
 
     }
+    userSaveOne() {
+        console.log("Saved!");
+    }
+    userLoadOne() {
+        console.log("Loaded!");
+    }
 
+    onSubmit() {
+        var data = this.myform.value;
+        var dataJson = data.ToJson;
+        this.http.post('/api/values', dataJson);
+        console.log("Submitted");
+    }
+    
    ngOnInit() {
        this.myform = new FormGroup({
            primaryWeapon: new FormControl(),
