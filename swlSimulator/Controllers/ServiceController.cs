@@ -9,8 +9,9 @@ using System.Collections.Generic;
 namespace swlSimulator.Controllers
 {
 
-    [Produces("application/json")]
-    [Route("api/values")]
+[Consumes("application/json")]
+[Produces("application/json")]
+[Route("/api/values")]
     public class ServiceController : Controller
     {
         private List<FightResult> _iterationFightResults;
@@ -22,16 +23,7 @@ namespace swlSimulator.Controllers
             this.data = data;
         }
 
-        // GET: api/values
-        [Produces("application/json")]
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "Hello", "World" };
-        }
-
-        [HttpPost()]
-        [Produces("application/json"), Consumes("application/json")]
+        [HttpPost]
         public IActionResult Post([FromBody] string item)
         {
             if (string.IsNullOrWhiteSpace(item))

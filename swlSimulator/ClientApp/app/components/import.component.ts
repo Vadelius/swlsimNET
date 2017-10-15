@@ -398,9 +398,14 @@ export class ImportComponent {
 
     onSubmit() {
         var data = this.myform.value;
-        var dataJson = data.ToJson;
-        this.http.post('/api/values', dataJson);
-        console.log("Submitted");
+        this.http.post('/api/values', data).subscribe(
+            data => {
+                console.log('Sent JSON successfully');
+            },
+            error => {
+                console.log("error");
+            }
+        );
     }
     
    ngOnInit() {
