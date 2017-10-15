@@ -1,5 +1,5 @@
 ﻿import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Http } from '@angular/http';
 
 @Component({
@@ -398,9 +398,9 @@ export class ImportComponent {
 
     onSubmit() {
         var data = this.myform.value;
-        this.http.post('/api/values', data).subscribe(
+        this.http.post("/api/values/", data).subscribe(
             data => {
-                console.log('Sent JSON successfully');
+                console.log("Sent JSON successfully");
             },
             error => {
                 console.log("error");
