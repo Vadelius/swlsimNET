@@ -1,17 +1,24 @@
 ﻿import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-
+import {ObservableService} from "./observable.service"
+import {Observable} from "rxjs/Observable";
 @Component({
     selector: "result",
     templateUrl: "./result.component.html"
 })
 export class ResultComponent implements OnInit {
-    data: any;
-    constructor(private route:ActivatedRoute) {}
-        ngOnInit(): any {
-            this.route.data.subscribe((data: any ) => {
-                this.data = data;
-            });
-        }
-}
+    private data: ObservableService;
 
+    public activities$: Observable<any>;
+    
+    constructor(private activityService: ObservableService) { }
+    
+    ngOnInit() {
+        
+        // this.activities$ = this.activityService.loadData();
+        // var data = this.activities$
+        // console.log(data);
+
+        
+}
+}

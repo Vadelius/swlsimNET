@@ -10,8 +10,8 @@ import {ImportComponent} from "./components/import.component";
 import {SpellqueryComponent} from "./components/spellquery.component";
 import {ResultComponent} from "./components/result.component";
 import {Configuration} from "./components/app/app.constants";
-import {ResultService} from "./components/result.service";
 import {ResultResolver} from "./components/result.resolver";
+import {ObservableService} from "./components/observable.service"
 
 @NgModule({
     declarations: [
@@ -31,8 +31,8 @@ import {ResultResolver} from "./components/result.resolver";
             { path: "", redirectTo: "home", pathMatch: "full" },
             { path: "home", component: HomeComponent },
             { path: "import", component: ImportComponent },
-            { path: "result", component: ResultComponent,
-            resolve: { data:  ResultResolver }},
+            { path: "result", component: ResultComponent },
+            //resolve: { data:  ResultResolver }},
             { path: "spellquery", component: SpellqueryComponent },
             { path: "**", redirectTo: "home" }
         ])
@@ -43,8 +43,8 @@ import {ResultResolver} from "./components/result.resolver";
         ReactiveFormsModule
     ],
     providers: [
-        ResultService,
         ResultResolver,
+        ObservableService,
         Configuration,
     ],
 })
