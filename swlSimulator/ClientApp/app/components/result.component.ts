@@ -4,4 +4,6 @@
     selector: "result",
     templateUrl: "./result.component.html"
 })
-export class ResultComponent {}
+export class ResultComponent {
+    
+}
