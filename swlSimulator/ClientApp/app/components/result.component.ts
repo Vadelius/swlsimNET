@@ -1,17 +1,17 @@
-﻿import {Component} from "@angular/core";
-import {Data} from "./data";
-import {ResultService} from "./resultservice";
+﻿import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: "result",
     templateUrl: "./result.component.html"
 })
-export class ResultComponent {
-    data:any;
-
-    constructor(dataService:ResultService) {
-      dataService.getData();
-
-    }
-  }
+export class ResultComponent implements OnInit {
+    data: any;
+    constructor(private route:ActivatedRoute) {}
+        ngOnInit(): any {
+            this.route.data.subscribe((data: any ) => {
+                this.data = data;
+            });
+        }
+}
 

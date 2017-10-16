@@ -1,7 +1,7 @@
 ﻿import {Component} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Http} from "@angular/http";
-import { RouterModule, Routes, Router } from '@angular/router';
+import { RouterModule, Routes, Router } from "@angular/router";
 
 @Component({
     selector: "import",
@@ -422,11 +422,11 @@ export class ImportComponent {
     this.http.post("/api/values/", data).subscribe(
         data => {
             console.log("Sent JSON successfully"),
-            this.router.navigate(['/result', data]) });
-        
+            this.router.navigate(["/result"]); });
+
         (error: any) => {
             console.log("error");
-        }};
+        };}
 
 
 

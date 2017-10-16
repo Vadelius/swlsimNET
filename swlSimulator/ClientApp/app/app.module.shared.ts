@@ -10,7 +10,8 @@ import {ImportComponent} from "./components/import.component";
 import {SpellqueryComponent} from "./components/spellquery.component";
 import {ResultComponent} from "./components/result.component";
 import {Configuration} from "./components/app/app.constants";
-import {ResultService} from "./components/resultservice"
+import {ResultService} from "./components/result.service";
+import {ResultResolver} from "./components/result.resolver";
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import {ResultService} from "./components/resultservice"
             { path: "", redirectTo: "home", pathMatch: "full" },
             { path: "home", component: HomeComponent },
             { path: "import", component: ImportComponent },
-            { path: "result", component: ResultComponent },
+            { path: "result", component: ResultComponent,
+            resolve: { data:  ResultResolver }},
             { path: "spellquery", component: SpellqueryComponent },
             { path: "**", redirectTo: "home" }
         ])
@@ -42,6 +44,7 @@ import {ResultService} from "./components/resultservice"
     ],
     providers: [
         ResultService,
+        ResultResolver,
         Configuration,
     ],
 })
