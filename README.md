@@ -3,6 +3,7 @@
 A combat simulator for the "Secret World Legends" game, written in C#.
 
 ![results](https://cdn.rawgit.com/Vadelius/swlsimNET/af2e99ed/reposplash.png)
+![architechture](https://cdn.rawgit.com/Vadelius/swlsimNET/74ed0c34/architecture.png)
 
 ### Features:
 
