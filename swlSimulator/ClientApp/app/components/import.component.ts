@@ -1,13 +1,16 @@
 ﻿import {Component} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Http} from "@angular/http";
+import { RouterModule, Routes, Router } from '@angular/router';
 
 @Component({
     selector: "import",
     templateUrl: "import.component.html",
 })
 export class ImportComponent {
-    constructor(private http: Http) {
+    constructor(
+        private http: Http,
+        private router: Router,) {
 
     }
 
@@ -418,13 +421,14 @@ export class ImportComponent {
     let data: any = this.myform.value;
     this.http.post("/api/values/", data).subscribe(
         data => {
-            console.log("Sent JSON successfully");
-        },
-        error => {
+            console.log("Sent JSON successfully"),
+            this.router.navigate(['/result', data]) });
+        
+        (error: any) => {
             console.log("error");
-        }
-    );
-}
+        }};
+
+
 
     ngOnInit(): void {
     this.myform = new FormGroup({
