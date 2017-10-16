@@ -10,7 +10,7 @@ import {ImportComponent} from "./components/import.component";
 import {SpellqueryComponent} from "./components/spellquery.component";
 import {ResultComponent} from "./components/result.component";
 import {Configuration} from "./components/app/app.constants";
-
+import {ResultService} from "./components/resultservice"
 
 @NgModule({
     declarations: [
@@ -41,6 +41,7 @@ import {Configuration} from "./components/app/app.constants";
         ReactiveFormsModule
     ],
     providers: [
+        ResultService,
         Configuration,
     ],
 })
