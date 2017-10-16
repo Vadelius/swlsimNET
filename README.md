@@ -13,6 +13,10 @@ A combat simulator for the "Secret World Legends" game, written in C#.
 
 **Step 1**: Clone the repository by visiting this link:
 
+### Requirements:
+**1**: .Net Core 2.0 SDK (https://www.microsoft.com/net/download/core)
+**2**: Node.JS (https://nodejs.org/en/download/)
+
 ```
 https://github.com/Vadelius/swlsimNET/archive/master.zip
 ```
@@ -27,13 +31,18 @@ git clone https://github.com/Vadelius/swlsimNET
 
 **Step 4**: Go to the project root folder/directory in CMD or Powershell (By using the 'cd' and 'dir' command)
 
-**Step 5** (This requires the .NET Core SDK/CLI) Restore the project:
+**Step 5** (This requires Node.JS) install all dependencies from package.json
+```
+npm install
+```
+
+**Step 6** (This requires the .NET Core SDK/CLI) Restore the project:
 ```
 dotnet restore
 ```
-**Step 5**: Run the project:
+**Step 7**: Run the project:
 ```
 dotnet run
 ```
 
--> Done! 🎉  Now you have a local build of the repository running on http://localhost:54414/
+-> Done! 🎉  Now you have a local build of the repository running on http://localhost:51890/
