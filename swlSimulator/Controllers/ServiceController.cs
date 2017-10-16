@@ -6,6 +6,7 @@ using swlSimulator.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace swlSimulator.Controllers
 {
@@ -19,23 +20,35 @@ namespace swlSimulator.Controllers
         private Settings _settings = new Settings();
 
         [HttpPost]
-        public IActionResult Post([FromBody] Settings settings)
+        public async Task<IActionResult> Post([FromBody] Settings settings)
         {
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
-            else
+
+            _settings = settings;
+
+            // Simulation async
+            var result = await Task.Run(() => StartSimulation());
+            if (!result)
             {
-                StartSimulation();
-                return Ok(settings);
-            }   
+                // Simulation failed
+                //return View(settings);
+            }
+
+            var report = new Report();
+
+            result = await Task.Run(() => report.GenerateReportData(_iterationFightResults, settings));
+            if (!result)
+            {
+                // Report generation failed
+                //return View(settings);
+            }
+
+            //return View("Results", report);
+            return Ok(settings);
         }
-        
-
-
 
         private bool StartSimulation()
         {
@@ -51,9 +64,6 @@ namespace swlSimulator.Controllers
             catch (Exception e) when (!Helper.Env.Debugging)
             {
                 // TODO: Log exception and show to user
-                var exception = e;
-                //MessageBox.Show(e.ToString());
-                //Application.Current.Shutdown();
             }
 
             return res;
