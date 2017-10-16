@@ -9,13 +9,16 @@ A combat simulator for the "Secret World Legends" game, written in C#.
 * Total DPS display
 * Statistical view of spell breakdown, energy timeline, gimmick timeline and buff breakdown
 
+### Requirements:
+**1**: .Net Core 2.0 SDK (https://www.microsoft.com/net/download/core)
+
+**2**: Node.JS (https://nodejs.org/en/download/)
+
 ### Installation:
 
 **Step 1**: Clone the repository by visiting this link:
 
-### Requirements:
-**1**: .Net Core 2.0 SDK (https://www.microsoft.com/net/download/core)
-**2**: Node.JS (https://nodejs.org/en/download/)
+
 
 ```
 https://github.com/Vadelius/swlsimNET/archive/master.zip
