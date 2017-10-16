@@ -61,6 +61,8 @@
     "karma-chrome-launcher": "2.2.0",
     "karma-cli": "1.0.1",
     "karma-jasmine": "1.1.0",
-    "karma-webpack": "2.0.3"
+    "karma-webpack": "2.0.3",
+    "tslint": "^5.7.0",
+    "typescript": "https://registry.npmjs.org/typescript/-/typescript-2.4.1.tgz"
   }
 }

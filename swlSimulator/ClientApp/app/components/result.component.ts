@@ -1,7 +1,7 @@
-﻿import { Component } from '@angular/core';
+﻿import {Component} from "@angular/core";
 
 @Component({
-    selector: 'result',
-    templateUrl: './result.component.html'
+    selector: "result",
+    templateUrl: "./result.component.html"
 })
 export class ResultComponent {}
