@@ -47,7 +47,7 @@ namespace swlSimulator.Controllers
             }
 
             //return View("Results", report);
-            return Ok(settings);
+            return Ok(report);
         }
 
         private bool StartSimulation()
