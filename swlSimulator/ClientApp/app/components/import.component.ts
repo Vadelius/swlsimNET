@@ -1,7 +1,8 @@
 ﻿import {Component} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
-import {Http} from "@angular/http";
+import {Http, Response} from "@angular/http";
 import { RouterModule, Routes, Router } from "@angular/router";
+import {Observable} from "rxjs/Observable";
 
 @Component({
     selector: "import",
@@ -417,18 +418,25 @@ export class ImportComponent {
     console.log("Loaded!");
 }
 
-    onSubmit(): void {
-    let data: any = this.myform.value;
-    this.http.post("/api/values/", data).subscribe(
-        data => {
-            console.log("Sent JSON successfully"),
-            this.router.navigate(["/result"]); });
-
-        (error: any) => {
-            console.log("error");
-        };}
 
 
+onSubmit(): void {
+    let formInput: any = this.myform.value;
+    this.http.post("/api/values", formInput).subscribe(response => this.extractData(response, this.router), this.handleError)
+        
+}
+
+private extractData(res: Response, router: Router) {
+    let body = res.text();
+    localStorage.setItem("Results", body);
+    this.router.navigate(["/result"]);
+}
+
+private handleError(error: Response | any) {
+
+    console.log( error );
+    return Observable.throw( error );
+}
 
     ngOnInit(): void {
     this.myform = new FormGroup({

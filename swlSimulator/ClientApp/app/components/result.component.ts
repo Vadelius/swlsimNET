@@ -14,7 +14,8 @@ export class ResultComponent implements OnInit {
     constructor(private activityService: ObservableService) { }
     
     ngOnInit() {
-        
+        let results = localStorage.getItem("results");
+        console.log(results);
         // this.activities$ = this.activityService.loadData();
         // var data = this.activities$
         // console.log(data);
