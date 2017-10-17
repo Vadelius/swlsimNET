@@ -1,57 +1,37 @@
 ﻿<script src="node_modules/chart.js/src/chart.js"></script>
 <div class="col-xs-12" style="height:110px;"></div>
 
-    <h1>
+<h1>
     DPS = {{Dps}}
-    </h1>
-    <p>Minimum: {{LowestDps}} & Maximum: {{HighestDps}}</p>
+</h1>
+<p>Minimum: {{LowestDps}} & Maximum: {{HighestDps}}</p>
 
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="card-box">
-                <h4 class="m-t-0 header-title"><b>Spell Breakdown</b></h4>
-                    <canvas baseChart
-                    [data]="breakdownData"
-                    [labels]="breakdownLabels"
-                    [chartType]="pieChartType"
-                    [colors]="bgcolors"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"></canvas>
-                  
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="card-box">
-                <h4 class="m-t-0 header-title"><b>Energy Timeline</b></h4>
-                <canvas baseChart width="400" height="200"
-                [datasets]="energyChartData"
-                [labels]="lineChartLabels"
-                [options]="lineChartOptions"
-                [legend]="lineChartLegend"
-                [chartType]="lineChartType"
-                (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"></canvas>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="card-box">
-                <h4 class="m-t-0 header-title"><b>Gimmick Timeline</b></h4>
-                <canvas baseChart width="400" height="200"
-                [datasets]="gimmickChartData"
-                [labels]="lineChartLabels"
-                [options]="lineChartOptions"
-                [legend]="lineChartLegend"
-                [chartType]="lineChartType"
-                (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"></canvas>
-            </div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card-box">
+            <h4 class="m-t-0 header-title"><b>Spell Breakdown</b></h4>
+            <canvas baseChart [data]="breakdownData" [labels]="breakdownLabels" [chartType]="pieChartType" [colors]="bgcolors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+
         </div>
     </div>
-    <div class="col-lg-12">
-        <h4 class="m-t-0 header-title"><b>Spell Breakdown</b></h4>
-        <div class="p-20">
-            <table class="table table table-hover m-0">
-                <thead>
+    <div class="col-lg-4">
+        <div class="card-box">
+            <h4 class="m-t-0 header-title"><b>Energy Timeline</b></h4>
+            <canvas baseChart width="400" height="200" [datasets]="energyChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card-box">
+            <h4 class="m-t-0 header-title"><b>Gimmick Timeline</b></h4>
+            <canvas baseChart width="400" height="200" [datasets]="gimmickChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <h4 class="m-t-0 header-title"><b>Spell Breakdown</b></h4>
+    <div class="p-20">
+        <table class="table table table-hover m-0">
+            <thead>
                 <tr>
                     <th>Spell</th>
                     <th>DPS</th>
@@ -63,10 +43,10 @@
                     <th>Avarage</th>
                     <th>Crit%</th>
                 </tr>
-                </thead>
-                <tbody>
-                    @foreach (var spell in Model.SpellBreakdownList)
-                <div ng-repeat="spell.name in root.spellBreakdownList"> 
+            </thead>
+            <tbody>
+                @foreach (var spell in Model.SpellBreakdownList)
+                <div ng-repeat="spell.name in root.spellBreakdownList">
 
                     <tr>
                         <th scope="row">{{spell.name}}</th>
@@ -79,8 +59,8 @@
                         <td>{{spell.avarage}}</td>
                         <td>{{spell.critchance}}</td>
                     </tr>
-                </div>       
-                
+                </div>
+
                 <tr>
                     <th scope="row">Total</th>
                     <td>{{TotalDps}}</td>
@@ -93,15 +73,15 @@
                     <td>@avarageCritChance.ToString("F")</td>
                 </tr>
 
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
-    <div class="col-lg-12">
-        <h4 class="m-t-0 header-title"><b>Buff Breakdown</b></h4>
-        <div class="p-20">
-            <table class="table table table-hover m-0">
-                <thead>
+</div>
+<div class="col-lg-12">
+    <h4 class="m-t-0 header-title"><b>Buff Breakdown</b></h4>
+    <div class="p-20">
+        <table class="table table table-hover m-0">
+            <thead>
                 <tr>
                     <th>Buff</th>
                     <th>Start</th>
@@ -110,23 +90,23 @@
                     <th>Executes</th>
                     <th>Uptime%</th>
                 </tr>
-                </thead>
-                <tbody>
+            </thead>
+            <tbody>
                 @foreach (var buff in Model.BuffBreakdownList)
-                
-                    <tr>
-                        <th scope="row">@buff.Name</th>
-                        <td>@buff.Executes</td>
-                        <td>@buff.Refresh</td>
-                        <td>@buff.Interval</td>
-                        <td>@buff.Uptime</td>
-                    </tr>
 
-                
-                </tbody>
-            </table>
-        </div>
+                <tr>
+                    <th scope="row">@buff.Name</th>
+                    <td>@buff.Executes</td>
+                    <td>@buff.Refresh</td>
+                    <td>@buff.Interval</td>
+                    <td>@buff.Uptime</td>
+                </tr>
+
+
+            </tbody>
+        </table>
     </div>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="portlet">
@@ -150,5 +130,5 @@
     </div>
 </div>
 <script type="javascript">
-var results = localStorage.getItem("Results");
+    var results = localStorage.getItem("Results");
 </script>

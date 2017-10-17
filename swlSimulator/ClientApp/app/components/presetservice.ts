@@ -1,11 +1,9 @@
-import { Injectable } from "@angular/core";
-import { Http } from "@angular/http";
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 
 @Injectable()
 export class PresetsService {
-
-    constructor(private http: Http) {
-    }
+	constructor(private http: Http) {}
 }
 
 // Promise<Preset[]> {
