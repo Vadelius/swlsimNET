@@ -45,8 +45,8 @@
                 </tr>
             </thead>
 
-            <tbody *ngFor="let spell of breakdownlist">
-                <tr>
+            <tbody>
+                <tr *ngFor="let spell of breakdownlist">
                     <th scope="row">{{spell.name}}</th>
                     <td>{{spell.damagePerSecond}}</td>
                     <td>{{spell.dpsPercentage}}</td>
@@ -57,7 +57,6 @@
                     <td>{{spell.average}}</td>
                     <td>{{spell.critChance}}</td>
                 </tr>
-
             </tbody>
 
 
@@ -91,15 +90,14 @@
                     <th>Uptime%</th>
                 </tr>
             </thead>
-            <tbody *ngFor="let buff of buffbreakdownlist">
-                <tr>
+            <tbody>
+                <tr *ngFor="let buff of buffbreakdownlist">
                     <th scope="row">{{buff.name}}</th>
                     <td>{{buff.executes}}</td>
                     <td>{{buff.refresh}}</td>
                     <td>{{buff.interval}}</td>
                     <td>{{buff.uptime}}</td>
                 </tr>
-
             </tbody>
         </table>
     </div>

@@ -24,7 +24,7 @@
                 <div class="col-xs-4 ">
 
                     <label>Primary Weapon</label>
-                    <select class="form-control " formControlName="primaryWeapon" required minlength="1">
+                    <select class="form-control " formControlName="primaryWeapon" required>
                         <option *ngFor="let weapon of primaryWeapon " [value]="weapon">{{weapon}} </option>
                     </select>
                 </div>
@@ -142,7 +142,7 @@
                     <label for="exposed">Head Signet is CDR</label>
                 </div>
                 <div class="col-xs-12">
-                    <input id="waistCdr" type="checkbox">
+                    <input id="waistCdr" type="checkbox" [checked]="waistCdr">
                     <label for="exposed">Waist Signet is CDR</label>
                 </div>
 
