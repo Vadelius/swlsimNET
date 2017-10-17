@@ -36,36 +36,29 @@
                     <th>Spell</th>
                     <th>DPS</th>
                     <th>DPS%</th>
-                    <th>Executes</th>
                     <th>DPE</th>
-                    <th>Type</th>
-                    <th>Count</th>
-                    <th>Avarage</th>
+                    <th>Executes</th>
+                    <th>Ticks</th>
                     <th>Crit%</th>
                 </tr>
             </thead>
 
             <tbody>
                 <tr *ngFor="let spell of breakdownlist">
-                    <th scope="row">{{spell.name}}</th>
-                    <td>{{spell.damagePerSecond | number:"1.1"}}</td>
-                    <td>{{spell.dpsPercentage | number : '1.2-2'}}</td>
-                    <td>{{spell.executes | number:"1.1"}}</td>
-                    <td>{{spell.damagePerexecution | number:"1.1"}}</td>
-                    <td>{{spell.spellType}}</td>
-                    <td>{{spell.amount | number:"1.1"}}</td>
-                    <td>{{spell.average | number:"1.1"}}</td>
-                    <td>{{spell.critChance | number : '1.2-2'}}</td>
+                    <th scope="row">{{spell.Name}}</th>
+                    <td>{{spell.Dps}}</td>
+                    <td>{{spell.DpsPercent}}</td>
+                    <td>{{spell.Dpe}}</td>
+                    <td>{{spell.Executes}}</td>
+                    <td>{{spell.Ticks}}</td>
+                    <td>{{spell.CritChance}}</td>
                 </tr>
             </tbody>
-
 
             <tr>
                 <th scope="row">Total</th>
                 <td>{{Dps}}</td>
                 <td>100%</td>
-                <td>N/A</td>
-                <td>N/A</td>
                 <td>N/A</td>
                 <td>{{TotalCount}}</td>
                 <td>N/A</td>
