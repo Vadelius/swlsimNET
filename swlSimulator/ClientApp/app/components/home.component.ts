@@ -1,5 +1,4 @@
 import {Component} from "@angular/core";
-import {ChartsModule} from "ng2-charts";
 
 @Component({
     selector: "home",

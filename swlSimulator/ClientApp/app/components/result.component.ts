@@ -1,16 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {ObservableService} from "./observable.service";
-import {Observable} from "rxjs/Observable";
-import {
-    SpellBreakdownList,
-    BuffBreakdownList,
-    EnergyList,
-    RootObject
-} from "./resultsinterface";
-import {ChartsModule} from "ng2-charts";
-import {NgFor} from "@angular/common";
-import { DecimalPipe } from '@angular/common';
+import {RootObject} from "./interfaces";
 
 @Component({
     selector: "result",
@@ -48,7 +37,7 @@ export class ResultComponent implements OnInit {
     ];
 
     public bgcolors: Array<any> = [
-        "#c45850",
+        "#c44224",
         "#3e95cd",
         "#c45850",
         "#3e95cd",
@@ -67,7 +56,7 @@ export class ResultComponent implements OnInit {
     public lineChartType: string = "line";
 
     ngOnInit() {
-        var results: any = localStorage.getItem("Results");
+        let results: any = localStorage.getItem("Results");
         let jsonObj: any = JSON.parse(results); // string to generic object first
         let root: RootObject = <RootObject>jsonObj;
         this.Dps = root.totalDps.toFixed(0);
