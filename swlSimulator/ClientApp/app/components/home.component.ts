@@ -10,8 +10,15 @@ export class HomeComponent  {
 
     public barChartOptions:any = {
         scaleShowVerticalLines: false,
-        responsive: true
-      };
+        responsive: true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }      
       public barChartLabels:string[] = [
         "Rifle",
         "Blade",
@@ -27,9 +34,8 @@ export class HomeComponent  {
       public barChartLegend:boolean = true;
      
       public barChartData:any[] = [
-        {data: [12231, 10844, 14779, 11984, 12334, 9932, 14811, 13432, 12901], label: '~ 1000 IP over 240 seconds'},
-      ];
-     
+        {data: [12231, 10844, 14779, 11984, 12334, 9932, 14811, 13432, 12901], label: '~ 1000 IP over 240 seconds'}]
+
       // events
       public chartClicked(e:any):void {
         console.log(e);
