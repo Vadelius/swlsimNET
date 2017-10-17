@@ -10,6 +10,8 @@ import { ChartsModule } from 'ng2-charts';
     templateUrl: "./result.component.html"
 })
 export class ResultComponent implements OnInit {
+    AvarageCrit: string;
+    TotalCount: number;
     Raw: any;
     HighestDps: string;
     LowestDps: string;
@@ -52,6 +54,8 @@ public gimmickChartData:Array<any> = [
         this.LowestDps = root.lowestDps.toFixed(0);
         this.HighestDps = root.highestDps.toFixed(0);
         this.TotalDps = root.totalDamage.toFixed(0);
+        this.TotalCount = (root.totalHits + root.totalCrits)
+        this.AvarageCrit = (100 * (root.totalCrits / this.TotalCount)).toFixed(2)
 
         this.Raw = root._oneBuilder.m_StringValue;
 
