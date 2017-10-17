@@ -13,6 +13,7 @@ import {Configuration} from "./components/app/app.constants";
 import {ResultResolver} from "./components/result.resolver";
 import {ObservableService} from "./components/observable.service";
 import { ChartsModule } from 'ng2-charts';
+import { NgFor } from '@angular/common';
 
 @NgModule({
     declarations: [
