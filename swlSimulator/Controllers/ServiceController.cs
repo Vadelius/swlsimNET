@@ -34,7 +34,7 @@ namespace swlSimulator.Controllers
             if (!result)
             {
                 // Simulation failed
-                //return View(settings);
+                throw new Exception("Grem has not yet fixed this...");
             }
 
             var report = new Report();
@@ -43,7 +43,7 @@ namespace swlSimulator.Controllers
             if (!result)
             {
                 // Report generation failed
-                //return View(settings);
+                throw new Exception("Grem has not yet fixed this...");
             }
 
             //return View("Results", report);
