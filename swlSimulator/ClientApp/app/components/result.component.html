@@ -11,9 +11,10 @@
             <div class="card-box">
                 <h4 class="m-t-0 header-title"><b>Spell Breakdown</b></h4>
                     <canvas baseChart
-                    [data]="pieChartData"
-                    [labels]="pieChartLabels"
+                    [data]="breakdownData"
+                    [labels]="breakdownLabels"
                     [chartType]="pieChartType"
+                    [colors]="bgcolors"
                     (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"></canvas>
                   
@@ -22,11 +23,10 @@
         <div class="col-lg-4">
             <div class="card-box">
                 <h4 class="m-t-0 header-title"><b>Energy Timeline</b></h4>
-                <canvas baseChart width="400" height="400"
-                [datasets]="lineChartData"
+                <canvas baseChart width="400" height="200"
+                [datasets]="energyChartData"
                 [labels]="lineChartLabels"
                 [options]="lineChartOptions"
-                [colors]="lineChartColors"
                 [legend]="lineChartLegend"
                 [chartType]="lineChartType"
                 (chartHover)="chartHovered($event)"
@@ -36,7 +36,14 @@
         <div class="col-lg-4">
             <div class="card-box">
                 <h4 class="m-t-0 header-title"><b>Gimmick Timeline</b></h4>
-                <canvas id="LineChartTwo"></canvas>
+                <canvas baseChart width="400" height="200"
+                [datasets]="gimmickChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
             </div>
         </div>
     </div>
@@ -58,26 +65,25 @@
                 </tr>
                 </thead>
                 <tbody>
+                    @foreach (var spell in Model.SpellBreakdownList)
+                <div ng-repeat="spell.name in root.spellBreakdownList"> 
 
-                
-                @foreach (var spell in Model.SpellBreakdownList)
-                
                     <tr>
-                        <th scope="row">@spell.Name.Humanize(LetterCasing.Title)</th>
-                        <td>@spell.DamagePerSecond.ToString("F0")</td>
-                        <td>@spell.DpsPercentage.ToString("F2")</td>
-                        <td>@spell.Executes</td>
-                        <td>@spell.DamagePerExecution.ToString("F0")</td>
-                        <td>@spell.SpellType</td>
-                        <td>@spell.Amount</td>
-                        <td>@spell.Average.ToString("F0")</td>
-                        <td>@spell.CritChance.ToString("F1")</td>
+                        <th scope="row">{{spell.name}}</th>
+                        <td>{{spell.damagepersecond}}</td>
+                        <td>{{spell.damagepercentage}}</td>
+                        <td>{{spell.executes}}</td>
+                        <td>{{spell.damageperexecution}}</td>
+                        <td>{{spell.spelltype}}</td>
+                        <td>{{spell.amount}}</td>
+                        <td>{{spell.avarage}}</td>
+                        <td>{{spell.critchance}}</td>
                     </tr>
-
+                </div>       
                 
                 <tr>
                     <th scope="row">Total</th>
-                    <td>@Model.TotalDps.ToString("F0")</td>
+                    <td>{{TotalDps}}</td>
                     <td>100%</td>
                     <td>N/A</td>
                     <td>N/A</td>
