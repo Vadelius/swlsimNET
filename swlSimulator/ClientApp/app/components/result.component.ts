@@ -10,6 +10,7 @@ import { ChartsModule } from 'ng2-charts';
     templateUrl: "./result.component.html"
 })
 export class ResultComponent implements OnInit {
+    Raw: any;
     HighestDps: string;
     LowestDps: string;
     Dps: string;
@@ -51,6 +52,8 @@ public gimmickChartData:Array<any> = [
         this.LowestDps = root.lowestDps.toFixed(0);
         this.HighestDps = root.highestDps.toFixed(0);
         this.TotalDps = root.totalDamage.toFixed(0);
+
+        this.Raw = root._oneBuilder.m_StringValue;
 
         this.breakdownData = root.spellBreakdownList
         .filter(spell => spell.dpsPercentage > 0)
