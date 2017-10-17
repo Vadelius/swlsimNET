@@ -1,10 +1,10 @@
 ﻿
 <div class="col-xs-12" style="height:110px;"></div>
-{{results}}
+
     <h1>
-    DPS = @Model.TotalDps.ToString("F0")
+    DPS = {{Dps}}
     </h1>
-    <p>Minimum: @Model.LowestDps.ToString("F0") & Maximum: @Model.HighestDps.ToString("F0")</p>
+    <p>Minimum: {{LowestDps}} & Maximum: {{HighestDps}}</p>
 
     <div class="row">
         <div class="col-lg-4">
@@ -129,3 +129,6 @@
         </div>
     </div>
 </div>
+<script type="javascript">
+var results = localStorage.getItem("Results");
+</script>
