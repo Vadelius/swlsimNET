@@ -14,27 +14,27 @@ namespace swlSimulator.api.Models
         public ExpressionContext Context;
 
         public Item Item { get; }
-        public Settings Settings { get; set; }
+        public Settings Settings { get; }
         public Spell CurrentSpell { get; set; }
         public BuffWrapper Buff { get; }
-        public List<ISpell> Spells { get; set; }
+        public List<ISpell> Spells { get; }
         public List<IBuff> Buffs { get; }
         public List<IBuff> AbilityBuffs { get; }
-        public List<Passive> Passives { get; set; }
-        public Weapon PrimaryWeapon { get; set; }
-        public Weapon SecondaryWeapon { get; set; }
+        public List<Passive> Passives { get; }
+        public Weapon PrimaryWeapon { get; }
+        public Weapon SecondaryWeapon { get; }
 
-        public double CombatPower { get; protected set; } = 1200;
-        public double GlanceReduction { get; protected set; } = 0.3;
-        public double CriticalChance { get; protected set; } = 0.1;
-        public double CritPower { get; set; } = 2.3;
-        public double BasicSignetBoost { get; protected set; } = 1.74;
-        public double PowerSignetBoost { get; protected set; } = 1.18;
-        public double EliteSignetBoost { get; protected set; } = 1.43;
-        public decimal EliteSignetCooldownReduction { get; protected set; } = 0;
-        public double WaistSignetBoost { get; protected set; } = 1.30;
+        public double CombatPower { get; }
+        public double GlanceReduction { get; }
+        public double CriticalChance { get; }
+        public double CritPower { get; }
+        public double BasicSignetBoost { get; }
+        public double PowerSignetBoost { get; }
+        public double EliteSignetBoost { get; }
+        public decimal EliteSignetCooldownReduction { get; }
+        public double WaistSignetBoost { get; }
 
-        public decimal Interval { get; set; }
+        public decimal Interval { get; private set; }
         public decimal CastTime { get; set; }
         public decimal CurrentTimeSec { get; private set; }
         public decimal GCD { get; set; }    

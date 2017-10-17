@@ -22,7 +22,7 @@ namespace swlSimulator.Models
         public string Passive2 { get; set; }
 
         [JsonProperty("criticalChance")]
-        public double CriticalChance { get; set; }
+        public double CriticalChance { get; set; } = 25;
 
         [JsonProperty("basicSignet")]
         public double BasicSignet { get; set; }
@@ -31,19 +31,19 @@ namespace swlSimulator.Models
         public string Apl { get; set; }
 
         [JsonProperty("combatPower")]
-        public double CombatPower { get; set; }
+        public double CombatPower { get; set; } = 1200;
 
         [JsonProperty("eliteSignet")]
         public double EliteSignet { get; set; }
 
         [JsonProperty("criticalPower")]
-        public double CritPower { get; set; }
+        public double CritPower { get; set; } = 100;
 
         [JsonProperty("exposed")]
         public bool Exposed { get; set; }
 
         [JsonProperty("luckSignet")]
-        public double LuckSignet { get; set; } = 0;
+        public double LuckSignet { get; set; }
 
         [JsonProperty("headCdr")]
         public bool HeadSignetIsCdr { get; set; }
@@ -101,7 +101,7 @@ namespace swlSimulator.Models
 
 
         // Unused atm.
-        public double GlanceReduction { get; set; }
+        public double GlanceReduction { get; set; } = 30;
         public double Waist { get; set; }
         public double WaistSignet { get; set; }
 
