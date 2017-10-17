@@ -48,14 +48,14 @@
             <tbody>
                 <tr *ngFor="let spell of breakdownlist">
                     <th scope="row">{{spell.name}}</th>
-                    <td>{{spell.damagePerSecond}}</td>
-                    <td>{{spell.dpsPercentage}}</td>
-                    <td>{{spell.executes}}</td>
-                    <td>{{spell.damagePerexecution}}</td>
+                    <td>{{spell.damagePerSecond | number:"1.1"}}</td>
+                    <td>{{spell.dpsPercentage | number : '1.2-2'}}</td>
+                    <td>{{spell.executes | number:"1.1"}}</td>
+                    <td>{{spell.damagePerexecution | number:"1.1"}}</td>
                     <td>{{spell.spellType}}</td>
-                    <td>{{spell.amount}}</td>
-                    <td>{{spell.average}}</td>
-                    <td>{{spell.critChance}}</td>
+                    <td>{{spell.amount | number:"1.1"}}</td>
+                    <td>{{spell.average | number:"1.1"}}</td>
+                    <td>{{spell.critChance | number : '1.2-2'}}</td>
                 </tr>
             </tbody>
 
@@ -83,7 +83,7 @@
             <thead>
                 <tr>
                     <th>Buff</th>
-                    <th>Start</th>
+                    <th># of Casts</th>
                     <th>Refresh</th>
                     <th>Interval</th>
                     <th>Executes</th>
@@ -96,7 +96,8 @@
                     <td>{{buff.executes}}</td>
                     <td>{{buff.refresh}}</td>
                     <td>{{buff.interval}}</td>
-                    <td>{{buff.uptime}}</td>
+                    <td>{{buff.executes}}</td>
+                    <td>33%</td>
                 </tr>
             </tbody>
         </table>
