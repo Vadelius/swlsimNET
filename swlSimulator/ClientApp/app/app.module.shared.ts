@@ -12,6 +12,7 @@ import {ResultComponent} from "./components/result.component";
 import {Configuration} from "./components/app/app.constants";
 import {ResultResolver} from "./components/result.resolver";
 import {ObservableService} from "./components/observable.service";
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import {ObservableService} from "./components/observable.service";
         CommonModule,
         HttpModule,
         FormsModule,
+        ChartsModule,
         ReactiveFormsModule,
         RouterModule.forRoot([
             { path: "", redirectTo: "home", pathMatch: "full" },

@@ -17,6 +17,7 @@
     "@angular/platform-browser-dynamic": "4.2.5",
     "@angular/platform-server": "4.2.5",
     "@angular/router": "4.2.5",
+    "@aspnet/signalr-client": "1.0.0-alpha1-final",
     "@ngtools/webpack": "1.5.0",
     "@types/webpack-env": "1.13.0",
     "angular2-template-loader": "0.6.2",
@@ -24,6 +25,7 @@
     "aspnet-webpack": "^2.0.1",
     "awesome-typescript-loader": "3.2.1",
     "bootstrap": "3.3.7",
+    "chart.js": "https://registry.npmjs.org/chart.js/-/chart.js-2.7.0.tgz",
     "css": "2.2.1",
     "css-loader": "0.28.4",
     "es6-shim": "0.35.3",
@@ -35,6 +37,8 @@
     "isomorphic-fetch": "2.2.1",
     "jquery": "3.2.1",
     "json-loader": "0.5.4",
+    "msgpack5": "^3.5.1",
+    "ng2-charts": "^1.6.0",
     "preboot": "4.5.2",
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.10",
@@ -46,9 +50,7 @@
     "webpack": "2.5.1",
     "webpack-hot-middleware": "2.18.2",
     "webpack-merge": "4.1.0",
-    "zone.js": "0.8.12",
-    "msgpack5": "^3.5.1",
-    "@aspnet/signalr-client": "1.0.0-alpha1-final"
+    "zone.js": "0.8.12"
   },
   "devDependencies": {
     "@angular/cli": "^1.4.7",

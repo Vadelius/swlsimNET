@@ -1,4 +1,4 @@
-﻿
+﻿<script src="node_modules/chart.js/src/chart.js"></script>
 <div class="col-xs-12" style="height:110px;"></div>
 
     <h1>
@@ -10,13 +10,27 @@
         <div class="col-lg-4">
             <div class="card-box">
                 <h4 class="m-t-0 header-title"><b>Spell Breakdown</b></h4>
-                <canvas id="PieChart"></canvas>
+                    <canvas baseChart
+                    [data]="pieChartData"
+                    [labels]="pieChartLabels"
+                    [chartType]="pieChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
+                  
             </div>
         </div>
         <div class="col-lg-4">
             <div class="card-box">
                 <h4 class="m-t-0 header-title"><b>Energy Timeline</b></h4>
-                <canvas id="LineChart"></canvas>
+                <canvas baseChart width="400" height="400"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
             </div>
         </div>
         <div class="col-lg-4">

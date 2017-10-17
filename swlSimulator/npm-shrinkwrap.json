@@ -1,6 +1,6 @@
 {
   "name": "swlsimulator",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "dependencies": {
     "@angular-devkit/build-optimizer": {
       "version": "0.0.27",
@@ -1091,6 +1091,28 @@
       "from": "charenc@>=0.0.1 <0.1.0",
       "resolved": "https://registry.npmjs.org/charenc/-/charenc-0.0.2.tgz",
       "dev": true
+    },
+    "chart.js": {
+      "version": "2.7.0",
+      "from": "https://registry.npmjs.org/chart.js/-/chart.js-2.7.0.tgz",
+      "resolved": "https://registry.npmjs.org/chart.js/-/chart.js-2.7.0.tgz"
+    },
+    "chartjs-color": {
+      "version": "2.2.0",
+      "from": "chartjs-color@>=2.2.0 <2.3.0",
+      "resolved": "https://registry.npmjs.org/chartjs-color/-/chartjs-color-2.2.0.tgz",
+      "dependencies": {
+        "color-convert": {
+          "version": "0.5.3",
+          "from": "color-convert@>=0.5.3 <0.6.0",
+          "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-0.5.3.tgz"
+        }
+      }
+    },
+    "chartjs-color-string": {
+      "version": "0.5.0",
+      "from": "chartjs-color-string@>=0.5.0 <0.6.0",
+      "resolved": "https://registry.npmjs.org/chartjs-color-string/-/chartjs-color-string-0.5.0.tgz"
     },
     "check-error": {
       "version": "1.0.2",
@@ -3840,6 +3862,11 @@
       "from": "mkdirp@>=0.5.1 <0.6.0",
       "resolved": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.5.1.tgz"
     },
+    "moment": {
+      "version": "2.18.1",
+      "from": "moment@>=2.18.0 <2.19.0",
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz"
+    },
     "ms": {
       "version": "2.0.0",
       "from": "ms@2.0.0",
@@ -3884,6 +3911,11 @@
       "from": "negotiator@0.6.1",
       "resolved": "https://registry.npmjs.org/negotiator/-/negotiator-0.6.1.tgz",
       "dev": true
+    },
+    "ng2-charts": {
+      "version": "1.6.0",
+      "from": "ng2-charts@latest",
+      "resolved": "https://registry.npmjs.org/ng2-charts/-/ng2-charts-1.6.0.tgz"
     },
     "no-case": {
       "version": "2.3.1",
@@ -5876,7 +5908,7 @@
     },
     "tslint": {
       "version": "5.7.0",
-      "from": "tslint@latest",
+      "from": "https://registry.npmjs.org/tslint/-/tslint-5.7.0.tgz",
       "resolved": "https://registry.npmjs.org/tslint/-/tslint-5.7.0.tgz",
       "dev": true
     },
