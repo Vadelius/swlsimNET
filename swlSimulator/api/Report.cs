@@ -113,22 +113,22 @@ namespace swlSimulator.api
                     {
                         if (a.IsHit && a.IsCrit)
                         {
-                            _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
+                            _oneBuilder.AppendLine($"[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
                                                    $"{a.Spell.Name} *{a.Damage.ToString("#,##0,.0K", nfi)}* " +
                                                    $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " +
-                                                   $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})</div>");
+                                                   $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})");
                         }
                         else if (a.IsHit && a.Spell.SpellType != SpellType.Procc)
                         {
-                            _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
+                            _oneBuilder.AppendLine($"[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
                                                    $"{a.Spell.Name} {a.Damage.ToString("#,##0,.0K", nfi)} " +
                                                    $"E({rr.PrimaryEnergyEnd}/{rr.SecondaryEnergyEnd}) " +
-                                                   $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})</div>");
+                                                   $"R({rr.PrimaryGimmickEnd}/{rr.SecondaryGimmickEnd})");
                         }
                         else if (a.IsHit && a.Spell.SpellType == SpellType.Procc)
                         {
-                            _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
-                                                   $"[{a.Spell.Name}] proc!</div>");
+                            _oneBuilder.AppendLine($"[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
+                                                   $"[{a.Spell.Name}] proc!");
                         }
 
                         _allSpellCast.Add(a);

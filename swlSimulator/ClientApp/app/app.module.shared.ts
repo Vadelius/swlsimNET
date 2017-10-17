@@ -11,7 +11,7 @@ import {SpellqueryComponent} from "./components/spellquery.component";
 import {ResultComponent} from "./components/result.component";
 import {Configuration} from "./components/app/app.constants";
 import {ResultResolver} from "./components/result.resolver";
-import {ObservableService} from "./components/observable.service"
+import {ObservableService} from "./components/observable.service";
 
 @NgModule({
     declarations: [
