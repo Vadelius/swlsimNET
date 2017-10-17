@@ -133,8 +133,10 @@ namespace swlSimulator.Models
                 Selected = false
             });
 
+        [JsonIgnore]
         public List<Passive> AllPassives => _allPassives;
 
+        [JsonIgnore]
         private static List<Passive> _allPassives = new List<Passive>
         {
             // TODO: Add ALL passives here
