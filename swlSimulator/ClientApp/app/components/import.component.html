@@ -25,55 +25,55 @@
 
                     <label>Primary Weapon</label>
                     <select class="form-control " formControlName="primaryWeapon" required>
-                        <option *ngFor="let weapon of primaryWeapon " [value]="weapon">{{weapon}} </option>
+                        <option *ngFor="let weapon of primaryWeapon" value="{{weapon.name}}">{{weapon.displayName}}</option>
                     </select>
                 </div>
                 <div class="col-xs-4 ">
                     <label>Primary Affix</label>
                     <select class="form-control " formControlName="primaryAffix">
-                        <option *ngFor="let affix of primaryAffix " [value]="affix">{{affix}} </option>
+                        <option *ngFor="let affix of primaryAffix" value="{{affix.name}}">{{affix.displayName}}</option>
                     </select>
                 </div>
                 <div class="col-xs-4 ">
                     <label>Primary Proc</label>
                     <select class="form-control " formControlName="primaryProc">
-                        <option *ngFor="let proc of primaryProc " [value]="proc">{{proc}} </option>
+                        <option *ngFor="let proc of primaryProc" value="{{proc.name}}">{{proc.displayName}} </option>
                     </select>
                 </div>
                 <div class="col-xs-4 ">
                     <label>Secondary Weapon</label>
                     <select class="form-control " formControlName="secondaryWeapon">
-                        <option *ngFor="let weapon of secondaryWeapon " [value]="weapon">{{weapon}}</option>
+                        <option *ngFor="let weapon of secondaryWeapon" value="{{weapon.name}}">{{weapon.displayName}}</option>
                     </select>
                 </div>
                 <div class="col-xs-4 ">
                     <label>Secondary Affix</label>
                     <select class="form-control " formControlName="secondaryAffix">
-                        <option *ngFor="let affix of secondaryAffix " [value]="affix">{{affix}}</option>
+                        <option *ngFor="let affix of secondaryAffix" value="{{affix.name}}">{{affix.displayName}}</option>
                     </select>
                 </div>
                 <div class="col-xs-4 ">
                     <label>Secondary Proc</label>
                     <select class="form-control " formControlName="secondaryProc">
-                        <option *ngFor="let proc of secondaryProc " [value]="proc">{{proc}}</option>
+                        <option *ngFor="let proc of secondaryProc" value="{{proc.name}}">{{proc.displayName}} </option>
                     </select>
                 </div>
                 <div class="col-xs-4 ">
                     <label>Head Talisman</label>
                     <select class="form-control " formControlName="head">
-                        <option *ngFor="let h of head " [value]="h">{{h}}</option>
+                        <option *ngFor="let h of head" value="{{h.name}}">{{h.displayName}} </option>
                     </select>
                 </div>
                 <div class="col-xs-4 ">
                     <label>Neck Talisman</label>
                     <select class="form-control " formControlName="neck">
-                        <option *ngFor="let n of neck " [value]="n">{{n}}</option>
+                        <option *ngFor="let n of neck " value="{{n.name}}">{{n.displayName}} </option>
                     </select>
                 </div>
                 <div class="col-xs-4 ">
                     <label>Luck Talisman</label>
                     <select class="form-control " formControlName="luck">
-                        <option *ngFor="let l of luck " [value]="l">{{l}}</option>
+                        <option *ngFor="let l of luck " value="{{l.name}}">{{l.displayName}} </option>
                     </select>
                 </div>
                 <div class="col-xs-4 ">
@@ -108,7 +108,7 @@
                 <div class="col-xs-4 ">
                     <label>Gadget</label>
                     <select class="form-control " formControlName="gadget">
-                        <option *ngFor="let g of gadget" [value]="g">{{g}}</option>
+                        <option *ngFor="let g of gadget" value="{{g.name}}">{{g.displayName}} </option>
                     </select>
                 </div>
                 <div class="col-xs-12 " style="margin-top: 10px">
