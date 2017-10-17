@@ -22,8 +22,9 @@
         <div class="col-xs-12 ">
             <div class="col-xs-3 ">
                 <div class="col-xs-4 ">
+
                     <label>Primary Weapon</label>
-                    <select class="form-control " formControlName="primaryWeapon">
+                    <select class="form-control " formControlName="primaryWeapon" required minlength="1">
                         <option *ngFor="let weapon of primaryWeapon " [value]="weapon">{{weapon}} </option>
                     </select>
                 </div>

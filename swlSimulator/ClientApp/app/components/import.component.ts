@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Http, Response} from "@angular/http";
 import {RouterModule, Routes, Router} from "@angular/router";
 import {Observable} from "rxjs/Observable";
@@ -551,10 +551,10 @@ export class ImportComponent {
 
     ngOnInit(): void {
         this.myform = new FormGroup({
-            primaryWeapon: new FormControl(),
+            primaryWeapon: new FormControl(Validators.required),
             primaryAffix: new FormControl(),
             primaryProc: new FormControl(),
-            secondaryWeapon: new FormControl(),
+            secondaryWeapon: new FormControl(Validators.required),
             secondaryAffix: new FormControl(),
             secondaryProc: new FormControl(),
             head: new FormControl(),
@@ -568,7 +568,7 @@ export class ImportComponent {
             eliteSignet: new FormControl(),
             luckSignet: new FormControl(),
             gadget: new FormControl(),
-            apl: new FormControl(),
+            apl: new FormControl(Validators.required),
             exposed: new FormControl(),
             openingShot: new FormControl(),
             headCdr: new FormControl(),
@@ -578,6 +578,42 @@ export class ImportComponent {
             passive3: new FormControl(),
             passive4: new FormControl(),
             passive5: new FormControl()
+        });
+        this.myform.patchValue({primaryWeapon: "Hammer"});
+        this.myform.patchValue({primaryAffix: "Havoc"});
+        this.myform.patchValue({primaryProc: "PneumaticMaul"});
+        this.myform.patchValue({secondaryWeapon: "Fist"});
+        this.myform.patchValue({secondaryAffix: "Destruction"});
+        this.myform.patchValue({secondaryProc: "None"});
+        this.myform.patchValue({combatPower: 1350});
+        this.myform.patchValue({criticalChance: 30});
+        this.myform.patchValue({criticalPower: 120});
+        this.myform.patchValue({basicSignet: 73});
+        this.myform.patchValue({powerSignet: 19});
+        this.myform.patchValue({eliteSignet: 41});
+        this.myform.patchValue({waistSignet: 49});
+        this.myform.patchValue({luckSignet: 12});
+        this.myform.patchValue({head: "Ashes"});
+        this.myform.patchValue({neck: "SeedOfAgression"});
+        this.myform.patchValue({luck: "ColdSilverDice"});
+        this.myform.patchValue({gadget: "ValiMetabolic"});
+        this.myform.patchValue({exposed: true});
+        this.myform.patchValue({openingShot: true});
+        this.myform.patchValue({headCdr: false});
+        this.myform.patchValue({waistCdr: true});
+        this.myform.patchValue({passive1: "Obliterate"});
+        this.myform.patchValue({passive2: "FastandFurious"});
+        this.myform.patchValue({passive3: "Outrage"});
+        this.myform.patchValue({passive4: "Berserker"});
+        this.myform.patchValue({passive5: "UnbridledWrath"});
+        this.myform.patchValue({
+            apl:
+                "Fist.Savagery, Buff.UnstoppableForce.Active\r\n" +
+                "Hammer.Seethe, Buff.UnstoppableForce.Active\r\n" +
+                "Hammer.UnstoppableForce, Rage > 50 || Hammer.Energy > 8\r\n" +
+                "Hammer.Demolish, Buff.UnstoppableForce.Active\r\n" +
+                "Hammer.Demolish, Rage > 60 || Hammer.Energy > 13\r\n" +
+                "Hammer.Smash"
         });
     }
 }
