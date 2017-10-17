@@ -4,12 +4,15 @@ import {ObservableService} from "./observable.service"
 import {Observable} from "rxjs/Observable";
 import {AbilityBuff, DistinctBuff, DistinctSpellCast, SpellBreakdownList, BuffBreakdownList, EnergyList, RootObject} from "./resultsinterface";
 import { ChartsModule } from 'ng2-charts';
+import { NgFor } from '@angular/common';
 
 @Component({
     selector: "result",
     templateUrl: "./result.component.html"
 })
 export class ResultComponent implements OnInit {
+    breakdownlist: any;
+    buffbreakdownlist: any;
     AvarageCrit: string;
     TotalCount: number;
     Raw: any;
@@ -17,6 +20,7 @@ export class ResultComponent implements OnInit {
     LowestDps: string;
     Dps: string;
     TotalDps: string;
+
     public primary:Array<any> = [];
     public secondary:Array<any> = [];
     public pgimmick:Array<any> = [];
@@ -58,7 +62,8 @@ public gimmickChartData:Array<any> = [
         this.AvarageCrit = (100 * (root.totalCrits / this.TotalCount)).toFixed(2)
 
         this.Raw = root._oneBuilder.m_StringValue;
-
+        this.breakdownlist = root.spellBreakdownList
+        this.buffbreakdownlist = root.buffBreakdownList
         this.breakdownData = root.spellBreakdownList
         .filter(spell => spell.dpsPercentage > 0)
         .map(spell => spell.dpsPercentage);

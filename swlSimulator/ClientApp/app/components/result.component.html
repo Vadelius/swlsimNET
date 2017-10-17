@@ -44,34 +44,34 @@
                     <th>Crit%</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- @foreach (var spell in Model.SpellBreakdownList)
-                <div ng-repeat="spell.name in root.spellBreakdownList">
 
-                    <tr>
-                        <th scope="row">{{spell.name}}</th>
-                        <td>{{spell.damagepersecond}}</td>
-                        <td>{{spell.damagepercentage}}</td>
-                        <td>{{spell.executes}}</td>
-                        <td>{{spell.damageperexecution}}</td>
-                        <td>{{spell.spelltype}}</td>
-                        <td>{{spell.amount}}</td>
-                        <td>{{spell.avarage}}</td>
-                        <td>{{spell.critchance}}</td>
-                    </tr>
-                </div> -->
-
+            <tbody *ngFor="let spell of breakdownlist">
                 <tr>
-                    <th scope="row">Total</th>
-                    <td>{{Dps}}</td>
-                    <td>100%</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                    <td>{{TotalCount}}</td>
-                    <td>N/A</td>
-                    <td>{{AvarageCrit}}</td>
+                    <th scope="row">{{spell.name}}</th>
+                    <td>{{spell.damagePerSecond}}</td>
+                    <td>{{spell.dpsPercentage}}</td>
+                    <td>{{spell.executes}}</td>
+                    <td>{{spell.damagePerexecution}}</td>
+                    <td>{{spell.spellType}}</td>
+                    <td>{{spell.amount}}</td>
+                    <td>{{spell.average}}</td>
+                    <td>{{spell.critChance}}</td>
                 </tr>
+
+            </tbody>
+
+
+            <tr>
+                <th scope="row">Total</th>
+                <td>{{Dps}}</td>
+                <td>100%</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>{{TotalCount}}</td>
+                <td>N/A</td>
+                <td>{{AvarageCrit}}</td>
+            </tr>
 
             </tbody>
         </table>
@@ -91,17 +91,14 @@
                     <th>Uptime%</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var buff in Model.BuffBreakdownList)
-
+            <tbody *ngFor="let buff of buffbreakdownlist">
                 <tr>
-                    <th scope="row">@buff.Name</th>
-                    <td>@buff.Executes</td>
-                    <td>@buff.Refresh</td>
-                    <td>@buff.Interval</td>
-                    <td>@buff.Uptime</td>
+                    <th scope="row">{{buff.name}}</th>
+                    <td>{{buff.executes}}</td>
+                    <td>{{buff.refresh}}</td>
+                    <td>{{buff.interval}}</td>
+                    <td>{{buff.uptime}}</td>
                 </tr>
-
 
             </tbody>
         </table>
@@ -129,6 +126,3 @@
         </div>
     </div>
 </div>
-<script type="javascript">
-    var results = localStorage.getItem("Results");
-</script>
