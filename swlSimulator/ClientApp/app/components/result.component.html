@@ -45,13 +45,13 @@
 
             <tbody>
                 <tr *ngFor="let spell of breakdownlist">
-                    <th scope="row">{{spell.Name}}</th>
-                    <td>{{spell.Dps}}</td>
-                    <td>{{spell.DpsPercent}}</td>
-                    <td>{{spell.Dpe}}</td>
-                    <td>{{spell.Executes}}</td>
-                    <td>{{spell.Ticks}}</td>
-                    <td>{{spell.CritChance}}</td>
+                    <th scope="row">{{spell.name}}</th>
+                    <td>{{spell.dps}}</td>
+                    <td>{{spell.dpsPercent}}</td>
+                    <td>{{spell.dpe}}</td>
+                    <td>{{spell.executes}}</td>
+                    <td>{{spell.ticks}}</td>
+                    <td>{{spell.critChance}}</td>
                 </tr>
             </tbody>
 
@@ -90,7 +90,7 @@
                     <td>{{buff.refresh}}</td>
                     <td>{{buff.interval}}</td>
                     <td>{{buff.executes}}</td>
-                    <td>33%</td>
+                    <td>{{buff.uptime}}</td>
                 </tr>
             </tbody>
         </table>

@@ -3,9 +3,6 @@ import {ActivatedRoute} from "@angular/router";
 import {ObservableService} from "./observable.service";
 import {Observable} from "rxjs/Observable";
 import {
-    AbilityBuff,
-    DistinctBuff,
-    DistinctSpellCast,
     SpellBreakdownList,
     BuffBreakdownList,
     EnergyList,
@@ -80,15 +77,15 @@ export class ResultComponent implements OnInit {
         this.TotalCount = root.totalHits - root.totalCrits;
         this.AvarageCrit = (100 * (root.totalCrits / root.totalHits)).toFixed(2);
 
-        this.Raw = root._oneBuilder.m_StringValue;
+        this.Raw = root.fightDebug;
         this.breakdownlist = root.spellBreakdownList;
         this.buffbreakdownlist = root.buffBreakdownList;
         this.breakdownData = root.spellBreakdownList
-            .filter(spell => spell.dpsPercentage > 0)
-            .map(spell => spell.dpsPercentage);
+            .filter(spell => spell.dpsPercent > 0)
+            .map(spell => spell.dpsPercent);
 
         this.breakdownLabels = root.spellBreakdownList
-            .filter(spell => spell.dpsPercentage > 0)
+            .filter(spell => spell.dpsPercent > 0)
             .map(spell => spell.name);
 
         this.lineChartLabels = root.energyList.map(time => time.time);
