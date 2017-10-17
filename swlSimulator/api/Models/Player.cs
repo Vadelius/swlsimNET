@@ -65,7 +65,7 @@ namespace swlSimulator.api.Models
             Settings = settings;
             PrimaryWeapon = GetWeaponFromType(settings.PrimaryWeapon, settings.PrimaryWeaponAffix);
             SecondaryWeapon = GetWeaponFromType(settings.SecondaryWeapon, settings.SecondaryWeaponAffix);
-            Passives = GetSelectedPassives();      
+            Passives = api.Spells.Passives.GetSelectedPassives(settings);      
 
             Buffs = new List<IBuff>();
             {
@@ -132,28 +132,6 @@ namespace swlSimulator.api.Models
         }
 
         // TODO: Simplify
-        private List<Passive> GetSelectedPassives()
-        {
-            var selectedPassives = new List<Passive>();
-
-            var passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive1);
-            if (passive != null) selectedPassives.Add(passive);
-
-            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive2);
-            if (passive != null) selectedPassives.Add(passive);
-
-            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive3);
-            if (passive != null) selectedPassives.Add(passive);
-
-            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive4);
-            if (passive != null) selectedPassives.Add(passive);
-
-            passive = Settings.AllPassives.Find(p => p.Name == Settings.Passive5);
-            if (passive != null) selectedPassives.Add(passive);
-
-            return selectedPassives;
-        }
-
         private void InitPassives()
         {
             // Go through all passives
@@ -161,7 +139,7 @@ namespace swlSimulator.api.Models
             {
                 passive.Init(this);
 
-                if (passive.ModelledInWeapon) continue; ;
+                if (passive.ModelledInWeapon) continue;
 
                 passive.LoopSpellsFromPassive(this);
 
@@ -210,7 +188,6 @@ namespace swlSimulator.api.Models
             WeaponAfterAttack(rr, spell);
             PassiveBonusSpells(rr, spell);
             EndRound(rr, spell);
-            //EndRoundBuffs(rr);
             PostRound(rr, spell);
 
             return rr;
@@ -218,10 +195,7 @@ namespace swlSimulator.api.Models
 
         private bool ContinueRound(RoundResult rr, ISpell prevSpell)
         {
-            // TODO: Check if all this should be done in continue round
-            // TODO: Fix timestamtp and cooldown checks in all methods below etc
-            // Order of a round
-
+            // Order when continuing a round
             var actions = rr.Attacks.Count;
 
             Item.PreAttack(rr);
@@ -420,16 +394,10 @@ namespace swlSimulator.api.Models
         private void EndRound(RoundResult rr, ISpell spell)
         {
             var attack = rr.Attacks.FirstOrDefault(a => a.Spell == spell);
-            if (attack != null && attack.IsHit)
+            if (attack != null && attack.IsHit && attack.IsCrit)
             {
                 var weapon = GetWeaponFromSpell(attack.Spell);
-
-                if (attack.IsCrit)
-                {
-                    // TODO: Make sure this can never happen more than 1/s
-                    // Energy on crit 1s IDC
-                    weapon?.EnergyOnCrit(this);
-                }
+                weapon?.EnergyOnCrit(this);
             }
         }
 
