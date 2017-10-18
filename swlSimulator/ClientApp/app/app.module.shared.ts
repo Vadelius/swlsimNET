@@ -6,11 +6,11 @@ import { RouterModule } from "@angular/router";
 import { ChartsModule } from "ng2-charts";
 import { AppComponent } from "./components/app/app.component";
 import { Configuration } from "./components/app/app.constants";
-import { HomeComponent } from "./components/home.component";
-import { ImportComponent } from "./components/import.component";
-import { NavMenuComponent } from "./components/navmenu.component";
-import { ResultComponent } from "./components/result.component";
-import { SpellqueryComponent } from "./components/spellquery.component";
+import { HomeComponent } from "./components/home/home.component";
+import { ImportComponent } from "./components/import/import.component";
+import { NavMenuComponent } from "./components/navmenu/navmenu.component";
+import { ResultComponent } from "./components/result/result.component";
+import { SpellqueryComponent } from "./components/spellquery/spellquery.component";
 
 @NgModule({
   declarations: [

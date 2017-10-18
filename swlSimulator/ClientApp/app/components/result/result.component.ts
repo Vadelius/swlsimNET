@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { IRootObject as RootObject } from "./interfaces";
+import { IRootObject as RootObject } from "../interfaces";
 
 @Component({
   selector: "result",
