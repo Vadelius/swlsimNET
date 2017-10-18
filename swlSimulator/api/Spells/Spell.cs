@@ -29,6 +29,14 @@ namespace swlSimulator.api.Spells
         Elite,
         Gadget
     }
+    
+    public enum ElementalType
+    {
+        None,
+        Cold,
+        Fire,
+        Lightning
+    }
 
     public class Spell : ISpell
     {
@@ -75,6 +83,7 @@ namespace swlSimulator.api.Spells
         public decimal DotDuration { get; set; }
         public virtual SpellType SpellType { get; set; }
         public AbilityType AbilityType { get; set; }
+        public ElementalType ElementalType { get; set; }
         public int PrimaryCost { get; set; }
         public int SecondaryCost { get; set; }
         public int PrimaryGain { get; set; }
@@ -87,8 +96,6 @@ namespace swlSimulator.api.Spells
         public double BonusCritChance { get; set; }
         public double BonusCritPower { get; set; }
         public string Args { get; set; }
-        public string ElementalType { get; set; }
-
 
         // Triggered bonus spell / buff
         public Passive PassiveBonusSpell { get; set; }

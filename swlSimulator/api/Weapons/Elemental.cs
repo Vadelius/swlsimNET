@@ -22,7 +22,7 @@ namespace swlSimulator.api.Weapons
         public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, decimal heatBeforeCast)
         {
             var hasFigurine = player.Settings.PrimaryWeaponProc == WeaponProc.FrozenFigurine &&
-                              spell.ElementalType == "Cold";
+                              spell.ElementalType == ElementalType.Cold;
             LastElementalSpell = spell;
 
             TimeSinceLastElementalSpell = player.CurrentTimeSec - LastElementalSpellTimeStamp;
@@ -62,11 +62,11 @@ namespace swlSimulator.api.Weapons
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
             if (player.Settings.PrimaryWeaponProc == WeaponProc.UnstableElectronCore && GimmickResource > 50 &&
-                (spell.ElementalType == "Fire" || spell.ElementalType == "Lightning"))
+                (spell.ElementalType == ElementalType.Fire || spell.ElementalType == ElementalType.Lightning))
             {
                 player.AddBonusAttack(rr, new UnstableElectronCore());
             }
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.CryoChargedConduit && spell.ElementalType == "Cold")
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.CryoChargedConduit && spell.ElementalType == ElementalType.Cold)
             {
                 GimmickResource -= 15;
                 //TODO: and cause any targets hit to become frostbitten for 6 seconds. Critically hitting a frostbitten enemy with an Elemental attack deals an additional (3.45*Combat Power) magical damage.
