@@ -4,21 +4,21 @@ import {Component} from "@angular/core";
     selector: "home",
     templateUrl: "./home.component.html"
 })
-
-export class HomeComponent  {
-
-    public barChartOptions:any = {
+export class HomeComponent {
+    public barChartOptions: any = {
         scaleShowVerticalLines: false,
         responsive: true,
         scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
+            yAxes: [
+                {
+                    ticks: {
+                        beginAtZero: true
+                    }
                 }
-            }]
+            ]
         }
-    }      
-      public barChartLabels:string[] = [
+    };
+    public barChartLabels: string[] = [
         "Rifle",
         "Blade",
         "Blood",
@@ -29,18 +29,32 @@ export class HomeComponent  {
         "Pistol",
         "Shotgun"
     ];
-      public barChartType:string = 'bar';
-      public barChartLegend:boolean = true;
-     
-      public barChartData:any[] = [
-        {data: [12231, 10844, 14779, 11984, 12334, 9932, 14811, 13432, 12901], label: '~ 1000 IP over 240 seconds'}]
+    public barChartType: string = "bar";
+    public barChartLegend: boolean = true;
 
-      // events
-      public chartClicked(e:any):void {
+    public barChartData: any[] = [
+        {
+            data: [
+                12231,
+                10844,
+                14779,
+                11984,
+                12334,
+                9932,
+                14811,
+                13432,
+                12901
+            ],
+            label: "~ 1000 IP over 240 seconds"
+        }
+    ];
+
+    // events
+    public chartClicked(e: any): void {
         console.log(e);
-      }
-     
-      public chartHovered(e:any):void {
+    }
+
+    public chartHovered(e: any): void {
         console.log(e);
-      }
+    }
 }
