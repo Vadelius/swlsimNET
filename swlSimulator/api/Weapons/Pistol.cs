@@ -7,29 +7,26 @@ namespace swlSimulator.api.Weapons
 {
     public enum Chamber
     {
-        White, Blue, Red
+        White,
+        Blue,
+        Red
     }
 
     public class Pistol : Weapon
     {
-        public Chamber LeftChamber { get; private set; }
-        public Chamber RightChamber { get; private set; }
-
-        public decimal ChamberLockTimeStamp { get; private set; }
-        public decimal LastPistolSpellTimeStamp { get; private set; }
-
-        private bool _init;
-        private bool _jackpotBonus;
         private bool _annihilators;
-        private bool _harmonisers;
-
-        private Passive _jackpot;
         private Passive _fixedGame;
-        private Passive _fullyLoaded;
-        private Passive _winStreak;
         private Passive _flechetteRounds;
-        private Passive _holdout;
         private Passive _focusedFire;
+        private Passive _fullyLoaded;
+        private Passive _jackpot;
+        private Passive _holdout;
+        private Passive _winStreak;
+        private bool _jackpotBonus;
+        private bool _harmonisers;
+        private bool _init;
+
+  
 
         public Pistol(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
@@ -37,6 +34,12 @@ namespace swlSimulator.api.Weapons
             RightChamber = Chamber.White;
             ChamberLockTimeStamp = 0;
         }
+
+        public Chamber LeftChamber { get; private set; }
+        public Chamber RightChamber { get; private set; }
+
+        public decimal ChamberLockTimeStamp { get; private set; }
+        public decimal LastPistolSpellTimeStamp { get; private set; }
 
         public override void PreAttack(IPlayer player, RoundResult rr)
         {
@@ -118,7 +121,7 @@ namespace swlSimulator.api.Weapons
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
             var timeSinceLocked = player.CurrentTimeSec - ChamberLockTimeStamp;
-            LastPistolSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;            
+            LastPistolSpellTimeStamp = player.CurrentTimeSec + spell.CastTime;
 
             if (_focusedFire != null && LeftChamber != RightChamber && spell.GetType() == typeof(KillBlind))
             {
@@ -227,7 +230,9 @@ namespace swlSimulator.api.Weapons
         {
             LeftChamber = Dice(player);
             RightChamber = Dice(player);
-            ChamberLockTimeStamp = player.Settings.PrimaryWeaponProc == WeaponProc.SixShooters ? player.CurrentTimeSec - 0.5m : player.CurrentTimeSec;
+            ChamberLockTimeStamp = player.Settings.PrimaryWeaponProc == WeaponProc.SixShooters
+                ? player.CurrentTimeSec - 0.5m
+                : player.CurrentTimeSec;
         }
 
         private Chamber Dice(IPlayer player)
@@ -239,17 +244,27 @@ namespace swlSimulator.api.Weapons
                 // "You are more likely to roll a Double Red set of chambers, but less likely to roll a Double White or Double Blue set of chambers." Thanks Funcom.
                 // Purely speculation below. TODO: Confirm..
                 if (roll >= 2 && roll <= 3)
+                {
                     return Chamber.White;
+                }
                 if (roll == 4)
+                {
                     return Chamber.Blue;
+                }
                 if (roll >= 5)
+                {
                     return Chamber.Red;
-            } 
+                }
+            }
 
             if (roll >= 1 && roll <= 3)
+            {
                 return Chamber.White;
+            }
             if (roll >= 4 && roll <= 5)
+            {
                 return Chamber.Blue;
+            }
 
             return Chamber.Red;
         }

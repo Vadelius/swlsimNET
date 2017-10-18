@@ -1,15 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using swlSimulator.api.Combat;
 using swlSimulator.api.Spells;
-using swlSimulator.api.Spells.Blade;
-using swlSimulator.api.Spells.Blood;
-using swlSimulator.api.Spells.Hammer;
-using swlSimulator.api.Spells.Pistol;
-using swlSimulator.api.Spells.Shotgun;
 using swlSimulator.api.Weapons;
-using System;
-using System.Collections.Generic;
 
 namespace swlSimulator.Models
 {
@@ -101,6 +93,7 @@ namespace swlSimulator.Models
 
         // Unused atm.
         public double GlanceReduction { get; set; } = 30;
+
         public double Waist { get; set; }
         public double WaistSignet { get; set; }
 

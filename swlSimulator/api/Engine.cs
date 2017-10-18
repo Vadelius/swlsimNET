@@ -10,7 +10,7 @@ namespace swlSimulator.api
     public class Engine
     {
         private const decimal Interval = 0.1m;
-        private Settings _settings;
+        private readonly Settings _settings;
 
         public Engine(Settings settings)
         {
@@ -49,8 +49,14 @@ namespace swlSimulator.api
                 foreach (var a in rr.Attacks)
                 {
                     // non damage attacks never added to report totals for hit/crits
-                    if (a.IsHit && a.Damage > 0) rr.TotalHits++;
-                    if (a.IsCrit && a.Damage > 0) rr.TotalCrits++;
+                    if (a.IsHit && a.Damage > 0)
+                    {
+                        rr.TotalHits++;
+                    }
+                    if (a.IsCrit && a.Damage > 0)
+                    {
+                        rr.TotalCrits++;
+                    }
                     rr.TotalDamage += a.Damage;
                 }
 

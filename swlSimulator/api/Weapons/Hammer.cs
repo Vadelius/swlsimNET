@@ -10,37 +10,37 @@ namespace swlSimulator.api.Weapons
 {
     public class Hammer : Weapon
     {
+        private readonly List<string> _hammerConsumers = new List<string>
+        {
+            "DemolishRage",
+            "Eruption"
+        };
+
+        private int _demolishOriginalCost;
+        private bool _enraged100;
+        private bool _enraged50;
+
+        private decimal _enragedLockTimeStamp;
+        private int _eruptionOriginalCost;
         private Passive _fastAndFurious;
+        private bool _hasAnnihilate;
 
         private bool _hasLetLoose;
-        private bool _hasAnnihilate;
-        private bool _enraged50;
-        private bool _enraged100;
         private bool _hasPneumaticMaul;
 
         private bool _init;
 
-        private decimal _enragedLockTimeStamp;
-        private decimal _timeSinceEnraged;
-
         private decimal _pneumaticStamp = -1;
-
-        private int _demolishOriginalCost;
-        private int _eruptionOriginalCost;
-
-        public bool FastAndFuriousBonus { get; private set; }
-        public bool LetLooseBonus { get; private set; }
-        public bool PneumaticAvailable { get; private set; }
+        private decimal _timeSinceEnraged;
 
         public Hammer(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
             _maxGimickResource = 100;
         }
 
-        private readonly List<string> _hammerConsumers = new List<string>
-        {
-            "DemolishRage", "Eruption"
-        };
+        public bool FastAndFuriousBonus { get; private set; }
+        public bool LetLooseBonus { get; private set; }
+        public bool PneumaticAvailable { get; private set; }
 
         public override void PreAttack(IPlayer player, RoundResult rr)
         {
@@ -67,7 +67,7 @@ namespace swlSimulator.api.Weapons
             if (_hasPneumaticMaul)
             {
                 PneumaticMaulActive(player, _pneumaticStamp >= player.CurrentTimeSec && PneumaticAvailable);
-            }     
+            }
         }
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
@@ -81,7 +81,7 @@ namespace swlSimulator.api.Weapons
                 // Passed 50 treshold
                 _enragedLockTimeStamp = player.CurrentTimeSec;
             }
-            else if(!_enraged100 && _enraged50 && enraged100)
+            else if (!_enraged100 && _enraged50 && enraged100)
             {
                 // Reached 100 treshold
                 _enragedLockTimeStamp = player.CurrentTimeSec;
@@ -102,7 +102,8 @@ namespace swlSimulator.api.Weapons
             }
 
             var spellName = spell.Name;
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.FumingDespoiler && spellName != null && _hammerConsumers.Contains(spellName, StringComparer.CurrentCultureIgnoreCase))
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.FumingDespoiler && spellName != null &&
+                _hammerConsumers.Contains(spellName, StringComparer.CurrentCultureIgnoreCase))
             {
                 player.AddBonusAttack(rr, new FumingDespoiler(player));
             }
@@ -128,7 +129,7 @@ namespace swlSimulator.api.Weapons
                     // Eruption with Annihilate Passive: 20%
                     bonusBaseDamageMultiplier += 0.2;
                     LetLooseBonus = false; // Buff consumed
-                }  
+                }
             }
 
             if (FastAndFuriousBonus)
@@ -175,15 +176,6 @@ namespace swlSimulator.api.Weapons
                 }
             }
         }
-        public class FumingDespoiler : Spell
-        {
-            public FumingDespoiler(IPlayer player)
-            {
-                WeaponType = WeaponType.Hammer;
-                SpellType = SpellType.Gimmick;
-                BaseDamage = 0.825;
-            }
-        }
 
         private void PneumaticMaul(IPlayer player, RoundResult rr, ISpell spell)
         {
@@ -207,7 +199,7 @@ namespace swlSimulator.api.Weapons
                     // Buff consumed
                     PneumaticAvailable = false;
                     return;
-                } 
+                }
             }
 
             // Buff is not up and not on cooldown
@@ -238,6 +230,15 @@ namespace swlSimulator.api.Weapons
                 PneumaticAvailable = false;
             }
         }
+
+        public class FumingDespoiler : Spell
+        {
+            public FumingDespoiler(IPlayer player)
+            {
+                WeaponType = WeaponType.Hammer;
+                SpellType = SpellType.Gimmick;
+                BaseDamage = 0.825;
+            }
+        }
     }
 }
-

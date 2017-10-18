@@ -1,16 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using swlSimulator.api;
 using swlSimulator.api.Combat;
 using swlSimulator.api.Utilities;
 using swlSimulator.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace swlSimulator.Controllers
 {
-
     [Consumes("application/json")]
     [Produces("application/json")]
     [Route("/api/values")]

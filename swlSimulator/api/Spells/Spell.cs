@@ -32,6 +32,20 @@ namespace swlSimulator.api.Spells
 
     public class Spell : ISpell
     {
+        private readonly List<ISpell> _spellsOfSameType = new List<ISpell>();
+
+        private double _baseDamage;
+        private double _bonusBaseDamage;
+        private double _bonusBaseDamageMultiplier;
+
+        private double _bonusCritChance;
+        private double _bonusCritMultiplier;
+        private double _bonusDamage;
+
+        private decimal _primaryGimmickBeforeCast;
+
+        private decimal TickInterval => CastTime / ChannelTicks;
+        private double CritPowerMultiplier => SpellType == SpellType.Channel ? 1.25 : 1;
         public int PrimaryGimmickCost { get; set; }
         public int PrimaryGimmickReduce { get; set; } // Will not prevent cast if not enough, just reduce to minimum
         public int SecondaryGimmickCost { get; set; }
@@ -44,11 +58,14 @@ namespace swlSimulator.api.Spells
 
         public double BaseDamage
         {
-            get { return _baseDamage; }
+            get => _baseDamage;
             set
             {
                 _baseDamage = value;
-                if (BaseDamageCrit == 0) BaseDamageCrit = value;
+                if (BaseDamageCrit == 0)
+                {
+                    BaseDamageCrit = value;
+                }
             }
         }
 
@@ -75,27 +92,150 @@ namespace swlSimulator.api.Spells
 
         // Triggered bonus spell / buff
         public Passive PassiveBonusSpell { get; set; }
+
         public AbilityBuff AbilityBuff { get; set; }
 
-        private decimal TickInterval => CastTime / ChannelTicks;
-        private double CritPowerMultiplier => this.SpellType == SpellType.Channel ? 1.25 : 1;
+        public virtual Attack Execute(Player player)
+        {
+            if (WeaponType != WeaponType.None)
+            {
+                var spellWeapon = player.GetWeaponFromSpell(this);
+                var otherWepon = player.GetOtherWeaponFromSpell(this);
 
-        private decimal _primaryGimmickBeforeCast;
-        private readonly List<ISpell> _spellsOfSameType = new List<ISpell>();
+                _primaryGimmickBeforeCast = spellWeapon.GimmickResource;
 
-        private double _bonusCritChance;
-        private double _bonusDamage;
-        private double _bonusCritMultiplier;
-        private double _bonusBaseDamageMultiplier;
-        private double _bonusBaseDamage;
+                spellWeapon.Energy -= PrimaryCost;
+                otherWepon.Energy -= SecondaryCost;
 
-        private double _baseDamage;
+                spellWeapon.GimmickResource -= PrimaryGimmickCost;
+                otherWepon.GimmickResource -= SecondaryGimmickCost;
+
+                spellWeapon.GimmickResource -= PrimaryGimmickReduce;
+                otherWepon.GimmickResource -= SecondaryGimmickReduce;
+            }
+
+            if (MaxCooldown > 0)
+            {
+                Cooldown = MaxCooldown;
+
+                // Set Cooldown of all spells of same type
+                foreach (var spell in _spellsOfSameType)
+                {
+                    spell.Cooldown = AbilityType == AbilityType.Elite
+                        ? MaxCooldown * (1 - player.EliteSignetCooldownReduction)
+                        : MaxCooldown;
+                }
+            }
+
+            switch (SpellType)
+            {
+                case SpellType.Buff:
+                    return StartCast(player);
+                case SpellType.Cast:
+                    return StartCast(player);
+                case SpellType.Channel:
+                    return StartChannel(player);
+                case SpellType.Dot:
+                    return StartCast(player);
+                case SpellType.Gimmick:
+                    return CastNoGcdFinished(player);
+                case SpellType.Procc:
+                    return CastNoGcdFinished(player);
+                case SpellType.Instant:
+                    return CastNoGcdFinished(player);
+                case SpellType.Passive: // TODO: Needs a test for passive spelltype
+                    return CastFinished(player);
+                default:
+                    return CastFinished(player);
+                // TODO: Implement other types
+            }
+        }
+
+        public virtual bool CanExecute(Player player)
+        {
+            var spell = this; // debug        
+
+            // Is Casting or channeling
+            if (player.CastTime > 0)
+            {
+                return false;
+            }
+
+            // GCD check
+            if (spell.SpellType != SpellType.Instant && player.GCD > 0)
+            {
+                return false;
+            }
+
+            if (WeaponType != WeaponType.None)
+            {
+                var spellWeapon = player.GetWeaponFromSpell(this);
+                var otherWepon = player.GetOtherWeaponFromSpell(this);
+
+                var primary = spellWeapon.Energy >= PrimaryCost;
+                var secondary = otherWepon.Energy >= SecondaryCost;
+
+                var pgimmick = spellWeapon.GimmickResource >= PrimaryGimmickCost;
+                var sgimmick = otherWepon.GimmickResource >= SecondaryGimmickCost;
+
+                var pgimmickreq = spellWeapon.GimmickResource >= PrimaryGimmickRequirement;
+
+                var res = primary && secondary && pgimmick && sgimmick && pgimmickreq;
+
+                if (!res)
+                {
+                    return false;
+                }
+            }
+
+            var args = true;
+
+            // Evaluate args if any
+            if (!string.IsNullOrEmpty(Args))
+            {
+                args = Helper.EvaluateArgs(Args, player);
+            }
+
+            // Find instance of same spell with highest cooldown...
+            if (!_spellsOfSameType.Any())
+            {
+                foreach (var s in player.Spells)
+                {
+                    if (s.Name == Name)
+                    {
+                        _spellsOfSameType.Add(s);
+                    }
+
+                    if (WeaponType != WeaponType.Hammer)
+                    {
+                        continue;
+                    }
+
+                    // Hammer specific shit again
+                    if (s.Name + "Rage" == Name || s.Name == Name + "Rage")
+                    {
+                        _spellsOfSameType.Add(s);
+                    }
+                }
+            }
+
+            return Cooldown <= 0 && args;
+        }
 
         public Attack Continue(Player player)
         {
-            if (SpellType == SpellType.Cast) return ContinueCast(player);
-            if (SpellType == SpellType.Channel) return ContinueChannel(player);
-            if (SpellType == SpellType.Dot) return ContinueCast(player);
+            if (SpellType == SpellType.Cast)
+            {
+                return ContinueCast(player);
+            }
+            if (SpellType == SpellType.Channel)
+            {
+                return ContinueChannel(player);
+            }
+            if (SpellType == SpellType.Dot)
+            {
+                return ContinueCast(player);
+            }
 
             return null;
         }
@@ -106,7 +246,7 @@ namespace swlSimulator.api.Spells
             if (SpellType == SpellType.Cast || SpellType == SpellType.Buff)
             {
                 player.CurrentSpell = this;
-                player.CastTime = this.CastTime;
+                player.CastTime = CastTime;
             }
 
             // Set player GCD
@@ -130,7 +270,7 @@ namespace swlSimulator.api.Spells
             if (SpellType == SpellType.Channel)
             {
                 player.CurrentSpell = this;
-                player.CastTime = this.CastTime;
+                player.CastTime = CastTime;
             }
 
             // Set player GCD
@@ -197,12 +337,21 @@ namespace swlSimulator.api.Spells
 
             // Get energy / gimmick gains on hit
             // TODO: Is this correct for all spells, no damage = it doesn't have to hit to get gains?
-            if (isHit || BaseDamage <= 0) OnHitGains(player);
-            if (isCrit) OnCritGains(player);
+            if (isHit || BaseDamage <= 0)
+            {
+                OnHitGains(player);
+            }
+            if (isCrit)
+            {
+                OnCritGains(player);
+            }
 
-            if (isHit) AddGimmickOnHitBonuses(player);
+            if (isHit)
+            {
+                AddGimmickOnHitBonuses(player);
+            }
 
-            return new Attack { Spell = this, Damage = damage, IsCrit = isCrit, IsHit = isHit };
+            return new Attack {Spell = this, Damage = damage, IsCrit = isCrit, IsHit = isHit};
         }
 
         private void AddGimmickOnHitBonuses(IPlayer player)
@@ -210,127 +359,6 @@ namespace swlSimulator.api.Spells
             // TODO: Check all callers of this method, must non dmg spells actually hit? Should non dmg spells get here?
             var spellWeapon = player.GetWeaponFromSpell(this);
             spellWeapon?.OnHit(player, this, _primaryGimmickBeforeCast);
-        }
-
-        public virtual Attack Execute(Player player)
-        {
-            if (WeaponType != WeaponType.None)
-            {
-                var spellWeapon = player.GetWeaponFromSpell(this);
-                var otherWepon = player.GetOtherWeaponFromSpell(this);
-
-                _primaryGimmickBeforeCast = spellWeapon.GimmickResource;
-
-                spellWeapon.Energy -= PrimaryCost;
-                otherWepon.Energy -= SecondaryCost;
-
-                spellWeapon.GimmickResource -= PrimaryGimmickCost;
-                otherWepon.GimmickResource -= SecondaryGimmickCost;
-
-                spellWeapon.GimmickResource -= PrimaryGimmickReduce;
-                otherWepon.GimmickResource -= SecondaryGimmickReduce;
-            }
-
-            if (MaxCooldown > 0)
-            {
-                Cooldown = MaxCooldown;
-
-                // Set Cooldown of all spells of same type
-                foreach (var spell in _spellsOfSameType)
-                {
-                    spell.Cooldown = AbilityType == AbilityType.Elite
-                        ? MaxCooldown * (1 - player.EliteSignetCooldownReduction)
-                        : MaxCooldown;
-                }
-            }
-
-            switch (SpellType)
-            {
-                case SpellType.Buff:
-                    return StartCast(player);
-                case SpellType.Cast:
-                    return StartCast(player);
-                case SpellType.Channel:
-                    return StartChannel(player);
-                case SpellType.Dot:
-                    return StartCast(player);
-                case SpellType.Gimmick:
-                    return CastNoGcdFinished(player);
-                case SpellType.Procc:
-                    return CastNoGcdFinished(player);
-                case SpellType.Instant:
-                    return CastNoGcdFinished(player);
-                case SpellType.Passive: // TODO: Needs a test for passive spelltype
-                    return CastFinished(player);
-                default:
-                    return CastFinished(player);
-                    // TODO: Implement other types
-            }
-        }
-
-        public virtual bool CanExecute(Player player)
-        {
-            var spell = this; // debug        
-
-            // Is Casting or channeling
-            if (player.CastTime > 0)
-            {
-                return false;
-            }
-
-            // GCD check
-            if (spell.SpellType != SpellType.Instant && player.GCD > 0)
-            {
-                return false;
-            }
-
-            if (WeaponType != WeaponType.None)
-            {
-                var spellWeapon = player.GetWeaponFromSpell(this);
-                var otherWepon = player.GetOtherWeaponFromSpell(this);
-
-                var primary = spellWeapon.Energy >= PrimaryCost;
-                var secondary = otherWepon.Energy >= SecondaryCost;
-
-                var pgimmick = spellWeapon.GimmickResource >= PrimaryGimmickCost;
-                var sgimmick = otherWepon.GimmickResource >= SecondaryGimmickCost;
-
-                var pgimmickreq = spellWeapon.GimmickResource >= PrimaryGimmickRequirement;
-
-                var res = primary && secondary && pgimmick && sgimmick && pgimmickreq;
-
-                if (!res) return false;
-            }
-
-            var args = true;
-
-            // Evaluate args if any
-            if (!string.IsNullOrEmpty(this.Args))
-            {
-                args = Helper.EvaluateArgs(this.Args, player);
-            }
-
-            // Find instance of same spell with highest cooldown...
-            if (!_spellsOfSameType.Any())
-            {
-                foreach (var s in player.Spells)
-                {
-                    if (s.Name == Name)
-                    {
-                        _spellsOfSameType.Add(s);
-                    }
-
-                    if (WeaponType != WeaponType.Hammer) continue;
-
-                    // Hammer specific shit again
-                    if (s.Name + "Rage" == Name || s.Name == Name + "Rage")
-                    {
-                        _spellsOfSameType.Add(s);
-                    }
-                }
-            }
-
-            return Cooldown <= 0 && args;
         }
 
         private Attack CastFinished(Player player)
@@ -356,22 +384,33 @@ namespace swlSimulator.api.Spells
             {
                 double expirationdamage = 0;
                 if (DotExpirationBaseDamage > 0)
+                {
                     expirationdamage = GetDamage(player, isHit, isCrit, DotExpirationBaseDamage);
+                }
 
-                damage = damage * (double)DotDuration + expirationdamage;
+                damage = damage * (double) DotDuration + expirationdamage;
             }
 
             // Get energy / gimmick gains on hit
             // TODO: Is this correct for all spells, no damage = it doesn't have to hit to get gains?
-            if (isHit || BaseDamage <= 0) OnHitGains(player);
-            if (isHit && damage > 0) OnCritGains(player);
+            if (isHit || BaseDamage <= 0)
+            {
+                OnHitGains(player);
+            }
+            if (isHit && damage > 0)
+            {
+                OnCritGains(player);
+            }
 
-            if (isHit) AddGimmickOnHitBonuses(player);
+            if (isHit)
+            {
+                AddGimmickOnHitBonuses(player);
+            }
 
             // Mark casting spell as finished
             player.CurrentSpell = null;
 
-            return new Attack { Spell = this, Damage = damage, IsCrit = isCrit, IsHit = isHit };
+            return new Attack {Spell = this, Damage = damage, IsCrit = isCrit, IsHit = isHit};
         }
 
         private Attack CastNoGcdFinished(IPlayer player)
@@ -397,19 +436,30 @@ namespace swlSimulator.api.Spells
             {
                 double expirationdamage = 0;
                 if (DotExpirationBaseDamage > 0)
+                {
                     expirationdamage = GetDamage(player, isHit, isCrit, DotExpirationBaseDamage);
+                }
 
-                damage = damage * (double)DotDuration + expirationdamage;
+                damage = damage * (double) DotDuration + expirationdamage;
             }
 
             // Get energy / gimmick gains on hit
             // TODO: Is this correct for all spells, no damage = it doesn't have to hit to get gains?
-            if (isHit || BaseDamage <= 0) OnHitGains(player);
-            if (isHit && damage > 0) OnCritGains(player);
+            if (isHit || BaseDamage <= 0)
+            {
+                OnHitGains(player);
+            }
+            if (isHit && damage > 0)
+            {
+                OnCritGains(player);
+            }
 
-            if (isHit) AddGimmickOnHitBonuses(player);
+            if (isHit)
+            {
+                AddGimmickOnHitBonuses(player);
+            }
 
-            return new Attack { Spell = this, Damage = damage, IsCrit = isCrit, IsHit = isHit };
+            return new Attack {Spell = this, Damage = damage, IsCrit = isCrit, IsHit = isHit};
         }
 
         private void OnHitGains(IPlayer player)
@@ -454,7 +504,10 @@ namespace swlSimulator.api.Spells
             {
                 if (buff.SpecificWeaponTypeBonus)
                 {
-                    if (spellWeapon?.WeaponType != buff.WeaponType) continue;
+                    if (spellWeapon?.WeaponType != buff.WeaponType)
+                    {
+                        continue;
+                    }
                 }
 
                 _bonusCritChance += buff.BonusCritChance;
@@ -468,15 +521,19 @@ namespace swlSimulator.api.Spells
         {
             var spellWeapon = player.GetWeaponFromSpell(this);
 
-            if (spellWeapon == null) return;
+            if (spellWeapon == null)
+            {
+                return;
+            }
 
-            _bonusBaseDamageMultiplier += spellWeapon.GetBonusBaseDamageMultiplier(player, this, _primaryGimmickBeforeCast);
+            _bonusBaseDamageMultiplier +=
+                spellWeapon.GetBonusBaseDamageMultiplier(player, this, _primaryGimmickBeforeCast);
             _bonusBaseDamage += spellWeapon.GetBonusBaseDamage(player, this, _primaryGimmickBeforeCast);
         }
 
         private bool IsHit(IPlayer player)
         {
-            var target = (int)player.Settings.TargetType / (double)100;
+            var target = (int) player.Settings.TargetType / (double) 100;
             return Helper.IsHit(target, player.GlanceReduction);
         }
 
@@ -486,7 +543,8 @@ namespace swlSimulator.api.Spells
             if (SpellType == SpellType.Channel)
             {
                 // 0.8 represents the penalty for channel spells (compensated via more critpower)
-                return BaseDamage > 0 && Helper.IsCrit((player.CriticalChance + BonusCritChance + _bonusCritChance) * 0.8);
+                return BaseDamage > 0 &&
+                       Helper.IsCrit((player.CriticalChance + BonusCritChance + _bonusCritChance) * 0.8);
             }
 
             return BaseDamage > 0 && Helper.IsCrit(player.CriticalChance + BonusCritChance + _bonusCritChance);
@@ -519,7 +577,8 @@ namespace swlSimulator.api.Spells
 
                 damage = isCrit
                     ? basedamage * (1 + _bonusBaseDamageMultiplier)
-                      * player.CombatPower * boost * ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * CritPowerMultiplier)
+                      * player.CombatPower * boost *
+                      ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * CritPowerMultiplier)
                     : damage;
 
                 // Add bonus damage
@@ -535,7 +594,8 @@ namespace swlSimulator.api.Spells
 
             damage = isCrit
                 ? (Math.Max(BaseDamage, BaseDamageCrit) + _bonusBaseDamage) * (1 + _bonusBaseDamageMultiplier)
-                * player.CombatPower * boost * ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * CritPowerMultiplier)
+                  * player.CombatPower * boost *
+                  ((player.CritPower + BonusCritPower + _bonusCritMultiplier) * CritPowerMultiplier)
                 : damage;
 
             // Add bonus damage

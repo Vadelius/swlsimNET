@@ -12,20 +12,23 @@ namespace swlSimulator.api.Weapons
         // TODO: Check values, 6s total cooktimer and fully cooked after 3s??
         // TODO: All greande spells have a 4s cooldown
         private const decimal FUSE_TIMER = 3;
+
         private const decimal COOKINGTIMER = 3;
-
-        private decimal _cookingReadyTimeSec = decimal.MaxValue;
-
-        private bool _ksr43;
-        private bool _infernalLoader;
-        private bool _init;
-
-        private RoundResult _rr;
 
         private readonly List<string> _grenadeGenerators = new List<string>
         {
-            "FullAuto", "UnveilEssence", "BurstFire"
+            "FullAuto",
+            "UnveilEssence",
+            "BurstFire"
         };
+
+        private decimal _cookingReadyTimeSec = decimal.MaxValue;
+        private bool _infernalLoader;
+        private bool _init;
+
+        private bool _ksr43;
+
+        private RoundResult _rr;
 
         public Rifle(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
@@ -51,8 +54,8 @@ namespace swlSimulator.api.Weapons
             {
                 if (_rr == null || rr.TimeSec != _rr.TimeSec)
                 {
-                    FuseTimer += rr.Interval; 
-                }               
+                    FuseTimer += rr.Interval;
+                }
 
                 if (FuseTimer > FUSE_TIMER)
                 {
@@ -74,7 +77,7 @@ namespace swlSimulator.api.Weapons
         {
             // TODO: Check values some spells have 37.5% chance and some 65%
             if (GimmickResource < 1 && Rnd.Next(1, 101) > 65
-                && _grenadeGenerators.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase) 
+                && _grenadeGenerators.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase)
                 || GimmickResource < 1 && spell.Name == "RifleLoadGrenadeSpell") // Unit test
             {
                 // Start cooking, if KSR43 it can be used directly
@@ -101,6 +104,6 @@ namespace swlSimulator.api.Weapons
             }
 
             return bonusBaseDamage;
-        } 
+        }
     }
 }

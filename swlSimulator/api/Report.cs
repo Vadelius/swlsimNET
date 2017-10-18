@@ -11,12 +11,12 @@ namespace swlSimulator.api
 {
     public class Report
     {
-        private List<Attack> _allSpellCast = new List<Attack>();
-        private List<ISpell> _distinctSpellCast = new List<ISpell>();
-        private List<IBuff> _distinctBuffs = new List<IBuff>();
-        private StringBuilder _oneBuilder = new StringBuilder();
+        private readonly List<Attack> _allSpellCast = new List<Attack>();
+        private readonly List<IBuff> _distinctBuffs = new List<IBuff>();
+        private readonly List<ISpell> _distinctSpellCast = new List<ISpell>();
+        private readonly StringBuilder _oneBuilder = new StringBuilder();
+        private Settings _settings;
         private NumberFormatInfo nfi;
-        private Settings _settings;     
 
         public int TotalCrits { get; private set; }
         public int TotalHits { get; private set; }
@@ -76,7 +76,7 @@ namespace swlSimulator.api
 
         private void InitReportData(List<FightResult> iterationFightResults)
         {
-            nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            nfi = (NumberFormatInfo) CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
             decimal lastChangeTimeStamp = 0;
@@ -185,7 +185,7 @@ namespace swlSimulator.api
                     Dps = Math.Round(alldmg / _settings.FightLength / _settings.Iterations, 2),
                     DpsPercent = Math.Round(alldmg / TotalDamage * 100, 2),
                     Dpe = Math.Round(avgDmg, 2),
-                    Executes = Math.Round(hits / (double)_settings.Iterations, 2),
+                    Executes = Math.Round(hits / (double) _settings.Iterations, 2),
                     Ticks = 0, // TODO: when implementing dot ticks / for channel ticks also?
                     CritChance = Math.Round(decimal.Divide(crits, hits) * 100, 2)
                 });

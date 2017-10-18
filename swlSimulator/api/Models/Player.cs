@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Expressions;
+﻿using Expressions;
 using swlSimulator.api.Combat;
 using swlSimulator.api.Spells;
+using swlSimulator.api.Spells.Blade.Buffs;
+using swlSimulator.api.Spells.Hammer.Buffs;
+using swlSimulator.api.Spells.Pistol.Buffs;
 using swlSimulator.api.Weapons;
 using swlSimulator.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace swlSimulator.api.Models
 {
@@ -13,65 +16,27 @@ namespace swlSimulator.api.Models
         private bool _passivesInitiated;
         public ExpressionContext Context;
 
-        public Item Item { get; }
-        public Settings Settings { get; }
-        public Spell CurrentSpell { get; set; }
-        public BuffWrapper Buff { get; }
-        public List<ISpell> Spells { get; }
-        public List<IBuff> Buffs { get; }
-        public List<IBuff> AbilityBuffs { get; }
-        public List<Passive> Passives { get; }
-        public Weapon PrimaryWeapon { get; }
-        public Weapon SecondaryWeapon { get; }
-
-        public double CombatPower { get; }
-        public double GlanceReduction { get; }
-        public double CriticalChance { get; }
-        public double CritPower { get; }
-        public double BasicSignetBoost { get; }
-        public double PowerSignetBoost { get; }
-        public double EliteSignetBoost { get; }
-        public decimal EliteSignetCooldownReduction { get; }
-        public double WaistSignetBoost { get; }
-
-        public decimal Interval { get; private set; }
-        public decimal CastTime { get; set; }
-        public decimal CurrentTimeSec { get; private set; }
-        public decimal GCD { get; set; }    
-
-        // Weapon gimmick resource (for APL)
-        public decimal Chi => GetWeaponResourceFromType(WeaponType.Blade);
-        public decimal Corruption => GetWeaponResourceFromType(WeaponType.Blood);
-        public decimal Fury => GetWeaponResourceFromType(WeaponType.Fist);
-        public decimal Heat => GetWeaponResourceFromType(WeaponType.Elemental);
-        public decimal Paradox => GetWeaponResourceFromType(WeaponType.Chaos);
-        public decimal Rage => GetWeaponResourceFromType(WeaponType.Hammer);
-        public decimal Shells => GetWeaponResourceFromType(WeaponType.Shotgun);
-        public bool Grenade => GetWeaponResourceFromType(WeaponType.Rifle) > 0;
-
-        // Weapon wrappers (for APL)
-        public Blade Blade => GetWeaponFromType(WeaponType.Blade) as Blade;
-        public Blood Blood => GetWeaponFromType(WeaponType.Blood) as Blood;
-        public Chaos Chaos => GetWeaponFromType(WeaponType.Chaos) as Chaos;
-        public Elemental Elemental => GetWeaponFromType(WeaponType.Elemental) as Elemental;
-        public Fist Fist => GetWeaponFromType(WeaponType.Fist) as Fist;
-        public Hammer Hammer => GetWeaponFromType(WeaponType.Hammer) as Hammer;
-        public Pistol Pistol => GetWeaponFromType(WeaponType.Pistol) as Pistol;
-        public Rifle Rifle => GetWeaponFromType(WeaponType.Rifle) as Rifle;
-        public Shotgun Shotgun => GetWeaponFromType(WeaponType.Shotgun) as Shotgun;
-
         public Player(Settings settings)
         {
             Settings = settings;
             PrimaryWeapon = GetWeaponFromType(settings.PrimaryWeapon, settings.PrimaryWeaponAffix);
             SecondaryWeapon = GetWeaponFromType(settings.SecondaryWeapon, settings.SecondaryWeaponAffix);
-            Passives = api.Spells.Passives.GetSelectedPassives(settings);      
+            Passives = api.Spells.Passives.GetSelectedPassives(settings);
 
             Buffs = new List<IBuff>();
             {
-                if (settings.Exposed) Buffs.Add(new Exposed());
-                if (settings.OpeningShot) Buffs.Add(new OpeningShot());
-                if (settings.Savagery) Buffs.Add(new Savagery());
+                if (settings.Exposed)
+                {
+                    Buffs.Add(new Exposed());
+                }
+                if (settings.OpeningShot)
+                {
+                    Buffs.Add(new OpeningShot());
+                }
+                if (settings.Savagery)
+                {
+                    Buffs.Add(new Savagery());
+                }
             }
 
             AbilityBuffs = new List<IBuff>();
@@ -84,19 +49,176 @@ namespace swlSimulator.api.Models
             BasicSignetBoost = settings.BasicSignet / 100 + 1;
             PowerSignetBoost = settings.PowerSignet / 100 + 1;
             EliteSignetBoost = settings.HeadSignetIsCdr ? 1 : settings.EliteSignet / 100 + 1;
-            EliteSignetCooldownReduction = (decimal) (settings.HeadSignetIsCdr ? settings.EliteSignet / 100 : 0);
+            EliteSignetCooldownReduction = (decimal)(settings.HeadSignetIsCdr ? settings.EliteSignet / 100 : 0);
             WaistSignetBoost = settings.WaistSignet / 100;
 
             var apl = new AplReader(this, settings.Apl);
             Spells = apl.GetApl();
 
-            this.Buff = new BuffWrapper(this);
-            this.Item = new Item(this);
+            Buff = new BuffWrapper(this);
+            Item = new Item(this);
+        }
+
+        public Item Item { get; }
+        public BuffWrapper Buff { get; }
+        public List<Passive> Passives { get; }
+        public decimal EliteSignetCooldownReduction { get; }
+        public double WaistSignetBoost { get; }
+
+        // Weapon gimmick resource (for APL)
+        public decimal Chi => GetWeaponResourceFromType(WeaponType.Blade);
+
+        public decimal Corruption => GetWeaponResourceFromType(WeaponType.Blood);
+        public decimal Fury => GetWeaponResourceFromType(WeaponType.Fist);
+        public decimal Heat => GetWeaponResourceFromType(WeaponType.Elemental);
+        public decimal Paradox => GetWeaponResourceFromType(WeaponType.Chaos);
+        public decimal Rage => GetWeaponResourceFromType(WeaponType.Hammer);
+        public decimal Shells => GetWeaponResourceFromType(WeaponType.Shotgun);
+        public bool Grenade => GetWeaponResourceFromType(WeaponType.Rifle) > 0;
+
+        // Weapon wrappers (for APL)
+        public Blade Blade => GetWeaponFromType(WeaponType.Blade) as Blade;
+
+        public Blood Blood => GetWeaponFromType(WeaponType.Blood) as Blood;
+        public Chaos Chaos => GetWeaponFromType(WeaponType.Chaos) as Chaos;
+        public Elemental Elemental => GetWeaponFromType(WeaponType.Elemental) as Elemental;
+        public Fist Fist => GetWeaponFromType(WeaponType.Fist) as Fist;
+        public Hammer Hammer => GetWeaponFromType(WeaponType.Hammer) as Hammer;
+        public Pistol Pistol => GetWeaponFromType(WeaponType.Pistol) as Pistol;
+        public Rifle Rifle => GetWeaponFromType(WeaponType.Rifle) as Rifle;
+        public Shotgun Shotgun => GetWeaponFromType(WeaponType.Shotgun) as Shotgun;
+        public Spell CurrentSpell { get; set; }
+        public decimal CastTime { get; set; }
+        public decimal GCD { get; set; }
+
+        public RoundResult NewRound(decimal currentSec, decimal interval)
+        {
+            if (!_passivesInitiated)
+            {
+                InitPassives();
+            }
+
+            Interval = interval;
+            CurrentTimeSec = currentSec;
+
+            var rr = new RoundResult
+            {
+                TimeSec = currentSec,
+                Interval = interval
+            };
+
+            // TODO: Check order, e.g. should passive bonus spell get bonus from buff cast same round?
+            // Order of a round
+            PreRound(rr);
+            StartRound(rr);
+            StartRoundBuffs(rr);
+            Item.PreAttack(rr);
+            WeaponPreAttack(rr);
+            var spell = ExecuteAction(rr);
+            ExecuteBuff(rr, spell);
+            Item.AfterAttack(rr, spell);
+            WeaponAfterAttack(rr, spell);
+            PassiveBonusSpells(rr, spell);
+            EndRound(rr, spell);
+            PostRound(rr, spell);
+
+            return rr;
+        }
+
+        public Settings Settings { get; }
+        public List<ISpell> Spells { get; }
+        public List<IBuff> Buffs { get; }
+        public List<IBuff> AbilityBuffs { get; }
+        public Weapon PrimaryWeapon { get; }
+        public Weapon SecondaryWeapon { get; }
+
+        public double CombatPower { get; }
+        public double GlanceReduction { get; }
+        public double CriticalChance { get; }
+        public double CritPower { get; }
+        public double BasicSignetBoost { get; }
+        public double PowerSignetBoost { get; }
+        public double EliteSignetBoost { get; }
+
+        public decimal Interval { get; private set; }
+        public decimal CurrentTimeSec { get; private set; }
+
+        public void AddBonusAttack(RoundResult rr, ISpell spell)
+        {
+            if (spell.CanExecute(this))
+            {
+                rr.Attacks.Add(ExecuteNoGcd(spell));
+            }
+        }
+
+        public Weapon GetWeaponFromSpell(ISpell spell)
+        {
+            if (PrimaryWeapon.WeaponType == spell.WeaponType)
+            {
+                return PrimaryWeapon;
+            }
+            return SecondaryWeapon.WeaponType == spell.WeaponType ? SecondaryWeapon : null;
+        }
+
+        public Weapon GetOtherWeaponFromSpell(ISpell spell)
+        {
+            // Can go really wrong if APL contains 3 weapon types
+            return PrimaryWeapon.WeaponType != spell.WeaponType ? PrimaryWeapon : SecondaryWeapon;
+        }
+
+        public Weapon GetWeaponFromType(WeaponType wtype)
+        {
+            if (PrimaryWeapon.WeaponType == wtype)
+            {
+                return PrimaryWeapon;
+            }
+            return SecondaryWeapon.WeaponType == wtype ? SecondaryWeapon : null;
+        }
+
+        public decimal GetWeaponResourceFromType(WeaponType wtype)
+        {
+            if (PrimaryWeapon.WeaponType == wtype)
+            {
+                return PrimaryWeapon.GimmickResource;
+            }
+            return SecondaryWeapon.WeaponType == wtype ? SecondaryWeapon.GimmickResource : 0;
+        }
+
+        public IBuff GetBuffFromName(string name)
+        {
+            var buffs = Buffs.Where(b => b.Name == name).ToList();
+            if (buffs.Count == 1)
+            {
+                return buffs.FirstOrDefault();
+            }
+
+            // If there is several whith same name get abilitybuff
+            var abilitybuff = buffs.Find(b => b is AbilityBuff);
+            return abilitybuff;
+        }
+
+        public IBuff GetAbilityBuffFromName(string name)
+        {
+            var abilitybuff = AbilityBuffs.Find(b => b.Name == name && b is AbilityBuff);
+
+            // Shameful add to Buffs list to keep other stuff working for now
+            Buffs.Add(abilitybuff);
+            return abilitybuff;
+        }
+
+        public bool HasPassive(string name)
+        {
+            return Passives.Any(p => p.Name == name);
+        }
+
+        public Passive GetPassive(string name)
+        {
+            return Passives.Find(p => p.Name == name);
         }
 
         private Weapon GetWeaponFromType(WeaponType? wtypenullable, WeaponAffix waffix)
         {
-            var wtype = (WeaponType) wtypenullable;
+            var wtype = (WeaponType)wtypenullable;
 
             switch (wtype)
             {
@@ -125,10 +247,10 @@ namespace swlSimulator.api.Models
 
         private void InitAbilityBuffs()
         {
-            AbilityBuffs.Add(new Spells.Blade.Buffs.SupremeHarmony());
+            AbilityBuffs.Add(new SupremeHarmony());
             AbilityBuffs.Add(new Spells.Fist.Buffs.Savagery());
-            AbilityBuffs.Add(new Spells.Hammer.Buffs.UnstoppableForce());
-            AbilityBuffs.Add(new Spells.Pistol.Buffs.Flourish());
+            AbilityBuffs.Add(new UnstoppableForce());
+            AbilityBuffs.Add(new Flourish());
         }
 
         // TODO: Simplify
@@ -139,58 +261,29 @@ namespace swlSimulator.api.Models
             {
                 passive.Init(this);
 
-                if (passive.ModelledInWeapon) continue;
+                if (passive.ModelledInWeapon)
+                {
+                    continue;
+                }
 
                 passive.LoopSpellsFromPassive(this);
 
                 // Any sub passives
                 foreach (var subPassive in passive.SpecificSpellTypes)
-                {
                     subPassive.LoopSpellsFromPassive(this);
-                }
 
-                if (!passive.SpecificWeaponTypeBonus) continue;
+                if (!passive.SpecificWeaponTypeBonus)
+                {
+                    continue;
+                }
 
                 // The passive modifies all spells of the same weapon type
                 var allSpells = Spells.Where(s => s.WeaponType == passive.WeaponType);
                 foreach (var s in allSpells)
-                {
                     passive.ModifySpellWithPassive(s);
-                }
             }
 
             _passivesInitiated = true;
-        }
-
-        public RoundResult NewRound(decimal currentSec, decimal interval)
-        {
-            if (!_passivesInitiated) InitPassives();
-
-            Interval = interval;
-            CurrentTimeSec = currentSec;
-
-            var rr = new RoundResult
-            {
-                TimeSec = currentSec,
-                Interval = interval
-            };
-
-            // TODO: Check order, e.g. should passive bonus spell get bonus from buff cast same round?
-            // Order of a round
-            PreRound(rr);
-            StartRound(rr);
-            StartRoundBuffs(rr);
-            Item.PreAttack(rr);
-            WeaponPreAttack(rr);
-            var spell = ExecuteAction(rr);
-            ExecuteBuff(rr, spell);
-            Item.AfterAttack(rr, spell);
-            WeaponAfterAttack(rr, spell);
-            PassiveBonusSpells(rr, spell);
-            EndRound(rr, spell);
-            PostRound(rr, spell);
-
-            return rr;
         }
 
         private bool ContinueRound(RoundResult rr, ISpell prevSpell)
@@ -222,7 +315,10 @@ namespace swlSimulator.api.Models
         private void StartRound(RoundResult rr)
         {
             // Not on first round
-            if(rr.TimeSec == 0) return;
+            if (rr.TimeSec == 0)
+            {
+                return;
+            }
 
             // +1 resource per sec primary weapon
             if (rr.TimeSec != 0 && rr.TimeSec % 1 == 0)
@@ -238,32 +334,43 @@ namespace swlSimulator.api.Models
 
             // Lower cooldown of all spells except the one used this round
             foreach (var spell in Spells.Where(s => s.Cooldown > 0))
-            {
                 spell.Cooldown -= rr.Interval;
-            }
 
             // Lower cooldown of all item spells except the one used this round
             foreach (var spell in Item.Spells.Where(s => s.Cooldown > 0))
-            {
                 spell.Cooldown -= rr.Interval;
-            }
 
             // Lower GCD
-            if (GCD > 0) GCD -= rr.Interval;
+            if (GCD > 0)
+            {
+                GCD -= rr.Interval;
+            }
 
             // Lower CastTime
-            if (CastTime > 0) CastTime -= rr.Interval;
+            if (CastTime > 0)
+            {
+                CastTime -= rr.Interval;
+            }
 
             // Lower Buff cooldowns
             foreach (var buff in Buffs)
             {
-                if (buff.Duration >= 0) buff.Duration -= rr.Interval;
-                if (buff.Cooldown > 0) buff.Cooldown -= rr.Interval;
+                if (buff.Duration >= 0)
+                {
+                    buff.Duration -= rr.Interval;
+                }
+                if (buff.Cooldown > 0)
+                {
+                    buff.Cooldown -= rr.Interval;
+                }
 
                 if (buff is AbilityBuff ab)
                 {
                     var weapon = GetWeaponFromType(ab.WeaponType);
-                    if (weapon == null) continue;
+                    if (weapon == null)
+                    {
+                        continue;
+                    }
 
                     if (ab.Active && ab.Duration % 1 == 0)
                     {
@@ -279,9 +386,7 @@ namespace swlSimulator.api.Models
             var availableBuffs = Buffs.Where(b => b.CanActivate());
 
             foreach (var buff in availableBuffs)
-            {
                 buff.Activate(rr.TimeSec);
-            }
         }
 
         private void WeaponPreAttack(RoundResult rr)
@@ -294,7 +399,7 @@ namespace swlSimulator.api.Models
         {
             Attack attack;
             var spell = prevSpell;
-            
+
             if (CurrentSpell == null)
             {
                 spell = GetSpellFromApl();
@@ -335,7 +440,10 @@ namespace swlSimulator.api.Models
             var spell = Spells.FirstOrDefault(s => s.CanExecute(this));
 
             // If spell is null we cant cast anything
-            if (spell == null) return null;
+            if (spell == null)
+            {
+                return null;
+            }
 
             // Specific Hammer stuff, if enraged get rage spell
             if (Buff.Enraged)
@@ -352,7 +460,10 @@ namespace swlSimulator.api.Models
 
         private void ExecuteBuff(RoundResult rr, ISpell spell)
         {
-            if (spell?.AbilityBuff == null) return;
+            if (spell?.AbilityBuff == null)
+            {
+                return;
+            }
 
             var buff = Buffs.Find(b => b == spell.AbilityBuff);
             buff.Activate(rr.TimeSec);
@@ -361,7 +472,10 @@ namespace swlSimulator.api.Models
         private void WeaponAfterAttack(RoundResult rr, ISpell spell)
         {
             var attack = rr.Attacks.FirstOrDefault(a => a.Spell == spell);
-            if (attack == null || !attack.IsHit) return;
+            if (attack == null || !attack.IsHit)
+            {
+                return;
+            }
 
             var weapon = GetWeaponFromSpell(attack.Spell);
             weapon?.AfterAttack(this, attack.Spell, rr);
@@ -371,7 +485,10 @@ namespace swlSimulator.api.Models
         private void PassiveBonusSpells(RoundResult rr, ISpell spell)
         {
             var attack = rr.Attacks.FirstOrDefault(a => a.Spell == spell);
-            if (attack == null || !attack.IsHit) return;
+            if (attack == null || !attack.IsHit)
+            {
+                return;
+            }
 
             if (spell.PassiveBonusSpell != null)
             {
@@ -408,10 +525,8 @@ namespace swlSimulator.api.Models
             {
                 var changes = true;
                 while (changes)
-                {
                     changes = ContinueRound(rr, spell);
-                }
-            }           
+            }
 
             // Add relevant info to round result
             rr.PrimaryEnergyEnd = PrimaryWeapon.Energy;
@@ -426,70 +541,6 @@ namespace swlSimulator.api.Models
         private Attack ExecuteNoGcd(ISpell spell)
         {
             return spell.Execute(this);
-        }
-
-        public void AddBonusAttack(RoundResult rr, ISpell spell)
-        {
-            if (spell.CanExecute(this))
-            {
-                rr.Attacks.Add(ExecuteNoGcd(spell));
-            }
-        }
-
-        public Weapon GetWeaponFromSpell(ISpell spell)
-        {
-            if (PrimaryWeapon.WeaponType == spell.WeaponType)
-                return PrimaryWeapon;
-            return SecondaryWeapon.WeaponType == spell.WeaponType ? SecondaryWeapon : null;
-        }
-
-        public Weapon GetOtherWeaponFromSpell(ISpell spell)
-        {
-            // Can go really wrong if APL contains 3 weapon types
-            return PrimaryWeapon.WeaponType != spell.WeaponType ? PrimaryWeapon : SecondaryWeapon;
-        }
-
-        public Weapon GetWeaponFromType(WeaponType wtype)
-        {
-            if (PrimaryWeapon.WeaponType == wtype)
-                return PrimaryWeapon;
-            return SecondaryWeapon.WeaponType == wtype ? SecondaryWeapon : null;
-        }
-
-        public decimal GetWeaponResourceFromType(WeaponType wtype)
-        {
-            if (PrimaryWeapon.WeaponType == wtype)
-                return PrimaryWeapon.GimmickResource;
-            return SecondaryWeapon.WeaponType == wtype ? SecondaryWeapon.GimmickResource : 0;
-        }
-
-        public IBuff GetBuffFromName(string name)
-        {
-            var buffs = Buffs.Where(b => b.Name == name).ToList();
-            if (buffs.Count == 1) return buffs.FirstOrDefault();
-
-            // If there is several whith same name get abilitybuff
-            var abilitybuff = buffs.Find(b => b is AbilityBuff);
-            return abilitybuff;
-        }
-
-        public IBuff GetAbilityBuffFromName(string name)
-        {
-            var abilitybuff = AbilityBuffs.Find(b => b.Name == name && b is AbilityBuff);
-
-            // Shameful add to Buffs list to keep other stuff working for now
-            Buffs.Add(abilitybuff);
-            return abilitybuff;
-        }
-
-        public bool HasPassive(string name)
-        {
-            return Passives.Any(p => p.Name == name);
-        }
-
-        public Passive GetPassive(string name)
-        {
-            return Passives.Find(p => p.Name == name);
         }
     }
 }

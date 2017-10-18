@@ -20,7 +20,7 @@ namespace swlSimulator.api.Spells
             new EyeOfTheStorm(),
             new StormSurge(),
             new Deluge(),
-            
+
             // Hammer
             new Outrage(),
             new Obliterate(),
@@ -53,17 +53,22 @@ namespace swlSimulator.api.Spells
 
             // Shotgun
             new SalvageExpert(),
-            new PointBlankShot(),
+            new PointBlankShot()
         };
 
         public static List<Passive> GetSelectedPassives(Settings settings)
         {
             var stringPassives = new List<string>
             {
-                settings.Passive1, settings.Passive2, settings.Passive3, settings.Passive4, settings.Passive5
+                settings.Passive1,
+                settings.Passive2,
+                settings.Passive3,
+                settings.Passive4,
+                settings.Passive5
             };
 
-            return stringPassives.Select(sPassive => AllPassives.Find(p => p.Name == sPassive)).Where(passive => passive != null).ToList();
+            return stringPassives.Select(sPassive => AllPassives.Find(p => p.Name == sPassive))
+                .Where(passive => passive != null).ToList();
         }
     }
 }

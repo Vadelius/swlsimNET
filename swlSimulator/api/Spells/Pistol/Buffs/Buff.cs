@@ -13,4 +13,3 @@ namespace swlSimulator.api.Spells.Pistol.Buffs
         }
     }
 }
-

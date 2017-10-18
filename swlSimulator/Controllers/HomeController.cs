@@ -1,11 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
 namespace swlSimulator.Controllers
 {
     public class HomeController : Controller
     {
-
         public IActionResult Index()
         {
             return View();
@@ -16,8 +15,5 @@ namespace swlSimulator.Controllers
             ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
             return View();
         }
-
-
-
     }
 }

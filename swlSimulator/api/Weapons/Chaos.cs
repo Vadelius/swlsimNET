@@ -43,7 +43,8 @@ namespace swlSimulator.api.Weapons
                 player.AddBonusAttack(rr, new Doppleganger());
             }
 
-            if (GimmickResource == 8 || player.Settings.PrimaryWeaponProc == WeaponProc.SovTechParadoxGenerator && highroller <= 55)
+            if (GimmickResource == 8 || player.Settings.PrimaryWeaponProc == WeaponProc.SovTechParadoxGenerator &&
+                highroller <= 55)
             {
                 ChaoticEffects(player, rr);
             }
