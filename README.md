@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/4affetky449bixws?svg=true)](https://ci.appveyor.com/project/Vadelius/swlsimnet)
+
 # SWLSim.Net
 
 A combat simulator for the "Secret World Legends" game, written in C#.
