@@ -37,15 +37,18 @@ export class ResultComponent implements OnInit {
     ];
 
     public bgcolors: Array<any> = [
-        "#c44224",
-        "#3e95cd",
-        "#c45850",
-        "#3e95cd",
-        "#c45850",
-        "#90A4AE",
-        "#B0BEC5",
-        "#CFD8DC",
-        "#ECEFF1"
+        {
+            backgroundColor: [
+                "#c44224",
+                "#3e95cd",
+                "#c45850",
+                "#3e95cd",
+                "#c45850",
+                "#90A4AE",
+                "#B0BEC5",
+                "#CFD8DC",
+                "#ECEFF1"]
+        }
     ];
     public lineChartLabels: Array<any> = [];
     public lineChartOptions: any = {
