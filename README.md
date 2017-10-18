@@ -39,14 +39,9 @@ git clone https://github.com/Vadelius/swlsimNET
 ```
 npm install
 ```
-
-**Step 6** (This requires the .NET Core SDK/CLI) Restore the project:
-```
-dotnet restore
-```
-**Step 7**: Run the project:
+**Step 6**: Run the project:
 ```
 dotnet run
 ```
 
--> Done! 🎉  Now you have a local build of the repository running on http://localhost:51890/
+-> Done! 🎉  Now you have a local build of the repository running on http://localhost:xxxx
