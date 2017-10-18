@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Http, Response } from "@angular/http";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs/Observable";
+import weaponPresets from "../presets/weaponPresets";
 import { IFormNames as FormNames } from "./interfaces";
-import weaponPresets from "./presets/weaponPresets";
 
 @Component({
   selector: "import",
