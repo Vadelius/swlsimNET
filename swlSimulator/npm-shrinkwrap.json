@@ -4715,6 +4715,12 @@
       "from": "preserve@>=0.2.0 <0.3.0",
       "resolved": "https://registry.npmjs.org/preserve/-/preserve-0.2.0.tgz"
     },
+    "prettier": {
+      "version": "1.7.4",
+      "from": "prettier@latest",
+      "resolved": "https://registry.npmjs.org/prettier/-/prettier-1.7.4.tgz",
+      "dev": true
+    },
     "pretty-error": {
       "version": "2.1.1",
       "from": "pretty-error@>=2.0.2 <3.0.0",
@@ -5910,6 +5916,12 @@
       "version": "5.7.0",
       "from": "https://registry.npmjs.org/tslint/-/tslint-5.7.0.tgz",
       "resolved": "https://registry.npmjs.org/tslint/-/tslint-5.7.0.tgz",
+      "dev": true
+    },
+    "tslint-config-prettier": {
+      "version": "1.6.0",
+      "from": "tslint-config-prettier@latest",
+      "resolved": "https://registry.npmjs.org/tslint-config-prettier/-/tslint-config-prettier-1.6.0.tgz",
       "dev": true
     },
     "tsutils": {
