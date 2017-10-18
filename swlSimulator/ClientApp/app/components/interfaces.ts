@@ -1,9 +1,9 @@
-export interface FormNames {
+export interface IFormNames {
     name: string;
     displayName: string;
 }
 
-export interface SpellBreakdownList {
+export interface ISpellBreakdownList {
     name: string;
     dps: number;
     dpsPercent: number;
@@ -13,7 +13,7 @@ export interface SpellBreakdownList {
     critChance: number;
 }
 
-export interface BuffBreakdownList {
+export interface IBuffBreakdownList {
     name: string;
     executes: number;
     refresh: number;
@@ -21,15 +21,19 @@ export interface BuffBreakdownList {
     uptime: number;
 }
 
-export interface EnergyList {
+export interface IEnergyList {
     time: number;
-    primary: number;
-    secondary: number;
-    pgimmick: number;
-    sgimmick: number;
+    primaryEnergy: number;
+    secondaryEnergy: number;
 }
 
-export interface RootObject {
+export interface IGimmickList {
+    time: number;
+    primaryGimmick: number;
+    secondaryGimmick: number;
+}
+
+export interface IRootObject {
     totalCrits: number;
     totalHits: number;
     totalDamage: number;
@@ -37,7 +41,9 @@ export interface RootObject {
     fightDebug: string;
     lowestDps: number;
     highestDps: number;
-    spellBreakdownList: SpellBreakdownList[];
-    buffBreakdownList: BuffBreakdownList[];
-    energyList: EnergyList[];
+    totalSpellExecutes: number;
+    spellBreakdownList: ISpellBreakdownList[];
+    buffBreakdownList: IBuffBreakdownList[];
+    energyList: IEnergyList[];
+    gimmickList: IGimmickList[];
 }

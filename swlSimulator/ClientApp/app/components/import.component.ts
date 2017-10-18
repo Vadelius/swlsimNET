@@ -3,14 +3,14 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Http, Response} from "@angular/http";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable";
-import {FormNames} from "./interfaces";
+import {IFormNames as FormNames} from "./interfaces";
 
 @Component({
     selector: "import",
     templateUrl: "import.component.html"
 })
 export class ImportComponent {
-    constructor(private http: Http, private router: Router) {}
+    constructor(private readonly http: Http, private readonly router: Router) {}
 
     primaryWeapon: FormNames[] = [
         {name:"Blade", displayName:"Blade"},
@@ -98,7 +98,7 @@ export class ImportComponent {
         {name:"AnimaTouched", displayName:"Anima Touched"},
         {name:"PlasmaForged", displayName:"Plasma Forged"},
         {name:"Shadowbound", displayName: "Shadowbound"},
-        {name:"EldritchTome", displayName:"Eldritch Tome"},
+        {name:"EldritchTome", displayName:"Eldritch Tome"}
     ];
     
     pistolProc: FormNames[] = [

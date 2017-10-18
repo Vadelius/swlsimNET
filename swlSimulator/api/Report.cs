@@ -25,10 +25,12 @@ namespace swlSimulator.api
         public string FightDebug { get; private set; }
         public double LowestDps { get; private set; } = double.MaxValue;
         public double HighestDps { get; private set; }
+        public double TotalSpellExecutes { get; private set; }
 
         public List<SpellResult> SpellBreakdownList { get; private set; }
         public List<BuffResult> BuffBreakdownList { get; private set; }
         public List<EnergySnap> EnergyList { get; private set; }
+        public List<GimmickSnap> GimmickList { get; private set; }
 
         public bool GenerateReportData(List<FightResult> iterationFightResults, Settings settings)
         {
@@ -36,11 +38,14 @@ namespace swlSimulator.api
             SpellBreakdownList = new List<SpellResult>();
             BuffBreakdownList = new List<BuffResult>();
             EnergyList = new List<EnergySnap>();
+            GimmickList = new List<GimmickSnap>();
             InitReportData(iterationFightResults);
             GenerateSpellReportData();
             GenerateBuffReportData();
+
             FightDebug = _oneBuilder.ToString();
             TotalDps = TotalDamage / _settings.FightLength / _settings.Iterations;
+            TotalSpellExecutes = Math.Round(TotalSpellExecutes, 2);
 
             return true;
         }
@@ -79,7 +84,8 @@ namespace swlSimulator.api
             nfi = (NumberFormatInfo) CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
-            decimal lastChangeTimeStamp = 0;
+            decimal lastEnergyChangeTimeStamp = 0;
+            decimal lastGimmickChangeTimeStamp = 0;
             const int interval = 2; // Can't go higher due to inconsistent line-values.
 
             foreach (var iteration in iterationFightResults)
@@ -102,18 +108,28 @@ namespace swlSimulator.api
 
                 foreach (var rr in iteration.RoundResults)
                 {
-                    if (lastChangeTimeStamp == 0 || lastChangeTimeStamp + interval < rr.TimeSec)
+                    if (lastEnergyChangeTimeStamp == 0 || lastEnergyChangeTimeStamp + interval < rr.TimeSec)
                     {
                         EnergyList.Add(new EnergySnap
                         {
                             Time = rr.TimeSec,
-                            Primary = rr.PrimaryEnergyEnd,
-                            Secondary = rr.SecondaryEnergyEnd,
-                            Pgimmick = rr.PrimaryGimmickEnd,
-                            Sgimmick = rr.SecondaryGimmickEnd
+                            PrimaryEnergy = rr.PrimaryEnergyEnd,
+                            SecondaryEnergy = rr.SecondaryEnergyEnd,
                         });
 
-                        lastChangeTimeStamp = rr.TimeSec;
+                        lastEnergyChangeTimeStamp = rr.TimeSec;
+                    }
+
+                    if (lastGimmickChangeTimeStamp == 0 || lastGimmickChangeTimeStamp + interval < rr.TimeSec)
+                    {
+                        GimmickList.Add(new GimmickSnap
+                        {
+                            Time = rr.TimeSec,
+                            PrimaryGimmick = rr.PrimaryGimmickEnd,
+                            SecondaryGimmick = rr.SecondaryGimmickEnd
+                        });
+
+                        lastGimmickChangeTimeStamp = rr.TimeSec;
                     }
 
                     foreach (var a in rr.Attacks)
@@ -179,6 +195,8 @@ namespace swlSimulator.api
                 var crits = allOfSameSpellDatas.Count(s => s.IsCrit);
                 var hits = allOfSameSpellDatas.Count(s => s.IsHit);
 
+                TotalSpellExecutes += hits / (double)_settings.Iterations;
+
                 SpellBreakdownList.Add(new SpellResult
                 {
                     Name = dSpell.Name,
@@ -195,10 +213,15 @@ namespace swlSimulator.api
         public class EnergySnap
         {
             public decimal Time { get; set; }
-            public int Primary { get; set; }
-            public int Secondary { get; set; }
-            public decimal Pgimmick { get; set; }
-            public decimal Sgimmick { get; set; }
+            public int PrimaryEnergy { get; set; }
+            public int SecondaryEnergy { get; set; }
+        }
+
+        public class GimmickSnap
+        {
+            public decimal Time { get; set; }
+            public decimal PrimaryGimmick { get; set; }
+            public decimal SecondaryGimmick { get; set; }
         }
 
         public class BuffResult

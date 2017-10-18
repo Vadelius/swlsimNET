@@ -1,42 +1,42 @@
 import {Component, OnInit} from "@angular/core";
-import {RootObject} from "./interfaces";
+import {IRootObject as RootObject} from "./interfaces";
 
 @Component({
     selector: "result",
     templateUrl: "./result.component.html"
 })
 export class ResultComponent implements OnInit {
-    breakdownlist: any;
-    buffbreakdownlist: any;
-    AvarageCrit: string;
-    TotalCount: number;
-    Raw: any;
-    HighestDps: string;
-    LowestDps: string;
-    Dps: string;
-    TotalDps: string;
+    spellBreakdownList: any;
+    buffBreakdownList: any;
+    averageCrit: string;
+    totalSpellExecutes: string;
+    raw: any;
+    highestDps: string;
+    lowestDps: string;
+    dps: string;
+    totalDps: string;
 
-    public primary: Array<any> = [];
-    public secondary: Array<any> = [];
-    public pgimmick: Array<any> = [];
-    public sgimmick: Array<any> = [];
-    public breakdownLabels: string[] = [];
-    public breakdownData: number[] = [];
-    public pieChartType: string = "pie";
+    primaryEnergy: Array<any> = [];
+    secondaryEnergy: Array<any> = [];
+    primaryGimmick: Array<any> = [];
+    secondaryGimmick: Array<any> = [];
+    pieBreakdownLabels: string[] = [];
+    pieBreakdownData: number[] = [];
+    pieChartType: string = "pie";
 
-    public chartClicked(e: any): void {}
-    public chartHovered(e: any): void {}
+    chartClicked(e: any): void {}
+    chartHovered(e: any): void {}
 
-    public energyChartData: Array<any> = [
-        {data: this.primary, label: "Primary", borderColor: "#3e95cd"},
-        {data: this.secondary, label: "Secondary", borderColor: "#c45850"}
+    energyChartData: Array<any> = [
+        {data: this.primaryEnergy, label: "Primary", borderColor: "#3e95cd"},
+        {data: this.secondaryEnergy, label: "Secondary", borderColor: "#c45850"}
     ];
-    public gimmickChartData: Array<any> = [
-        {data: this.pgimmick, label: "Primary", borderColor: "#3e95cd"},
-        {data: this.sgimmick, label: "Secondary", borderColor: "#c45850"}
+    gimmickChartData: Array<any> = [
+        { data: this.primaryGimmick, label: "Primary", borderColor: "#3e95cd"},
+        { data: this.secondaryGimmick, label: "Secondary", borderColor: "#c45850"}
     ];
 
-    public bgcolors: Array<any> = [
+    pieBgcolors: Array<any> = [
         {
             backgroundColor: [
                 "#c44224",
@@ -50,49 +50,51 @@ export class ResultComponent implements OnInit {
                 "#ECEFF1"]
         }
     ];
-    public lineChartLabels: Array<any> = [];
-    public lineChartOptions: any = {
+    lineChartLabels: Array<any> = [];
+    lineChartOptions: any = {
         responsive: true
     };
 
-    public lineChartLegend: boolean = true;
-    public lineChartType: string = "line";
+    lineChartLegend: boolean = true;
+    lineChartType: string = "line";
 
     ngOnInit() {
-        let results: any = localStorage.getItem("Results");
-        let jsonObj: any = JSON.parse(results); // string to generic object first
-        let root: RootObject = <RootObject>jsonObj;
-        this.Dps = root.totalDps.toFixed(0);
-        this.LowestDps = root.lowestDps.toFixed(0);
-        this.HighestDps = root.highestDps.toFixed(0);
-        this.TotalDps = root.totalDamage.toFixed(0);
-        this.TotalCount = root.totalHits - root.totalCrits;
-        this.AvarageCrit = (100 * (root.totalCrits / root.totalHits)).toFixed(2);
+        const results: any = localStorage.getItem("Results");
+        const jsonObj: any = JSON.parse(results); // string to generic object first
+        const root = jsonObj as RootObject;
+        this.dps = root.totalDps.toFixed(2);
+        this.lowestDps = root.lowestDps.toFixed(0);
+        this.highestDps = root.highestDps.toFixed(0);
+        this.totalDps = root.totalDamage.toFixed(0);
+        this.averageCrit = (100 * (root.totalCrits / root.totalHits)).toFixed(2);
+        this.totalSpellExecutes = root.totalSpellExecutes.toFixed(2);
 
-        this.Raw = root.fightDebug;
-        this.breakdownlist = root.spellBreakdownList;
-        this.buffbreakdownlist = root.buffBreakdownList;
-        this.breakdownData = root.spellBreakdownList
+        this.raw = root.fightDebug;
+        this.spellBreakdownList = root.spellBreakdownList;
+        this.buffBreakdownList = root.buffBreakdownList;
+
+        this.pieBreakdownData = root.spellBreakdownList
             .filter(spell => spell.dpsPercent > 0)
             .map(spell => spell.dpsPercent);
 
-        this.breakdownLabels = root.spellBreakdownList
+        this.pieBreakdownLabels = root.spellBreakdownList
             .filter(spell => spell.dpsPercent > 0)
             .map(spell => spell.name);
 
         this.lineChartLabels = root.energyList.map(time => time.time);
 
-        for (let pgimmick of root.energyList) {
-            this.pgimmick.push(pgimmick.pgimmick);
+        for (let pEnergy of root.energyList) {
+            this.primaryEnergy.push(pEnergy.primaryEnergy);
         }
-        for (let sgimmick of root.energyList) {
-            this.sgimmick.push(sgimmick.sgimmick);
+        for (let sEnergy of root.energyList) {
+            this.secondaryEnergy.push(sEnergy.secondaryEnergy);
         }
-        for (let primary of root.energyList) {
-            this.primary.push(primary.primary);
+
+        for (let pGimmick of root.gimmickList) {
+            this.primaryGimmick.push(pGimmick.primaryGimmick);
         }
-        for (let secondary of root.energyList) {
-            this.secondary.push(secondary.secondary);
+        for (let sGimmick of root.gimmickList) {
+            this.secondaryGimmick.push(sGimmick.secondaryGimmick);
         }
     }
 }
