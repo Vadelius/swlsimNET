@@ -8,7 +8,7 @@ import { IFormNames as FormNames } from "../interfaces";
 
 @Component({
   selector: "import",
-  templateUrl: "import/import.component.html",
+  templateUrl: "./import.component.html",
 })
 export class ImportComponent {
   primaryWeapon: FormNames[] = Object.keys(weaponPresets).map(key => {
