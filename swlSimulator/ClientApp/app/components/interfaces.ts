@@ -47,3 +47,34 @@ export interface IRootObject {
   energyList: IEnergyList[];
   gimmickList: IGimmickList[];
 }
+
+export interface IWeaponPreset {
+  primaryWeapon: string;
+  primaryAffix: string;
+  primaryProc: string;
+  secondaryWeapon: string;
+  secondaryAffix: string;
+  secondaryProc: string;
+  combatPower: number;
+  criticalChance: number;
+  criticalPower: number;
+  basicSignet: number;
+  powerSignet: number;
+  eliteSignet: number;
+  waistSignet: number;
+  luckSignet: number;
+  head: string;
+  neck: string;
+  luck: string;
+  gadget: string;
+  exposed: boolean;
+  openingShot: boolean;
+  headCdr: boolean;
+  waistCdr: boolean;
+  passive1: string;
+  passive2: string;
+  passive3: string;
+  passive4: string;
+  passive5: string;
+  apl: string;
+}
