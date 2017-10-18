@@ -4,23 +4,18 @@ import { Http, Response } from "@angular/http";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 import { IFormNames as FormNames } from "./interfaces";
+import weaponPresets from "./presets/weaponPresets";
 
 @Component({
   selector: "import",
   templateUrl: "import.component.html",
 })
 export class ImportComponent {
-  primaryWeapon: FormNames[] = [
-    { name: "Blade", displayName: "Blade" },
-    { name: "Hammer", displayName: "Hammer" },
-    { name: "Fist", displayName: "Fist" },
-    { name: "Chaos", displayName: "Chaos" },
-    { name: "Blood", displayName: "Blood" },
-    { name: "Elemental", displayName: "Elemental" },
-    { name: "Pistol", displayName: "Pistols" },
-    { name: "Shotgun", displayName: "Shotgun" },
-    { name: "Rifle", displayName: "Rifle" },
-  ];
+  primaryWeapon: FormNames[] = Object.keys(weaponPresets).map(key => {
+    const preset = weaponPresets[key];
+    return { name: preset.name, displayName: preset.name };
+  });
+
   primaryAffix: FormNames[] = [
     { name: "none", displayName: "None" },
     { name: "Havoc", displayName: "Havoc" },
@@ -28,17 +23,11 @@ export class ImportComponent {
     { name: "Efficiency", displayName: "Efficiency" },
     { name: "Energy", displayName: "Energy" },
   ];
-  secondaryWeapon: FormNames[] = [
-    { name: "Blade", displayName: "Blade" },
-    { name: "Hammer", displayName: "Hammer" },
-    { name: "Fist", displayName: "Fist" },
-    { name: "Chaos", displayName: "Chaos" },
-    { name: "Blood", displayName: "Blood" },
-    { name: "Elemental", displayName: "Elemental" },
-    { name: "Pistol", displayName: "Pistols" },
-    { name: "Shotgun", displayName: "Shotgun" },
-    { name: "Rifle", displayName: "Rifle" },
-  ];
+
+  secondaryWeapon: FormNames[] = Object.keys(weaponPresets).map(key => {
+    const preset = weaponPresets[key];
+    return { name: preset.name, displayName: preset.name };
+  });
 
   secondaryAffix: FormNames[] = [
     { name: "none", displayName: "None" },
@@ -217,341 +206,57 @@ export class ImportComponent {
   constructor(private readonly http: Http, private readonly router: Router) {}
 
   hammerPreset(): void {
-    this.myform.patchValue({ primaryWeapon: "Hammer" });
-    this.myform.patchValue({ primaryAffix: "Havoc" });
-    this.myform.patchValue({ primaryProc: "PneumaticMaul" });
-    this.myform.patchValue({ secondaryWeapon: "Fist" });
-    this.myform.patchValue({ secondaryAffix: "Destruction" });
-    this.myform.patchValue({ secondaryProc: "None" });
-    this.myform.patchValue({ combatPower: 1350 });
-    this.myform.patchValue({ criticalChance: 30 });
-    this.myform.patchValue({ criticalPower: 120 });
-    this.myform.patchValue({ basicSignet: 73 });
-    this.myform.patchValue({ powerSignet: 19 });
-    this.myform.patchValue({ eliteSignet: 41 });
-    this.myform.patchValue({ waistSignet: 49 });
-    this.myform.patchValue({ luckSignet: 12 });
-    this.myform.patchValue({ head: "Ashes" });
-    this.myform.patchValue({ neck: "SeedOfAgression" });
-    this.myform.patchValue({ luck: "ColdSilverDice" });
-    this.myform.patchValue({ gadget: "ValiMetabolic" });
-    this.myform.patchValue({ exposed: true });
-    this.myform.patchValue({ openingShot: true });
-    this.myform.patchValue({ headCdr: false });
-    this.myform.patchValue({ waistCdr: true });
-    this.myform.patchValue({ passive1: "Obliterate" });
-    this.myform.patchValue({ passive2: "FastandFurious" });
-    this.myform.patchValue({ passive3: "Outrage" });
-    this.myform.patchValue({ passive4: "Berserker" });
-    this.myform.patchValue({ passive5: "UnbridledWrath" });
-    this.myform.patchValue({
-      apl:
-        "Fist.Savagery, Buff.UnstoppableForce.Active\r\n" +
-        "Hammer.Seethe, Buff.UnstoppableForce.Active\r\n" +
-        "Hammer.UnstoppableForce, Rage > 50 || Hammer.Energy > 8\r\n" +
-        "Hammer.Demolish, Buff.UnstoppableForce.Active\r\n" +
-        "Hammer.Demolish, Rage > 60 || Hammer.Energy > 13\r\n" +
-        "Hammer.Smash",
-    });
+    Object.keys(weaponPresets.Hammer).forEach(key =>
+      this.myform.patchValue(weaponPresets.Hammer[key]),
+    );
   }
 
   chaosPreset(): void {
-    this.myform.patchValue({ primaryWeapon: "Chaos" });
-    this.myform.patchValue({ primaryAffix: "Havoc" });
-    this.myform.patchValue({ primaryProc: "WarpedVisage" });
-    this.myform.patchValue({ secondaryWeapon: "Shotgun" });
-    this.myform.patchValue({ secondaryAffix: "Destruction" });
-    this.myform.patchValue({ secondaryProc: "None" });
-    this.myform.patchValue({ combatPower: 1350 });
-    this.myform.patchValue({ criticalChance: 30 });
-    this.myform.patchValue({ criticalPower: 120 });
-    this.myform.patchValue({ basicSignet: 73 });
-    this.myform.patchValue({ powerSignet: 19 });
-    this.myform.patchValue({ eliteSignet: 41 });
-    this.myform.patchValue({ waistSignet: 49 });
-    this.myform.patchValue({ head: "Ashes" });
-    this.myform.patchValue({ neck: "SeedOfAgression" });
-    this.myform.patchValue({ luck: "ColdSilverDice" });
-    this.myform.patchValue({ gadget: "ValiMetabolic" });
-    this.myform.patchValue({ exposed: true });
-    this.myform.patchValue({ openingShot: true });
-    this.myform.patchValue({ headCdr: false });
-    this.myform.patchValue({ waistCdr: true });
-    this.myform.patchValue({ passive1: "Disintegrate" });
-    this.myform.patchValue({ passive2: "FracturedExistence" });
-    this.myform.patchValue({ passive3: "BodyDouble" });
-    this.myform.patchValue({ passive4: "ButterflyEffect" });
-    this.myform.patchValue({ passive5: "BlessingofOcted" });
-    this.myform.patchValue({
-      apl:
-        "Chaos.Pandemonium\r\n" +
-        "Chaos.Breakdown\r\n" +
-        "Shotgun.ShellSalvage\r\n" +
-        "Shotgun.RagingShot\r\n" +
-        "Chaos.Deconstruct",
-    });
+    Object.keys(weaponPresets.Chaos).forEach(key =>
+      this.myform.patchValue(weaponPresets.Chaos[key]),
+    );
   }
 
   fistPreset(): void {
-    this.myform.patchValue({ primaryWeapon: "Fist" });
-    this.myform.patchValue({ primaryAffix: "Destruction" });
-    this.myform.patchValue({ primaryProc: "Bladed Gauntlets" });
-    this.myform.patchValue({ secondaryWeapon: "Shotgun" });
-    this.myform.patchValue({ secondaryAffix: "Destruction" });
-    this.myform.patchValue({ secondaryProc: "None" });
-    this.myform.patchValue({ combatPower: 1350 });
-    this.myform.patchValue({ criticalChance: 30 });
-    this.myform.patchValue({ criticalPower: 120 });
-    this.myform.patchValue({ basicSignet: 73 });
-    this.myform.patchValue({ powerSignet: 19 });
-    this.myform.patchValue({ eliteSignet: 41 });
-    this.myform.patchValue({ waistSignet: 49 });
-    this.myform.patchValue({ head: "Ashes" });
-    this.myform.patchValue({ neck: "SeedOfAgression" });
-    this.myform.patchValue({ luck: "ColdSilverDice" });
-    this.myform.patchValue({ gadget: "ValiMetabolic" });
-    this.myform.patchValue({ exposed: true });
-    this.myform.patchValue({ openingShot: true });
-    this.myform.patchValue({ headCdr: false });
-    this.myform.patchValue({ waistCdr: true });
-    this.myform.patchValue({ passive1: "SmellFear" });
-    this.myform.patchValue({ passive2: "WildNature" });
-    this.myform.patchValue({ passive3: "Brutality" });
-    this.myform.patchValue({ passive4: "KillerInstinct" });
-    this.myform.patchValue({ passive5: "Gore" });
-    this.myform.patchValue({
-      apl:
-        "Fist.Savagery\r\n" +
-        "Fist.PrimalInstinct\r\n" +
-        "Shotgun.ShelLSalvage\r\n" +
-        "Fist.Mangle\r\n" +
-        "Shotgun.RagingShot\r\n" +
-        "Fist.Trash",
-    });
+    Object.keys(weaponPresets.Fist).forEach(key =>
+      this.myform.patchValue(weaponPresets.Fist[key]),
+    );
   }
 
   pistolPreset(): void {
-    this.myform.patchValue({ primaryWeapon: "Pistol" });
-    this.myform.patchValue({ primaryAffix: "Energy" });
-    this.myform.patchValue({ primaryProc: "SovTechHarmonisers" });
-    this.myform.patchValue({ secondaryWeapon: "Fist" });
-    this.myform.patchValue({ secondaryAffix: "Destruction" });
-    this.myform.patchValue({ secondaryProc: "None" });
-    this.myform.patchValue({ combatPower: 1350 });
-    this.myform.patchValue({ criticalChance: 30 });
-    this.myform.patchValue({ criticalPower: 120 });
-    this.myform.patchValue({ basicSignet: 73 });
-    this.myform.patchValue({ powerSignet: 19 });
-    this.myform.patchValue({ eliteSignet: 41 });
-    this.myform.patchValue({ waistSignet: 49 });
-    this.myform.patchValue({ head: "Ashes" });
-    this.myform.patchValue({ neck: "SeedOfAgression" });
-    this.myform.patchValue({ luck: "ColdSilverDice" });
-    this.myform.patchValue({ gadget: "ValiMetabolic" });
-    this.myform.patchValue({ exposed: true });
-    this.myform.patchValue({ openingShot: true });
-    this.myform.patchValue({ headCdr: false });
-    this.myform.patchValue({ waistCdr: true });
-    this.myform.patchValue({ passive1: "LethalAim" });
-    this.myform.patchValue({ passive2: "Jackpot" });
-    this.myform.patchValue({ passive3: "BeginnersLuck" });
-    this.myform.patchValue({ passive4: "FatalShot" });
-    this.myform.patchValue({ passive5: "FocusedFire" });
-    this.myform.patchValue({
-      apl:
-        "Pistol.KillBlind, Buff.RedChambers || Buff.BlueChambers || Buff.WhiteChambers\r\n" +
-        "Fist.Savagery\r\n" +
-        "Pistol.Flourish, Pistol.Energy < 11\r\n" +
-        "Pistol.TrickShot, Buff.Savagery.Active\r\n" +
-        "Pistol.Dualshot, Pistol.Energy > 12 || Buff.RedChambers || Buff.BlueChambers || Buff.WhiteChambers\r\n" +
-        "Pistol.HairTrigger",
-    });
+    Object.keys(weaponPresets.Pistol).forEach(key =>
+      this.myform.patchValue(weaponPresets.Pistol[key]),
+    );
   }
 
   bloodPreset(): void {
-    this.myform.patchValue({ primaryWeapon: "Blood" });
-    this.myform.patchValue({ primaryAffix: "Energy" });
-    this.myform.patchValue({ primaryProc: "EldritchTome" });
-    this.myform.patchValue({ secondaryWeapon: "Fist" });
-    this.myform.patchValue({ secondaryAffix: "Destruction" });
-    this.myform.patchValue({ secondaryProc: "None" });
-    this.myform.patchValue({ combatPower: 1350 });
-    this.myform.patchValue({ criticalChance: 30 });
-    this.myform.patchValue({ criticalPower: 120 });
-    this.myform.patchValue({ basicSignet: 73 });
-    this.myform.patchValue({ powerSignet: 19 });
-    this.myform.patchValue({ eliteSignet: 41 });
-    this.myform.patchValue({ waistSignet: 49 });
-    this.myform.patchValue({ head: "Ashes" });
-    this.myform.patchValue({ neck: "SeedOfAgression" });
-    this.myform.patchValue({ luck: "ColdSilverDice" });
-    this.myform.patchValue({ gadget: "ValiMetabolic" });
-    this.myform.patchValue({ exposed: true });
-    this.myform.patchValue({ openingShot: true });
-    this.myform.patchValue({ headCdr: false });
-    this.myform.patchValue({ waistCdr: true });
-    this.myform.patchValue({ passive1: "Flay" });
-    this.myform.patchValue({ passive2: "Contaminate" });
-    this.myform.patchValue({ passive3: "Desolate" });
-    this.myform.patchValue({ passive4: "Defilement" });
-    this.myform.patchValue({ passive5: "CrimsonPulse" });
-    this.myform.patchValue({
-      apl:
-        "Fist.Savagery, Corruption >= 10 && EldritchScourge.Cooldown <= 0 && Desecrate.Cooldown <= 0\r\n" +
-        "Blood.EldritchScourge, Corruption > 0 && Buff.Savagery.Duration > 2\r\n" +
-        "Blood.Desecrate, Buff.Savagery.Active\r\n" +
-        "Blood.Maleficium, Blood.Energy > 10\r\n" +
-        "Blood.Torment\r\n",
-    });
+    Object.keys(weaponPresets.Blood).forEach(key =>
+      this.myform.patchValue(weaponPresets.Blood[key]),
+    );
   }
 
   bladePreset(): void {
-    this.myform.patchValue({ primaryWeapon: "Blade" });
-    this.myform.patchValue({ primaryAffix: "Energy" });
-    this.myform.patchValue({ primaryProc: "PlasmaForged" });
-    this.myform.patchValue({ secondaryWeapon: "Fist" });
-    this.myform.patchValue({ secondaryAffix: "Destruction" });
-    this.myform.patchValue({ secondaryProc: "None" });
-    this.myform.patchValue({ combatPower: 1350 });
-    this.myform.patchValue({ criticalChance: 30 });
-    this.myform.patchValue({ criticalPower: 120 });
-    this.myform.patchValue({ basicSignet: 73 });
-    this.myform.patchValue({ powerSignet: 19 });
-    this.myform.patchValue({ eliteSignet: 41 });
-    this.myform.patchValue({ waistSignet: 49 });
-    this.myform.patchValue({ head: "Ashes" });
-    this.myform.patchValue({ neck: "SeedOfAgression" });
-    this.myform.patchValue({ luck: "ColdSilverDice" });
-    this.myform.patchValue({ gadget: "ValiMetabolic" });
-    this.myform.patchValue({ exposed: true });
-    this.myform.patchValue({ openingShot: true });
-    this.myform.patchValue({ headCdr: false });
-    this.myform.patchValue({ waistCdr: true });
-    this.myform.patchValue({ passive1: "KeenEdge" });
-    this.myform.patchValue({ passive2: "StormSurge" });
-    this.myform.patchValue({ passive3: "Masterpiece" });
-    this.myform.patchValue({ passive4: "MastersFocus" });
-    this.myform.patchValue({ passive5: "WarriorsSpirit" });
-    this.myform.patchValue({
-      apl:
-        "Fist.Savagery\r\n" +
-        "Blade.Hone\r\n" +
-        "Blade.SupremeHarmony\r\n" +
-        "Blade.SpiritBlade\r\n" +
-        "Blade.Tsunami\r\n" +
-        "Blade.FlowingStrike\r\n",
-    });
+    Object.keys(weaponPresets.Blade).forEach(key =>
+      this.myform.patchValue(weaponPresets.Blade[key]),
+    );
   }
 
   riflePreset(): void {
-    this.myform.patchValue({ primaryWeapon: "Rifle" });
-    this.myform.patchValue({ primaryAffix: "Energy" });
-    this.myform.patchValue({ primaryProc: "InfernalLoader" });
-    this.myform.patchValue({ secondaryWeapon: "Fist" });
-    this.myform.patchValue({ secondaryAffix: "Destruction" });
-    this.myform.patchValue({ secondaryProc: "BladedGauntlets" });
-    this.myform.patchValue({ combatPower: 1350 });
-    this.myform.patchValue({ criticalChance: 30 });
-    this.myform.patchValue({ criticalPower: 120 });
-    this.myform.patchValue({ basicSignet: 73 });
-    this.myform.patchValue({ powerSignet: 19 });
-    this.myform.patchValue({ eliteSignet: 41 });
-    this.myform.patchValue({ waistSignet: 49 });
-    this.myform.patchValue({ head: "Ashes" });
-    this.myform.patchValue({ neck: "SeedOfAgression" });
-    this.myform.patchValue({ luck: "ColdSilverDice" });
-    this.myform.patchValue({ gadget: "ValiMetabolic" });
-    this.myform.patchValue({ exposed: true });
-    this.myform.patchValue({ openingShot: true });
-    this.myform.patchValue({ headCdr: false });
-    this.myform.patchValue({ waistCdr: true });
-    this.myform.patchValue({ passive1: "Stability" });
-    this.myform.patchValue({ passive2: "BackupPlan" });
-    this.myform.patchValue({ passive3: "SecondaryExplosion" });
-    this.myform.patchValue({ passive4: "SlowBurn" });
-    this.myform.patchValue({ passive5: "ExplosivesExpert" });
-    this.myform.patchValue({
-      apl:
-        "Fist.Savagery, HighExplosiveGrenade.Cooldown <= 0\r\n" +
-        "Rifle.HighExplosiveGrenade, Buff.Savagery" +
-        "Rifle.IncendiaryGrenade, HighExplosiveGrenade.Cooldown >6\r\n" +
-        "Rifle.BurstFire\r\n" +
-        "Rifle.PlacedShot",
-    });
+    Object.keys(weaponPresets.Rifle).forEach(key =>
+      this.myform.patchValue(weaponPresets.Rifle[key]),
+    );
   }
 
   elementalismPreset(): void {
-    this.myform.patchValue({ primaryWeapon: "Elemental" });
-    this.myform.patchValue({ primaryAffix: "Havoc" });
-    this.myform.patchValue({ primaryProc: "UnstableElectronCore" });
-    this.myform.patchValue({ secondaryWeapon: "Fist" });
-    this.myform.patchValue({ secondaryAffix: "Destruction" });
-    this.myform.patchValue({ secondaryProc: "None" });
-    this.myform.patchValue({ combatPower: 1350 });
-    this.myform.patchValue({ criticalChance: 30 });
-    this.myform.patchValue({ criticalPower: 120 });
-    this.myform.patchValue({ basicSignet: 73 });
-    this.myform.patchValue({ powerSignet: 19 });
-    this.myform.patchValue({ eliteSignet: 41 });
-    this.myform.patchValue({ waistSignet: 49 });
-    this.myform.patchValue({ head: "Ashes" });
-    this.myform.patchValue({ neck: "SeedOfAgression" });
-    this.myform.patchValue({ luck: "ColdSilverDice" });
-    this.myform.patchValue({ gadget: "ValiMetabolic" });
-    this.myform.patchValue({ exposed: true });
-    this.myform.patchValue({ openingShot: true });
-    this.myform.patchValue({ headCdr: false });
-    this.myform.patchValue({ waistCdr: true });
-    this.myform.patchValue({ passive1: "Glaciate" });
-    this.myform.patchValue({ passive2: "Superconductor" });
-    this.myform.patchValue({ passive3: "CrystallisedBlaze" });
-    this.myform.patchValue({ passive4: "Combustion" });
-    this.myform.patchValue({ passive5: "Thermodynamo" });
-    this.myform.patchValue({
-      apl:
-        "Fist.Savagery\r\n" +
-        "Elementalism.IceBeam\r\n" +
-        "Elementalism.CrystallisedFlame\r\n" +
-        "Elementalism.Mjolnir\r\n" +
-        "Elementalism.Fireball",
-    });
+    Object.keys(weaponPresets.Elemental).forEach(key =>
+      this.myform.patchValue(weaponPresets.Elemental[key]),
+    );
   }
 
   shotgunPreset(): void {
-    this.myform.patchValue({ primaryWeapon: "Shotgun" });
-    this.myform.patchValue({ primaryAffix: "Energy" });
-    this.myform.patchValue({ primaryProc: "IfritanDespoiler" });
-    this.myform.patchValue({ secondaryWeapon: "Fist" });
-    this.myform.patchValue({ secondaryAffix: "Destruction" });
-    this.myform.patchValue({ secondaryProc: "None" });
-    this.myform.patchValue({ combatPower: 1350 });
-    this.myform.patchValue({ criticalChance: 30 });
-    this.myform.patchValue({ criticalPower: 120 });
-    this.myform.patchValue({ basicSignet: 73 });
-    this.myform.patchValue({ powerSignet: 19 });
-    this.myform.patchValue({ eliteSignet: 41 });
-    this.myform.patchValue({ waistSignet: 49 });
-    this.myform.patchValue({ head: "Ashes" });
-    this.myform.patchValue({ neck: "SeedOfAgression" });
-    this.myform.patchValue({ luck: "ColdSilverDice" });
-    this.myform.patchValue({ gadget: "ValiMetabolic" });
-    this.myform.patchValue({ exposed: true });
-    this.myform.patchValue({ openingShot: true });
-    this.myform.patchValue({ headCdr: false });
-    this.myform.patchValue({ waistCdr: true });
-    this.myform.patchValue({ passive1: "PointBlankShot" });
-    this.myform.patchValue({ passive2: "WitheringSalvo" });
-    this.myform.patchValue({ passive3: "SalvageExpert" });
-    this.myform.patchValue({ passive4: "OddsandEvens" });
-    this.myform.patchValue({ passive5: "MunitionsExpert" });
-    this.myform.patchValue({
-      apl:
-        "Fist.Savagery\r\n" +
-        "Shotgun.FullSalvo\r\n" +
-        "Shotgun.ShellSalvage\r\n" +
-        "Shotgun.RagingShot\r\n" +
-        "Shotgun.PumpAction\r\n",
-    });
+    Object.keys(weaponPresets.Shotgun).forEach(key =>
+      this.myform.patchValue(weaponPresets.Shotgun[key]),
+    );
   }
 
   userSaveOne(): void {
@@ -602,42 +307,7 @@ export class ImportComponent {
       passive4: new FormControl(),
       passive5: new FormControl(),
     });
-    this.myform.patchValue({ primaryWeapon: "Hammer" });
-    this.myform.patchValue({ primaryAffix: "Havoc" });
-    this.myform.patchValue({ primaryProc: "PneumaticMaul" });
-    this.myform.patchValue({ secondaryWeapon: "Fist" });
-    this.myform.patchValue({ secondaryAffix: "Destruction" });
-    this.myform.patchValue({ secondaryProc: "None" });
-    this.myform.patchValue({ combatPower: 1350 });
-    this.myform.patchValue({ criticalChance: 30 });
-    this.myform.patchValue({ criticalPower: 120 });
-    this.myform.patchValue({ basicSignet: 73 });
-    this.myform.patchValue({ powerSignet: 19 });
-    this.myform.patchValue({ eliteSignet: 41 });
-    this.myform.patchValue({ waistSignet: 49 });
-    this.myform.patchValue({ luckSignet: 12 });
-    this.myform.patchValue({ head: "Ashes" });
-    this.myform.patchValue({ neck: "SeedOfAgression" });
-    this.myform.patchValue({ luck: "ColdSilverDice" });
-    this.myform.patchValue({ gadget: "ValiMetabolic" });
-    this.myform.patchValue({ exposed: true });
-    this.myform.patchValue({ openingShot: true });
-    this.myform.patchValue({ headCdr: false });
-    this.myform.patchValue({ waistCdr: true });
-    this.myform.patchValue({ passive1: "Obliterate" });
-    this.myform.patchValue({ passive2: "FastandFurious" });
-    this.myform.patchValue({ passive3: "Outrage" });
-    this.myform.patchValue({ passive4: "Berserker" });
-    this.myform.patchValue({ passive5: "UnbridledWrath" });
-    this.myform.patchValue({
-      apl:
-        "Fist.Savagery, Buff.UnstoppableForce.Active\r\n" +
-        "Hammer.Seethe, Buff.UnstoppableForce.Active\r\n" +
-        "Hammer.UnstoppableForce, Rage > 50 || Hammer.Energy > 8\r\n" +
-        "Hammer.Demolish, Buff.UnstoppableForce.Active\r\n" +
-        "Hammer.Demolish, Rage > 60 || Hammer.Energy > 13\r\n" +
-        "Hammer.Smash",
-    });
+    this.hammerPreset();
   }
 
   private extractData(res: Response, router: Router) {
