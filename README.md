@@ -1,4 +1,8 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/4affetky449bixws?svg=true)](https://ci.appveyor.com/project/Vadelius/swlsimnet)
+[![Build status](https://ci.appveyor.com/api/projects/status/4affetky449bixws?svg=true)](https://ci.appveyor.com/project/Vadelius/swlsimnet) 
+
+
+### Reach us on Discord: (https://discord.gg/kCSnKuc)
+
 
 # SWLSim.Net
 
