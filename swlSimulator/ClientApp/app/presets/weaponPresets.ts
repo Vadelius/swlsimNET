@@ -1,4 +1,4 @@
-import { IWeaponPreset } from "../interfaces";
+import { IWeaponPreset } from "../components/interfaces";
 
 const Hammer: IWeaponPreset = {
   primaryWeapon: "Hammer",
