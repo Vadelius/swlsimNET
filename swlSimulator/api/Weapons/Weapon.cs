@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using swlSimulator.api.Combat;
 using swlSimulator.api.Models;
 using swlSimulator.api.Spells;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace swlSimulator.api.Weapons
 {
@@ -32,8 +32,6 @@ namespace swlSimulator.api.Weapons
 
     public class Weapon
     {
-        #region Fields
-
         protected const int MaxEnergy = 15;
         protected int _energy = 15;
         protected decimal _gimickResource;
@@ -42,19 +40,11 @@ namespace swlSimulator.api.Weapons
         private List<ISpell> _eliteSpells = new List<ISpell>();
         protected readonly Random Rnd = new Random();
 
-        #endregion
-
-        #region Constructor
-
         public Weapon(WeaponType wtype, WeaponAffix waffix)
         {
             WeaponType = wtype;
             WeaponAffix = waffix;
         }
-
-        #endregion
-
-        #region Properties
 
         public WeaponType WeaponType { get; }
         public WeaponAffix WeaponAffix { get; }
@@ -86,10 +76,6 @@ namespace swlSimulator.api.Weapons
         }
 
         private decimal LastEnergyOnCritTimeStamp { get; set; }
-
-        #endregion
-
-        #region Methods
 
         public virtual void PreAttack(IPlayer player, RoundResult rr)
         {
@@ -138,8 +124,6 @@ namespace swlSimulator.api.Weapons
         {
             return Rnd.NextDouble() * (maximum - minimum) + minimum;
         }
-
-        #region Weapon affixes
 
         public void WeaponAffixes(IPlayer player, ISpell spell, RoundResult rr)
         {
@@ -214,9 +198,5 @@ namespace swlSimulator.api.Weapons
                 BaseDamage = 0.45;
             }
         }
-
-        #endregion
-
-        #endregion 
     }
 }

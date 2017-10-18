@@ -86,8 +86,6 @@ namespace swlSimulator.api.Weapons
             }
         }
 
-        #region ChaosProcs
-
         public class Singularity : Spell
         {
             public Singularity()
@@ -122,7 +120,5 @@ namespace swlSimulator.api.Weapons
                 // Irrelevant for now TODO: Maybe model purgable critpower steal, but otherwise irrelevant to DPS.
             }
         }
-
-        #endregion
     }
 }

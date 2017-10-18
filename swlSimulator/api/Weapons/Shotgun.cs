@@ -65,8 +65,6 @@ namespace swlSimulator.api.Weapons
             }
         }
 
-        #region Gimmickspells
-
         // We assume we will be alternating Dragon's Breath and Depleted Uranium Shells every reload
         private class DragonBreath : Spell
         {
@@ -134,7 +132,5 @@ namespace swlSimulator.api.Weapons
                 BaseDamage = 1.5;
             }
         }
-
-        #endregion
     }
 }
