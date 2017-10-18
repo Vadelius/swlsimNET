@@ -11,10 +11,17 @@ import { IFormNames as FormNames } from "../interfaces";
   templateUrl: "./import.component.html",
 })
 export class ImportComponent {
-  primaryWeapon: FormNames[] = Object.keys(weaponPresets).map(key => {
-    const preset = weaponPresets[key];
-    return { name: preset.name, displayName: preset.name };
-  });
+  primaryWeapon: FormNames[] = [
+    {name:"Blade", displayName:"Blade"},
+    {name:"Hammer", displayName:"Hammer"},
+    {name:"Fist", displayName:"Fist"},
+    {name:"Chaos", displayName: "Chaos"},
+    {name:"Blood", displayName:"Blood"},
+    {name:"Elemental", displayName:"Elemental"},
+    {name:"Pistol", displayName:"Pistols"},
+    {name:"Shotgun", displayName: "Shotgun"},
+    {name:"Rifle", displayName:"Rifle"}
+  ];
 
   primaryAffix: FormNames[] = [
     { name: "none", displayName: "None" },
@@ -24,10 +31,17 @@ export class ImportComponent {
     { name: "Energy", displayName: "Energy" },
   ];
 
-  secondaryWeapon: FormNames[] = Object.keys(weaponPresets).map(key => {
-    const preset = weaponPresets[key];
-    return { name: preset.name, displayName: preset.name };
-  });
+  secondaryWeapon: FormNames[] = [
+    {name:"Blade", displayName:"Blade"},
+    {name:"Hammer", displayName:"Hammer"},
+    {name:"Fist", displayName:"Fist"},
+    {name:"Chaos", displayName: "Chaos"},
+    {name:"Blood", displayName:"Blood"},
+    {name:"Elemental", displayName:"Elemental"},
+    {name:"Pistol", displayName:"Pistols"},
+    {name:"Shotgun", displayName: "Shotgun"},
+    {name:"Rifle", displayName:"Rifle"}
+  ];
 
   secondaryAffix: FormNames[] = [
     { name: "none", displayName: "None" },
