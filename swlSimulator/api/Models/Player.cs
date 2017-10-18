@@ -48,8 +48,10 @@ namespace swlSimulator.api.Models
             CritPower = settings.CritPower / 100 + 1.3;
             BasicSignetBoost = settings.BasicSignet / 100 + 1;
             PowerSignetBoost = settings.PowerSignet / 100 + 1;
+            WaistSignetBoost = settings.WaistCdr ? 1 : settings.WaistSignet / 100 + 1;
             EliteSignetBoost = settings.HeadSignetIsCdr ? 1 : settings.EliteSignet / 100 + 1;
             EliteSignetCooldownReduction = (decimal)(settings.HeadSignetIsCdr ? settings.EliteSignet / 100 : 0);
+            WaistSignetCooldownReduction = (decimal)(settings.WaistCdr ? settings.WaistSignet / 100 : 0);
             WaistSignetBoost = settings.WaistSignet / 100;
 
             var apl = new AplReader(this, settings.Apl);
@@ -62,8 +64,6 @@ namespace swlSimulator.api.Models
         public Item Item { get; }
         public BuffWrapper Buff { get; }
         public List<Passive> Passives { get; }
-        public decimal EliteSignetCooldownReduction { get; }
-        public double WaistSignetBoost { get; }
 
         // Weapon gimmick resource (for APL)
         public decimal Chi => GetWeaponResourceFromType(WeaponType.Blade);
@@ -139,6 +139,9 @@ namespace swlSimulator.api.Models
         public double BasicSignetBoost { get; }
         public double PowerSignetBoost { get; }
         public double EliteSignetBoost { get; }
+        public decimal WaistSignetCooldownReduction { get; }
+        public decimal EliteSignetCooldownReduction { get; }
+        public double WaistSignetBoost { get; }
 
         public decimal Interval { get; private set; }
         public decimal CurrentTimeSec { get; private set; }

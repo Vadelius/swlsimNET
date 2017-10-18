@@ -27,7 +27,8 @@ namespace swlSimulator.api.Spells
         Special,
         Power,
         Elite,
-        Gadget
+        Gadget,
+        WaistSignet
     }
     
     public enum ElementalType
@@ -572,6 +573,9 @@ namespace swlSimulator.api.Spells
                     break;
                 case AbilityType.Elite:
                     boost = player.EliteSignetBoost;
+                    break;
+                case AbilityType.WaistSignet:
+                    boost = player.WaistSignetBoost;
                     break;
             }
 

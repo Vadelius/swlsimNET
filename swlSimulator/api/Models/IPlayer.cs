@@ -17,6 +17,7 @@ namespace swlSimulator.api.Models
         double BasicSignetBoost { get; }
         double PowerSignetBoost { get; }
         double EliteSignetBoost { get; }
+        double WaistSignetBoost { get; }
         decimal Interval { get; }
         decimal CurrentTimeSec { get; }
 
