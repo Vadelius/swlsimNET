@@ -12,15 +12,15 @@ import { IFormNames as FormNames } from "../interfaces";
 })
 export class ImportComponent {
   primaryWeapon: FormNames[] = [
-    {name:"Blade", displayName:"Blade"},
-    {name:"Hammer", displayName:"Hammer"},
-    {name:"Fist", displayName:"Fist"},
-    {name:"Chaos", displayName: "Chaos"},
-    {name:"Blood", displayName:"Blood"},
-    {name:"Elemental", displayName:"Elemental"},
-    {name:"Pistol", displayName:"Pistols"},
-    {name:"Shotgun", displayName: "Shotgun"},
-    {name:"Rifle", displayName:"Rifle"}
+    { name: "Blade", displayName: "Blade" },
+    { name: "Hammer", displayName: "Hammer" },
+    { name: "Fist", displayName: "Fist" },
+    { name: "Chaos", displayName: "Chaos" },
+    { name: "Blood", displayName: "Blood" },
+    { name: "Elemental", displayName: "Elemental" },
+    { name: "Pistol", displayName: "Pistols" },
+    { name: "Shotgun", displayName: "Shotgun" },
+    { name: "Rifle", displayName: "Rifle" },
   ];
 
   primaryAffix: FormNames[] = [
@@ -32,15 +32,15 @@ export class ImportComponent {
   ];
 
   secondaryWeapon: FormNames[] = [
-    {name:"Blade", displayName:"Blade"},
-    {name:"Hammer", displayName:"Hammer"},
-    {name:"Fist", displayName:"Fist"},
-    {name:"Chaos", displayName: "Chaos"},
-    {name:"Blood", displayName:"Blood"},
-    {name:"Elemental", displayName:"Elemental"},
-    {name:"Pistol", displayName:"Pistols"},
-    {name:"Shotgun", displayName: "Shotgun"},
-    {name:"Rifle", displayName:"Rifle"}
+    { name: "Blade", displayName: "Blade" },
+    { name: "Hammer", displayName: "Hammer" },
+    { name: "Fist", displayName: "Fist" },
+    { name: "Chaos", displayName: "Chaos" },
+    { name: "Blood", displayName: "Blood" },
+    { name: "Elemental", displayName: "Elemental" },
+    { name: "Pistol", displayName: "Pistols" },
+    { name: "Shotgun", displayName: "Shotgun" },
+    { name: "Rifle", displayName: "Rifle" },
   ];
 
   secondaryAffix: FormNames[] = [
@@ -220,57 +220,39 @@ export class ImportComponent {
   constructor(private readonly http: Http, private readonly router: Router) {}
 
   hammerPreset(): void {
-    Object.keys(weaponPresets.Hammer).forEach(key =>
-      this.myform.patchValue(weaponPresets.Hammer[key]),
-    );
+    this.setPreset(weaponPresets.Hammer);
   }
 
   chaosPreset(): void {
-    Object.keys(weaponPresets.Chaos).forEach(key =>
-      this.myform.patchValue(weaponPresets.Chaos[key]),
-    );
+    this.setPreset(weaponPresets.Chaos);
   }
 
   fistPreset(): void {
-    Object.keys(weaponPresets.Fist).forEach(key =>
-      this.myform.patchValue(weaponPresets.Fist[key]),
-    );
+    this.setPreset(weaponPresets.Fist);
   }
 
   pistolPreset(): void {
-    Object.keys(weaponPresets.Pistol).forEach(key =>
-      this.myform.patchValue(weaponPresets.Pistol[key]),
-    );
+    this.setPreset(weaponPresets.Pistol);
   }
 
   bloodPreset(): void {
-    Object.keys(weaponPresets.Blood).forEach(key =>
-      this.myform.patchValue(weaponPresets.Blood[key]),
-    );
+    this.setPreset(weaponPresets.Blood);
   }
 
   bladePreset(): void {
-    Object.keys(weaponPresets.Blade).forEach(key =>
-      this.myform.patchValue(weaponPresets.Blade[key]),
-    );
+    this.setPreset(weaponPresets.Blade);
   }
 
   riflePreset(): void {
-    Object.keys(weaponPresets.Rifle).forEach(key =>
-      this.myform.patchValue(weaponPresets.Rifle[key]),
-    );
+    this.setPreset(weaponPresets.Rifle);
   }
 
   elementalismPreset(): void {
-    Object.keys(weaponPresets.Elemental).forEach(key =>
-      this.myform.patchValue(weaponPresets.Elemental[key]),
-    );
+    this.setPreset(weaponPresets.Elemental);
   }
 
   shotgunPreset(): void {
-    Object.keys(weaponPresets.Shotgun).forEach(key =>
-      this.myform.patchValue(weaponPresets.Shotgun[key]),
-    );
+    this.setPreset(weaponPresets.Shotgun);
   }
 
   userSaveOne(): void {
@@ -322,6 +304,14 @@ export class ImportComponent {
       passive5: new FormControl(),
     });
     this.hammerPreset();
+  }
+
+  private setPreset(preset) {
+    Object.keys(preset).forEach(key => {
+      const value = {};
+      value[key] = preset[key];
+      this.myform.patchValue(value);
+    });
   }
 
   private extractData(res: Response, router: Router) {
