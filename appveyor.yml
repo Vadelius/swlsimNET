@@ -16,6 +16,7 @@ before_build:
   - ps: dotnet --info
   - ps: dotnet restore --configfile ..\.nuget\nuget.config
   - ps: npm install
+  
 build_script:
   - ps: dotnet build swlsimNET.sln --configuration Release
   - ps: cd .\swlSimulator\
@@ -25,6 +26,8 @@ build_script:
   - ps: '&"c:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" ''-verb:sync'' ''-source:archiveDir="C:\projects\swlsimNET\swlSimulator\bin\Any CPU\Release\netcoreapp2.0"'' ''-dest:package="c:\projects\swlSimulator\artifacts\swlSimulator.zip"'' ''-declareParam:name="IIS Web Application Name",defaultValue="swlSimulator",tags="IisApp"'' ''-declareParam:name="IIS Web Application Name",type="ProviderPath",scope="IisApp",match="^.*swlSimulator$"'' ''-declareParam:name="IIS Web Application Name",type="ProviderPath",scope="setAcl",match="^.*swlSimulator'''
   - ps: cd ..
 
+test_script:
+  - cmd: dotnet test %SOLUTION_PATH% -c %CONFIGURATION%
 
 artifacts:
 - path: artifacts\swlSimulator.zip
@@ -33,11 +36,6 @@ artifacts:
 
 install:
   - ps: Install-Product node
-
-build_script:
-  - cmd: cd %APPVEYOR_BUILD_FOLDER%\swlSimulator\
-  - cmd: dotnet publish %SOLUTION_PATH% -c %CONFIGURATION%
-  - cmd: cd %APPVEYOR_BUILD_FOLDER%
 
 test_script:
   - cmd: dotnet test %SOLUTION_PATH% -c %CONFIGURATION%
