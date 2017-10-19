@@ -17,12 +17,14 @@ install:
 before_build:
   - ps: dotnet --info
   - ps: dotnet restore
-  - ps cd \swlSimulator\
+  - ps cd swlSimulator
   - ps: npm install
   
 build_script:
   - ps: dotnet build swlsimNET.sln --configuration Release
-  - ps: cd .\swlSimulator\
+  - ps: cd swlSimulator
+  - ps: node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod
+  - ps: node node_modules/webpack/bin/webpack.js --env.prod
   - ps: dotnet publish --configuration Release
   - ps: copy ..\manifest.xml "bin\Any CPU\Release\netcoreapp2.0\manifest.xml"
   - ps: mkdir c:\projects\swlsimNET\artifacts
