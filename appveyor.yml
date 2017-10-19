@@ -11,10 +11,13 @@ environment:
     secure: aprk1rgzZGKGkAOgGog2fSYInLko09y3X
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
 
+install:
+  - ps: Install-Product node
+  
 before_build:
   - ps: dotnet --info
   - ps: dotnet restore
-  - ps cd .\swlSimulator\
+  - ps cd \swlSimulator\
   - ps: npm install
   
 build_script:
@@ -33,6 +36,3 @@ artifacts:
 - path: artifacts\swlSimulator.zip
   name: swlSimulator
   type: WebDeployPackage
-
-install:
-  - ps: Install-Product node
