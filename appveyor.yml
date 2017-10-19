@@ -18,7 +18,7 @@ before_build:
   - ps: dotnet --info
   - ps: dotnet restore
   - ps: cd swlSimulator
-  - ps: npm install
+  - npm install
   
 build_script:
   - ps: dotnet build swlsimNET.sln --configuration Release
