@@ -1,0 +1,28 @@
+version: 1.0.{build}
+
+image: Visual Studio 2017
+
+cache:
+  - packages -> **\packages.config
+
+platform: Any CPU
+
+configuration: Release
+
+build:
+  project: swlsimNET.sln
+  verbosity: quiet
+
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: aprk1rgzZGKGkAOgGog2fSYInLko09y3X
+
+before_build:
+  - cmd: nuget restore ".\swlsimNET.sln" -verbosity quiet
+
+artifacts:
+  - path: 'bin\$(configuration)\swlsimNET'
+    name: 'swlsimNET-Binaries'
+
+test_script:
+  - ps: .\swlsimNET.Tests\swlSimulator.Tests.csproj
