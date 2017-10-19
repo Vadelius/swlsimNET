@@ -135,7 +135,7 @@ namespace swlSimulator.Tests
                 CastTime = 1;
                 BaseDamage = 1;
                 BonusCritChance = -100; // no crits plz
-                ElementalType = "Cold";
+                ElementalType = ElementalType.Cold;
             }
         }
     }
