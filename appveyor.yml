@@ -36,6 +36,3 @@ artifacts:
 
 install:
   - ps: Install-Product node
-
-test_script:
-  - cmd: dotnet test %SOLUTION_PATH% -c %CONFIGURATION%
