@@ -8,7 +8,7 @@ pull_requests:
   
 environment:
   COVERALLS_REPO_TOKEN:
-    secure: aprk1rgzZGKGkAOgGog2fSYInLko09y3X
+    secure: KGgjDf8hoFZW+XtetYeBGvb+Q5K7D5pKprkC164EM7s6+klUTvpJ+9L6qr7bYZHa
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
 
 install:
