@@ -7,7 +7,6 @@ pull_requests:
   do_not_increment_build_number: true
   
 environment:
-  SOLUTION_PATH: "swlsimNET.sln"
   COVERALLS_REPO_TOKEN:
     secure: aprk1rgzZGKGkAOgGog2fSYInLko09y3X
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -25,10 +24,10 @@ build_script:
   - ps: mkdir c:\projects\swlsimNET\artifacts
   - ps: '&"c:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" ''-verb:sync'' ''-source:archiveDir="C:\projects\swlsimNET\swlSimulator\bin\Any CPU\Release\netcoreapp2.0"'' ''-dest:package="c:\projects\swlSimulator\artifacts\swlSimulator.zip"'' ''-declareParam:name="IIS Web Application Name",defaultValue="swlSimulator",tags="IisApp"'' ''-declareParam:name="IIS Web Application Name",type="ProviderPath",scope="IisApp",match="^.*swlSimulator$"'' ''-declareParam:name="IIS Web Application Name",type="ProviderPath",scope="setAcl",match="^.*swlSimulator'''
   - ps: cd ..
-
-test_script:
-  - cmd: dotnet test %SOLUTION_PATH% -c %CONFIGURATION%
-
+  
+cache:
+ - packages -> **\*.csproj
+ 
 artifacts:
 - path: artifacts\swlSimulator.zip
   name: swlSimulator
