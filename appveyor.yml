@@ -17,7 +17,7 @@ install:
 before_build:
   - ps: dotnet --info
   - ps: dotnet restore
-  - ps cd C:\projects\swlsimnet\swlSimulator\
+  - ps cd swlSimulator
   - ps: npm install
   
 build_script:
