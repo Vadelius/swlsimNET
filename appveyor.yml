@@ -1,0 +1,34 @@
+version: 1.0.{build}
+
+environment:
+  SOLUTION_PATH: "swlsimNET.sln"
+  COVERALLS_REPO_TOKEN:
+    secure: aprk1rgzZGKGkAOgGog2fSYInLko09y3X
+
+image: Visual Studio 2017
+
+configuration:
+- Release
+
+platform: Any CPU
+
+cache:
+  - packages -> **\*.csproj
+
+artifacts:
+  - path: 'bin\$(configuration)\swlsimNET'
+    name: 'swlsimNET-Binaries'
+
+install:
+  - ps: Install-Product node
+
+before_build:
+  - cmd: dotnet restore %SOLUTION_PATH% --verbosity m
+
+build_script:
+  - cmd: cd %APPVEYOR_BUILD_FOLDER%\swlSimulator\
+  - cmd: dotnet publish %SOLUTION_PATH% -c %CONFIGURATION%
+  - cmd: cd %APPVEYOR_BUILD_FOLDER%
+
+test_script:
+  - cmd: dotnet test %SOLUTION_PATH% -c %CONFIGURATION%
