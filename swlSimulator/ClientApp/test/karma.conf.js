@@ -3,24 +3,24 @@
 
 module.exports = function (config) {
     config.set({
-        basePath: '.',
-        frameworks: ['jasmine'],
+        basePath: ".",
+        frameworks: ["jasmine"],
         files: [
-            '../../wwwroot/dist/vendor.js',
-            './boot-tests.ts'
+            "../../wwwroot/dist/vendor.js",
+            "./**/*.ts"
         ],
         preprocessors: {
-            './boot-tests.ts': ['webpack']
+            "./**/*.ts": ["webpack"]
         },
-        reporters: ['progress'],
+        reporters: ["progress"],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
-        browsers: ['Chrome'],
-        mime: { 'application/javascript': ['ts','tsx'] },
+        browsers: ["Chrome"],
+        mime: { "application/javascript": ["ts","tsx"] },
         singleRun: false,
-        webpack: require('../../webpack.config.js')().filter(config => config.target !== 'node'), // Test against client bundle, because tests run in a browser
-        webpackMiddleware: { stats: 'errors-only' }
+        webpack: require("../../webpack.config.js")().filter(config => config.target !== "node"), // Test against client bundle, because tests run in a browser
+        webpackMiddleware: { stats: "errors-only" }
     });
 };
