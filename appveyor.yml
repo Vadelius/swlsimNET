@@ -22,7 +22,7 @@ before_build:
   
 build_script:
   - ps: dotnet build swlsimNET.sln --configuration Release
-  - ps: cd swlSimulator
+  - ps: cd C:\projects\swlsimnet\swlSimulator\
   - ps: node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod
   - ps: node node_modules/webpack/bin/webpack.js --env.prod
   - ps: dotnet publish --configuration Release
