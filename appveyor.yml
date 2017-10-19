@@ -27,9 +27,6 @@ build_script:
   - ps: node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod
   - ps: node node_modules/webpack/bin/webpack.js --env.prod
   - ps: dotnet publish --configuration Release
-  - ps: mkdir c:\projects\swlsimNET\artifacts
-  - ps: '&"c:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" ''-verb:sync'' ''-source:archiveDir="C:\projects\swlsimNET\swlSimulator\bin\Any CPU\Release\netcoreapp2.0"'' ''-dest:package="c:\projects\swlSimulator\artifacts\swlSimulator.zip"'' ''-declareParam:name="IIS Web Application Name",defaultValue="swlSimulator",tags="IisApp"'' ''-declareParam:name="IIS Web Application Name",type="ProviderPath",scope="IisApp",match="^.*swlSimulator$"'' ''-declareParam:name="IIS Web Application Name",type="ProviderPath",scope="setAcl",match="^.*swlSimulator'''
-  - ps: cd ..
   
 cache:
  - packages -> **\*.csproj
