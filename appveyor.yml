@@ -1,0 +1,46 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration: Release
+platform: Any CPU
+
+pull_requests:
+  do_not_increment_build_number: true
+  
+environment:
+  SOLUTION_PATH: "swlsimNET.sln"
+  COVERALLS_REPO_TOKEN:
+    secure: aprk1rgzZGKGkAOgGog2fSYInLko09y3X
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+
+before_build:
+  - ps: dotnet --info
+  - ps: dotnet restore --configfile ..\.nuget\nuget.config
+  - ps: npm install
+build_script:
+  - ps: dotnet build CSDiscord.sln --configuration Release
+  - ps: cd .\swlSimulator\
+  - ps: dotnet publish --configuration Release
+  - ps: copy ..\manifest.xml "bin\Any CPU\Release\netcoreapp2.0\manifest.xml"
+  - ps: mkdir c:\projects\swlsimNET\artifacts
+  - ps: '&"c:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" ''-verb:sync'' ''-source:archiveDir="C:\projects\swlsimNET\swlSimulator\bin\Any CPU\Release\netcoreapp2.0"'' ''-dest:package="c:\projects\swlSimulator\artifacts\swlSimulator.zip"'' ''-declareParam:name="IIS Web Application Name",defaultValue="swlSimulator",tags="IisApp"'' ''-declareParam:name="IIS Web Application Name",type="ProviderPath",scope="IisApp",match="^.*swlSimulator$"'' ''-declareParam:name="IIS Web Application Name",type="ProviderPath",scope="setAcl",match="^.*swlSimulator'''
+  - ps: cd ..
+
+
+artifacts:
+- path: artifacts\swlSimulator.zip
+  name: swlSimulator
+  type: WebDeployPackage
+
+install:
+  - ps: Install-Product node
+
+before_build:
+  - cmd: dotnet restore %SOLUTION_PATH% --verbosity m
+
+build_script:
+  - cmd: cd %APPVEYOR_BUILD_FOLDER%\swlSimulator\
+  - cmd: dotnet publish %SOLUTION_PATH% -c %CONFIGURATION%
+  - cmd: cd %APPVEYOR_BUILD_FOLDER%
+
+test_script:
+  - cmd: dotnet test %SOLUTION_PATH% -c %CONFIGURATION%
