@@ -34,9 +34,6 @@ artifacts:
 install:
   - ps: Install-Product node
 
-before_build:
-  - cmd: dotnet restore %SOLUTION_PATH% --verbosity m
-
 build_script:
   - cmd: cd %APPVEYOR_BUILD_FOLDER%\swlSimulator\
   - cmd: dotnet publish %SOLUTION_PATH% -c %CONFIGURATION%
