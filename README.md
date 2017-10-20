@@ -1,11 +1,8 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/4affetky449bixws?svg=true)](https://ci.appveyor.com/project/Vadelius/swlsimnet) 
-[![Coverage Status](https://coveralls.io/repos/github/Vadelius/swlsimNET/badge.svg?branch=master)](https://coveralls.io/github/Vadelius/swlsimNET?branch=master)
+[![Discord](https://img.shields.io/discord/354256701257547776.svg)](https://discord.gg/kCSnKuc)
 [![GitHub issues](https://img.shields.io/github/issues/Vadelius/swlsimNET.svg)](https://github.com/Vadelius/swlsimNET/issues)
 ![License](https://img.shields.io/badge/license-Beerware-blue.svg)
-
-### Reach us on Discord: (https://discord.gg/kCSnKuc)
-
-
+[![MyGet tenant](https://img.shields.io/badge/.Net%20Core-2.0-blue.svg)]()
 # SWLSim.Net
 
 A combat simulator for the "Secret World Legends" game, written in C#.
