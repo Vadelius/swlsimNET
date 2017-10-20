@@ -47,7 +47,6 @@
     "rxjs": "5.4.2",
     "style-loader": "0.18.2",
     "to-string-loader": "1.1.5",
-    "typescript": "2.4.1",
     "url-loader": "0.5.9",
     "webpack": "2.5.1",
     "webpack-hot-middleware": "2.18.2",
@@ -69,6 +68,6 @@
     "prettier": "^1.7.4",
     "tslint": "^5.7.0",
     "tslint-config-prettier": "^1.6.0",
-    "typescript": "https://registry.npmjs.org/typescript/-/typescript-2.4.1.tgz"
+    "typescript": "2.4.1"
   }
 }
