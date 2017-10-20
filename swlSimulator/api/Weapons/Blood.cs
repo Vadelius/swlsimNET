@@ -10,24 +10,32 @@ namespace swlSimulator.api.Weapons
 {
     public class Blood : Weapon
     {
-        private bool _init;
+        private readonly List<string> _eldritchTomesBonuses = new List<string>
+        {
+            "Reap",
+            "Desecrate",
+            "RunicHex",
+            "EldritchScourge"
+        };
 
-        private Passive _flay;
         private Passive _defilement;
 
-        private decimal _defilementBonusToTimeSec;
-        private decimal _flayBonusToTimeSec;
-
         private bool _defilementBonus;
+
+        private decimal _defilementBonusToTimeSec;
+
+        private Passive _flay;
         private bool _flayBonus;
+        private decimal _flayBonusToTimeSec;
+        private bool _init;
+
+        public Blood(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
+        {
+            _maxGimickResource = 100;
+        }
 
         private decimal LastBloodSpellTimeStamp { get; set; }
         private decimal LastDecayTimeStamp { get; set; }
-
-        private readonly List<string> _eldritchTomesBonuses = new List<string>
-        {
-            "Reap", "Desecrate", "RunicHex", "EldritchScourge"
-        };
 
         public override decimal GimmickResource
         {
@@ -38,11 +46,6 @@ namespace swlSimulator.api.Weapons
                 var x = _defilementBonus && value > 0 ? value * 1.2m : value;
                 base.GimmickResource = x;
             }
-        }
-
-        public Blood(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
-        {
-            _maxGimickResource = 100;
         }
 
         public override void PreAttack(IPlayer player, RoundResult rr)
@@ -102,7 +105,6 @@ namespace swlSimulator.api.Weapons
             {
                 //Your Blood Magic damage over time effects deal 75 % more damage.
                 bonusBaseDamageMultiplier += 0.75; // 75%
-
             }
             // Defilement passive
             if (_defilement != null && corruptionBeforeCast >= 100)
@@ -128,7 +130,8 @@ namespace swlSimulator.api.Weapons
                 _flayBonusToTimeSec = player.CurrentTimeSec + spell.DotDuration;
             }
 
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.EldritchTome && !_eldritchTomesBonuses.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase))
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.EldritchTome &&
+                !_eldritchTomesBonuses.Contains(spell.Name, StringComparer.CurrentCultureIgnoreCase))
             {
                 GimmickResource += 4;
             }
@@ -151,12 +154,18 @@ namespace swlSimulator.api.Weapons
                 }
 
                 // Only reduce per second, so for example 1.5s = 1s
-                var reduce = (int)(time * 4);
+                var reduce = (int) (time * 4);
 
-                if (reduce <= 0) return;
+                if (reduce <= 0)
+                {
+                    return;
+                }
 
                 GimmickResource -= reduce;
-                if (GimmickResource < 0) GimmickResource = 0;
+                if (GimmickResource < 0)
+                {
+                    GimmickResource = 0;
+                }
 
                 LastDecayTimeStamp = player.CurrentTimeSec;
             }

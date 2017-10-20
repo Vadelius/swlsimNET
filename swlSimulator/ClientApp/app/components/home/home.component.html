@@ -1,0 +1,11 @@
+<div class="col-xs-12" style="height:110px;"></div>
+
+<div>
+    <h1>DPS Rankings per 10/19/2017:</h1>
+</div>
+
+<div>
+    <div class="card-box">
+        <canvas baseChart width="800" height="400" [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    </div>
+</div>

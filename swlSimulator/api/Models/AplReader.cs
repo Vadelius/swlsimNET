@@ -45,14 +45,20 @@ namespace swlSimulator.api.Models
                 var myTypeRage = Type.GetType("swlSimulator.api.Spells." + name + "Rage", false, true);
 
                 // TODO: Show where user input is BAD
-                if (myType == null) continue;
+                if (myType == null)
+                {
+                    continue;
+                }
 
                 // TODO: Handle errors here
-                var spell = (ISpell)Activator.CreateInstance(myType, _player, expr);
+                var spell = (ISpell) Activator.CreateInstance(myType, _player, expr);
                 apl.Add(spell);
 
-                if (myTypeRage == null) continue;
-                spell = (ISpell)Activator.CreateInstance(myTypeRage, _player, expr);
+                if (myTypeRage == null)
+                {
+                    continue;
+                }
+                spell = (ISpell) Activator.CreateInstance(myTypeRage, _player, expr);
                 apl.Add(spell);
             }
 

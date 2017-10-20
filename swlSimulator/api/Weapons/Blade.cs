@@ -8,19 +8,23 @@ namespace swlSimulator.api.Weapons
 {
     public class Blade : Weapon
     {
-        private int _spiritBladeCharges;
-        private bool SpiritBladeActive => _spiritBladeCharges > 0;
         private int _deluge;
+        private int _spiritBladeCharges;
 
         public Blade(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
             _maxGimickResource = 5;
         }
 
+        private bool SpiritBladeActive => _spiritBladeCharges > 0;
+
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
             var attack = rr.Attacks.FirstOrDefault(a => a.Spell == spell);
-            if (attack == null || !attack.IsHit || attack.Damage <= 0) return;
+            if (attack == null || !attack.IsHit || attack.Damage <= 0)
+            {
+                return;
+            }
 
             var roll = Rnd.Next(1, 3);
 
@@ -34,7 +38,7 @@ namespace swlSimulator.api.Weapons
                 player.AddBonusAttack(rr, new SpiritBlade());
                 _deluge = 0;
             }
-            
+
             ChiGenerator(player);
             ChiConsumer();
             SpiritBladeConsumer(player, rr);
@@ -47,7 +51,7 @@ namespace swlSimulator.api.Weapons
 
             if (player.Settings.PrimaryWeaponProc == WeaponProc.Apocalypse)
             {
-                bonusBaseDamageMultiplier = 0.03 * (double)player.PrimaryWeapon.GimmickResource;
+                bonusBaseDamageMultiplier = 0.03 * (double) player.PrimaryWeapon.GimmickResource;
             }
 
             return bonusBaseDamageMultiplier;
@@ -86,7 +90,7 @@ namespace swlSimulator.api.Weapons
             }
 
             var highroller = Rnd.Next(1, 101);
-            
+
             if (player.Settings.PrimaryWeaponProc == WeaponProc.BladeOfTheSeventhSon)
             {
                 player.AddBonusAttack(rr, new SpiritBlade());
@@ -101,11 +105,10 @@ namespace swlSimulator.api.Weapons
                     {
                         _deluge += 1;
                     }
-                    
+
                     player.AddBonusAttack(rr, new SpiritBlade());
                     return;
                 }
-                
             }
 
             if (player.HasPassive("Deluge"))
@@ -118,7 +121,7 @@ namespace swlSimulator.api.Weapons
                 player.AddBonusAttack(rr, new SpiritBlade());
             }
             _spiritBladeCharges--;
-        }     
+        }
 
         // Every 6th hit with spirit blade unleashes an AoE of 0.38CP
         private void SpiritBladeExtender()
@@ -130,7 +133,7 @@ namespace swlSimulator.api.Weapons
 
             switch (GimmickResource)
             {
-                case 0: 
+                case 0:
                     break;
                 case 1:
                     _spiritBladeCharges += 1;
@@ -171,6 +174,7 @@ namespace swlSimulator.api.Weapons
                 BaseDamage = 0.97 * 0.61; // TODO: Is this correct?
             }
         }
+
         private sealed class Deluge : Spell
         {
             public Deluge(IPlayer player)

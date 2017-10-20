@@ -1,6 +1,8 @@
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using swlSimulator.api;
+using swlSimulator.api.Combat;
 using swlSimulator.api.Models;
-using swlSimulator.api.Spells;
 using swlSimulator.api.Spells.Hammer;
 using swlSimulator.api.Weapons;
 using swlSimulator.Models;
@@ -25,6 +27,23 @@ namespace swlSimulator.Tests
         }
 
         [TestMethod]
+        public void AplTest()
+        {
+            var setting = TestSettingsHammerFist();
+            setting.Apl = "Hammer.Smash, Rage > 50";
+            setting.FightLength = 10;
+
+            var player = new Player(setting);
+            var engine = new Engine(setting);
+            var fight = engine.StartFight(player);
+
+            var spells = fight.RoundResults
+                .SelectMany(r => r.Attacks.Where(a => a.Spell is Smash)).Count();
+
+            Assert.IsTrue(spells == 0);
+        }
+
+        [TestMethod]
         public void WeaponTypes()
         {
             var setting = TestSettingsHammerFist();
@@ -41,79 +60,8 @@ namespace swlSimulator.Tests
             {
                 PrimaryWeapon = WeaponType.Hammer,
                 SecondaryWeapon = WeaponType.Fist,
+                TargetType = TargetType.Champion
             };
-        }
-
-        private sealed class CastSpell : Spell
-        {
-            public CastSpell()
-            {
-                WeaponType = WeaponType.Elemental;
-                SpellType = SpellType.Cast;
-                CastTime = 2.5m;
-                BaseDamage = 1;
-            }
-        }
-
-        private sealed class ChannelSpell : Spell
-        {
-            public ChannelSpell()
-            {
-                WeaponType = WeaponType.Blood;
-                SpellType = SpellType.Channel;
-                CastTime = 2.5m;
-                ChannelTicks = 5;
-                BaseDamage = 1;
-            }
-        }
-
-        private sealed class DotSpell : Spell
-        {
-            public DotSpell()
-            {
-                WeaponType = WeaponType.Blood;
-                SpellType = SpellType.Dot;
-                CastTime = 0;
-                DotDuration = 2.5m;
-                DotTicks = 5;
-                BaseDamage = 1;
-
-                // TODO: Add ability debuff
-            }
-        }
-
-        private sealed class GadgetSpell : Spell
-        {
-            public GadgetSpell()
-            {
-                WeaponType = WeaponType.None;
-                AbilityType = AbilityType.Gadget;
-                SpellType = SpellType.Instant;
-                MaxCooldown = 2.5m;
-            }
-        }
-
-        private sealed class RifleLoadGrenadeSpell : Spell
-        {
-            public RifleLoadGrenadeSpell()
-            {
-                WeaponType = WeaponType.Rifle;
-                SpellType = SpellType.Cast;
-                CastTime = 1.0m;
-                BaseDamage = 1;
-            }
-        }
-
-        private sealed class RifleGrenadeSpell : Spell
-        {
-            public RifleGrenadeSpell()
-            {
-                PrimaryGimmickCost = 1;
-                WeaponType = WeaponType.Rifle;
-                SpellType = SpellType.Cast;
-                CastTime = 0;
-                BaseDamage = 1;
-            }
         }
     }
 }

@@ -8,12 +8,12 @@ namespace swlSimulator.api.Weapons
     {
         private int _bladedStartBonus = 1;
 
-        public bool AllowFrenziedWrathAbilities { get; private set; }
-
         public Fist(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
             _maxGimickResource = 100;
         }
+
+        public bool AllowFrenziedWrathAbilities { get; private set; }
 
         public override void PreAttack(IPlayer player, RoundResult rr)
         {

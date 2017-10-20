@@ -1,3 +1,11 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/4affetky449bixws?svg=true)](https://ci.appveyor.com/project/Vadelius/swlsimnet) 
+[![Coverage Status](https://coveralls.io/repos/github/Vadelius/swlsimNET/badge.svg?branch=master)](https://coveralls.io/github/Vadelius/swlsimNET?branch=master)
+[![GitHub issues](https://img.shields.io/github/issues/Vadelius/swlsimNET.svg)](https://github.com/Vadelius/swlsimNET/issues)
+![License](https://img.shields.io/badge/license-Beerware-blue.svg)
+
+### Reach us on Discord: (https://discord.gg/kCSnKuc)
+
+
 # SWLSim.Net
 
 A combat simulator for the "Secret World Legends" game, written in C#.
@@ -39,14 +47,9 @@ git clone https://github.com/Vadelius/swlsimNET
 ```
 npm install
 ```
-
-**Step 6** (This requires the .NET Core SDK/CLI) Restore the project:
-```
-dotnet restore
-```
-**Step 7**: Run the project:
+**Step 6**: Run the project:
 ```
 dotnet run
 ```
 
--> Done! 🎉  Now you have a local build of the repository running on http://localhost:51890/
+-> Done! 🎉  Now you have a local build of the repository running on http://localhost:xxxx

@@ -6,22 +6,23 @@ namespace swlSimulator.api.Weapons
 {
     public class Elemental : Weapon
     {
-        private decimal LastElementalSpellTimeStamp { get; set; }
-        private ISpell LastElementalSpell { get; set; }
-        private decimal TimeSinceLastElementalSpell { get; set; }
-
         public Elemental(WeaponType wtype, WeaponAffix waffix) : base(wtype, waffix)
         {
             _maxGimickResource = 100;
         }
+
+        private decimal LastElementalSpellTimeStamp { get; set; }
+        private ISpell LastElementalSpell { get; set; }
+        private decimal TimeSinceLastElementalSpell { get; set; }
+
         public override void PreAttack(IPlayer player, RoundResult rr)
         {
-
         }
 
         public override double GetBonusBaseDamageMultiplier(IPlayer player, ISpell spell, decimal heatBeforeCast)
         {
-            var hasFigurine = player.Settings.PrimaryWeaponProc == WeaponProc.FrozenFigurine && spell.ElementalType == "Cold";
+            var hasFigurine = player.Settings.PrimaryWeaponProc == WeaponProc.FrozenFigurine &&
+                              spell.ElementalType == ElementalType.Cold;
             LastElementalSpell = spell;
 
             TimeSinceLastElementalSpell = player.CurrentTimeSec - LastElementalSpellTimeStamp;
@@ -60,11 +61,12 @@ namespace swlSimulator.api.Weapons
 
         public override void AfterAttack(IPlayer player, ISpell spell, RoundResult rr)
         {
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.UnstableElectronCore && GimmickResource > 50 && (spell.ElementalType == "Fire" || spell.ElementalType == "Lightning"))
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.UnstableElectronCore && GimmickResource > 50 &&
+                (spell.ElementalType == ElementalType.Fire || spell.ElementalType == ElementalType.Lightning))
             {
                 player.AddBonusAttack(rr, new UnstableElectronCore());
             }
-            if (player.Settings.PrimaryWeaponProc == WeaponProc.CryoChargedConduit && spell.ElementalType == "Cold")
+            if (player.Settings.PrimaryWeaponProc == WeaponProc.CryoChargedConduit && spell.ElementalType == ElementalType.Cold)
             {
                 GimmickResource -= 15;
                 //TODO: and cause any targets hit to become frostbitten for 6 seconds. Critically hitting a frostbitten enemy with an Elemental attack deals an additional (3.45*Combat Power) magical damage.
@@ -77,32 +79,35 @@ namespace swlSimulator.api.Weapons
             // Corruption = -4 for each second.
             // Only reduce per second, so for example 1.5s = 1s
             var time = TimeSinceLastElementalSpell;
-            int reduce = 0;
+            var reduce = 0;
 
             if (heatBeforeCast <= 25)
             {
                 // Heat = -1 per second.
-                reduce = (int)(time * 1);
+                reduce = (int) (time * 1);
             }
             if (heatBeforeCast >= 26 && heatBeforeCast <= 50)
             {
                 // Heat = -2 per second.
-                reduce = (int)(time * 2);
+                reduce = (int) (time * 2);
             }
             if (heatBeforeCast >= 51 && heatBeforeCast <= 75)
             {
                 // Heat = -3 per second.
-                reduce = (int)(time * 3);
+                reduce = (int) (time * 3);
             }
             if (heatBeforeCast >= 76)
             {
                 // Heat = -4 per second.
-                reduce = (int)(time * 4);
+                reduce = (int) (time * 4);
             }
 
             GimmickResource -= reduce;
 
-            if (GimmickResource < 0) GimmickResource = 0;
+            if (GimmickResource < 0)
+            {
+                GimmickResource = 0;
+            }
         }
 
         // TODO: Fix HeatStop

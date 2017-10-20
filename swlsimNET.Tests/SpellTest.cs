@@ -143,65 +143,65 @@ namespace swlSimulator.Tests
             Assert.IsTrue(channelTickCount == 20);
         }
 
-        [TestMethod]
-        public void TestDotSpell()
-        {
-            var setting = new Settings
-            {
-                PrimaryWeapon = WeaponType.Blood,
-                SecondaryWeapon = WeaponType.Fist,
-                FightLength = 10,
-                TargetType = TargetType.Champion,
-                Apl = "Blood.DotSpell"
-            };
+        //[TestMethod]
+        //public void TestDotSpell()
+        //{
+        //    var setting = new Settings
+        //    {
+        //        PrimaryWeapon = WeaponType.Blood,
+        //        SecondaryWeapon = WeaponType.Fist,
+        //        FightLength = 10,
+        //        TargetType = TargetType.Champion,
+        //        Apl = "Blood.DotSpell"
+        //    };
 
-            var spell = new DotSpell();
-            var player = new Player(setting);
-            player.Spells.Add(spell);
-            var engine = new Engine(setting);
-            var fight = engine.StartFight(player);
+        //    var spell = new DotSpell();
+        //    var player = new Player(setting);
+        //    player.Spells.Add(spell);
+        //    var engine = new Engine(setting);
+        //    var fight = engine.StartFight(player);
 
-            var endTime = fight.RoundResults.Last().TimeSec;
-            var rounds = fight.RoundResults.Count;
+        //    var endTime = fight.RoundResults.Last().TimeSec;
+        //    var rounds = fight.RoundResults.Count;
 
-            var dotTickCount = fight.RoundResults
-                .SelectMany(r => r.Attacks.Where(a => a.Spell is DotSpell)).Count();
+        //    var dotTickCount = fight.RoundResults
+        //        .SelectMany(r => r.Attacks.Where(a => a.Spell is DotSpell)).Count();
 
-            // TODO: Dot ticks should NOT add any kind of bonus attacks?
+        //    // TODO: Dot ticks should NOT add any kind of bonus attacks?
 
-            // 0.0, start dot
-            // 0.5, dot tick
-            // 1.0, dot tick
-            // 1.5, dot tick
-            // 2.0, dot tick
-            // 2.5, dot tick
-            // 2.5, finish dot
-            // 2.5, start next dot
-            // 3.0, dot tick
-            // 3.5, dot tick
-            // 4.0, dot tick
-            // 4.5, dot tick
-            // 5.0, dot tick
-            // 5.0, finish dot
-            // 5.0, start next dot
-            // 5.5, dot tick
-            // 6.0, dot tick
-            // 6.5, dot tick
-            // 7.0, dot tick
-            // 7.5, dot tick
-            // 7.5, finish dot
-            // 7.5, start next dot
-            // 8.0, dot tick
-            // 8.5, dot tick
-            // 9.0, dot tick
-            // 9.5, dot tick
-            // 10.0, dot tick
-            // 10.0, finish dot
+        //    // 0.0, start dot
+        //    // 0.5, dot tick
+        //    // 1.0, dot tick
+        //    // 1.5, dot tick
+        //    // 2.0, dot tick
+        //    // 2.5, dot tick
+        //    // 2.5, finish dot
+        //    // 2.5, start next dot
+        //    // 3.0, dot tick
+        //    // 3.5, dot tick
+        //    // 4.0, dot tick
+        //    // 4.5, dot tick
+        //    // 5.0, dot tick
+        //    // 5.0, finish dot
+        //    // 5.0, start next dot
+        //    // 5.5, dot tick
+        //    // 6.0, dot tick
+        //    // 6.5, dot tick
+        //    // 7.0, dot tick
+        //    // 7.5, dot tick
+        //    // 7.5, finish dot
+        //    // 7.5, start next dot
+        //    // 8.0, dot tick
+        //    // 8.5, dot tick
+        //    // 9.0, dot tick
+        //    // 9.5, dot tick
+        //    // 10.0, dot tick
+        //    // 10.0, finish dot
 
-            Assert.AreEqual(rounds, 20);
-            Assert.AreEqual(endTime, 10.0m);
-            Assert.IsTrue(dotTickCount == 20);
-        }
+        //    Assert.AreEqual(rounds, 20);
+        //    Assert.AreEqual(endTime, 10.0m);
+        //    Assert.IsTrue(dotTickCount == 20);
+        //}
 
         [TestMethod]
         public void TestGadgetSpell()

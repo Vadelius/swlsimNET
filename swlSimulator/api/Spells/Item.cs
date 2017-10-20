@@ -1,46 +1,53 @@
-﻿using swlSimulator.api.Combat;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using swlSimulator.api.Combat;
 using swlSimulator.api.Models;
 using swlSimulator.api.Utilities;
 using swlSimulator.api.Weapons;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace swlSimulator.api.Spells
 {
     public enum NeckTalisman
     {
-        None, SeedOfAgression, ChokerOfSheedBlood, EgonPendant
+        None,
+        SeedOfAgression,
+        ChokerOfSheedBlood,
+        EgonPendant
     }
 
     public enum LuckTalisman
     {
-        None, ColdSilverDice, GamblersSoul
+        None,
+        ColdSilverDice,
+        GamblersSoul
     }
 
     public enum HeadTalisman
     {
-        None, Ashes
+        None,
+        Ashes
     }
 
     public enum Gadget
     {
-        None, ElectrograviticAttractor, ShardOfSesshoSeki, ValiMetabolic, MnemonicGuardianWerewolf, Test
+        None,
+        ElectrograviticAttractor,
+        ShardOfSesshoSeki,
+        ValiMetabolic,
+        MnemonicGuardianWerewolf,
+        Test
     }
 
     public class Item
     {
-        private ElectrograviticAttractor _electrograviticAttractor;
-        private MnemonicGuardianWerewolf _werewolf;
-        private ValiMetabolicAccelerator _valiMetabolicAccelerator;
-
-        public List<ISpell> Spells { get; set; }
-
-        private IPlayer _player;
         private readonly Random _rnd = new Random();
+        private readonly ElectrograviticAttractor _electrograviticAttractor;
         private int _lastPlasma;
 
-        public int RepeatHits { get; set; }
+        private readonly IPlayer _player;
+        private readonly ValiMetabolicAccelerator _valiMetabolicAccelerator;
+        private readonly MnemonicGuardianWerewolf _werewolf;
 
         public Item(IPlayer player)
         {
@@ -58,6 +65,10 @@ namespace swlSimulator.api.Spells
                 _valiMetabolicAccelerator
             };
         }
+
+        public List<ISpell> Spells { get; set; }
+
+        public int RepeatHits { get; set; }
 
         public void PreAttack(RoundResult rr)
         {
@@ -82,10 +93,16 @@ namespace swlSimulator.api.Spells
         public void AfterAttack(RoundResult rr, ISpell spell)
         {
             var attack = rr.Attacks.FirstOrDefault(s => s.Spell == spell);
-            if (attack == null || !attack.IsHit || attack.Damage <= 0) return;
+            if (attack == null || !attack.IsHit || attack.Damage <= 0)
+            {
+                return;
+            }
 
             var weapon = _player.GetWeaponFromSpell(attack.Spell);
-            if (weapon == null) return;
+            if (weapon == null)
+            {
+                return;
+            }
 
             if (attack.IsCrit)
             {
@@ -351,4 +368,3 @@ namespace swlSimulator.api.Spells
         }
     }
 }
-

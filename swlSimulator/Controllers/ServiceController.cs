@@ -1,16 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using swlSimulator.api;
-using swlSimulator.api.Combat;
-using swlSimulator.api.Utilities;
-using swlSimulator.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using swlSimulator.api;
+using swlSimulator.api.Combat;
+using swlSimulator.Models;
 
 namespace swlSimulator.Controllers
 {
-
     [Consumes("application/json")]
     [Produces("application/json")]
     [Route("/api/values")]
@@ -34,7 +32,7 @@ namespace swlSimulator.Controllers
             if (!result)
             {
                 // Simulation failed
-                //return View(settings);
+                throw new Exception("Grem has not yet fixed this...");
             }
 
             var report = new Report();
@@ -43,7 +41,7 @@ namespace swlSimulator.Controllers
             if (!result)
             {
                 // Report generation failed
-                //return View(settings);
+                throw new Exception("Grem has not yet fixed this...");
             }
 
             //return View("Results", report);
@@ -52,21 +50,10 @@ namespace swlSimulator.Controllers
 
         private bool StartSimulation()
         {
-            var res = false;
+            var engine = new Engine(_settings);
+            _iterationFightResults = engine.StartIterations();
 
-            try
-            {
-                var engine = new Engine(_settings);
-                _iterationFightResults = engine.StartIterations();
-
-                res = true;
-            }
-            catch (Exception e) when (!Helper.Env.Debugging)
-            {
-                // TODO: Log exception and show to user
-            }
-
-            return res;
+            return _iterationFightResults.Any();
         }
     }
 }

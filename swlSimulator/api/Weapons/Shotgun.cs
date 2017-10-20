@@ -30,7 +30,6 @@ namespace swlSimulator.api.Weapons
                 if (spell.GetType() == typeof(DragonBreath))
                 {
                     _ifritanDespoilerCounter += 2;
-
                 }
                 if (spell.GetType() == typeof(DepletedUranium))
                 {
@@ -40,7 +39,6 @@ namespace swlSimulator.api.Weapons
                 {
                     player.AddBonusAttack(rr, new IfritanDespoiler(player, ""));
                     _ifritanDespoilerCounter = 0;
-
                 }
             }
 
@@ -50,7 +48,10 @@ namespace swlSimulator.api.Weapons
             }
 
             // Not all spells should procc gimmick
-            if (spell.GetType() == typeof(Reload) || spell.GetType() == typeof(ShellSalvage)) return;
+            if (spell.GetType() == typeof(Reload) || spell.GetType() == typeof(ShellSalvage))
+            {
+                return;
+            }
 
             if (Rnd.Next(1, 3) == 1)
             {
@@ -63,8 +64,6 @@ namespace swlSimulator.api.Weapons
                 player.AddBonusAttack(rr, new DepletedUranium());
             }
         }
-
-        #region Gimmickspells
 
         // We assume we will be alternating Dragon's Breath and Depleted Uranium Shells every reload
         private class DragonBreath : Spell
@@ -113,6 +112,7 @@ namespace swlSimulator.api.Weapons
                 BaseDamage = 0; // 3% HP heal
             }
         }
+
         public class IfritanDespoiler : Spell
         {
             public IfritanDespoiler(IPlayer player, string args = null)
@@ -122,6 +122,7 @@ namespace swlSimulator.api.Weapons
                 AbilityBuff = player.GetAbilityBuffFromName(Name) as AbilityBuff;
             }
         }
+
         private class SpesC221 : Spell
         {
             public SpesC221()
@@ -131,7 +132,5 @@ namespace swlSimulator.api.Weapons
                 BaseDamage = 1.5;
             }
         }
-
-        #endregion
     }
 }

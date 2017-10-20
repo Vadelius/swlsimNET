@@ -1,16 +1,15 @@
-﻿<script src="node_modules/chart.js/src/chart.js"></script>
-<div class="col-xs-12" style="height:110px;"></div>
+﻿<div class="col-xs-12" style="height:110px;"></div>
 
 <h1>
-    DPS = {{Dps}}
+    DPS = {{dps}}
 </h1>
-<p>Minimum: {{LowestDps}} & Maximum: {{HighestDps}}</p>
+<p>Minimum: {{lowestDps}} & Maximum: {{highestDps}}</p>
 
 <div class="row">
     <div class="col-lg-4">
         <div class="card-box">
             <h4 class="m-t-0 header-title"><b>Spell Breakdown</b></h4>
-            <canvas baseChart [data]="breakdownData" [labels]="breakdownLabels" [chartType]="pieChartType" [colors]="bgcolors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+            <canvas baseChart [data]="pieBreakdownData" [labels]="pieBreakdownLabels" [chartType]="pieChartType" [colors]="pieBgcolors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
 
         </div>
     </div>
@@ -30,60 +29,52 @@
 <div class="col-lg-12">
     <h4 class="m-t-0 header-title"><b>Spell Breakdown</b></h4>
     <div class="p-20">
-        <table class="table table table-hover m-0">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Spell</th>
                     <th>DPS</th>
                     <th>DPS%</th>
-                    <th>Executes</th>
                     <th>DPE</th>
-                    <th>Type</th>
-                    <th>Count</th>
-                    <th>Avarage</th>
+                    <th>Executes</th>
+                    <th>Ticks</th>
                     <th>Crit%</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr *ngFor="let spell of breakdownlist">
-                    <th scope="row">{{spell.name}}</th>
-                    <td>{{spell.damagePerSecond}}</td>
-                    <td>{{spell.dpsPercentage}}</td>
+                <tr *ngFor="let spell of spellBreakdownList">
+                    <td scope="row">{{spell.name}}</td>
+                    <td>{{spell.dps}}</td>
+                    <td>{{spell.dpsPercent}}%</td>
+                    <td>{{spell.dpe}}</td>
                     <td>{{spell.executes}}</td>
-                    <td>{{spell.damagePerexecution}}</td>
-                    <td>{{spell.spellType}}</td>
-                    <td>{{spell.amount}}</td>
-                    <td>{{spell.average}}</td>
-                    <td>{{spell.critChance}}</td>
+                    <td>{{spell.ticks}}</td>
+                    <td>{{spell.critChance}}%</td>
                 </tr>
             </tbody>
 
-
             <tr>
                 <th scope="row">Total</th>
-                <td>{{Dps}}</td>
+                <td>{{dps}}</td>
                 <td>100%</td>
                 <td>N/A</td>
+                <td>{{totalSpellExecutes}}</td>
                 <td>N/A</td>
-                <td>N/A</td>
-                <td>{{TotalCount}}</td>
-                <td>N/A</td>
-                <td>{{AvarageCrit}}</td>
+                <td>{{averageCrit}}%</td>
             </tr>
 
-            </tbody>
         </table>
     </div>
 </div>
 <div class="col-lg-12">
     <h4 class="m-t-0 header-title"><b>Buff Breakdown</b></h4>
     <div class="p-20">
-        <table class="table table table-hover m-0">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Buff</th>
-                    <th>Start</th>
+                    <th># of Casts</th>
                     <th>Refresh</th>
                     <th>Interval</th>
                     <th>Executes</th>
@@ -91,11 +82,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let buff of buffbreakdownlist">
-                    <th scope="row">{{buff.name}}</th>
+                <tr *ngFor="let buff of buffBreakdownList">
+                    <td scope="row">{{buff.name}}</td>
                     <td>{{buff.executes}}</td>
                     <td>{{buff.refresh}}</td>
                     <td>{{buff.interval}}</td>
+                    <td>{{buff.executes}}</td>
                     <td>{{buff.uptime}}</td>
                 </tr>
             </tbody>
@@ -104,21 +96,21 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
-        <div class="portlet">
-            <div class="portlet-heading portlet-default">
-                <h3 class="portlet-title text-dark">Sample sequence</h3>
-                <div class="portlet-widgets">
-                    <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
+        <div>
+            <div>
+                <h3>Sample sequence</h3>
+                <div>
+                    <a href="javascript:" data-toggle="reload"><i></i></a>
                     <span class="divider"></span>
-                    <a data-toggle="collapse" data-parent="#accordion1" href="#bg-default"><i class="ion-minus-round"></i></a>
+                    <a data-toggle="collapse" data-parent="#accordion1" href="#bg-default"><i></i></a>
                     <span class="divider"></span>
-                    <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
+                    <a href="#" data-toggle="remove"><i></i></a>
                 </div>
                 <div class="clearfix"></div>
             </div>
             <div id="bg-default" class="panel-collapse collapse in">
-                <div class="portlet-body">
-                    <div innerHTML="{{Raw}}"></div>
+                <div>
+                    <div innerHTML="{{raw}}"></div>
                 </div>
             </div>
         </div>

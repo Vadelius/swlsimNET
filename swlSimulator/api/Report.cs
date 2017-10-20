@@ -11,26 +11,26 @@ namespace swlSimulator.api
 {
     public class Report
     {
-
-        private List<Attack> _allSpellCast = new List<Attack>();
-        public List<ISpell> _distinctSpellCast = new List<ISpell>();
-        public List<IBuff> _distinctBuffs = new List<IBuff>();
-        public StringBuilder _oneBuilder = new StringBuilder();
-        private StringBuilder _twoBuilder = new StringBuilder();
-        private NumberFormatInfo nfi;
+        private readonly List<Attack> _allSpellCast = new List<Attack>();
+        private readonly List<IBuff> _distinctBuffs = new List<IBuff>();
+        private readonly List<ISpell> _distinctSpellCast = new List<ISpell>();
+        private readonly StringBuilder _oneBuilder = new StringBuilder();
         private Settings _settings;
+        private NumberFormatInfo nfi;
 
         public int TotalCrits { get; private set; }
         public int TotalHits { get; private set; }
         public double TotalDamage { get; private set; }
         public double TotalDps { get; private set; }
         public string FightDebug { get; private set; }
-        public double LowestDps { get; set; } = double.MaxValue;
-        public double HighestDps { get; set; }
-        public string SpellBreakdown { get; private set; }
+        public double LowestDps { get; private set; } = double.MaxValue;
+        public double HighestDps { get; private set; }
+        public double TotalSpellExecutes { get; private set; }
+
         public List<SpellResult> SpellBreakdownList { get; private set; }
         public List<BuffResult> BuffBreakdownList { get; private set; }
-        public List<EnergySnap> EnergyList { get; set; }
+        public List<EnergySnap> EnergyList { get; private set; }
+        public List<GimmickSnap> GimmickList { get; private set; }
 
         public bool GenerateReportData(List<FightResult> iterationFightResults, Settings settings)
         {
@@ -38,12 +38,14 @@ namespace swlSimulator.api
             SpellBreakdownList = new List<SpellResult>();
             BuffBreakdownList = new List<BuffResult>();
             EnergyList = new List<EnergySnap>();
+            GimmickList = new List<GimmickSnap>();
             InitReportData(iterationFightResults);
             GenerateSpellReportData();
             GenerateBuffReportData();
+
             FightDebug = _oneBuilder.ToString();
-            SpellBreakdown = _twoBuilder.ToString();
             TotalDps = TotalDamage / _settings.FightLength / _settings.Iterations;
+            TotalSpellExecutes = Math.Round(TotalSpellExecutes, 2);
 
             return true;
         }
@@ -67,6 +69,7 @@ namespace swlSimulator.api
             {
                 BuffBreakdownList.Add(new BuffResult
                 {
+                    // TODO: Calculate values
                     Executes = buffspell.ActivationRounds.Count,
                     Interval = 20,
                     Name = buffspell.Name,
@@ -78,40 +81,60 @@ namespace swlSimulator.api
 
         private void InitReportData(List<FightResult> iterationFightResults)
         {
-            nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            nfi = (NumberFormatInfo) CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
-            decimal lastChangeTimeStamp = 0;
-            const int interval = 2; // Can't go higher due to inconsistent line-values.
+            decimal lastEnergyChangeTimeStamp = 0;
+            decimal lastGimmickChangeTimeStamp = 0;
+            const int interval = 5; // Can't go higher due to inconsistent line-values.
 
             foreach (var iteration in iterationFightResults)
             {
                 _oneBuilder.Clear();
+
                 TotalDamage += iteration.TotalDamage;
                 TotalHits += iteration.TotalHits;
                 TotalCrits += iteration.TotalCrits;
-                if (iteration.Dps > HighestDps) HighestDps = iteration.Dps;
-                if (iteration.Dps < LowestDps) LowestDps = iteration.Dps;
+
+                if (iteration.Dps > HighestDps)
+                {
+                    HighestDps = iteration.Dps;
+                }
+
+                if (iteration.Dps < LowestDps)
+                {
+                    LowestDps = iteration.Dps;
+                }
 
                 foreach (var rr in iteration.RoundResults)
                 {
-                    if (lastChangeTimeStamp == 0 || lastChangeTimeStamp + interval < rr.TimeSec)
+                    if (lastEnergyChangeTimeStamp == 0 || lastEnergyChangeTimeStamp + interval < rr.TimeSec)
                     {
                         EnergyList.Add(new EnergySnap
                         {
                             Time = rr.TimeSec,
-                            Primary = rr.PrimaryEnergyEnd,
-                            Secondary = rr.SecondaryEnergyEnd,
-                            Pgimmick = rr.PrimaryGimmickEnd,
-                            Sgimmick = rr.SecondaryGimmickEnd
+                            PrimaryEnergy = rr.PrimaryEnergyEnd,
+                            SecondaryEnergy = rr.SecondaryEnergyEnd,
                         });
 
-                        lastChangeTimeStamp = rr.TimeSec;
+                        lastEnergyChangeTimeStamp = rr.TimeSec;
+                    }
+
+                    if (lastGimmickChangeTimeStamp == 0 || lastGimmickChangeTimeStamp + interval < rr.TimeSec)
+                    {
+                        GimmickList.Add(new GimmickSnap
+                        {
+                            Time = rr.TimeSec,
+                            PrimaryGimmick = rr.PrimaryGimmickEnd,
+                            SecondaryGimmick = rr.SecondaryGimmickEnd
+                        });
+
+                        lastGimmickChangeTimeStamp = rr.TimeSec;
                     }
 
                     foreach (var a in rr.Attacks)
                     {
-                         if (a.IsHit && a.IsCrit)
+                        if (a.IsHit && a.IsCrit)
                         {
                             _oneBuilder.AppendLine($"<div>[{rr.TimeSec.ToString("#,0.0s", nfi)}] " +
                                                    $"{a.Spell.Name} *{a.Damage.ToString("#,##0,.0K", nfi)}* " +
@@ -155,15 +178,14 @@ namespace swlSimulator.api
                                    "\r\n#3 Primary/Secondary Energy/Resource(Weapon)");
         }
 
-        private void SpellTypeReport(SpellType spellType, string nameOverride = "")
+        private void SpellTypeReport(SpellType spellType)
         {
             var dSpells = _distinctSpellCast.Where(s => s.SpellType == spellType).ToList();
 
-            if (!dSpells.Any()) return;
-
-            _twoBuilder.AppendLine(string.IsNullOrEmpty(nameOverride)
-                ? $"\r\n----- {spellType} summary normalized per fight -----"
-                : $"\r\n----- {nameOverride} summary normalized per fight -----");
+            if (!dSpells.Any())
+            {
+                return;
+            }
 
             foreach (var dSpell in dSpells)
             {
@@ -173,40 +195,17 @@ namespace swlSimulator.api
                 var crits = allOfSameSpellDatas.Count(s => s.IsCrit);
                 var hits = allOfSameSpellDatas.Count(s => s.IsHit);
 
-                // Can't divide int with int, 4.9 will result in 4 etc, either print with decimal or do a correct rounding
-                var avghits = hits / (double)_settings.Iterations;
-                var avgcrits = crits / (double)_settings.Iterations;
-                var cc = decimal.Divide(crits, hits) * 100;
-                var hdmg = allOfSameSpellDatas.Max(s => s.Damage);
-                var ldmg = allOfSameSpellDatas.Where(s => s.IsHit).Min(s => s.Damage);
-                var dmgPerSecond = alldmg / _settings.FightLength / _settings.Iterations;
-                var executes = (avghits + avgcrits);
-
-                var ofTotal = alldmg / TotalDamage * 100;
-
-                if (dSpell.BaseDamage == 0)
-                {
-                    _twoBuilder.AppendLine($"{ofTotal:0.0}% | {dSpell.Name}, hits: {avghits.ToString("#,0.0", nfi)}");
-                }
-                else
-                {
-                    _twoBuilder.AppendLine(
-                        $"{ofTotal:0.0}% | {dSpell.Name}, dmg: {avgDmg.ToString("#,##0,.0K", nfi)}, " +
-                        $"high: {hdmg.ToString("#,##0,.0K", nfi)}, low: {ldmg.ToString("#,##0,.0K", nfi)}," +
-                        $" hits: {avghits.ToString("#,0.0", nfi)}, crits: {avgcrits.ToString("#,0.0", nfi)} ({cc:0.0}%)");
-                }
+                TotalSpellExecutes += hits / (double)_settings.Iterations;
 
                 SpellBreakdownList.Add(new SpellResult
                 {
                     Name = dSpell.Name,
-                    DamagePerSecond = Math.Round(dmgPerSecond),
-                    DpsPercentage = ofTotal,
-                    Executes = executes,
-                    DamagePerExecution = Math.Round(avgDmg),
-                    SpellType = string.IsNullOrWhiteSpace(nameOverride) ? dSpell.SpellType.ToString() : nameOverride,
-                    Amount = executes,
-                    Average = Math.Round(avgDmg),
-                    CritChance = cc
+                    Dps = Math.Round(alldmg / _settings.FightLength / _settings.Iterations, 2),
+                    DpsPercent = Math.Round(alldmg / TotalDamage * 100, 2),
+                    Dpe = Math.Round(avgDmg, 2),
+                    Executes = Math.Round(hits / (double) _settings.Iterations, 2),
+                    Ticks = 0, // TODO: when implementing dot ticks / for channel ticks also?
+                    CritChance = Math.Round(decimal.Divide(crits, hits) * 100, 2)
                 });
             }
         }
@@ -214,10 +213,15 @@ namespace swlSimulator.api
         public class EnergySnap
         {
             public decimal Time { get; set; }
-            public int Primary { get; set; }
-            public int Secondary { get; set; }
-            public decimal Pgimmick { get; set; }
-            public decimal Sgimmick { get; set; }
+            public int PrimaryEnergy { get; set; }
+            public int SecondaryEnergy { get; set; }
+        }
+
+        public class GimmickSnap
+        {
+            public decimal Time { get; set; }
+            public decimal PrimaryGimmick { get; set; }
+            public decimal SecondaryGimmick { get; set; }
         }
 
         public class BuffResult
@@ -228,18 +232,15 @@ namespace swlSimulator.api
             public double Interval { get; set; }
             public double Uptime { get; set; }
         }
+
         public class SpellResult
         {
-            // [spellName, DPS, DPS%, Executes, DPE, SpellType, Count, Average, Crit%]
-
             public string Name { get; set; }
-            public double DamagePerSecond { get; set; }
-            public double DpsPercentage { get; set; }
+            public double Dps { get; set; }
+            public double DpsPercent { get; set; }
             public double Executes { get; set; }
-            public double DamagePerExecution { get; set; }
-            public string SpellType { get; set; }
-            public double Amount { get; set; }
-            public double Average { get; set; }
+            public double Dpe { get; set; }
+            public double Ticks { get; set; }
             public decimal CritChance { get; set; }
         }
     }

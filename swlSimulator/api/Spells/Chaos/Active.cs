@@ -65,6 +65,7 @@ namespace swlSimulator.api.Spells.Chaos
             AbilityType = AbilityType.Elite;
             BaseDamage = 5.8;
             PrimaryCost = 4;
+            MaxCooldown = 20;
             Args = args;
             // PBAoE
         }

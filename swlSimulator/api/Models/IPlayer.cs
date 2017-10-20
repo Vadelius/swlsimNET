@@ -2,7 +2,6 @@
 using swlSimulator.api.Combat;
 using swlSimulator.api.Spells;
 using swlSimulator.api.Weapons;
-using swlSimulator.api.Models;
 using swlSimulator.Models;
 
 namespace swlSimulator.api.Models
@@ -17,6 +16,7 @@ namespace swlSimulator.api.Models
         double BasicSignetBoost { get; }
         double PowerSignetBoost { get; }
         double EliteSignetBoost { get; }
+        double WaistSignetBoost { get; }
         decimal Interval { get; }
         decimal CurrentTimeSec { get; }
 
