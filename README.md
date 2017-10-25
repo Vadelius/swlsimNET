@@ -36,7 +36,7 @@ git clone https://github.com/Vadelius/swlsimNET
 
 **Step 2**: Unzip the archive
 
-**Step 3**: Open CMD or Powershell (Press Win+R on your keyboard to open it - then, type cmd or powershell and press Enter)
+**Step 3**: Open CMD or Powershell (Press Win+R on your keyboard to open Run - then, type cmd or powershell and press Enter)
 
 **Step 4**: Go to the project root folder/directory in CMD or Powershell (By using the 'cd' and 'dir' command)
 
