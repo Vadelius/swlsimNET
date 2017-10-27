@@ -256,10 +256,14 @@ export class ImportComponent {
   }
 
   userSaveOne(): void {
+    var playerValues = this.myform.value;
+    localStorage.setItem('playerOneValues', JSON.stringify(playerValues));
     console.log("Saved!");
   }
 
   userLoadOne(): void {
+    var playerValues = JSON.parse(localStorage.getItem('playerOneValues'));
+    this.setPreset(playerValues);
     console.log("Loaded!");
   }
 
