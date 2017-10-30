@@ -272,7 +272,7 @@ blockquote small {
 }
 /* Card Box */
 .card-box {
-  padding: 20px;
+  padding: 10px 20px 20px;
   border: 2px solid rgba(255, 255, 255, 0.07);
   -webkit-border-radius: 5px;
   border-radius: 5px;
@@ -613,4 +613,43 @@ input.form-control:-ms-input-placeholder {
 .table > tbody > tr > th.middle-align,
 .table > .tfood > tr > th.middle-align {
   vertical-align: middle;
+}
+
+.import-form-toolbar {
+    margin-top: 100px;
+}
+
+.import-form-toolbar > div {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.preset {
+    line-height: 34px;    
+}
+
+.preset label {
+    font-weight: normal;
+}
+
+#main .import-form-element {
+    margin-top: 10px;
+}
+
+#main .import-form-element label, label[for=firstPassive] {
+    margin-bottom: 0;
+}
+
+#main .checkbox label {
+    font-weight: bold;
+}
+
+#main .checkbox label::before {
+    margin-top: 2px;
+}
+
+#main .import-form-element .overflow {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

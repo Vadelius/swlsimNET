@@ -219,42 +219,6 @@ export class ImportComponent {
 
   constructor(private readonly http: Http, private readonly router: Router) {}
 
-  hammerPreset(): void {
-    this.setPreset(weaponPresets.Hammer);
-  }
-
-  chaosPreset(): void {
-    this.setPreset(weaponPresets.Chaos);
-  }
-
-  fistPreset(): void {
-    this.setPreset(weaponPresets.Fist);
-  }
-
-  pistolPreset(): void {
-    this.setPreset(weaponPresets.Pistol);
-  }
-
-  bloodPreset(): void {
-    this.setPreset(weaponPresets.Blood);
-  }
-
-  bladePreset(): void {
-    this.setPreset(weaponPresets.Blade);
-  }
-
-  riflePreset(): void {
-    this.setPreset(weaponPresets.Rifle);
-  }
-
-  elementalismPreset(): void {
-    this.setPreset(weaponPresets.Elemental);
-  }
-
-  shotgunPreset(): void {
-    this.setPreset(weaponPresets.Shotgun);
-  }
-
   userSaveOne(): void {
     console.log("Saved!");
   }
@@ -271,6 +235,10 @@ export class ImportComponent {
         response => this.extractData(response, this.router),
         this.handleError,
       );
+  }
+
+  onChange(newValue) {
+    this.setPreset(weaponPresets[newValue]);
   }
 
   ngOnInit(): void {
@@ -303,7 +271,7 @@ export class ImportComponent {
       passive4: new FormControl(),
       passive5: new FormControl(),
     });
-    this.hammerPreset();
+    this.setPreset(weaponPresets.Hammer);
   }
 
   private setPreset(preset) {
